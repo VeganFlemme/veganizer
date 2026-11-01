@@ -18,7 +18,8 @@ const SUPERSCRIPT: Record<string, string> = { "-": "⁻", "0": "⁰", "1": "¹",
 /** « 7,2 × 10⁻⁸ » instead of « 7,2E-8 » (readable scientific notation, review of 2026-11-01). */
 function scientific(x: number): string {
   const [m, e] = sci.format(x).split("E");
-  return `${m}${NBSP}×${NBSP}10${[...(e ?? "")].map((c) => SUPERSCRIPT[c] ?? c).join("")}`;
+  // A normal space before « × »: in a narrow cell « × 10⁻⁸ » may go under the mantissa.
+  return `${m} ×${NBSP}10${[...(e ?? "")].map((c) => SUPERSCRIPT[c] ?? c).join("")}`;
 }
 
 /** Three significant digits; scientific notation for very small non-zero values. */
