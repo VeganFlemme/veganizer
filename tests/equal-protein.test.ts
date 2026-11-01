@@ -48,3 +48,23 @@ describe("boostMainProtein (suite V1, S24d: completed version)", () => {
     expect(boostMainProtein({ servings: 1, ingredients: [{ foodCode: "NONE", grams: 100 }] }, data, 10, [])).toBeNull();
   });
 });
+
+describe("boostMainProtein: plausible serving (suite V1, step 3 ter, 5 ter)", () => {
+  const data: ScoringData = {
+    foods: { SPREAD: { nutrients: { protein_g: 10 }, impacts: {}, isAnimal: false, animalCategory: null } },
+    categoryFactors: {},
+  };
+  const dish = { servings: 1, ingredients: [{ foodCode: "SPREAD", grams: 100 }] };
+  it("never raises the main protein above maxFactor × its starting mass (editorial cap)", () => {
+    // 10 g of protein; target 29 g would need 290 g; capped at 2 × 100 g
+    const r = boostMainProtein(dish, data, 29, [], 2)!;
+    expect(r.extraGrams).toBe(100);
+    expect(r.capped).toBe(true);
+    expect(r.dish.ingredients[0].grams).toBe(200);
+  });
+  it("is not capped when the target is reached within the cap", () => {
+    const r = boostMainProtein(dish, data, 15, [], 2)!;
+    expect(r.extraGrams).toBeCloseTo(50);
+    expect(r.capped).toBe(false);
+  });
+});

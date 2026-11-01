@@ -180,12 +180,17 @@ export function dishTotals(dish: Dish, data: ScoringData, options: TotalsOptions
         continue;
       }
       const byIndicator = food.animalCategory ? data.categoryFactors[food.animalCategory] : undefined;
-      const f = perKg(byIndicator, id, foodCode);
+      const f = perKg(byIndicator, id, food.factorCode ?? foodCode);
       if (!f) continue;
       const kg = grams / GRAMS_PER_KG;
       add(animal, id, grams, { value: kg * f.value, low: kg * f.low, high: kg * f.high, dqr: null, sourceId: f.sourceIds[0] });
       for (const extra of f.sourceIds.slice(1)) animal.get(id)?.sourceIds.add(extra);
     }
+  }
+
+  // Steps of the dish itself: added to the impacts, no mass (coverage unchanged).
+  for (const [id, f] of Object.entries(dish.fixedImpacts ?? {})) {
+    if (finite(f.value)) add(impacts, id, 0, { value: f.value, low: f.value, high: f.value, dqr: null, sourceId: f.sourceId });
   }
 
   const fullyKnown = (id: string): number | null => {

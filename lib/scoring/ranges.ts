@@ -62,9 +62,12 @@ export function withoutSharedIngredients(animal: Dish, vegetal: Dish): { shared:
   const a = merged(animal);
   const v = merged(vegetal);
   const shared = [...a.keys()].filter((code) => v.has(code) && Math.abs(a.get(code)! / animal.servings - v.get(code)! / vegetal.servings) < GRAMS_EPSILON);
+  // Identical steps of the dish (fixedImpacts) cancel out too.
+  const sameSteps = JSON.stringify(animal.fixedImpacts ?? null) === JSON.stringify(vegetal.fixedImpacts ?? null) && animal.servings === vegetal.servings;
   const rest = (d: Dish, m: Map<string, number>): Dish | null => {
     const ingredients = [...m].filter(([code]) => !shared.includes(code)).map(([foodCode, grams]) => ({ foodCode, grams }));
-    return ingredients.length ? { servings: d.servings, ingredients } : null;
+    const steps = sameSteps ? undefined : d.fixedImpacts;
+    return ingredients.length ? { servings: d.servings, ingredients, ...(steps ? { fixedImpacts: steps } : {}) } : null;
   };
   return { shared, animal: rest(animal, a), vegetal: rest(vegetal, v) };
 }

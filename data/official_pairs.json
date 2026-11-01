@@ -9,11 +9,6 @@
       "sides": []
     },
     {
-      "slug": "lasagnes-bolognaise",
-      "dishCode": "25081",
-      "sides": []
-    },
-    {
       "slug": "croque-monsieur",
       "dishCode": "25400",
       "sides": [
@@ -83,6 +78,11 @@
       "slug": "pot-au-feu",
       "dishCode": "25013",
       "reason": "Plat approché par une autre recette dans AGRIBALYSE (annexe 10 du rapport méthodologique) : recette officielle non reprise."
+    },
+    {
+      "slug": "lasagnes-bolognaise",
+      "dishCode": "25081",
+      "reason": "La recette officielle contient un bouillon de viande sans code Ciqual : la version végétale ne pourrait pas le remplacer. Recette officielle non reprise."
     }
   ]
 }

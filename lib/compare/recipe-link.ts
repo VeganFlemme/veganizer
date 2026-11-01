@@ -1,6 +1,6 @@
 // « Modifier cette recette » (suite V1, decision of Matt 17 h 25): /recette opened with the recipe
 // of the animal dish (?recette=<JSON>). Pure; shared by the pages and by /recette.
-import { NO_CODE_PREFIX } from "./auto";
+import { NO_CODE_PREFIX, OFFICIAL_PREFIX } from "./auto";
 import type { DishView } from "./view";
 
 export interface SharedRecipe {
@@ -9,12 +9,18 @@ export interface SharedRecipe {
   ingredients: { code: string; name: string; grams: number; isAnimal: boolean }[];
 }
 
-/** Ingredients without a Ciqual code (official inputs without data) are left out: /recette cannot use them. */
-export function recipeHref(dish: DishView): string {
+/**
+ * Ingredients of an official dish are written with the Ciqual food they stand for (`baseOf`);
+ * those without a Ciqual code are left out: /recette cannot use them.
+ */
+export function recipeHref(dish: DishView, baseOf: (code: string) => string | undefined = () => undefined): string {
   const r: SharedRecipe = {
     name: dish.name,
     servings: dish.servings,
-    ingredients: dish.ingredients.filter((i) => !i.code.startsWith(NO_CODE_PREFIX)).map((i) => ({ code: i.code, name: i.label, grams: Math.round(i.grams), isAnimal: i.isAnimal })),
+    ingredients: dish.ingredients
+      .map((i) => ({ ...i, code: baseOf(i.code) ?? i.code }))
+      .filter((i) => !i.code.startsWith(NO_CODE_PREFIX) && !i.code.startsWith(OFFICIAL_PREFIX))
+      .map((i) => ({ code: i.code, name: i.label.replace(/\s*\(recette officielle[^)]*\)$/, ""), grams: Math.round(i.grams), isAnimal: i.isAnimal })),
   };
   return `/recette?recette=${encodeURIComponent(JSON.stringify(r))}`;
 }

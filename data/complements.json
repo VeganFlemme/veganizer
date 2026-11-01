@@ -1,7 +1,7 @@
 {
   "version": "1.0",
   "date": "2026-11-01",
-  "status": "Liste blanche relue (suite V1, S24). Quantités maximales par portion : choix éditoriaux réalistes (une cuillère à soupe de graines, un verre de boisson), à valider par un·e diététicien·ne (docs/A_VERIFIER.md).",
+  "status": "Liste blanche relue (suite V1, S24). Quantités maximales par portion : choix éditoriaux réalistes (une cuillère à soupe de graines, un verre de boisson), à valider par un·e diététicien·ne (docs/A_VERIFIER.md). Ajout (suite V1, 5 ter) : tofu ferme, lentilles et pois chiches cuits, pour combler un écart de protéines au-delà de la portion plausible ; quantités maximales = une portion courante, choix éditorial à valider.",
   "dailyNeeds": {
     "text": "Les références nutritionnelles de l'ANSES sont des apports par jour (mg/j, µg/j) et la limite supérieure de sécurité est « l'apport journalier chronique maximal » ; pour les protéines, l'ANSES indique que varier les sources sur la journée suffit. Nous en concluons qu'un plat isolé n'a pas à couvrir à lui seul ces références : compléter un plat est une illustration, pas une recommandation.",
     "source": {
@@ -143,6 +143,44 @@
       "conseils": [
         "iode"
       ]
+    },
+    {
+      "code": "20904",
+      "label": "tofu nature",
+      "kind": "courant",
+      "maxGramsPerServing": 100,
+      "targets": [
+        "protein_g",
+        "ca_mg",
+        "fe_mg"
+      ],
+      "justification": "Source de protéines végétales ; l'ANSES conseille de varier les sources de protéines sur la journée.",
+      "conseils": []
+    },
+    {
+      "code": "20587",
+      "label": "lentilles vertes cuites",
+      "kind": "courant",
+      "maxGramsPerServing": 150,
+      "targets": [
+        "protein_g",
+        "fiber_g",
+        "fe_mg"
+      ],
+      "justification": "Légumineuse : le PNNS recommande d'en consommer au moins deux fois par semaine ; source de protéines et de fibres.",
+      "conseils": []
+    },
+    {
+      "code": "20507",
+      "label": "pois chiches cuits",
+      "kind": "courant",
+      "maxGramsPerServing": 150,
+      "targets": [
+        "protein_g",
+        "fiber_g"
+      ],
+      "justification": "Légumineuse : le PNNS recommande d'en consommer au moins deux fois par semaine ; source de protéines et de fibres.",
+      "conseils": []
     }
   ]
 }

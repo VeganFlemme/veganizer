@@ -89,7 +89,7 @@ export default async function ComparePage({ params }: PageProps<"/compare/[slug]
               <>recette type rédigée par Veganizer, pour {model.animal.servings} portions</>
             )}{" "}
             ·{" "}
-            <Link href={recipeHref(model.animal)} className="text-on-dark-1 underline hover:text-white">
+            <Link href={recipeHref(model.animal, (c) => pair.input.raw.foods.find((f) => f.code === c)?.factor_code)} className="text-on-dark-1 underline hover:text-white">
               Modifier cette recette
             </Link>
           </>

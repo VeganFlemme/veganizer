@@ -24,7 +24,7 @@ import { VerdictPanel } from "@/components/ui/VerdictPanel";
 import { animalBetterTitle, CLIMATE_MAIN, COVERAGE_WARNING } from "@/lib/compare/config";
 import { alignRecipes } from "@/lib/compare/align";
 import { NUTRIENT_REASON } from "@/lib/compare/views";
-import { additionLine, boostLine, co2Summary, completedSentence, ingredientsText, isVersionId, VERSIONS, type VersionId } from "@/lib/compare/views";
+import { additionLine, boostLine, boostReason, co2Summary, completedSentence, ingredientsText, isVersionId, VERSIONS, type VersionId } from "@/lib/compare/views";
 import complementsFile from "@/data/complements.json";
 import type { CategoryId, CategoryScoreView } from "@/lib/compare/scores";
 import type { CompletedVariantView, CriterionRow, DishView, IngredientPrice, PairPageModel, PriceSide, SideValue, VariantView } from "@/lib/compare/view";
@@ -857,21 +857,23 @@ function CompletedPanel({ c, animal, per }: { c: CompletedVariantView; animal: D
   return (
     <Panel title="Version complétée : exemple d’ajouts possibles" className="mt-3">
       <p className="m-0 text-[14px] leading-normal text-ink-2">
-        Le plat animal ne change pas. La version végétale reçoit autant de protéines que lui (protéine principale augmentée), puis ses autres manques sont comblés
-        avec des aliments d’une liste relue, quand c’est possible. C’est un exemple, pas un conseil : {complementsFile.dailyNeeds.text}
+        Le plat animal ne change pas. La version végétale vise autant de protéines que lui : la protéine principale est augmentée, jusqu’à deux fois sa
+        masse au plus (portion plausible), puis ses manques, protéines comprises, sont comblés avec des aliments d’une liste relue, quand c’est possible.
+        C’est un exemple, pas un conseil : {complementsFile.dailyNeeds.text}
       </p>
+      {c.roleNote && <p className="m-0 text-[14px] font-semibold leading-normal">{c.roleNote}</p>}
       <p className="m-0 flex flex-wrap gap-x-6 gap-y-1 text-[15px] font-bold">
         <span className="inline-flex items-center gap-2">
-          <Dot series="animal" /> {animal.name} : {kcal(energy?.animal ?? null)} par portion
+          <Dot series="animal" /> {animal.name} : {kcal(energy?.animal ?? null)} {per}
         </span>
         <span className="inline-flex items-center gap-2">
-          <Dot series="plant" /> Version complétée : {kcal(energy?.vegetal ?? null)} par portion
+          <Dot series="plant" /> Version complétée : {kcal(energy?.vegetal ?? null)} {per}
         </span>
       </p>
       <ul className="m-0 flex list-disc flex-col gap-1 pl-5 text-[14px]">
         {c.boost && (
           <li>
-            {c.boost.label} : {boostLine(c.boost.extraGrams, animal.servings)}.
+            {c.boost.label} : {boostLine(c.boost.extraGrams, animal.servings, c.boost.capped)}.
           </li>
         )}
         {c.additions.map((a) => (
@@ -896,7 +898,7 @@ function CompletedRecipe({ c, animal }: { c: CompletedVariantView; animal: DishV
   const added = new Map(c.additions.map((a) => [a.code, a]));
   const lines = alignRecipes(animal.ingredients, dish.ingredients, animal.servings, dish.servings);
   const why = (code: string) =>
-    c.boost?.code === code ? "quantité augmentée pour autant de protéines" : added.has(code) ? `ajouté pour ${added.get(code)!.nutrients.map((n) => NUTRIENT_REASON[n] ?? n).join(", ")}` : null;
+    c.boost?.code === code ? boostReason(c.boost.capped) : added.has(code) ? `ajouté pour ${added.get(code)!.nutrients.map((n) => NUTRIENT_REASON[n] ?? n).join(", ")}` : null;
   const [copied, setCopied] = useState(false);
   const copy = async () => {
     try {

@@ -63,13 +63,6 @@ dish_code,dish_name,flow,food_code,ingredient_fr,kg_per_kg_dish,note
 25562,"Crêpe ou Galette complète (œuf, jambon, fromage)","Cooked ham, case ready, at plant/FR U",28910,Jambon cuit,0.208,jambon cuit choix
 25562,"Crêpe ou Galette complète (œuf, jambon, fromage)","Emmental cheese, from cow's milk, at plant/FR U",12115,Emmental,0.144,
 25562,"Crêpe ou Galette complète (œuf, jambon, fromage)","Water, municipal/FR U",18066,,0.326,eau ajoutée (hors détail 3.2)
-25625,Crêpe ou Galette fourrée au poisson et / ou fruits de mer,"Buckwheat flour, at industrial mill/FR U",9540,Farine de sarrasin,0.147,
-25625,Crêpe ou Galette fourrée au poisson et / ou fruits de mer,"Butter, unsalted, at dairy/FR U",16400,Beurre,0.0416,
-25625,Crêpe ou Galette fourrée au poisson et / ou fruits de mer,"Emmental cheese, from cow's milk, at plant/FR U",12115,Emmental,0.078,
-25625,Crêpe ou Galette fourrée au poisson et / ou fruits de mer,"Fresh cream cheese, at plant/FR U",,Fromage frais crémeux,0.0468,aucun code Ciqual de fromage frais crémeux avec impact (petit-suisse écarté)
-25625,Crêpe ou Galette fourrée au poisson et / ou fruits de mer,"Salmon, fillet, raw, at processing/FR U",26036,Saumon,0.241,saumon sans origine = élevage
-25625,Crêpe ou Galette fourrée au poisson et / ou fruits de mer,"Spinach, peeled, at processing/FR U",20059,Epinard,0.182,
-25625,Crêpe ou Galette fourrée au poisson et / ou fruits de mer,"Water, municipal/FR U",18066,,0.333,eau ajoutée (hors détail 3.2)
 25409,Crêpe ou Galette fourrée béchamel jambon,"Buckwheat flour, at industrial mill/FR U",9540,Farine de sarrasin,0.134,
 25409,Crêpe ou Galette fourrée béchamel jambon,"Cooked ham, case ready, at plant/FR U",28910,Jambon cuit,0.305,jambon cuit choix
 25409,Crêpe ou Galette fourrée béchamel jambon,"Emmental cheese, from cow's milk, at plant/FR U",12115,Emmental,0.189,
@@ -193,12 +186,6 @@ dish_code,dish_name,flow,food_code,ingredient_fr,kg_per_kg_dish,note
 25122,Gratin de pâtes,"Pasta, dried, from durum wheat, at plant/FR U",9810,Pâtes,0.557,
 25122,Gratin de pâtes,"Semi-skimmed milk, at plant/FR U",19041,Lait demi-écremé,0.255,
 25122,Gratin de pâtes,"Water, municipal/FR U",18066,,0.318,eau ajoutée (hors détail 3.2)
-25154,Gratin de poisson et purée ou brandade aux pommes de terre ou parmentier de poisson,"Cod, fillet, raw, at processing/FR U",26043,Morue,0.697,cabillaud cru (morue = cabillaud)
-25154,Gratin de poisson et purée ou brandade aux pommes de terre ou parmentier de poisson,"Combined oil (mix of olive oil and seeds oil), at plant/FR U",17701,Huile combinée (mélange d'huile d'olive et d'huile de graines),0.0676,
-25154,Gratin de poisson et purée ou brandade aux pommes de terre ou parmentier de poisson,"Emmental cheese, from cow's milk, at plant/FR U",12115,Emmental,0.0624,
-25154,Gratin de poisson et purée ou brandade aux pommes de terre ou parmentier de poisson,"Fresh cream cheese, at plant/FR U",,Fromage frais crémeux,0.026,aucun code Ciqual de fromage frais crémeux avec impact (petit-suisse écarté)
-25154,Gratin de poisson et purée ou brandade aux pommes de terre ou parmentier de poisson,"Potato, consumption mix/FR U",4008,Pommes de terre,0.282,
-25154,Gratin de poisson et purée ou brandade aux pommes de terre ou parmentier de poisson,"Semi-skimmed milk, at plant/FR U",19041,Lait demi-écremé,0.0755,
 25009,Hachis Parmentier à la viande,"Butter, unsalted, at dairy/FR U",16400,Beurre,0.0376,
 25009,Hachis Parmentier à la viande,"Emmental cheese, from cow's milk, at plant/FR U",12115,Emmental,0.0624,
 25009,Hachis Parmentier à la viande,"Ground beef, fresh, for processing/FR U",6254,Bœuf haché,0.289,hypothèse : 15 % de matières grasses
@@ -206,17 +193,6 @@ dish_code,dish_name,flow,food_code,ingredient_fr,kg_per_kg_dish,note
 25009,Hachis Parmentier à la viande,"Potato, consumption mix/FR U",4008,Pommes de terre,0.627,
 25009,Hachis Parmentier à la viande,"Semi-skimmed milk, at plant/FR U",19041,Lait demi-écremé,0.122,
 25009,Hachis Parmentier à la viande,"Tomato, for processing, peeled, at plant/FR U",20169,Tomate,0.0668,tomate pelée = tomate chair appertisée
-25081,Lasagnes ou cannelloni à la viande (bolognaise),"Broth, stock or bouillon, meat and vegetables, at plant/FR U",,Bouillon,0.0536,plat composé avec viande (règle 9) : pas de code pur
-25081,Lasagnes ou cannelloni à la viande (bolognaise),"Butter, unsalted, at dairy/FR U",16400,Beurre,0.0262,
-25081,Lasagnes ou cannelloni à la viande (bolognaise),"Carrot, peeled, at processing/FR U",20009,Carotte,0.0237,
-25081,Lasagnes ou cannelloni à la viande (bolognaise),"Emmental cheese, from cow's milk, at plant/FR U",12115,Emmental,0.0786,
-25081,Lasagnes ou cannelloni à la viande (bolognaise),"Ground beef, fresh, for processing/FR U",6254,Bœuf haché,0.087,hypothèse : 15 % de matières grasses
-25081,Lasagnes ou cannelloni à la viande (bolognaise),"Olive oil, at plant/FR U",17270,Huile d'olive,0.0101,
-25081,Lasagnes ou cannelloni à la viande (bolognaise),"Onions, peeled, at processing/FR U",20034,Oignons,0.0223,
-25081,Lasagnes ou cannelloni à la viande (bolognaise),"Pasta, dried, from durum wheat, at plant/FR U",9810,Pâtes,0.472,
-25081,Lasagnes ou cannelloni à la viande (bolognaise),"Semi-skimmed milk, at plant/FR U",19041,Lait demi-écremé,0.137,
-25081,Lasagnes ou cannelloni à la viande (bolognaise),"Tomato, for processing, peeled, at plant/FR U",20169,Tomate,0.134,tomate pelée = tomate chair appertisée
-25081,Lasagnes ou cannelloni à la viande (bolognaise),"Water, municipal/FR U",18066,,0.243,eau ajoutée (hors détail 3.2)
 25635,Lasagnes ou cannelloni au fromage et aux épinards,"Cheese, buche, from goat's milk, at plant/FR U",12812,Fromage,0.24,
 25635,Lasagnes ou cannelloni au fromage et aux épinards,"Emmental cheese, from cow's milk, at plant/FR U",12115,Emmental,0.0737,
 25635,Lasagnes ou cannelloni au fromage et aux épinards,"Pasta, dried, from durum wheat, at plant/FR U",9810,Pâtes,0.326,
@@ -244,17 +220,6 @@ dish_code,dish_name,flow,food_code,ingredient_fr,kg_per_kg_dish,note
 25124,Navarin d'agneau aux légumes,"Tomato, for processing, peeled, at plant/FR U",20169,Tomate,0.0857,tomate pelée = tomate chair appertisée
 25124,Navarin d'agneau aux légumes,"Turnip, peeled, at processing/FR U",20064,Navet,0.11,
 25124,Navarin d'agneau aux légumes,"Wheat flour, at industrial mill/FR U",9435,Farine de blé,0.0157,
-25183,Nouilles sautées/poêlées aux crevettes,"Carrot, peeled, at processing/FR U",20009,Carotte,0.216,
-25183,Nouilles sautées/poêlées aux crevettes,"Curry sauce, prepacked, at plant/FR U",,Sauce au curry,0.0103,sauce composée (règle 9) : pas de code pur
-25183,Nouilles sautées/poêlées aux crevettes,"Garden peas, consumption mix/FR U",20072,Petits pois,0.1078,
-25183,Nouilles sautées/poêlées aux crevettes,"Honey, at plant/FR U",31008,Miel,0.0103,
-25183,Nouilles sautées/poêlées aux crevettes,"Pasta, dried, from durum wheat, at plant/FR U",9810,Pâtes,0.297,
-25183,Nouilles sautées/poêlées aux crevettes,"Pepper, green, peeled, at processing/FR U",20085,Poivre,0.12,poivron vert (nommé « Poivre » dans le détail 3.2)
-25183,Nouilles sautées/poêlées aux crevettes,"Shrimp, fillet, raw, frozen at processing/FR U",10038,Crevette,0.15,
-25183,Nouilles sautées/poêlées aux crevettes,"Spinach, peeled, at processing/FR U",20059,Epinard,0.0839,
-25183,Nouilles sautées/poêlées aux crevettes,"Sunflower oil, at plant/FR U",17440,Huile de tournesol,0.0103,
-25183,Nouilles sautées/poêlées aux crevettes,"Tomato, for processing, peeled, at plant/FR U",20169,Tomate,0.0599,tomate pelée = tomate chair appertisée
-25183,Nouilles sautées/poêlées aux crevettes,"Water, municipal/FR U",18066,,0.172,eau ajoutée (hors détail 3.2)
 25164,Osso buco,"Carrot, peeled, at processing/FR U",20009,Carotte,0.098,
 25164,Osso buco,"Celery, peeled, at processing/FR U",20023,Céleri,0.0306,
 25164,Osso buco,"Combined oil (mix of olive oil and seeds oil), at plant/FR U",17701,Huile combinée (mélange d'huile d'olive et d'huile de graines),0.0524,
@@ -299,13 +264,6 @@ dish_code,dish_name,flow,food_code,ingredient_fr,kg_per_kg_dish,note
 20274,"Poêlée de légumes assaisonnés grillée, méridionale ou méditerranéenne, surgelée, crue","Onions, peeled, at processing/FR U",20034,Oignons,0.179,
 20274,"Poêlée de légumes assaisonnés grillée, méridionale ou méditerranéenne, surgelée, crue","Pepper, green, peeled, at processing/FR U",20085,Poivre,0.43,poivron vert (nommé « Poivre » dans le détail 3.2)
 20274,"Poêlée de légumes assaisonnés grillée, méridionale ou méditerranéenne, surgelée, crue","Zucchini, peeled, at processing/FR U",20020,Courgette,0.298,
-25140,Poisson blanc à la florentine (sauce aux épinards),"Alaska pollock, fillet, raw, at processing/FR U",26006,Lieu ou colin d'Alaska,0.708,
-25140,Poisson blanc à la florentine (sauce aux épinards),"Combined oil (mix of olive oil and seeds oil), at plant/FR U",17701,Huile combinée (mélange d'huile d'olive et d'huile de graines),0.0311,
-25140,Poisson blanc à la florentine (sauce aux épinards),"Emmental cheese, from cow's milk, at plant/FR U",12115,Emmental,0.0519,
-25140,Poisson blanc à la florentine (sauce aux épinards),"Fresh cream cheese, at plant/FR U",,Fromage frais crémeux,0.0311,aucun code Ciqual de fromage frais crémeux avec impact (petit-suisse écarté)
-25140,Poisson blanc à la florentine (sauce aux épinards),"Semi-skimmed milk, at plant/FR U",19041,Lait demi-écremé,0.145,
-25140,Poisson blanc à la florentine (sauce aux épinards),"Spinach, peeled, at processing/FR U",20059,Epinard,0.17,
-25140,Poisson blanc à la florentine (sauce aux épinards),"White wine, consumption mix/FR U",5215,Vin blanc,0.0156,
 25128,Poisson blanc à la provençale ou niçoise (sauce tomate),"Alaska pollock, fillet, raw, at processing/FR U",26006,Lieu ou colin d'Alaska,0.809,
 25128,Poisson blanc à la provençale ou niçoise (sauce tomate),"Fennel, peeled, at processing/FR U",20028,Fenouil,0.0364,
 25128,Poisson blanc à la provençale ou niçoise (sauce tomate),"Olive oil, at plant/FR U",17270,Huile d'olive,0.0415,
@@ -319,14 +277,6 @@ dish_code,dish_name,flow,food_code,ingredient_fr,kg_per_kg_dish,note
 25207,Porc au caramel,"Onions, peeled, at processing/FR U",20034,Oignons,0.121,
 25207,Porc au caramel,"Soy sauce, prepacked, at plant/FR U",11104,Sauce soja,0.031,
 25207,Porc au caramel,"White sugar, production, at plant/FR U",31016,Sucre blanc,0.0413,
-25071,Potée auvergnate (chou et porc),"Carrot, peeled, at processing/FR U",20009,Carotte,0.0954,
-25071,Potée auvergnate (chou et porc),"Haricot bean, consumption mix/FR U",20501,Haricot,0.0219,légumineuse sèche
-25071,Potée auvergnate (chou et porc),"Meat, pork, without bone/FR U",28001,Porc,0.348,hypothèse : épaule crue
-25071,Potée auvergnate (chou et porc),"Offal, pork/FR U",,Abats de porc,0.0387,abats sans précision : pas de code
-25071,Potée auvergnate (chou et porc),"Potato, consumption mix/FR U",4008,Pommes de terre,0.145,
-25071,Potée auvergnate (chou et porc),"Turnip, peeled, at processing/FR U",20064,Navet,0.107,
-25071,Potée auvergnate (chou et porc),"Water, municipal/FR U",18066,,0.194,eau ajoutée (hors détail 3.2)
-25071,Potée auvergnate (chou et porc),"White cabbage, peeled, at processing/FR U",20116,Chou blanc,0.203,
 25174,Poulet au curry et au lait de coco,"Coconut milk or coconut cream, at plant/FR U",18041,Lait de coco ou crème de coco,0.18,
 25174,Poulet au curry et au lait de coco,"Combined oil (mix of olive oil and seeds oil), at plant/FR U",17701,Huile combinée (mélange d'huile d'olive et d'huile de graines),0.0408,
 25174,Poulet au curry et au lait de coco,"Meat without bone, chicken, for processing/FR U",36003,Viande de poulet sans os,0.944,

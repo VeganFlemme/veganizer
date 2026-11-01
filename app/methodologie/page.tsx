@@ -411,15 +411,24 @@ export default async function MethodologiePage() {
         <p>
           La version précédente, <strong>Agribalyse 3.0</strong>, est en revanche rediffusée en entier sur data.gouv.fr sous Licence Ouverte. Elle
           donne la masse de chaque ingrédient de chaque plat composé. Nous n’en reprenons une recette que si sa liste d’ingrédients est la même que
-          celle du détail par ingrédient de la version 3.2, et si au moins 95 % de sa masse correspond à un aliment Ciqual. C’est le cas de 102 plats
-          sur 285 ; les autres plats (ajoutés ou renommés depuis la 3.0, ingrédients différents, ingrédients sans données comme le champignon de
-          Paris) sont écartés.
+          celle du détail par ingrédient de la version 3.2, si au moins 95 % de sa masse correspond à un aliment Ciqual, si le plat n’est pas
+          « approché par une autre recette » (annexe 10 du rapport : la carbonara y est modélisée avec la recette des lasagnes à la bolognaise),
+          et si chaque ingrédient animal peut être remplacé (un bouillon de viande ou des abats sans code Ciqual excluent le plat). C’est le cas de
+          81 plats sur 285.
         </p>
         <p>
-          Un plat recalculé à partir de sa recette n’a pas exactement l’impact publié pour le plat entier : il manque les étapes propres au plat
-          (cuisson à l’usine, emballage, transport, stockage). Sur ces 102 plats, le recalcul donne en médiane 81 % des émissions publiées
-          (98 % pour le hachis parmentier, 96 % pour le pot-au-feu, 84 % pour les lasagnes à la bolognaise). C’est pourquoi nous comparons
-          toujours une recette à une recette, calculées de la même façon, jamais un plat officiel à une recette recalculée.
+          <strong>Pour ces plats, l’impact publié est gardé.</strong> Le détail par ingrédient d’Agribalyse 3.2 donne la part de chaque ingrédient
+          dans l’impact du plat, plus une ligne « Autres étapes » (transformation, emballage, transport, cuisson). L’impact du plat animal est
+          l’impact publié. Celui de la version végétale est l’impact publié, moins les parts des ingrédients animaux remplacés, plus la masse de
+          chaque remplaçant multipliée par son propre impact par kilo. Les « Autres étapes » restent ainsi identiques des deux côtés. Vérifié sur
+          trois plats : pour 100 g, le hachis parmentier affiche 1,20 kg CO₂e, le croissant au jambon 0,46 et les endives au jambon 0,39, soit les
+          valeurs publiées. Le détail par ingrédient ne couvre pas les trois sous-parties du changement climatique (émissions fossiles,
+          biogéniques, liées au changement d’affectation des sols) : elles sont affichées « donnée manquante » pour ces plats, sans être comptées.
+        </p>
+        <p>
+          <strong>Pour nos recettes types</strong>, qui n’ont pas d’impact publié, l’impact est la somme des ingrédients. Les étapes propres au plat
+          (cuisson, emballage, transport du plat) ne sont pas comptées : sur les plats où l’on peut comparer, cette somme donne en médiane 81 % de
+          l’impact publié. Une même part manquant des deux côtés, <strong>l’écart en % entre les deux plats est un peu surestimé</strong>.
         </p>
         <p className="text-sm">
           Sources : ADEME, AGRIBALYSE 3.2, rapport méthodologique « Alimentation » et ses annexes, 
@@ -440,11 +449,11 @@ export default async function MethodologiePage() {
         </p>
         <p>
           <strong>La version complétée</strong> répond à l’objection « il manque des protéines, du calcium… ». Le plat animal ne change pas. La version végétale
-          reçoit autant de protéines que lui : seule sa protéine principale (celle qui apporte le plus de protéines parmi les ingrédients qui diffèrent du plat
-          animal) est augmentée. Puis ses autres manques sont comblés par les plus petites quantités d’aliments d’une liste blanche relue (aliments courants
+          vise autant de protéines que lui : la protéine choisie par le visiteur est augmentée, deux fois sa masse au plus (voir « Une portion
+          plausible » ci-dessous). Puis ses manques, protéines comprises, sont comblés par les plus petites quantités d’aliments d’une liste blanche relue (aliments courants
           d’abord, aliments enrichis seulement s’il le faut), sans jamais dépasser une limite de sécurité de l’ANSES (calcium, fer, zinc, iode, vitamine D, par
           jour, appliquées au total de la portion). Tous les onglets, le climat, les animaux et le prix sont recalculés et comparés normalement ; la nutrition
-          affiche « écarts comblés par construction » au lieu d’un score, pour rester équitable. La vitamine B12, l’EPA + DHA et la vitamine D, qu’aucun aliment
+          affiche « écarts comblés » (« sauf : … » quand il en reste) au lieu d’un score, pour rester équitable. La vitamine B12, l’EPA + DHA et la vitamine D, qu’aucun aliment
           de la liste ne comble, sont indiquées « à couvrir hors de ce plat » : complément ou aliment enrichi, sans dose, avec un professionnel de santé.
         </p>
         <ul className="list-disc space-y-1 pl-5">
@@ -475,6 +484,13 @@ export default async function MethodologiePage() {
           <a href={complementsFile.dailyNeeds.source.url} className="underline" rel="noopener noreferrer">anses.fr</a>) ; ANSES, «{NBSP}Actualisation des repères du PNNS{NBSP}», 2016, p. 22 du PDF (fibres) (
           <a href="https://www.anses.fr/fr/system/files/NUT2012SA0103Ra-1.pdf" className="underline" rel="noopener noreferrer">PDF</a>) ; ANSES, dossier de presse INCA 3, 2017, p. 11 du PDF (
           <a href="https://www.anses.fr/fr/system/files/PRES2017DPA04.pdf" className="underline" rel="noopener noreferrer">PDF</a>).
+        </p>
+              <p>
+          <strong>Une portion plausible.</strong> Dans la version complétée, la protéine principale n’est augmentée que jusqu’à deux fois sa masse
+          de départ (choix éditorial de Veganizer : la portion de l’enquête INCA 3 n’est pas utilisée, sa licence n’étant pas précisée). Au-delà,
+          l’écart de protéines est comblé par un aliment protéique courant de la liste (tofu, lentilles ou pois chiches cuits, une portion au plus),
+          comme les autres manques ; s’il reste un écart, il apparaît dans « Ce qui reste à couvrir ». Quand l’aliment animal n’est pas d’abord une
+          source de protéines (fromage, lait, crème, beurre), la version complétée le dit : l’égaler en protéines n’est qu’un repère.
         </p>
       </Section>
 

@@ -100,3 +100,30 @@ describe("buildPairPage: completed version (decisions of Matt, 17 h 05 and 17 h 
     expect(buildPairPage(r).completed.maison!.additions).toEqual([]);
   });
 });
+
+describe("plausible serving and role of the food (suite V1, 5 ter)", () => {
+  // Cheese 100 g (30 g of protein) against a spread at 10 g of protein: doubling it is the cap.
+  function cheese(): RawPairData {
+    const r = raw();
+    r.animal = { ...r.animal, servings: 1 };
+    r.vegetal = [{ ...r.vegetal[0], servings: 1 }];
+    r.ingredients = [
+      { dish_id: "A", food_code: "meat", grams: 100, note: null },
+      { dish_id: "M", food_code: "beans", grams: 100, note: null },
+    ];
+    r.foods = r.foods.map((f) => (f.code === "meat" ? { ...f, name_fr: "Emmental", food_subgroup: "fromages" } : f));
+    r.nutrientValues = r.nutrientValues.map((x) => (x.food_code === "beans" && x.nutrient_id === "protein_g" ? { ...x, value_per_100g: 10 } : x));
+    return r;
+  }
+  it("raises the main protein to twice its mass at most, and says so", () => {
+    const c = buildPairPage(cheese()).completed.maison!;
+    expect(c.boost?.extraGrams).toBe(100);
+    expect(c.boost?.capped).toBe(true);
+  });
+  it("says that a cheese mostly brings calcium and fat: equal protein is only a reference", () => {
+    expect(buildPairPage(cheese()).completed.maison!.roleNote).toBe(
+      "Le fromage apporte surtout du calcium et des matières grasses ; l’égaler en protéines n’est qu’un repère.",
+    );
+    expect(buildPairPage(raw()).completed.maison!.roleNote).toBeNull();
+  });
+});

@@ -30,7 +30,9 @@ export function boostMainProtein(
   data: { foods: Record<string, { nutrients: Record<string, number | null | undefined> } | undefined> },
   targetProteinPerServing: number,
   sharedCodes: string[],
-): { dish: Dish; code: string; extraGrams: number } | null {
+  /** Plausible serving (5 ter): the main protein never exceeds maxFactor × its starting mass. */
+  maxFactor?: number,
+): { dish: Dish; code: string; extraGrams: number; capped: boolean } | null {
   const per100 = (code: string) => data.foods[code]?.nutrients.protein_g;
   const known = dish.ingredients.map((i) => ({ ...i, p: per100(i.foodCode) }));
   if (known.some((i) => i.p == null)) return null; // total not known: no invented boost
@@ -40,10 +42,14 @@ export function boostMainProtein(
   const candidates = known.filter((i) => !sharedCodes.includes(i.foodCode) && i.p! > 0);
   if (candidates.length === 0) return null;
   const main = candidates.reduce((a, b) => ((b.grams * b.p!) > (a.grams * a.p!) ? b : a));
-  const extraGrams = (missing * dish.servings * 100) / main.p!;
+  const needed = (missing * dish.servings * 100) / main.p!;
+  const cap = maxFactor != null ? (maxFactor - 1) * main.grams : Number.POSITIVE_INFINITY;
+  const extraGrams = Math.min(needed, cap);
+  if (!(extraGrams > 0)) return null;
   return {
     code: main.foodCode,
     extraGrams,
+    capped: needed > cap,
     dish: { servings: dish.servings, ingredients: dish.ingredients.map((i) => (i.foodCode === main.foodCode ? { foodCode: i.foodCode, grams: i.grams + extraGrams } : i)) },
   };
 }

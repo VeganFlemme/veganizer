@@ -1,141 +1,141 @@
-flow,ingredient_32,code,note
-"Alaska pollock, fillet, raw, at processing/FR U",Lieu ou colin d'Alaska,26006,
-"Almond, unshelled, at processing/FR U",Amande,15000,
-"Anglerfish, fillet, raw, at processing/FR U",Lotte ,26018,
-"Asparagus, peeled, at processing/FR U",Asperges,20282,asperge pelée (blanche ou violette)
-"Avocado, peeled and pitted, at processing/FR U",Avocat,13004,
-"Bay, consumption mix/FR U",Baie,11053,laurier
-"Broccoli, peeled, at processing/FR U",Brocoli,20057,
-"Broth, stock or bouillon, meat and vegetables, at plant/FR U",Bouillon,,plat composé avec viande (règle 9) : pas de code pur
-"Buckwheat flour, at industrial mill/FR U",Farine de sarrasin,9540,
-"Butter, unsalted, at dairy/FR U",Beurre,16400,
-"Camembert cheese, from cow's milk, at plant/FR U",Camembert,12001,
-"Carrot, peeled, at processing/FR U",Carotte,20009,
-"Cassava, peeled, at processing/FR U",Manioc,54031,
-"Cauliflower, peeled, at processing/FR U",Choufleur,20016,
-"Celeriac, peeled, at processing/FR U",Céleri-rave,20055,
-"Celery, peeled, at processing/FR U",Céleri,20023,
-"Cheddar cheese, from cow's milk, at plant/FR U",Fromage de Cheddar,12726,
-"Cheese sauce for risotto or pasta, prepacked, at plant/FR U",Sauce de fromage,,sauce composée (règle 9) : pas de code pur
-"Cheese, buche, from goat's milk, at plant/FR U",Fromage,12812,
-"Chick peas, consumption mix/FR U",Pois chiches,20516,légumineuse sèche (masse crue d'après le rapport Agribalyse § 3.3.2)
-"Chicken egg, raw, consumption mix/FR U",Œuf de poule,22000,
-"Chicken egg, raw, without shell, at plant/FR U",Œuf de poule,22000,
-"Chicory, peeled, at processing/FR U",Chicorée,20026,endive (chicorée witloof) : seul plat concerné = endives au jambon
-"Chive or spring onion, peeled, at processing/FR U",Ciboulette ou oignon de printemps,11003,
-"Coconut milk or coconut cream, at plant/FR U",Lait de coco ou crème de coco,18041,
-"Cod, fillet, raw, at processing/FR U",Morue,26043,cabillaud cru (morue = cabillaud)
-"Combined oil (mix of olive oil and seeds oil), at plant/FR U",Huile combinée (mélange d'huile d'olive et d'huile de graines),17701,
-"Common anchovy, marinated, at plant/FR U",Anchois commun,26000,
-"Comté cheese, from cow's milk, at plant/FR U",Comté,12110,
-"Conger, fillet, raw, at processing/FR U",Congre,26127,
-"Cooked ham, case ready, at plant/FR U",Jambon cuit,28910,jambon cuit choix
-"Coriander, consumption mix/FR U",Coriandre,11026,graine
-"Coriander, peeled, at processing/FR U",Coriandre,11094,fraîche
-"Crouton with garlic, herbs or onions, prepacked, at plant/FR U",,,aucun code Ciqual avec impact ; absent du détail 3.2
-"Cucumber, peeled, at processing/FR U",Concombre,20210,
-"Curry sauce, prepacked, at plant/FR U",Sauce au curry,,sauce composée (règle 9) : pas de code pur
-"Dry sausages, case ready, at plant/FR U",Saucisses sèches,30300,saucisson sec
-"Durum wheat, semolina, at plant/FR U",Blé dur,9610,
-"Egg white, raw, at plant/FR U",Blanc d'oeuf,22001,
-"Egg yolk, raw, at plant/FR U",Jaune d'œuf,22002,
-"Eggplant, peeled, at processing/FR U",Aubergine,20053,
-"Emmental cheese, from cow's milk, at plant/FR U",Emmental,12115,
-"Endive, peeled, at processing/FR U",Endive,20026,
-"Escaroles, peeled, at processing/FR U",Endive d'hiver,20090,scarole
-"Fennel, peeled, at processing/FR U",Fenouil,20028,
-"Fish, cooked (average), at plant/FR U",,,aliment moyen : pas de code pur ; absent du détail 3.2
-"Foie gras, duck's liver, whole, cooked, at plant/FR U",,8321,absent du détail 3.2 sous ce nom
-"French bean, peeled, at processing/FR U",Haricot vert,20061_1,
-"French fries, raw, at processing/FR U",Frites,,pas de code « frites crues »
-"Fresh cream cheese, at plant/FR U",Fromage frais crémeux,,aucun code Ciqual de fromage frais crémeux avec impact (petit-suisse écarté)
-"Garden cress, peeled, at processing/FR U",Cresson de jardin,20199,cresson alénois
-"Garden peas, consumption mix/FR U",Petits pois,20072,
-"Garlic, consumption mix/FR U",Ail,11000,
-"Gherkin, pickled in vinegar, at plant/FR U",,,aucun code Ciqual avec impact ; absent du détail 3.2
-"Ginger, consumption mix/FR U",Gingembre,11074,
-"Green cabbage, peeled, at processing/FR U",Chou vert,20069,
-"Green salad, peeled, at processing/FR U",Salade verte,20031,laitue
-"Ground beef, fresh, for processing/FR U",Bœuf haché,6254,hypothèse : 15 % de matières grasses
-"Gruyere cheese, from cow's milk, at plant/FR U",Gruyère,12114,
-"Hard cheese, emmental-type cheese, reduced fat, at plant/FR U",Fromage à pâte dure,12116,
-"Haricot bean, consumption mix/FR U",Haricot,20501,légumineuse sèche
-"Honey, at plant/FR U",Miel,31008,
-"John dory, fillet, raw, at processing/FR U",Poisson Saint-Pierre,26104,
-"Lean pork, raw, at plant/FR U",Porc,28204,hypothèse : filet mignon cru (porc maigre)
-"Leek, peeled, at processing/FR U",Poireau,20039,
-"Lemon juice, pure juice, at plant/FR U",Jus de citron,2028,
-"Lentils, consumption mix/FR U",Lentilles,20585,légumineuse sèche ; hypothèse lentille verte
-"Lettuce, peeled, at processing/FR U",Salade,20031,
-"Maize grain, consumption mix/FR U",Grain de maïs,,grain sec ou maïs doux : non déterminable
-"Maize starch, at farm gate/FR U",Amidon de maïs,9510,
-"Mayonnaise, reduced fat or light mayonnaise, at plant/FR U",Mayonnaise,,sauce composée avec œuf (règle 9) : pas de code pur
-"Meat with bone, chicken, for processing/FR U",Viande avec os,,masse avec os : pas de code équivalent
-"Meat without bone, beef, for processing/FR U",Viande de bœuf sans os,6231,hypothèse : bœuf à bourguignon cru
-"Meat without bone, chicken, for processing/FR U",Viande de poulet sans os,36003,
-"Meat without bone, lamb/FR U",Viande d'agneau sans os,21504,hypothèse : épaule crue
-"Meat without bone, mutton/FR U",Viande de moutton sans os,21001,
-"Meat without bone, veal/FR U",Viande de veau sans os,6550,hypothèse : rôti cru
-"Meat, pork, without bone/FR U",Porc,28001,hypothèse : épaule crue
-"Merguez sausage, beef and mutton, raw, at plant/FR U",Merguez,30156,
-"Mozzarella cheese, from cow's milk, at plant/FR U",Fromage mozzarella,19590,
-"Mung bean, consumption mix/FR U",Haricot mungo,20530,légumineuse sèche
-"Mushroom, peeled, at processing/FR U",Champignon,,champignon de Paris cru sans impact Agribalyse et sans variante (règle 11)
-"Mussel, unshelled, at processing/FR U",Moule,,masse avec coquille probable : pas de code équivalent
-"Mustard, at plant/FR U",Moutarde,11013,
-"Norway lobster, unshelled, at processing/FR U",Homard de Norvège,,masse avec carapace probable : pas de code équivalent
-"Offal, beef, for processing/FR U",Abats de bœuf,,abats sans précision : pas de code
-"Offal, chicken, for processing/FR U",Abats de poulet,,abats sans précision : pas de code
-"Offal, pork/FR U",Abats de porc,,abats sans précision : pas de code
-"Offal, veal/FR U",Abats de veau,,abats sans précision : pas de code
-"Olive oil, at plant/FR U",Huile d'olive,17270,
-"Olives, consumption mix/FR U",Olives,,aucun code olive avec impact Agribalyse
-"Omelette, with herbs, at plant/FR U",Omelette,,plat composé (règle 9) : pas de code pur
-"Onions, peeled, at processing/FR U",Oignons,20034,
-"Paddy rice, consumption mix/FR U",Riz non décortiqué,,masse de riz paddy : pas de code équivalent
-"Parmesan cheese, from cow's milk, at plant/FR U",Parmesan,12120,
-"Parsley, dried, consumption mix/FR U",Persil,11024,
-"Parsley, peeled, at processing/FR U",Persil,11014,
-"Pasta, dried, from durum wheat, at plant/FR U",Pâtes,9810,
-"Pepper, green, peeled, at processing/FR U",Poivre,20085,poivron vert (nommé « Poivre » dans le détail 3.2)
-"Potato starch, at farm gate/FR U",Amidon de pomme de terre,,pas de code fécule de pomme de terre avec impact
-"Potato, consumption mix/FR U",Pommes de terre,4008,
-"Processed cheese, in slices, at plant/FR U",Fromage fondu,12300,
-"Pumpkin, peeled, at processing/FR U",Potiron,20044,
-"Rapeseed oil, at plant/FR U",Huile de colza,17130,
-"Reblochon cheese, from cow's milk, at plant/FR U",Reblochon,12045,
-"Red endive, peeled, at processing/FR U",Chicorée rouge,20162,
-"Red gurnard, fillet, raw, at processing/FR U",Grondin rouge,26106,
-"Red kidney bean, consumption mix/FR U",Haricot rouge,20525,légumineuse sèche
-"Red wine, consumption mix/FR U",Vin rouge,5214,
-"Rice flour, at industrial mill/FR U",Farine de riz,9520,
-"Rolls for hamburger/hotdog (buns), prepacked, at plant/FR U",Pain pour hamburger/hot-dog,,aucun code avec impact
-"Roquefort cheese, from ewe's milk, at plant/FR U",Roquefort,12500,
-"Saffron, consumption mix/FR U",Safran,11039,
-"Salmon, fillet, raw, at processing/FR U",Saumon,26036,saumon sans origine = élevage
-"Salt/FR U",Sel,11017,non iodé
-"Sauerkraut, without garnish, at plant/FR U",Choucroute,,pas de code choucroute sans garniture avec impact
-"Scallop, consumption mix/FR U",Coquille Saint-Jacques,10045,noix crue
-"Seafood, unshelled, at processing/FR U",Fruit de mer,,mélange sans précision : pas de code
-"Semi-skimmed milk, at plant/FR U",Lait demi-écremé,19041,
-"Sesame seed, consumption mix/FR U",Graine de sésame,15010,
-"Shallot, peeled, at processing/FR U",Échalote,20097,
-"Shrimp, fillet, raw, frozen at processing/FR U",Crevette,10038,
-"Soy sauce, prepacked, at plant/FR U",Sauce soja,11104,
-"Spinach, peeled, at processing/FR U",Epinard,20059,
-"Spiny scorpionfish, fillet, raw, at processing/FR U",Rascasse,26063,
-"Squid, fillet, raw, at processing/FR U",Calamar,10001,
-"Sunflower oil, at plant/FR U",Huile de tournesol,17440,
-"Thyme, dried, consumption mix/FR U",Thym,11038,
-"Tomato paste 30° Brix, production, at plant/FR U",Concentré de tomates,20268,
-"Tomato, for processing, peeled, at plant/FR U",Tomate,20169,tomate pelée = tomate chair appertisée
-"Tomme cheese, from cow's milk, at plant/FR U",Tomme,12758,
-"Tuna, fillet, raw, at processing/FR U",Thon,26053,
-"Turnip, peeled, at processing/FR U",Navet,20064,
-"Vegetable fat (margarine type), 70% fat, unsalted, at plant/FR U",Graisse végétale (type margarine),16080,
-"Water, municipal/FR U",,18066,eau ajoutée (hors détail 3.2)
-"Wheat flour, at industrial mill/FR U",Farine de blé,9435,
-"White cabbage, peeled, at processing/FR U",Chou blanc,20116,
-"White sugar, production, at plant/FR U",Sucre blanc,31016,
-"White wine, consumption mix/FR U",Vin blanc,5215,
-"Zucchini, peeled, at processing/FR U",Courgette,20020,
+flow,ingredient_32,code,note,unmapped_is_animal
+"Alaska pollock, fillet, raw, at processing/FR U",Lieu ou colin d'Alaska,26006,,
+"Almond, unshelled, at processing/FR U",Amande,15000,,
+"Anglerfish, fillet, raw, at processing/FR U",Lotte ,26018,,
+"Asparagus, peeled, at processing/FR U",Asperges,20282,asperge pelée (blanche ou violette),
+"Avocado, peeled and pitted, at processing/FR U",Avocat,13004,,
+"Bay, consumption mix/FR U",Baie,11053,laurier,
+"Broccoli, peeled, at processing/FR U",Brocoli,20057,,
+"Broth, stock or bouillon, meat and vegetables, at plant/FR U",Bouillon,,plat composé avec viande (règle 9) : pas de code pur,true
+"Buckwheat flour, at industrial mill/FR U",Farine de sarrasin,9540,,
+"Butter, unsalted, at dairy/FR U",Beurre,16400,,
+"Camembert cheese, from cow's milk, at plant/FR U",Camembert,12001,,
+"Carrot, peeled, at processing/FR U",Carotte,20009,,
+"Cassava, peeled, at processing/FR U",Manioc,54031,,
+"Cauliflower, peeled, at processing/FR U",Choufleur,20016,,
+"Celeriac, peeled, at processing/FR U",Céleri-rave,20055,,
+"Celery, peeled, at processing/FR U",Céleri,20023,,
+"Cheddar cheese, from cow's milk, at plant/FR U",Fromage de Cheddar,12726,,
+"Cheese sauce for risotto or pasta, prepacked, at plant/FR U",Sauce de fromage,,sauce composée (règle 9) : pas de code pur,true
+"Cheese, buche, from goat's milk, at plant/FR U",Fromage,12812,,
+"Chick peas, consumption mix/FR U",Pois chiches,20516,légumineuse sèche (masse crue d'après le rapport Agribalyse § 3.3.2),
+"Chicken egg, raw, consumption mix/FR U",Œuf de poule,22000,,
+"Chicken egg, raw, without shell, at plant/FR U",Œuf de poule,22000,,
+"Chicory, peeled, at processing/FR U",Chicorée,20026,endive (chicorée witloof) : seul plat concerné = endives au jambon,
+"Chive or spring onion, peeled, at processing/FR U",Ciboulette ou oignon de printemps,11003,,
+"Coconut milk or coconut cream, at plant/FR U",Lait de coco ou crème de coco,18041,,
+"Cod, fillet, raw, at processing/FR U",Morue,26043,cabillaud cru (morue = cabillaud),
+"Combined oil (mix of olive oil and seeds oil), at plant/FR U",Huile combinée (mélange d'huile d'olive et d'huile de graines),17701,,
+"Common anchovy, marinated, at plant/FR U",Anchois commun,26000,,
+"Comté cheese, from cow's milk, at plant/FR U",Comté,12110,,
+"Conger, fillet, raw, at processing/FR U",Congre,26127,,
+"Cooked ham, case ready, at plant/FR U",Jambon cuit,28910,jambon cuit choix,
+"Coriander, consumption mix/FR U",Coriandre,11026,graine,
+"Coriander, peeled, at processing/FR U",Coriandre,11094,fraîche,
+"Crouton with garlic, herbs or onions, prepacked, at plant/FR U",,,aucun code Ciqual avec impact ; absent du détail 3.2 ; peut contenir du beurre (prudence),true
+"Cucumber, peeled, at processing/FR U",Concombre,20210,,
+"Curry sauce, prepacked, at plant/FR U",Sauce au curry,,sauce composée (règle 9) : pas de code pur ; peut contenir de la crème (prudence),true
+"Dry sausages, case ready, at plant/FR U",Saucisses sèches,30300,saucisson sec,
+"Durum wheat, semolina, at plant/FR U",Blé dur,9610,,
+"Egg white, raw, at plant/FR U",Blanc d'oeuf,22001,,
+"Egg yolk, raw, at plant/FR U",Jaune d'œuf,22002,,
+"Eggplant, peeled, at processing/FR U",Aubergine,20053,,
+"Emmental cheese, from cow's milk, at plant/FR U",Emmental,12115,,
+"Endive, peeled, at processing/FR U",Endive,20026,,
+"Escaroles, peeled, at processing/FR U",Endive d'hiver,20090,scarole,
+"Fennel, peeled, at processing/FR U",Fenouil,20028,,
+"Fish, cooked (average), at plant/FR U",,,aliment moyen : pas de code pur ; absent du détail 3.2,true
+"Foie gras, duck's liver, whole, cooked, at plant/FR U",,8321,absent du détail 3.2 sous ce nom,
+"French bean, peeled, at processing/FR U",Haricot vert,20061_1,,
+"French fries, raw, at processing/FR U",Frites,,pas de code « frites crues »,false
+"Fresh cream cheese, at plant/FR U",Fromage frais crémeux,,aucun code Ciqual de fromage frais crémeux avec impact (petit-suisse écarté),true
+"Garden cress, peeled, at processing/FR U",Cresson de jardin,20199,cresson alénois,
+"Garden peas, consumption mix/FR U",Petits pois,20072,,
+"Garlic, consumption mix/FR U",Ail,11000,,
+"Gherkin, pickled in vinegar, at plant/FR U",,,aucun code Ciqual avec impact ; absent du détail 3.2,false
+"Ginger, consumption mix/FR U",Gingembre,11074,,
+"Green cabbage, peeled, at processing/FR U",Chou vert,20069,,
+"Green salad, peeled, at processing/FR U",Salade verte,20031,laitue,
+"Ground beef, fresh, for processing/FR U",Bœuf haché,6254,hypothèse : 15 % de matières grasses,
+"Gruyere cheese, from cow's milk, at plant/FR U",Gruyère,12114,,
+"Hard cheese, emmental-type cheese, reduced fat, at plant/FR U",Fromage à pâte dure,12116,,
+"Haricot bean, consumption mix/FR U",Haricot,20501,légumineuse sèche,
+"Honey, at plant/FR U",Miel,31008,,
+"John dory, fillet, raw, at processing/FR U",Poisson Saint-Pierre,26104,,
+"Lean pork, raw, at plant/FR U",Porc,28204,hypothèse : filet mignon cru (porc maigre),
+"Leek, peeled, at processing/FR U",Poireau,20039,,
+"Lemon juice, pure juice, at plant/FR U",Jus de citron,2028,,
+"Lentils, consumption mix/FR U",Lentilles,20585,légumineuse sèche ; hypothèse lentille verte,
+"Lettuce, peeled, at processing/FR U",Salade,20031,,
+"Maize grain, consumption mix/FR U",Grain de maïs,,grain sec ou maïs doux : non déterminable,false
+"Maize starch, at farm gate/FR U",Amidon de maïs,9510,,
+"Mayonnaise, reduced fat or light mayonnaise, at plant/FR U",Mayonnaise,,sauce composée avec œuf (règle 9) : pas de code pur,true
+"Meat with bone, chicken, for processing/FR U",Viande avec os,,masse avec os : pas de code équivalent,true
+"Meat without bone, beef, for processing/FR U",Viande de bœuf sans os,6231,hypothèse : bœuf à bourguignon cru,
+"Meat without bone, chicken, for processing/FR U",Viande de poulet sans os,36003,,
+"Meat without bone, lamb/FR U",Viande d'agneau sans os,21504,hypothèse : épaule crue,
+"Meat without bone, mutton/FR U",Viande de moutton sans os,21001,,
+"Meat without bone, veal/FR U",Viande de veau sans os,6550,hypothèse : rôti cru,
+"Meat, pork, without bone/FR U",Porc,28001,hypothèse : épaule crue,
+"Merguez sausage, beef and mutton, raw, at plant/FR U",Merguez,30156,,
+"Mozzarella cheese, from cow's milk, at plant/FR U",Fromage mozzarella,19590,,
+"Mung bean, consumption mix/FR U",Haricot mungo,20530,légumineuse sèche,
+"Mushroom, peeled, at processing/FR U",Champignon,,champignon de Paris cru sans impact Agribalyse et sans variante (règle 11),false
+"Mussel, unshelled, at processing/FR U",Moule,,masse avec coquille probable : pas de code équivalent,true
+"Mustard, at plant/FR U",Moutarde,11013,,
+"Norway lobster, unshelled, at processing/FR U",Homard de Norvège,,masse avec carapace probable : pas de code équivalent,true
+"Offal, beef, for processing/FR U",Abats de bœuf,,abats sans précision : pas de code,true
+"Offal, chicken, for processing/FR U",Abats de poulet,,abats sans précision : pas de code,true
+"Offal, pork/FR U",Abats de porc,,abats sans précision : pas de code,true
+"Offal, veal/FR U",Abats de veau,,abats sans précision : pas de code,true
+"Olive oil, at plant/FR U",Huile d'olive,17270,,
+"Olives, consumption mix/FR U",Olives,,aucun code olive avec impact Agribalyse,false
+"Omelette, with herbs, at plant/FR U",Omelette,,plat composé (règle 9) : pas de code pur,true
+"Onions, peeled, at processing/FR U",Oignons,20034,,
+"Paddy rice, consumption mix/FR U",Riz non décortiqué,,masse de riz paddy : pas de code équivalent,false
+"Parmesan cheese, from cow's milk, at plant/FR U",Parmesan,12120,,
+"Parsley, dried, consumption mix/FR U",Persil,11024,,
+"Parsley, peeled, at processing/FR U",Persil,11014,,
+"Pasta, dried, from durum wheat, at plant/FR U",Pâtes,9810,,
+"Pepper, green, peeled, at processing/FR U",Poivre,20085,poivron vert (nommé « Poivre » dans le détail 3.2),
+"Potato starch, at farm gate/FR U",Amidon de pomme de terre,,pas de code fécule de pomme de terre avec impact,false
+"Potato, consumption mix/FR U",Pommes de terre,4008,,
+"Processed cheese, in slices, at plant/FR U",Fromage fondu,12300,,
+"Pumpkin, peeled, at processing/FR U",Potiron,20044,,
+"Rapeseed oil, at plant/FR U",Huile de colza,17130,,
+"Reblochon cheese, from cow's milk, at plant/FR U",Reblochon,12045,,
+"Red endive, peeled, at processing/FR U",Chicorée rouge,20162,,
+"Red gurnard, fillet, raw, at processing/FR U",Grondin rouge,26106,,
+"Red kidney bean, consumption mix/FR U",Haricot rouge,20525,légumineuse sèche,
+"Red wine, consumption mix/FR U",Vin rouge,5214,,
+"Rice flour, at industrial mill/FR U",Farine de riz,9520,,
+"Rolls for hamburger/hotdog (buns), prepacked, at plant/FR U",Pain pour hamburger/hot-dog,,aucun code avec impact ; peut contenir du lait (prudence),true
+"Roquefort cheese, from ewe's milk, at plant/FR U",Roquefort,12500,,
+"Saffron, consumption mix/FR U",Safran,11039,,
+"Salmon, fillet, raw, at processing/FR U",Saumon,26036,saumon sans origine = élevage,
+Salt/FR U,Sel,11017,non iodé,
+"Sauerkraut, without garnish, at plant/FR U",Choucroute,,pas de code choucroute sans garniture avec impact,false
+"Scallop, consumption mix/FR U",Coquille Saint-Jacques,10045,noix crue,
+"Seafood, unshelled, at processing/FR U",Fruit de mer,,mélange sans précision : pas de code,true
+"Semi-skimmed milk, at plant/FR U",Lait demi-écremé,19041,,
+"Sesame seed, consumption mix/FR U",Graine de sésame,15010,,
+"Shallot, peeled, at processing/FR U",Échalote,20097,,
+"Shrimp, fillet, raw, frozen at processing/FR U",Crevette,10038,,
+"Soy sauce, prepacked, at plant/FR U",Sauce soja,11104,,
+"Spinach, peeled, at processing/FR U",Epinard,20059,,
+"Spiny scorpionfish, fillet, raw, at processing/FR U",Rascasse,26063,,
+"Squid, fillet, raw, at processing/FR U",Calamar,10001,,
+"Sunflower oil, at plant/FR U",Huile de tournesol,17440,,
+"Thyme, dried, consumption mix/FR U",Thym,11038,,
+"Tomato paste 30° Brix, production, at plant/FR U",Concentré de tomates,20268,,
+"Tomato, for processing, peeled, at plant/FR U",Tomate,20169,tomate pelée = tomate chair appertisée,
+"Tomme cheese, from cow's milk, at plant/FR U",Tomme,12758,,
+"Tuna, fillet, raw, at processing/FR U",Thon,26053,,
+"Turnip, peeled, at processing/FR U",Navet,20064,,
+"Vegetable fat (margarine type), 70% fat, unsalted, at plant/FR U",Graisse végétale (type margarine),16080,,
+"Water, municipal/FR U",,18066,eau ajoutée (hors détail 3.2),
+"Wheat flour, at industrial mill/FR U",Farine de blé,9435,,
+"White cabbage, peeled, at processing/FR U",Chou blanc,20116,,
+"White sugar, production, at plant/FR U",Sucre blanc,31016,,
+"White wine, consumption mix/FR U",Vin blanc,5215,,
+"Zucchini, peeled, at processing/FR U",Courgette,20020,,

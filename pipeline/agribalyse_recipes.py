@@ -16,7 +16,9 @@ Checks (nothing is imported unless every check passes for a dish):
   3. not approached by another recipe: dishes listed in annex 10 of the AGRIBALYSE 3.2
      methodology ("CIQUAL products approached by other CIQUAL recipes / products") are excluded,
      their recipe is another dish's (carbonara modelled with the bolognese recipe…);
-  4. impact recalculated as the site does (sum of kg x 3.2 impact per kg of each ingredient) vs the
+  4. every animal input can be replaced in the plant version: an input without a Ciqual code that
+     is (or may be) animal (column unmapped_is_animal: meat broth, offal, mayonnaise…) excludes the dish;
+  5. impact recalculated as the site does (sum of kg x 3.2 impact per kg of each ingredient) vs the
      published 3.2 impact of the dish, per indicator: written to the report, never used to adjust.
 
 Outputs:
@@ -173,6 +175,10 @@ def main() -> None:
             if only30:
                 diff.append("intrant 3.0 sans équivalent 3.2 : " + ", ".join(f.split("/")[0] for f in only30))
             report.append({**row, "status": "exclu", "reason": "liste d'ingrédients différente de la 3.2 (" + " ; ".join(diff) + ")"})
+            continue
+        animal_unmapped = [f.split("/")[0] for f in rec.flow if not by_flow[f].code and by_flow[f].unmapped_is_animal == "true"]
+        if animal_unmapped:
+            report.append({**row, "status": "exclu", "reason": "ingrédient animal sans code, impossible à remplacer : " + " ; ".join(animal_unmapped)})
             continue
         total = rec.kg.sum()
         coded = rec[[bool(by_flow[f].code) for f in rec.flow]]
