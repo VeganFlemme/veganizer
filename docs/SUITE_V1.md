@@ -1,6 +1,6 @@
 # Suite V1 — à exécuter d'une traite (décisions de Matt, 2026-11-01)
 
-Lis d'abord CLAUDE.md, docs/ROADMAP.md, docs/DESIGN.md, docs/DECISIONS.md et docs/A_VERIFIER.md. Exécute les étapes 0 à 5 (V1), puis 6 à 9 avec 8 bis et 8 ter (V2, décisions de Matt, 19 h 43 et 20 h 54) et 10 (recette finale), sans attendre Matt entre les étapes, dans cet ordre (ordre mis à jour le 1er novembre à 16 h 50) : 0, 1, 2, 3, **3 quater (affichage sur ordinateur, prioritaire)**, 3 bis, 3 ter, **3 quinquies (une seule version végétale ajustable, décision de Matt, 19 h 31)**, 4, 5, puis la V2 : 6, 7, 8, 8 bis, 8 ter, 9, puis 10 (recette finale de tout le site). La décision de Matt de 17 h 25 (section suivante) s'applique à toutes les étapes restantes.
+Lis d'abord CLAUDE.md, docs/ROADMAP.md, docs/DESIGN.md, docs/DECISIONS.md et docs/A_VERIFIER.md. Exécute les étapes 0 à 5 (V1), puis 6 à 9 avec 8 bis et 8 ter (V2, décisions de Matt, 19 h 43 et 20 h 54) et 10 (recette finale), sans attendre Matt entre les étapes, dans cet ordre (ordre mis à jour le 1er novembre à 16 h 50) : 0, 1, 2, 3, **3 quater (affichage sur ordinateur, prioritaire)**, 3 bis, 3 ter, **3 quinquies (une seule version végétale ajustable, décision de Matt, 19 h 31)**, 4, 5, puis la V2 : 6, 7, 8, 8 bis, 8 ter, 9, 9 bis, puis 10 (recette finale de tout le site). La décision de Matt de 17 h 25 (section suivante) s'applique à toutes les étapes restantes.
 
 ## Autorisations données par Matt pour toute cette suite
 
@@ -390,6 +390,26 @@ Sur l'accueil, une rangée « Comparaisons du quotidien » : lait et boisson d'a
 3. Un sous-agent diététicienne relit 10 scénarios d'ajustement : quantités plausibles, ajouts sensés, aucune dose, mentions de prudence.
 4. Audit : recalcule indépendamment 10 scénarios et compare.
 5. Notes dans `docs/RETOURS.md`, puis bilan V2 dans `docs/JOURNAL.md`.
+
+## Étape 9 bis — Finitions du parcours visiteur (décision de Matt, 21 h 40)
+
+À faire après l'étape 9 et avant l'étape 10, une PR, tests d'abord. Objectif : que le message principal ne se perde pas dans les détails.
+
+1. **« En bref » tout en haut de chaque comparaison** (plats, aliments, repas, journée, `/recette`), avant le verdict : 3 ou 4 phrases en mots simples, calculées à partir des données de la page. Exemple : « Remplacer ce bourguignon par sa version au soja texturé : −90 % de CO₂e, soit l'équivalent de X km en voiture ; moins d'animaux tués ; 1,20 € de moins par portion. Nutrition : plus de fibres, moins de graisses saturées ; reste à couvrir sur la journée : B12. »
+   - **Équivalences** : facteurs de l'ADEME (outil Impact CO2 ou Base Empreinte). Vérifie la licence et cite la source sur `/sources`. Récupère les facteurs par un script du pipeline et stocke-les dans la base comme les autres sources, jamais en dur dans le code. Si la licence ou l'accès bloque, n'affiche pas d'équivalence et note-le dans `TODO_SOURCES.md`.
+   - Phrases neutres, sans jugement de valeur. Elles suivent les réglages du visiteur (protéine choisie, recette ajustée).
+2. **Accueil simplifié** :
+   - une seule question en haut, « Quel plat ou aliment voulez-vous comparer ? », avec la recherche ;
+   - 6 exemples populaires, choisis par une règle écrite (les plus consultés n'existent pas encore : prends une liste éditoriale annoncée comme telle) ;
+   - puis la rangée « Comparaisons du quotidien », et plus bas les outils (composer un repas, ma journée, analyser ma recette) ;
+   - un seul catalogue, sans séparer « recettes types » et « plats Agribalyse » : l'origine de la recette s'affiche sur la page du plat.
+3. **Jargon remplacé par des phrases** : partout où un score s'affiche en « 5 – 3 », écris « La version végétale fait mieux sur 5 points, le plat animal sur 3 » (forme courte sur téléphone si la place manque, avec cette phrase en libellé accessible). Les sigles (DQR, Pt, CO₂e, EPA, DHA…) ont une explication au toucher ou au survol, et un glossaire sur `/methodologie`.
+4. **Suite du parcours, en bas de chaque comparaison** :
+   - « Ajouter à ma journée » (ouvre `/journee` avec l'élément) ;
+   - « Comparer un plat proche » (3 plats ou aliments du même groupe Ciqual) ;
+   - « Partager », avec une **image de partage générée pour chaque comparaison** : le plat, sa version végétale, l'écart de CO₂e et le verdict. Génère-la au rendu sur le runtime Node (`next/og` sans runtime edge, voir les règles de portabilité), sans service propre à Vercel. Les métadonnées Open Graph et Twitter de chaque page pointent vers cette image, qui garde les chiffres de la recette de base.
+5. **« Comment lire cette page »** : un petit encadré replié de 3 lignes près du verdict (d'où viennent les chiffres, ce que signifient le ✓ et les couleurs, on peut ajuster la version végétale), avec un lien vers `/methodologie`.
+6. Vérification : e2e pour l'« En bref » (chiffres identiques à ceux de la page), l'accueil, les liens « Ajouter à ma journée » et « Comparer un plat proche », et l'image de partage (taille 1 200 × 630, réponse 200). Repose aux visiteurs simulés la question « Qu'as-tu compris en 5 secondes ? » : objectif 5 sur 5.
 
 ## Étape 10 — Recette finale de tout le site (demande de Matt, 19 h 57)
 

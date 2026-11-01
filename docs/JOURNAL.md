@@ -91,6 +91,7 @@ Suivi étape par étape : heure, ce qui est fait, lien de la PR, état (en cours
 - Point 4 ter : 63 tests de combinaisons (7 pages × 3 protéines × 3 largeurs, base et ajustée, chaque onglet), axe-core WCAG AA, Q5 refaite (2/5 → 4/5).
 - 20:44 — constat : les points 4 et 4 bis de l'étape 3 quinquies (décision de Matt 19 h 50 : le score suit l'ajustement, carte d'équivalence) étaient entrés dans #24 sans être faits ; faits sur cette branche, tests d'abord.
 - 21:01 — points 5 et 6. Statuts de toutes les remarques dans `docs/RETOURS.md` (corrigée, refusée ou reportée ; reportées reprises dans `docs/A_VERIFIER.md`). Point 6 : mention « relu par des vérifications automatisées et des agents IA indépendants ; pas encore relu par un professionnel de santé » sur `/methodologie` et `/a-propos` ; aucune mention « bêta » sur le site (rien à retirer).
+- 2026-11-01 21:42 — fin de l'étape 4 : PR https://github.com/VeganFlemme/veganizer/pull/25. CI verte après 3 corrections propres au rendu Linux (en-tête à 768 px, notation scientifique à 375 px, attente de la version ajustée dans les tests). Conditions remplies : 334 Vitest, 91 tests pipeline, lint, typecheck, `test:db`, `test:db:scoring`, 207 e2e sur le build de production, réponse 200 sur `/`, `/compare` et `/recette`, migration `20261103110000` appliquée. Fusionnée (squash). Message de Matt reçu pendant l'étape (V2 complétée : étape 6 point 0, étapes 8 bis et 8 ter) : à faire après l'étape 5, dans l'ordre du fichier.
 
 ## Bloqué par les permissions
 
