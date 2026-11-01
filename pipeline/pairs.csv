@@ -1,0 +1,222 @@
+pair,dish_slug,kind,variant,food_code,grams,note
+boeuf-bourguignon,boeuf-bourguignon,animal,,6230,500,bœuf cuit (environ 750 g cru)
+boeuf-bourguignon,boeuf-bourguignon,animal,,28725,80,lardons fumés cuits
+boeuf-bourguignon,boeuf-bourguignon,animal,,5214,250,vin rouge de cuisson
+boeuf-bourguignon,boeuf-bourguignon,animal,,20009,250,carottes (code cru : pas de code cuit avec nutriments et impacts)
+boeuf-bourguignon,boeuf-bourguignon,animal,,20035,150,oignons cuits
+boeuf-bourguignon,boeuf-bourguignon,animal,,9435,20,farine pour lier la sauce
+boeuf-bourguignon,boeuf-bourguignon,animal,,17440,20,huile de tournesol pour saisir
+boeuf-bourguignon,boeuf-bourguignon,animal,,4003,350,pommes de terre à l'eau en accompagnement
+boeuf-bourguignon,bourguignon-vegetal-maison,vegetal,maison,20917,550,tempeh en cubes
+boeuf-bourguignon,bourguignon-vegetal-maison,vegetal,maison,20587,400,lentilles vertes cuites
+boeuf-bourguignon,bourguignon-vegetal-maison,vegetal,maison,5214,250,vin rouge de cuisson
+boeuf-bourguignon,bourguignon-vegetal-maison,vegetal,maison,20009,250,carottes (code cru : pas de code cuit avec nutriments et impacts)
+boeuf-bourguignon,bourguignon-vegetal-maison,vegetal,maison,20035,150,oignons cuits
+boeuf-bourguignon,bourguignon-vegetal-maison,vegetal,maison,9435,20,farine pour lier la sauce
+boeuf-bourguignon,bourguignon-vegetal-maison,vegetal,maison,17130,20,huile de colza pour saisir
+boeuf-bourguignon,bourguignon-vegetal-maison,vegetal,maison,4003,350,pommes de terre à l'eau en accompagnement
+boeuf-bourguignon,bourguignon-seitan-commerce,vegetal,commerce,25598,650,seitan préemballé en morceaux
+boeuf-bourguignon,bourguignon-seitan-commerce,vegetal,commerce,5214,250,vin rouge de cuisson
+boeuf-bourguignon,bourguignon-seitan-commerce,vegetal,commerce,20009,250,carottes (code cru : pas de code cuit avec nutriments et impacts)
+boeuf-bourguignon,bourguignon-seitan-commerce,vegetal,commerce,20035,150,oignons cuits
+boeuf-bourguignon,bourguignon-seitan-commerce,vegetal,commerce,9435,20,farine pour lier la sauce
+boeuf-bourguignon,bourguignon-seitan-commerce,vegetal,commerce,17130,20,huile de colza pour saisir
+boeuf-bourguignon,bourguignon-seitan-commerce,vegetal,commerce,4003,350,pommes de terre à l'eau en accompagnement
+blanquette-de-veau,blanquette-de-veau,animal,,6563,450,épaule de veau cuite (environ 650 g crue)
+blanquette-de-veau,blanquette-de-veau,animal,,20009,250,carottes (code cru : pas de code cuit avec nutriments et impacts)
+blanquette-de-veau,blanquette-de-veau,animal,,20035,100,oignons cuits
+blanquette-de-veau,blanquette-de-veau,animal,,19410,150,crème fraîche 30 %
+blanquette-de-veau,blanquette-de-veau,animal,,16400,30,beurre du roux
+blanquette-de-veau,blanquette-de-veau,animal,,9435,30,farine du roux
+blanquette-de-veau,blanquette-de-veau,animal,,22009,40,2 jaunes d'œufs pour lier
+blanquette-de-veau,blanquette-de-veau,animal,,18066,250,eau de cuisson restant dans la sauce
+blanquette-de-veau,blanquette-de-veau,animal,,9104,400,riz blanc cuit en accompagnement
+blanquette-de-veau,blanquette-vegetale-maison,vegetal,maison,20904,500,tofu ferme en cubes
+blanquette-de-veau,blanquette-vegetale-maison,vegetal,maison,20917,150,tempeh en cubes
+blanquette-de-veau,blanquette-vegetale-maison,vegetal,maison,20507,200,pois chiches cuits
+blanquette-de-veau,blanquette-vegetale-maison,vegetal,maison,20009,250,carottes (code cru : pas de code cuit avec nutriments et impacts)
+blanquette-de-veau,blanquette-vegetale-maison,vegetal,maison,20035,100,oignons cuits
+blanquette-de-veau,blanquette-vegetale-maison,vegetal,maison,18901,300,boisson au soja enrichie en calcium (remplace crème et eau)
+blanquette-de-veau,blanquette-vegetale-maison,vegetal,maison,17130,30,huile de colza du roux
+blanquette-de-veau,blanquette-vegetale-maison,vegetal,maison,9435,30,farine du roux
+blanquette-de-veau,blanquette-vegetale-maison,vegetal,maison,9104,400,riz blanc cuit en accompagnement
+blanquette-de-veau,blanquette-seitan-commerce,vegetal,commerce,25598,550,seitan préemballé en morceaux
+blanquette-de-veau,blanquette-seitan-commerce,vegetal,commerce,20009,250,carottes (code cru : pas de code cuit avec nutriments et impacts)
+blanquette-de-veau,blanquette-seitan-commerce,vegetal,commerce,20035,100,oignons cuits
+blanquette-de-veau,blanquette-seitan-commerce,vegetal,commerce,18901,300,boisson au soja enrichie en calcium (remplace crème et eau)
+blanquette-de-veau,blanquette-seitan-commerce,vegetal,commerce,17130,30,huile de colza du roux
+blanquette-de-veau,blanquette-seitan-commerce,vegetal,commerce,9435,30,farine du roux
+blanquette-de-veau,blanquette-seitan-commerce,vegetal,commerce,9104,400,riz blanc cuit en accompagnement
+poulet-roti-haricots-verts,poulet-roti-haricots-verts,animal,,36005,600,"poulet rôti, viande et peau (sans os)"
+poulet-roti-haricots-verts,poulet-roti-haricots-verts,animal,,20030,800,haricots verts cuits
+poulet-roti-haricots-verts,poulet-roti-haricots-verts,animal,,16400,20,beurre sur les haricots
+poulet-roti-haricots-verts,tofu-tempeh-rotis-haricots-verts-maison,vegetal,maison,20917,400,tempeh rôti au four
+poulet-roti-haricots-verts,tofu-tempeh-rotis-haricots-verts-maison,vegetal,maison,20904,400,tofu ferme rôti au four
+poulet-roti-haricots-verts,tofu-tempeh-rotis-haricots-verts-maison,vegetal,maison,11104,30,sauce soja de la marinade
+poulet-roti-haricots-verts,tofu-tempeh-rotis-haricots-verts-maison,vegetal,maison,20030,800,haricots verts cuits
+poulet-roti-haricots-verts,tofu-tempeh-rotis-haricots-verts-maison,vegetal,maison,17270,30,huile d'olive
+poulet-roti-haricots-verts,seitan-roti-haricots-verts-commerce,vegetal,commerce,25598,600,seitan préemballé rôti
+poulet-roti-haricots-verts,seitan-roti-haricots-verts-commerce,vegetal,commerce,20030,800,haricots verts cuits
+poulet-roti-haricots-verts,seitan-roti-haricots-verts-commerce,vegetal,commerce,17270,30,huile d'olive
+lasagnes-bolognaise,lasagnes-bolognaise,animal,,9811,350,feuilles de lasagne cuites (pâtes sans œuf)
+lasagnes-bolognaise,lasagnes-bolognaise,animal,,6255,400,bœuf haché 15 % cuit
+lasagnes-bolognaise,lasagnes-bolognaise,animal,,20260,350,coulis de tomate
+lasagnes-bolognaise,lasagnes-bolognaise,animal,,20035,80,oignons cuits
+lasagnes-bolognaise,lasagnes-bolognaise,animal,,20009,80,carottes (code cru : pas de code cuit avec nutriments et impacts)
+lasagnes-bolognaise,lasagnes-bolognaise,animal,,17270,15,huile d'olive
+lasagnes-bolognaise,lasagnes-bolognaise,animal,,19041,300,lait demi-écrémé de la béchamel
+lasagnes-bolognaise,lasagnes-bolognaise,animal,,16400,30,beurre de la béchamel
+lasagnes-bolognaise,lasagnes-bolognaise,animal,,9435,30,farine de la béchamel
+lasagnes-bolognaise,lasagnes-bolognaise,animal,,12118,80,emmental râpé
+lasagnes-bolognaise,lasagnes-vegetales-maison,vegetal,maison,9811,350,feuilles de lasagne cuites (pâtes sans œuf)
+lasagnes-bolognaise,lasagnes-vegetales-maison,vegetal,maison,20587,400,lentilles vertes cuites
+lasagnes-bolognaise,lasagnes-vegetales-maison,vegetal,maison,20904,250,tofu ferme émietté
+lasagnes-bolognaise,lasagnes-vegetales-maison,vegetal,maison,20260,350,coulis de tomate
+lasagnes-bolognaise,lasagnes-vegetales-maison,vegetal,maison,20035,80,oignons cuits
+lasagnes-bolognaise,lasagnes-vegetales-maison,vegetal,maison,20009,80,carottes (code cru : pas de code cuit avec nutriments et impacts)
+lasagnes-bolognaise,lasagnes-vegetales-maison,vegetal,maison,17270,15,huile d'olive
+lasagnes-bolognaise,lasagnes-vegetales-maison,vegetal,maison,18901,300,boisson au soja enrichie en calcium de la béchamel
+lasagnes-bolognaise,lasagnes-vegetales-maison,vegetal,maison,17130,25,huile de colza de la béchamel
+lasagnes-bolognaise,lasagnes-vegetales-maison,vegetal,maison,9435,30,farine de la béchamel
+lasagnes-bolognaise,lasagnes-hache-vegetal-commerce,vegetal,commerce,9811,350,feuilles de lasagne cuites (pâtes sans œuf)
+lasagnes-bolognaise,lasagnes-hache-vegetal-commerce,vegetal,commerce,30181,400,haché végétal au soja préemballé
+lasagnes-bolognaise,lasagnes-hache-vegetal-commerce,vegetal,commerce,20587,270,lentilles vertes cuites
+lasagnes-bolognaise,lasagnes-hache-vegetal-commerce,vegetal,commerce,20260,350,coulis de tomate
+lasagnes-bolognaise,lasagnes-hache-vegetal-commerce,vegetal,commerce,20035,80,oignons cuits
+lasagnes-bolognaise,lasagnes-hache-vegetal-commerce,vegetal,commerce,20009,80,carottes (code cru : pas de code cuit avec nutriments et impacts)
+lasagnes-bolognaise,lasagnes-hache-vegetal-commerce,vegetal,commerce,17270,15,huile d'olive
+lasagnes-bolognaise,lasagnes-hache-vegetal-commerce,vegetal,commerce,18901,300,boisson au soja enrichie en calcium de la béchamel
+lasagnes-bolognaise,lasagnes-hache-vegetal-commerce,vegetal,commerce,17130,25,huile de colza de la béchamel
+lasagnes-bolognaise,lasagnes-hache-vegetal-commerce,vegetal,commerce,9435,30,farine de la béchamel
+lasagnes-bolognaise,lasagnes-hache-vegetal-commerce,vegetal,commerce,1029_2,60,spécialité végétale type fromage râpé
+quiche-lorraine,quiche-lorraine,animal,,9435,200,farine de la pâte brisée
+quiche-lorraine,quiche-lorraine,animal,,16400,100,beurre de la pâte brisée
+quiche-lorraine,quiche-lorraine,animal,,22000,200,4 œufs
+quiche-lorraine,quiche-lorraine,animal,,19410,200,crème fraîche 30 %
+quiche-lorraine,quiche-lorraine,animal,,19041,150,lait demi-écrémé
+quiche-lorraine,quiche-lorraine,animal,,28725,150,lardons fumés cuits
+quiche-lorraine,quiche-lorraine,animal,,20031,300,salade verte en accompagnement
+quiche-lorraine,quiche-lorraine,animal,,17130,30,huile de colza de la vinaigrette
+quiche-lorraine,quiche-lorraine,animal,,11018,10,vinaigre de la vinaigrette
+quiche-lorraine,quiche-lorraine,animal,,11013,5,moutarde de la vinaigrette
+quiche-lorraine,quiche-vegetale-maison,vegetal,maison,9435,200,farine de la pâte brisée
+quiche-lorraine,quiche-vegetale-maison,vegetal,maison,17130,100,"huile de colza (70 g pour la pâte brisée, 30 g pour la vinaigrette)"
+quiche-lorraine,quiche-vegetale-maison,vegetal,maison,20904,350,tofu ferme mixé (appareil)
+quiche-lorraine,quiche-vegetale-maison,vegetal,maison,18901,200,boisson au soja enrichie en calcium (appareil)
+quiche-lorraine,quiche-vegetale-maison,vegetal,maison,9510,20,fécule de maïs (appareil)
+quiche-lorraine,quiche-vegetale-maison,vegetal,maison,20912,150,tofu fumé en dés (remplace les lardons)
+quiche-lorraine,quiche-vegetale-maison,vegetal,maison,20031,300,salade verte en accompagnement
+quiche-lorraine,quiche-vegetale-maison,vegetal,maison,11018,10,vinaigre de la vinaigrette
+quiche-lorraine,quiche-vegetale-maison,vegetal,maison,11013,5,moutarde de la vinaigrette
+quiche-lorraine,quiche-vegetale-commerce,vegetal,commerce,23412,300,pâte brisée à la matière grasse végétale préemballée
+quiche-lorraine,quiche-vegetale-commerce,vegetal,commerce,20904,300,tofu ferme mixé (appareil)
+quiche-lorraine,quiche-vegetale-commerce,vegetal,commerce,18901,200,boisson au soja enrichie en calcium (appareil)
+quiche-lorraine,quiche-vegetale-commerce,vegetal,commerce,9510,20,fécule de maïs (appareil)
+quiche-lorraine,quiche-vegetale-commerce,vegetal,commerce,20912,150,tofu fumé en dés (remplace les lardons)
+quiche-lorraine,quiche-vegetale-commerce,vegetal,commerce,1029_2,50,spécialité végétale type fromage râpé
+quiche-lorraine,quiche-vegetale-commerce,vegetal,commerce,20031,300,salade verte en accompagnement
+quiche-lorraine,quiche-vegetale-commerce,vegetal,commerce,17130,30,huile de colza de la vinaigrette
+quiche-lorraine,quiche-vegetale-commerce,vegetal,commerce,11018,10,vinaigre de la vinaigrette
+quiche-lorraine,quiche-vegetale-commerce,vegetal,commerce,11013,5,moutarde de la vinaigrette
+hachis-parmentier,hachis-parmentier,animal,,6255,375,bœuf haché 15 % cuit
+hachis-parmentier,hachis-parmentier,animal,,4003,900,pommes de terre à l'eau (purée)
+hachis-parmentier,hachis-parmentier,animal,,19041,200,lait demi-écrémé (purée)
+hachis-parmentier,hachis-parmentier,animal,,16400,40,beurre (purée)
+hachis-parmentier,hachis-parmentier,animal,,20035,100,oignons cuits
+hachis-parmentier,hachis-parmentier,animal,,12118,60,emmental râpé
+hachis-parmentier,parmentier-lentilles-maison,vegetal,maison,20587,700,lentilles vertes cuites
+hachis-parmentier,parmentier-lentilles-maison,vegetal,maison,4003,900,pommes de terre à l'eau (purée)
+hachis-parmentier,parmentier-lentilles-maison,vegetal,maison,18901,200,boisson au soja enrichie en calcium (purée)
+hachis-parmentier,parmentier-lentilles-maison,vegetal,maison,17270,30,huile d'olive (purée)
+hachis-parmentier,parmentier-lentilles-maison,vegetal,maison,20035,100,oignons cuits
+hachis-parmentier,parmentier-hache-vegetal-commerce,vegetal,commerce,30181,375,haché végétal au soja préemballé
+hachis-parmentier,parmentier-hache-vegetal-commerce,vegetal,commerce,20587,250,lentilles vertes cuites
+hachis-parmentier,parmentier-hache-vegetal-commerce,vegetal,commerce,4003,900,pommes de terre à l'eau (purée)
+hachis-parmentier,parmentier-hache-vegetal-commerce,vegetal,commerce,18901,200,boisson au soja enrichie en calcium (purée)
+hachis-parmentier,parmentier-hache-vegetal-commerce,vegetal,commerce,17270,30,huile d'olive (purée)
+hachis-parmentier,parmentier-hache-vegetal-commerce,vegetal,commerce,20035,100,oignons cuits
+hachis-parmentier,parmentier-hache-vegetal-commerce,vegetal,commerce,1029_2,60,spécialité végétale type fromage râpé
+saumon-riz,saumon-riz,animal,,26230,500,saumon d'élevage cuit au four
+saumon-riz,saumon-riz,animal,,9104,720,riz blanc cuit
+saumon-riz,saumon-riz,animal,,17270,15,huile d'olive
+saumon-riz,saumon-riz,animal,,13009,40,citron
+saumon-riz,tofu-marine-riz-maison,vegetal,maison,20904,600,tofu ferme mariné et rôti
+saumon-riz,tofu-marine-riz-maison,vegetal,maison,11104,40,sauce soja de la marinade
+saumon-riz,tofu-marine-riz-maison,vegetal,maison,9104,720,riz blanc cuit
+saumon-riz,tofu-marine-riz-maison,vegetal,maison,17130,20,huile de colza
+saumon-riz,tofu-marine-riz-maison,vegetal,maison,13009,40,citron
+saumon-riz,pave-soja-riz-commerce,vegetal,commerce,20914,500,galettes ou pavés au soja préemballés
+saumon-riz,pave-soja-riz-commerce,vegetal,commerce,9104,720,riz blanc cuit
+saumon-riz,pave-soja-riz-commerce,vegetal,commerce,17130,15,huile de colza
+saumon-riz,pave-soja-riz-commerce,vegetal,commerce,13009,40,citron
+omelette,omelette,animal,,22000,600,12 œufs
+omelette,omelette,animal,,16400,20,beurre de cuisson
+omelette,omelette,animal,,4026,600,pommes de terre rôties au four
+omelette,omelette,animal,,17270,20,huile d'olive des pommes de terre
+omelette,omelette,animal,,20031,200,salade verte
+omelette,omelette,animal,,17130,20,huile de colza de la vinaigrette
+omelette,omelette,animal,,11018,10,vinaigre de la vinaigrette
+omelette,omelette-pois-chiche-maison,vegetal,maison,9580,240,farine de pois chiche
+omelette,omelette-pois-chiche-maison,vegetal,maison,18066,360,eau de la pâte
+omelette,omelette-pois-chiche-maison,vegetal,maison,17270,40,"huile d'olive (20 g pour l'omelette, 20 g pour les pommes de terre)"
+omelette,omelette-pois-chiche-maison,vegetal,maison,4026,600,pommes de terre rôties au four
+omelette,omelette-pois-chiche-maison,vegetal,maison,20031,200,salade verte
+omelette,omelette-pois-chiche-maison,vegetal,maison,17130,20,huile de colza de la vinaigrette
+omelette,omelette-pois-chiche-maison,vegetal,maison,11018,10,vinaigre de la vinaigrette
+omelette,tofu-brouille-commerce,vegetal,commerce,20904,600,tofu ferme préemballé émietté et poêlé
+omelette,tofu-brouille-commerce,vegetal,commerce,11104,20,sauce soja
+omelette,tofu-brouille-commerce,vegetal,commerce,17270,40,"huile d'olive (20 g pour le tofu, 20 g pour les pommes de terre)"
+omelette,tofu-brouille-commerce,vegetal,commerce,4026,600,pommes de terre rôties au four
+omelette,tofu-brouille-commerce,vegetal,commerce,20031,200,salade verte
+omelette,tofu-brouille-commerce,vegetal,commerce,17130,20,huile de colza de la vinaigrette
+omelette,tofu-brouille-commerce,vegetal,commerce,11018,10,vinaigre de la vinaigrette
+burger,burger,animal,,7001,320,pain blanc (petits pains ronds sans lait)
+burger,burger,animal,,6255,400,4 steaks hachés 15 % cuits
+burger,burger,animal,,12726,80,cheddar en tranches
+burger,burger,animal,,20031,60,salade
+burger,burger,animal,,20034,60,oignon cru
+burger,burger,animal,,11008,60,ketchup
+burger,burger,animal,,4030,600,frites cuites au four
+burger,burger-haricots-tofu-maison,vegetal,maison,7001,320,pain blanc (petits pains ronds sans lait)
+burger,burger-haricots-tofu-maison,vegetal,maison,20503,250,haricots rouges cuits écrasés (galette)
+burger,burger-haricots-tofu-maison,vegetal,maison,20904,200,tofu ferme émietté (galette)
+burger,burger-haricots-tofu-maison,vegetal,maison,32140,60,flocons d'avoine (galette)
+burger,burger-haricots-tofu-maison,vegetal,maison,9580,40,farine de pois chiche (galette)
+burger,burger-haricots-tofu-maison,vegetal,maison,17130,20,huile de colza de cuisson
+burger,burger-haricots-tofu-maison,vegetal,maison,20031,60,salade
+burger,burger-haricots-tofu-maison,vegetal,maison,20034,60,oignon cru
+burger,burger-haricots-tofu-maison,vegetal,maison,11008,60,ketchup
+burger,burger-haricots-tofu-maison,vegetal,maison,4030,600,frites cuites au four
+burger,burger-galette-vegetale-commerce,vegetal,commerce,7001,320,pain blanc (petits pains ronds sans lait)
+burger,burger-galette-vegetale-commerce,vegetal,commerce,25593,440,4 galettes au blé et soja préemballées
+burger,burger-galette-vegetale-commerce,vegetal,commerce,1029_1,80,spécialité végétale type fromage en tranche
+burger,burger-galette-vegetale-commerce,vegetal,commerce,20031,60,salade
+burger,burger-galette-vegetale-commerce,vegetal,commerce,20034,60,oignon cru
+burger,burger-galette-vegetale-commerce,vegetal,commerce,11008,60,ketchup
+burger,burger-galette-vegetale-commerce,vegetal,commerce,4030,600,frites cuites au four
+croque-monsieur,croque-monsieur,animal,,7100,400,pain de campagne en tranches
+croque-monsieur,croque-monsieur,animal,,28910,200,jambon cuit
+croque-monsieur,croque-monsieur,animal,,12118,120,emmental râpé
+croque-monsieur,croque-monsieur,animal,,16400,30,beurre
+croque-monsieur,croque-monsieur,animal,,19041,100,lait demi-écrémé (béchamel)
+croque-monsieur,croque-monsieur,animal,,9435,10,farine (béchamel)
+croque-monsieur,croque-monsieur,animal,,20031,320,salade verte en accompagnement
+croque-monsieur,croque-monsieur,animal,,17130,20,huile de colza de la vinaigrette
+croque-monsieur,croque-monsieur,animal,,11018,10,vinaigre de la vinaigrette
+croque-monsieur,croque-tofu-fume-maison,vegetal,maison,7100,400,pain de campagne en tranches
+croque-monsieur,croque-tofu-fume-maison,vegetal,maison,20912,260,tofu fumé en tranches fines
+croque-monsieur,croque-tofu-fume-maison,vegetal,maison,18901,200,boisson au soja enrichie en calcium (béchamel)
+croque-monsieur,croque-tofu-fume-maison,vegetal,maison,9435,20,farine (béchamel)
+croque-monsieur,croque-tofu-fume-maison,vegetal,maison,17270,30,huile d'olive
+croque-monsieur,croque-tofu-fume-maison,vegetal,maison,20031,320,salade verte en accompagnement
+croque-monsieur,croque-tofu-fume-maison,vegetal,maison,17130,20,huile de colza de la vinaigrette
+croque-monsieur,croque-tofu-fume-maison,vegetal,maison,11018,10,vinaigre de la vinaigrette
+croque-monsieur,croque-tranches-vegetales-commerce,vegetal,commerce,7100,400,pain de campagne en tranches
+croque-monsieur,croque-tranches-vegetales-commerce,vegetal,commerce,1030,200,fines tranches végétales préemballées
+croque-monsieur,croque-tranches-vegetales-commerce,vegetal,commerce,1029_1,100,spécialité végétale type fromage en tranche
+croque-monsieur,croque-tranches-vegetales-commerce,vegetal,commerce,18901,200,boisson au soja enrichie en calcium (béchamel)
+croque-monsieur,croque-tranches-vegetales-commerce,vegetal,commerce,9435,20,farine (béchamel)
+croque-monsieur,croque-tranches-vegetales-commerce,vegetal,commerce,17270,30,huile d'olive
+croque-monsieur,croque-tranches-vegetales-commerce,vegetal,commerce,20031,320,salade verte en accompagnement
+croque-monsieur,croque-tranches-vegetales-commerce,vegetal,commerce,17130,20,huile de colza de la vinaigrette
+croque-monsieur,croque-tranches-vegetales-commerce,vegetal,commerce,11018,10,vinaigre de la vinaigrette
