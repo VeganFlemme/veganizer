@@ -1,0 +1,38 @@
+{
+  "version": "0.1",
+  "status": "rédigé le 2026-11-01 à partir du PDF officiel du CIRC ; à relire (docs/A_VERIFIER.md)",
+  "iarc": [
+    {
+      "id": "transformée",
+      "groupe": "1",
+      "libelle": "Viande transformée",
+      "classement": "cancérogène pour l'humain (groupe 1)",
+      "definition": "Viande transformée par salaison, maturation, fermentation, fumage ou d'autres procédés pour en relever le goût ou mieux la conserver (charcuterie, jambon, lardons…).",
+      "source": {
+        "sourceId": "iarc-114",
+        "publisher": "CIRC (OMS)",
+        "title": "IARC Monographs volume 114 — Red Meat and Processed Meat",
+        "pages": "p. 37 (§ 1.1.3) et p. 501 (§ 6.3)",
+        "url": "https://publications.iarc.who.int/564",
+        "accessedOn": "2026-11-01"
+      }
+    },
+    {
+      "id": "rouge",
+      "groupe": "2A",
+      "libelle": "Viande rouge",
+      "classement": "probablement cancérogène pour l'humain (groupe 2A)",
+      "definition": "Viande de muscle de mammifère non transformée (bœuf, veau, porc, agneau, mouton, cheval, chèvre), hachée ou non, généralement consommée cuite.",
+      "source": {
+        "sourceId": "iarc-114",
+        "publisher": "CIRC (OMS)",
+        "title": "IARC Monographs volume 114 — Red Meat and Processed Meat",
+        "pages": "p. 37 (§ 1.1.1) et p. 501 (§ 6.3)",
+        "url": "https://publications.iarc.who.int/564",
+        "accessedOn": "2026-11-01"
+      }
+    }
+  ],
+  "lecture": "Le groupe du CIRC indique la solidité des preuves qu'un aliment peut causer un cancer, pas l'ampleur du risque.",
+  "avertissement": "Informations générales, pas un conseil médical. Parlez-en à un professionnel de santé."
+}

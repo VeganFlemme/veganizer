@@ -13,6 +13,7 @@ describe("format", () => {
   it("keeps a real zero and negative values", () => {
     expect(formatValue(0)).toBe("0");
     expect(formatValue(-1.234)).toBe("-1,23");
+    expect(formatValue(0.000593)).toBe("0,000593");
   });
   it("uses French decimals", () => {
     expect(formatValue(5.034)).toBe("5,03");

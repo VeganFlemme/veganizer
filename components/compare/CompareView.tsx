@@ -1,11 +1,14 @@
 "use client";
 
 import Link from "next/link";
-import { useState, type ReactNode } from "react";
+import { Fragment, useState, type ReactNode } from "react";
+import sante from "@/data/sante.json";
 import { BASES, CLIMATE_MAIN, COVERAGE_WARNING } from "@/lib/compare/config";
 import type { CriterionRow, DishView, PairPageModel, SideValue, SourceRow, Variant, VariantView } from "@/lib/compare/view";
 import type { Basis } from "@/lib/scoring";
 import { formatEur, formatInt, formatPercent, formatValue, gapSentence, MISSING } from "@/lib/format";
+
+const IARC_READING = sante.lecture;
 
 const VARIANT_LABEL: Record<Variant, string> = { maison: "Fait maison", commerce: "Du commerce" };
 
@@ -62,11 +65,14 @@ function SourceBadges({ ids, sources }: { ids: string[]; sources: Record<string,
   );
 }
 
-function Value({ v, unit }: { v: SideValue | null; unit: string }) {
+function Value({ v, unit, perAnimal }: { v: SideValue | null; unit: string; perAnimal?: boolean }) {
   if (!v || v.value == null) return <span className="text-amber-800">{MISSING}</span>;
   return (
     <span>
       <span className="font-semibold">{formatValue(v.value)}</span> {unit}
+      {perAnimal && v.value > 0 && (
+        <span className="block text-xs text-zinc-700">soit environ 1 animal pour {formatInt(1 / v.value)} portions</span>
+      )}
       {v.rangePublished && (
         <span className="block text-xs text-zinc-700">
           fourchette {formatValue(v.low)} à {formatValue(v.high)}
@@ -88,13 +94,33 @@ function Verdict({ row }: { row: CriterionRow }) {
   return <span className="text-zinc-800">Version végétale : {gap}</span>;
 }
 
-/** "ciqual-2025" → "Ciqual 2025", "agribalyse-3.2" → "Agribalyse 3.2". */
+// Short display names of the sources (editorial labels; full names are on /sources).
+const SOURCE_LABELS: Record<string, string> = {
+  "ciqual-2025": "Ciqual 2025",
+  "agribalyse-3.2": "Agribalyse 3.2",
+  "faostat-qcl": "FAOSTAT",
+  "open-prices": "Open Prices",
+  "vac-2025": "Valeur carbone 2025",
+  "iarc-114": "CIRC vol. 114",
+};
+
 function sourceLabel(id: string): string {
-  const [head, ...rest] = id.split("-");
-  return [head.length <= 4 ? head.toUpperCase() : head[0].toUpperCase() + head.slice(1), ...rest].join(" ");
+  return SOURCE_LABELS[id] ?? id;
 }
 
-function Rows({ rows, sources, animalName, vegetalName }: { rows: CriterionRow[]; sources: Record<string, SourceRow>; animalName: string; vegetalName: string }) {
+function Rows({
+  rows,
+  sources,
+  animalName,
+  vegetalName,
+  perAnimal,
+}: {
+  rows: CriterionRow[];
+  sources: Record<string, SourceRow>;
+  animalName: string;
+  vegetalName: string;
+  perAnimal?: boolean;
+}) {
   return (
     <ul className="flex flex-col divide-y divide-zinc-200">
       {rows.map((r) => (
@@ -106,7 +132,7 @@ function Rows({ rows, sources, animalName, vegetalName }: { rows: CriterionRow[]
             <div>
               <dt className="text-xs text-zinc-700">{animalName}</dt>
               <dd>
-                <Value v={r.animal} unit={r.unit} />
+                <Value v={r.animal} unit={r.unit} perAnimal={perAnimal} />
               </dd>
             </div>
             <div>
@@ -235,41 +261,113 @@ function VariantPanel({ model, v, basis }: { model: PairPageModel; v: VariantVie
         </Card>
 
         <Card id={`sante-${v.variant}`} title="Santé">
+          <ul className="flex flex-col gap-3">
+            {v.iarc.map((x) => (
+              <li key={x.entry.id} className="flex flex-col gap-1">
+                <span className="font-medium">
+                  {x.entry.libelle} : {x.entry.classement}
+                </span>
+                <dl className="grid grid-cols-2 gap-2 text-sm">
+                  <div>
+                    <dt className="text-xs text-zinc-700">{a}</dt>
+                    <dd className="font-semibold">{formatInt(x.animalGrams)} g par portion</dd>
+                  </div>
+                  <div>
+                    <dt className="text-xs text-zinc-700">Version végétale</dt>
+                    <dd className="font-semibold">{formatInt(x.vegetalGrams)} g par portion</dd>
+                  </div>
+                </dl>
+                <span className="text-xs text-zinc-700">{x.entry.definition}</span>
+                <a href={x.entry.source.url} className="self-start rounded border border-zinc-300 bg-zinc-50 px-1.5 py-0.5 text-xs text-zinc-800 underline" rel="noopener noreferrer">
+                  {x.entry.source.publisher}, {x.entry.source.pages}
+                </a>
+              </li>
+            ))}
+          </ul>
+          <p className="text-sm text-zinc-700">{IARC_READING}</p>
           <Soon>
-            Les repères officiels (PNNS, classement du CIRC pour la viande rouge et transformée) et les estimations de minutes de vie en bonne
-            santé seront ajoutés avec leurs sources.
+            Les repères de consommation du PNNS et les minutes de vie en bonne santé (HENI) seront ajoutés dès que leurs sources officielles auront pu
+            être vérifiées.
           </Soon>
           <p className="text-sm text-zinc-700">Pas de conseil médical : parlez-en à un professionnel de santé.</p>
         </Card>
 
         <Card id={`animaux-${v.variant}`} title="Animaux">
           {animals.length > 0 && v.hasAnimalData ? (
-            <Rows rows={animals} sources={model.sources} animalName={a} vegetalName="Version végétale" />
+            <>
+              <Rows rows={animals} sources={model.sources} animalName={a} vegetalName="Version végétale" perAnimal={basis === "perServing"} />
+              <p className="text-xs text-zinc-700">
+                Estimation basse : les statistiques de la FAO donnent les animaux abattus par kg de carcasse ; un kg de viande cuite et désossée
+                vient de plus d’un kg de carcasse.
+              </p>
+              {v.animalFactorNotes.length > 0 && (
+                <details className="text-xs text-zinc-700">
+                  <summary className="cursor-pointer underline">Facteurs utilisés et hypothèses</summary>
+                  <ul className="mt-1 list-disc pl-5">
+                    {v.animalFactorNotes.map((n) => (
+                      <li key={`${n.category}-${n.indicatorId}`}>
+                        <strong>{n.category}</strong> ({n.unitBasis ?? "base non précisée"}) : {n.notes ?? "pas de remarque"}
+                      </li>
+                    ))}
+                  </ul>
+                </details>
+              )}
+              {v.animalWithoutFactor.length > 0 && (
+                <p className="text-xs text-amber-800">
+                  Pas encore de donnée pour : {[...new Set(v.animalWithoutFactor)].join(", ")} (donnée manquante, jamais 0). Les poissons, les œufs,
+                  les produits laitiers et le veau seront ajoutés avec leurs sources.
+                </p>
+              )}
+            </>
           ) : (
             <Soon>Le nombre d’animaux concernés par portion sera calculé à partir des statistiques FAO, avec la source de chaque facteur.</Soon>
           )}
         </Card>
 
         <Card id={`cout-${v.variant}`} title="Coût">
-          <div className="flex flex-col gap-1">
-            <h3 className="font-medium">Coût climat pour la collectivité ({v.climateCost.year}), par portion</h3>
-            <dl className="grid grid-cols-2 gap-2 text-sm">
-              <div>
-                <dt className="text-xs text-zinc-700">{a}</dt>
-                <dd className="font-semibold">{formatEur(v.climateCost.animalEur)}</dd>
-              </div>
-              <div>
-                <dt className="text-xs text-zinc-700">Version végétale</dt>
-                <dd className="font-semibold">{formatEur(v.climateCost.vegetalEur)}</dd>
-              </div>
+          <div className="flex flex-col gap-2">
+            <h3 className="font-medium">Coût climat pour la collectivité, par portion</h3>
+            <dl className="grid grid-cols-[max-content_1fr_1fr] gap-x-3 gap-y-1 text-sm">
+              <dt className="text-xs text-zinc-700">Année</dt>
+              <dd className="text-xs text-zinc-700">{a}</dd>
+              <dd className="text-xs text-zinc-700">Version végétale</dd>
+              {v.climateCost.map((c) => (
+                <Fragment key={c.year}>
+                  <dt>{c.year}</dt>
+                  <dd className="font-semibold">{formatEur(c.animalEur)}</dd>
+                  <dd className="font-semibold">{formatEur(c.vegetalEur)}</dd>
+                </Fragment>
+              ))}
             </dl>
             <p className="text-xs text-zinc-700">
-              Émissions par portion × valeur de l’action pour le climat ({formatEur(v.climateCost.eurPerKg)} par kg CO₂e en {v.climateCost.year}
-              {v.climateCost.derived && ", calculée avec le taux de croissance publié par la source"}).
+              Émissions par portion × valeur de l’action pour le climat publiée pour l’année (
+              {v.climateCost.map((c) => `${formatEur(c.eurPerKg)} par kg CO₂e en ${c.year}${c.derived ? " (calculée avec la règle de croissance de la source)" : ""}`).join(" ; ")}
+              ). La valeur augmente avec le temps : chaque tonne évitée compte davantage.
             </p>
-            {v.climateCost.sourceId && <SourceBadges ids={[v.climateCost.sourceId]} sources={model.sources} />}
+            <SourceBadges ids={[...new Set(v.climateCost.flatMap((c) => (c.sourceId ? [c.sourceId] : [])))]} sources={model.sources} />
           </div>
-          <Soon>Le prix en magasin (prix médians observés en France) sera ajouté quand assez d’observations seront disponibles.</Soon>
+          <div className="flex flex-col gap-1">
+            <h3 className="font-medium">Prix des ingrédients</h3>
+            {v.price.animal && v.price.vegetal && v.price.animal.coverage >= COVERAGE_WARNING && v.price.vegetal.coverage >= COVERAGE_WARNING ? (
+              <dl className="grid grid-cols-2 gap-2 text-sm">
+                <div>
+                  <dt className="text-xs text-zinc-700">{a}</dt>
+                  <dd className="font-semibold">{formatEur(v.price.animal.value)}</dd>
+                </div>
+                <div>
+                  <dt className="text-xs text-zinc-700">Version végétale</dt>
+                  <dd className="font-semibold">{formatEur(v.price.vegetal.value)}</dd>
+                </div>
+              </dl>
+            ) : (
+              <Soon>
+                Les prix observés en France (Open Prices, médiane sur 12 mois, au moins 5 relevés) ne couvrent pour l’instant que{" "}
+                {formatPercent((v.price.animal?.coverage ?? 0) * 100)} de la masse du plat animal et{" "}
+                {formatPercent((v.price.vegetal?.coverage ?? 0) * 100)} de la version végétale : pas de total tant que ce n’est pas au moins 95 %.
+              </Soon>
+            )}
+            <SourceBadges ids={v.price.sourceIds} sources={model.sources} />
+          </div>
         </Card>
       </div>
 

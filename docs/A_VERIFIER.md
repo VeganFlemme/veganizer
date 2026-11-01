@@ -65,3 +65,13 @@ Tous les critères sont respectés.
 - [ ] **Page inconnue** : `/compare/xxx` affiche bien « page introuvable » mais renvoie un code HTTP 200 (rendu en flux de Next.js 16 avec Cache Components). À corriger si le référencement le demande.
 - [ ] **Images de partage** : vérifier le rendu de `/compare/<plat>/opengraph-image` (accents, longueur des titres).
 - [ ] **Signaler une erreur** : tester un envoi réel depuis le site et vérifier la ligne dans `error_reports` (table lisible seulement avec la clé secrète).
+
+## Étape D — Piliers Animaux, Santé, Coût
+
+- [ ] **Condition d'arrêt rencontrée** : les sources officielles PNNS (Santé publique France, mangerbouger.fr), Fishcount (HTTP 401) et HENI (Nature Food) étaient inaccessibles. Rien n'a été inventé ; décider s'il faut les remplacer ou réessayer plus tard (`TODO_SOURCES.md`).
+- [ ] **FAOSTAT** : vérifier à la main un facteur, ex. porc 2024 = 21 936 820 têtes ÷ 2 094 250 t = 10,475 animaux par tonne de carcasse ; bovins 2024 = 3 986 140 ÷ 1 298 540 t = 3,070 par tonne. Licence FAOSTAT (`sources.faostat-qcl.commercial_use` = null) à vérifier.
+- [ ] **Lecture « 1 animal pour N portions »** (ex. bœuf bourguignon : environ 1 animal pour 1 686 portions, estimation basse) : formulation à valider.
+- [ ] **Classement CIRC** (`pipeline/iarc_meat.csv`, 318 aliments) : relire, en particulier 28700 « Jambon de porc à cuire » (classé « transformée » par son sous-groupe Ciqual alors qu'il peut être frais), les pâtés, et l'exclusion des abats et du gibier.
+- [ ] **Texte santé** : « Le groupe du CIRC indique la solidité des preuves qu'un aliment peut causer un cancer, pas l'ampleur du risque » (`data/sante.json`) — phrase de lecture habituelle du CIRC, à confirmer avec la page Q&R du CIRC.
+- [ ] **Open Prices** : médianes 2026 — carotte 2,15 €/kg (60 relevés), oignon 2,83 €/kg (55), citron 3,99 €/kg (38). Le citron est appliqué à la chair (prix du fruit entier). Rappel ODbL : la table `prices` dérivée doit rester sous ODbL et citer Open Prices.
+- [ ] **Coût climat** : bœuf bourguignon 1,29 € (2025) et 2,83 € (2050) par portion, contre 0,17 € et 0,36 € pour la version maison.

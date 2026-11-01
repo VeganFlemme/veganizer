@@ -10,7 +10,7 @@ export const MISSING = "donnée manquante";
 /** Three significant digits; scientific notation for very small non-zero values. */
 export function formatValue(x: number | null | undefined): string {
   if (x == null || !Number.isFinite(x)) return MISSING;
-  if (x !== 0 && Math.abs(x) < 0.001) return sci.format(x);
+  if (x !== 0 && Math.abs(x) < 0.00001) return sci.format(x);
   return sig3.format(x);
 }
 

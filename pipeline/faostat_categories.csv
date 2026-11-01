@@ -1,0 +1,9 @@
+animal_category,item_code_cpc,item,notes
+bovin,21111.01,"Meat of cattle with the bone, fresh or chilled","Bovins de tous âges (veaux compris) : moyenne française, pas spécifique aux bœufs adultes."
+porc,21113.01,"Meat of pig with the bone, fresh or chilled",
+agneau,21115,"Meat of sheep, fresh or chilled","Ovins de tous âges (agneaux et brebis de réforme)."
+poulet de chair,21121,"Meat of chickens, fresh or chilled","Tous poulets et poules abattus, y compris les pondeuses de réforme."
+dinde,21124,"Meat of turkeys, fresh or chilled",
+canard,21122,"Meat of ducks, fresh or chilled",
+oie,21123,"Meat of geese, fresh or chilled",
+lapin,21114,"Meat of rabbits and hares, fresh or chilled","Lapins et lièvres."

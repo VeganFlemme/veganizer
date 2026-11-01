@@ -56,7 +56,18 @@ function raw(over: Partial<RawPairData> = {}): RawPairData {
     monetizationFactors: [{ indicatorId: "ghg_100y_kgco2e", year: 2025, eurPerUnit: 0.5, method: "m", sourceId: "vac-2025" }],
     monetizationRules: [],
     conseils: [{ id: "b12", criteria: ["vit_b12_ug"], titre: "B12", texte: "complément", sources: [] }],
-    climateCostYear: 2025,
+    climateCostYears: [2025, 2050],
+    dishPrices: [{ dish_id: "A", source_id: "open-prices", per_serving: 2, low_per_serving: 1, high_per_serving: 3, mass_coverage: 0.5 }],
+    iarc: [
+      {
+        id: "rouge",
+        groupe: "2A",
+        libelle: "Viande rouge",
+        classement: "probablement cancérogène",
+        definition: "…",
+        source: { sourceId: "iarc-114", publisher: "CIRC", title: "vol. 114", url: "https://example.org", accessedOn: "2026-11-01" },
+      },
+    ],
     ...over,
   };
 }
@@ -135,17 +146,50 @@ describe("buildPairPage", () => {
   });
 
   it("monetises CO2e with the published carbon value", () => {
-    expect(maison.climateCost.animalEur).toBeCloseTo(3);
-    expect(maison.climateCost.vegetalEur).toBeCloseTo(0.1);
-    expect(maison.climateCost.derived).toBe(false);
+    const [y2025, y2050] = maison.climateCost;
+    expect(y2025.animalEur).toBeCloseTo(3);
+    expect(y2025.vegetalEur).toBeCloseTo(0.1);
+    expect(y2025.derived).toBe(false);
+    // No factor nor rule for 2050 in the fixture: missing, never 0.
+    expect(y2050.animalEur).toBeNull();
   });
 
   it("shows the animal pillar as 'bientôt' while category_factors is empty", () => {
     expect(maison.hasAnimalData).toBe(false);
+    expect(maison.animalWithoutFactor).toEqual(["Viande"]);
+  });
+
+  it("uses category factors per kg for the animal pillar", () => {
+    const p = buildPairPage(
+      raw({ categoryFactors: [{ category: "bovin", indicator_id: "animals_killed_land", value: 0.003, low: 0.002, high: 0.004, source_id: "faostat-qcl", unit_basis: "par kg de carcasse" }] }),
+    );
+    const r = p.variants.maison!.rows.perServing.find((x) => x.id === "animals_killed_land")!;
+    expect(r.animal?.value).toBeCloseTo(0.0006); // 400 g × 0.003 / 2
+    expect(r.vegetal?.value).toBe(0); // no animal ingredient: a real 0
+    expect(p.variants.maison!.animalFactorNotes[0].unitBasis).toBe("par kg de carcasse");
+  });
+
+  it("counts grams of IARC red meat per serving", () => {
+    const p = buildPairPage(
+      raw({
+        foods: [
+          { code: "meat", name_fr: "Viande", is_animal: true, animal_category: "bovin", ciqual_code: null, iarc_meat: "rouge" },
+          { code: "beans", name_fr: "Haricot", is_animal: false, animal_category: null, ciqual_code: null },
+          { code: "nodata", name_fr: "Inconnu", is_animal: false, animal_category: null, ciqual_code: null },
+        ],
+      }),
+    );
+    expect(p.variants.maison!.iarc[0].animalGrams).toBe(200);
+    expect(p.variants.maison!.iarc[0].vegetalGrams).toBe(0);
+  });
+
+  it("keeps the price coverage so partial prices are never shown as a total", () => {
+    expect(maison.price.animal?.coverage).toBe(0.5);
+    expect(maison.price.vegetal).toBeNull();
   });
 
   it("only exposes the sources actually used", () => {
-    expect(Object.keys(page.sources).sort()).toEqual(["agribalyse-3.2", "ciqual-2025", "vac-2025"]);
+    expect(Object.keys(page.sources).sort()).toEqual(["agribalyse-3.2", "ciqual-2025", "vac-2025"]); // iarc-114, open-prices: not in the fixture sources
   });
 
   it("labels ingredients with the recipe note and keeps the official name", () => {
@@ -169,5 +213,17 @@ describe("rule 10", () => {
     );
     expect(JSON.stringify(page)).not.toMatch(/v[eé]gan|v[eé]g[eé]talien/i);
     expect(page.variants.maison!.dish.ingredients[0].label).toBe("beans");
+  });
+});
+
+describe("animal pillar without any factor", () => {
+  it("shows missing data, not 0, when no animal ingredient has a factor", () => {
+    const p = buildPairPage(
+      raw({ categoryFactors: [{ category: "porc", indicator_id: "animals_killed_land", value: 0.01, low: null, high: null, source_id: "faostat-qcl" }] }),
+    );
+    const r = p.variants.maison!.rows.perServing.find((x) => x.id === "animals_killed_land")!;
+    expect(r.animal).toBeNull();
+    expect(r.winner).toBeNull();
+    expect(r.vegetal?.value).toBe(0);
   });
 });

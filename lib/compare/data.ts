@@ -1,10 +1,11 @@
 import "server-only";
 import { cacheLife } from "next/cache";
 import conseilsFile from "@/data/conseils.json";
+import santeFile from "@/data/sante.json";
 import { createPublicClient } from "@/lib/supabase/public";
 import type { Conseil } from "@/lib/scoring";
-import { CIQUAL_SOURCE, CLIMATE_INDICATORS, CLIMATE_MAIN, NUTRIENTS } from "./config";
-import { buildPairPage, reductionPercent, type PairPageModel, type RawPairData } from "./view";
+import { CIQUAL_SOURCE, CLIMATE_COST_YEARS, CLIMATE_INDICATORS, CLIMATE_MAIN, NUTRIENTS } from "./config";
+import { buildPairPage, reductionPercent, type IarcEntry, type PairPageModel, type RawPairData } from "./view";
 
 // Supabase caps a response at 1000 rows: a full page means rows may be missing.
 const MAX_ROWS = 1000;
@@ -84,20 +85,20 @@ export async function getPairPage(slug: string): Promise<PairPageModel | null> {
   const dishIds = [animal.id, ...vegetal.map((v) => v.id)];
   const ingredients = rows(await db.from("dish_ingredients").select("dish_id, food_code, grams, note").in("dish_id", dishIds), "dish_ingredients");
   const codes = [...new Set(ingredients.map((i) => i.food_code))];
-  const foods = rows(await db.from("foods").select("code, name_fr, is_animal, animal_category, ciqual_code").in("code", codes), "foods");
+  const foods = rows(await db.from("foods").select("code, name_fr, is_animal, animal_category, ciqual_code, iarc_meat").in("code", codes), "foods");
   const nutrientCodes = [...new Set(foods.map((f) => f.ciqual_code ?? f.code))];
   const nutrientIds = NUTRIENTS.map((n) => n.id);
 
-  const year = new Date().getFullYear();
-  const [nutrientValues, impacts, categoryFactors, nutrients, indicators, sources, factors, rules] = await Promise.all([
+  const [nutrientValues, impacts, categoryFactors, nutrients, indicators, sources, factors, rules, prices] = await Promise.all([
     db.from("food_nutrients").select("food_code, nutrient_id, value_per_100g, source_id").in("food_code", nutrientCodes).in("nutrient_id", nutrientIds).eq("source_id", CIQUAL_SOURCE),
     db.from("food_impacts").select("food_code, indicator_id, value_per_kg, low_per_kg, high_per_kg, dqr, source_id").in("food_code", codes).in("indicator_id", CLIMATE_INDICATORS),
-    db.from("category_factors").select("category, indicator_id, value, low, high, source_id"),
+    db.from("category_factors").select("category, indicator_id, value, low, high, source_id, unit_basis, notes"),
     db.from("nutrients").select("id, name_fr, unit").in("id", nutrientIds),
     db.from("indicators").select("id, name_fr, unit, higher_is_better, pillar"),
     db.from("sources").select("id, name, publisher, version, license, commercial_use, url"),
     db.from("monetization_factors").select("indicator_id, year, eur_per_unit, method, source_id").eq("indicator_id", CLIMATE_MAIN),
     db.from("monetization_rules").select("indicator_id, method, growth_rate, start_year, cap_year, source_id").eq("indicator_id", CLIMATE_MAIN),
+    db.from("dish_prices").select("dish_id, source_id, per_serving, low_per_serving, high_per_serving, mass_coverage").in("dish_id", dishIds),
   ]);
 
   const raw: RawPairData = {
@@ -119,7 +120,13 @@ export async function getPairPage(slug: string): Promise<PairPageModel | null> {
       indicatorId: r.indicator_id, method: r.method, growthRate: Number(r.growth_rate), startYear: r.start_year, capYear: r.cap_year, sourceId: r.source_id,
     })),
     conseils: conseilsFile.conseils as Conseil[],
-    climateCostYear: year,
+    climateCostYears: CLIMATE_COST_YEARS,
+    dishPrices: rows(prices, "dish_prices").flatMap((p) =>
+      p.dish_id && p.source_id && p.per_serving != null && p.mass_coverage != null
+        ? [{ dish_id: p.dish_id, source_id: p.source_id, per_serving: Number(p.per_serving), low_per_serving: p.low_per_serving, high_per_serving: p.high_per_serving, mass_coverage: Number(p.mass_coverage) }]
+        : [],
+    ),
+    iarc: santeFile.iarc as IarcEntry[],
   };
   return buildPairPage(raw);
 }

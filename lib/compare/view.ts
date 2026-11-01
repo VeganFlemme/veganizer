@@ -46,6 +46,8 @@ export interface FoodRow {
   is_animal: boolean;
   animal_category: string | null;
   ciqual_code: string | null;
+  /** IARC vol. 114 category of the food (foods.iarc_meat). */
+  iarc_meat?: string | null;
 }
 export interface NutrientValueRow {
   food_code: string;
@@ -69,6 +71,24 @@ export interface CategoryFactorRow {
   low: number | null;
   high: number | null;
   source_id: string;
+  unit_basis?: string;
+  notes?: string | null;
+}
+export interface DishPriceRow {
+  dish_id: string;
+  source_id: string;
+  per_serving: number;
+  low_per_serving: number | null;
+  high_per_serving: number | null;
+  mass_coverage: number;
+}
+export interface IarcEntry {
+  id: string;
+  groupe: string;
+  libelle: string;
+  classement: string;
+  definition: string;
+  source: { sourceId: string; publisher: string; title: string; pages?: string; url: string; accessedOn: string };
 }
 export interface MetaRow {
   id: string;
@@ -102,8 +122,10 @@ export interface RawPairData {
   monetizationFactors: MonetizationFactor[];
   monetizationRules: MonetizationRule[];
   conseils: Conseil[];
-  /** Year of the climate cost shown (current year of the official carbon value). */
-  climateCostYear: number;
+  /** Years of the climate cost shown. */
+  climateCostYears: number[];
+  dishPrices: DishPriceRow[];
+  iarc: IarcEntry[];
 }
 
 // ---------------------------------------------------------------------------
@@ -176,6 +198,27 @@ export interface ClimateCostView {
   sourceId: string | null;
 }
 
+export interface PriceView {
+  animal: { value: number; low: number | null; high: number | null; coverage: number } | null;
+  vegetal: { value: number; low: number | null; high: number | null; coverage: number } | null;
+  sourceIds: string[];
+}
+
+export interface IarcView {
+  entry: IarcEntry;
+  /** Grams per serving of foods in this IARC category; plant dish: real 0 when no animal ingredient. */
+  animalGrams: number;
+  vegetalGrams: number;
+}
+
+export interface AnimalFactorNote {
+  category: string;
+  indicatorId: string;
+  unitBasis: string | null;
+  notes: string | null;
+  sourceId: string;
+}
+
 export interface VariantView {
   variant: Variant;
   dish: DishView;
@@ -187,9 +230,15 @@ export interface VariantView {
   keyCoverage: number | null;
   /** true when at least one criterion shown rests on partial data. */
   anyPartial: boolean;
-  climateCost: ClimateCostView;
+  climateCost: ClimateCostView[];
   /** Animal-pillar indicators with data (category_factors); empty = "bientôt". */
   hasAnimalData: boolean;
+  /** Factors used for the animal ingredients of the animal dish (unit basis and hypotheses). */
+  animalFactorNotes: AnimalFactorNote[];
+  /** Animal ingredients of the animal dish without any factor (shown as missing data). */
+  animalWithoutFactor: string[];
+  price: PriceView;
+  iarc: IarcView[];
 }
 
 export interface PairPageModel {
@@ -383,10 +432,72 @@ export function buildPairPage(raw: RawPairData): PairPageModel {
     const a = animalTotals.impacts[CLIMATE_MAIN]?.perServing ?? null;
     const v = vegTotals.impacts[CLIMATE_MAIN]?.perServing ?? null;
     const opts = { indicatorId: CLIMATE_MAIN, rules: raw.monetizationRules };
-    const ma = a == null ? null : monetize(a, raw.climateCostYear, raw.monetizationFactors, opts);
-    const mv = v == null ? null : monetize(v, raw.climateCostYear, raw.monetizationFactors, opts);
-    const unit = ma ?? mv;
-    if (unit) usedSources.add(unit.sourceId);
+    const climateCost: ClimateCostView[] = raw.climateCostYears.map((year) => {
+      const ma = a == null ? null : monetize(a, year, raw.monetizationFactors, opts);
+      const mv = v == null ? null : monetize(v, year, raw.monetizationFactors, opts);
+      const unit = ma ?? mv;
+      if (unit) usedSources.add(unit.sourceId);
+      return {
+        year,
+        animalEur: ma?.eur ?? null,
+        vegetalEur: mv?.eur ?? null,
+        eurPerKg: unit?.eurPerUnit ?? null,
+        derived: unit?.derived ?? false,
+        sourceId: unit?.sourceId ?? null,
+      };
+    });
+
+    const priceOf = (d: DishRow) => {
+      const r = raw.dishPrices.find((x) => x.dish_id === d.id);
+      if (r) usedSources.add(r.source_id);
+      return r
+        ? { value: Number(r.per_serving), low: num(r.low_per_serving), high: num(r.high_per_serving), coverage: Number(r.mass_coverage) }
+        : null;
+    };
+    const price: PriceView = {
+      animal: priceOf(raw.animal),
+      vegetal: priceOf(dish),
+      sourceIds: [...new Set(raw.dishPrices.filter((x) => x.dish_id === raw.animal.id || x.dish_id === dish.id).map((x) => x.source_id))],
+    };
+
+    const foodsByCode = new Map(raw.foods.map((f) => [f.code, f]));
+    const iarcGrams = (d: DishRow, id: string) =>
+      raw.ingredients
+        .filter((i) => i.dish_id === d.id && foodsByCode.get(i.food_code)?.iarc_meat === id)
+        .reduce((sum, i) => sum + Number(i.grams), 0) / d.servings;
+    const iarc = raw.iarc.map((entry) => {
+      usedSources.add(entry.source.sourceId);
+      return { entry, animalGrams: iarcGrams(raw.animal, entry.id), vegetalGrams: iarcGrams(dish, entry.id) };
+    });
+
+    const animalFoods = raw.ingredients
+      .filter((i) => i.dish_id === raw.animal.id)
+      .map((i) => foodsByCode.get(i.food_code))
+      .filter((f): f is FoodRow => !!f && f.is_animal);
+    const animalFactorNotes: AnimalFactorNote[] = [];
+    const animalWithoutFactor: string[] = [];
+    for (const f of animalFoods) {
+      const factors = raw.categoryFactors.filter((c) => c.category === f.animal_category);
+      if (factors.length === 0) animalWithoutFactor.push(f.name_fr);
+      for (const c of factors) {
+        if (!animalFactorNotes.some((n) => n.category === c.category && n.indicatorId === c.indicator_id)) {
+          animalFactorNotes.push({ category: c.category, indicatorId: c.indicator_id, unitBasis: c.unit_basis ?? null, notes: c.notes ?? null, sourceId: c.source_id });
+        }
+      }
+    }
+    // An animal dish whose animal ingredients have no factor at all has no animal figure (never 0).
+    if (animalFoods.length > 0 && animalWithoutFactor.length === animalFoods.length) {
+      for (const b of BASES) {
+        for (const r of rows[b.id]) {
+          if (r.group !== "animalImpacts") continue;
+          r.animal = null;
+          r.reductionPercent = null;
+          r.winner = null;
+          r.indicativeWinner = null;
+          r.lowCoverage = true;
+        }
+      }
+    }
 
     variants[p.variant] = {
       variant: p.variant,
@@ -396,15 +507,12 @@ export function buildPairPage(raw: RawPairData): PairPageModel {
       animalBetter,
       keyCoverage: coverages.length ? Math.min(...coverages) : null,
       anyPartial: rows.perServing.some((r) => r.lowCoverage && (r.animal != null || r.vegetal != null)),
-      climateCost: {
-        year: raw.climateCostYear,
-        animalEur: ma?.eur ?? null,
-        vegetalEur: mv?.eur ?? null,
-        eurPerKg: unit?.eurPerUnit ?? null,
-        derived: unit?.derived ?? false,
-        sourceId: unit?.sourceId ?? null,
-      },
+      climateCost,
       hasAnimalData: Object.keys(animalTotals.animalImpacts).length > 0,
+      animalFactorNotes,
+      animalWithoutFactor,
+      price,
+      iarc,
     };
   }
 
