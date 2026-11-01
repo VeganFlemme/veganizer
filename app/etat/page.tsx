@@ -5,7 +5,7 @@ import { Suspense } from "react";
 import { createClient } from "@/lib/supabase/server";
 
 export const metadata: Metadata = {
-  title: "État de la base — Veganizer",
+  title: "État de la base",
   description: "Vérification des droits de lecture publics sur la base Supabase.",
 };
 

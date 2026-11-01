@@ -87,4 +87,7 @@ Décisions prises en mode autonome quand plusieurs options étaient possibles. R
 | 2026-11-01 | S20 | Onglets de `/compare` côté client : `?onglet=` lu et écrit par l'API History (`useSyncExternalStore`), sans `searchParams` côté serveur. | Garder les pages statiques (règle de portabilité) avec un onglet partageable. | DESIGN.md § 3 (`TabBar`) |
 | 2026-11-01 | S20 | Score affiché par portion partout ; l'onglet Nutrition suit l'unité choisie (son bandeau vainqueur aussi). | « À l'unité affichée (par portion par défaut) » (DESIGN.md § 5). | — |
 | 2026-11-01 | S20 | Liens soulignés par défaut ; liens-boutons sans soulignement. | Règle axe `link-in-text-block` (le lien ne doit pas se distinguer par la seule couleur). | WCAG 1.4.1 |
-| 2026-11-01 | S20 | Captures (Playwright) en JPEG qualité 72, pleine page, `docs/captures/`. | Fichiers légers dans le dépôt pour les joindre à la PR. | — |
+| 2026-11-01 | S20 | Captures (Playwright) en JPEG qualité 55, pleine page, `docs/captures/`. | Fichiers légers dans le dépôt pour les joindre à la PR. | — |
+| 2026-11-01 | S21 | Pas de bandeau cookies. | Aucun traceur : 0 cookie et 0 requête tierce mesurés sur le build de production. | consigne S21 |
+| 2026-11-01 | S21 | Identité de l'éditeur, contact, responsable du traitement et durée de conservation laissés « [à compléter par Matt] ». | Consigne de Matt : ne rien inventer. | Matt |
+| 2026-11-01 | S21 | Adresses des hébergeurs citées seulement d'après leurs pages officielles ouvertes (Vercel : adresse postale ; Supabase : entité et e-mail, pas d'adresse publiée). | Ne rien inventer. | vercel.com/legal/privacy-policy, supabase.com/privacy |

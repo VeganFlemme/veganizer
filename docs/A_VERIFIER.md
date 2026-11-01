@@ -295,3 +295,15 @@ Chiffres clés par portion (nouvelles paires) :
 - [ ] **`/aliment/[code]`** : pas de score ni de vainqueur (comparaison simplifiée, sans recette : santé et économie non calculables). Mêmes tableaux et encadrés que `/compare`.
 - [ ] **« Télécharger les données »** : `/compare/<plat>/donnees` renvoie un JSON (valeurs par portion, sources, licences, mention ODbL pour les prix Open Prices). Vérifier que ce format convient.
 - [ ] **Accessibilité** : axe (WCAG 2.1 AA) sans erreur sur toutes les pages et tous les onglets en 375 et 1 280 px (`npm run test:e2e`, serveur lancé) ; navigation clavier des onglets testée.
+
+## Lot D — S21 Finitions techniques et légales
+
+- [ ] **Mentions légales et confidentialité : à compléter par Matt** (`app/mentions-legales/page.tsx`, `app/confidentialite/page.tsx`, marqués « [à compléter par Matt] ») : éditeur, adresse, contact, directeur de la publication, responsable du traitement et adresse pour exercer les droits, durée de conservation des signalements.
+- [ ] **Hébergeurs** : Vercel Inc., 440 N Barranca Avenue #4133, Covina, CA 91723 (page « Privacy Policy » de Vercel, mise à jour le 1er juin 2026) ; Supabase Pte. Ltd., contact privacy@supabase.com (page « Privacy » de Supabase, aucune adresse postale publiée), serveurs à Francfort. À relire.
+- [ ] **Confidentialité** : le formulaire de signalement n'enregistre que la page, le message et la date (`error_reports`, `created_by` reste vide sans compte). Les hébergeurs « peuvent » garder des journaux techniques : formulation prudente, à confirmer.
+- [ ] **Bandeau cookies : aucun.** Vérifié sur le build de production : aucun en-tête `Set-Cookie`, aucun cookie après navigation (accueil, comparaison, recette, aliment), aucune requête vers un autre domaine (police servie par le site).
+- [ ] **Lighthouse mobile** (build de production local, Lighthouse 12) : accueil 94, `/compare/boeuf-bourguignon` 97, `/aliment/6255` 96, `/recette` 99 (après correction d'un décalage de mise en page), `/methodologie` 98 ; accessibilité, bonnes pratiques et SEO à 100 partout. À refaire sur la prévisualisation Vercel (réseau réel).
+- [ ] **axe** : 0 erreur WCAG 2.1 AA sur 15 pages et onglets × 2 largeurs, navigation clavier des onglets (`npm run test:e2e`, 31 tests). Pas encore lancé en CI (il faut un serveur et la clé publique).
+- [ ] **Référencement** : `sitemap.xml` (pages fixes + 40 paires), `robots.txt` (exclut `/api/`, `/etat`, `/introuvable`), titres et descriptions, `canonical`, données structurées (`WebSite` sur l'accueil, `WebPage` + sources `Dataset` sur `/compare`), images de partage. Les 3 684 pages `/aliment` ne sont pas dans le plan du site (comparaisons simplifiées) : à décider.
+- [ ] **Base Supabase** : 97 Mo, soit 19 % des 500 Mo du plan Free (sous le seuil d'alerte de 60 %). Plus grosses tables : `food_nutrients` 35 Mo, `food_impact_ingredients` 32 Mo, `food_impacts` 13 Mo.
+- [ ] **Captures** (`docs/captures/`, 42 JPEG, 13 Mo) : à supprimer du dépôt après relecture si leur poids gêne.

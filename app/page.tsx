@@ -1,7 +1,10 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { HomeExplorer } from "@/components/HomeExplorer";
 import { Dot } from "@/components/ui/Dot";
 import { getPairPage, listPairs } from "@/lib/compare/data";
+
+export const metadata: Metadata = { alternates: { canonical: "/" } };
 
 // Pair shown first (editorial choice, docs/A_VERIFIER.md): the first pair of the roadmap mock-ups.
 const FEATURED = "boeuf-bourguignon";
@@ -48,6 +51,18 @@ export default async function Home() {
   const featured = pairs.find((p) => p.slug === FEATURED)?.slug ?? pairs[0]?.slug;
   return (
     <main className="flex flex-1 flex-col pb-8">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "WebSite",
+            name: "Veganizer",
+            inLanguage: "fr",
+            description: "Ton plat face à sa version végétale : nutrition, santé, environnement, protection animale et économie, chaque chiffre sourcé.",
+          }),
+        }}
+      />
       <HomeExplorer pairs={pairs} featured={featured ? <Featured slug={featured} /> : null} />
       <section className="mx-auto w-full max-w-[1200px] px-5 pt-[22px] md:px-8">
         <div className="flex flex-col gap-[10px] rounded-panel bg-surface p-5 md:max-w-[640px]">

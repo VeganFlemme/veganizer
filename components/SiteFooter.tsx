@@ -5,6 +5,9 @@ const LINKS = [
   { href: "/methodologie", label: "Méthodologie" },
   { href: "/sources", label: "Sources" },
   { href: "/a-propos", label: "À propos" },
+  { href: "/mentions-legales", label: "Mentions légales" },
+  { href: "/confidentialite", label: "Confidentialité" },
+  { href: "/conditions", label: "Conditions d’utilisation" },
 ];
 
 export function SiteFooter() {

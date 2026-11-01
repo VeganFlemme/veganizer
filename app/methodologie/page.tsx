@@ -6,7 +6,8 @@ import { ScoreMethod } from "@/components/methodology/ScoreMethod";
 import { getMethodologyStats, type MethodologyStats } from "@/lib/methodology/data";
 
 export const metadata: Metadata = {
-  title: "Méthodologie — Veganizer",
+  title: "Méthodologie",
+  alternates: { canonical: "/methodologie" },
   description:
     "Comment Veganizer calcule ses comparaisons : formule, sources, hypothèses, valeurs négatives et données manquantes.",
 };

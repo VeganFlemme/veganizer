@@ -36,7 +36,8 @@ for (const width of [375, 1280]) {
   await context.addInitScript((d) => window.localStorage.setItem("veganizer:recette", JSON.stringify(d)), DRAFT);
   const page = await context.newPage();
   for (const p of pages) {
-    await page.goto(base + p.path, { waitUntil: "networkidle" });
+    await page.goto(base + p.path, { waitUntil: "load" });
+    await page.waitForTimeout(800);
     if (p.recipe) {
       await page.getByRole("button", { name: "Analyser et voir la version végétale" }).click();
       await page.getByRole("tablist").waitFor();
@@ -44,7 +45,7 @@ for (const width of [375, 1280]) {
     }
     await page.evaluate(() => document.fonts.ready);
     const file = `${out}/${p.name}-${width}.jpg`;
-    await page.screenshot({ path: file, fullPage: true, type: "jpeg", quality: 72 });
+    await page.screenshot({ path: file, fullPage: true, type: "jpeg", quality: 55 });
     console.log(file);
   }
   await context.close();
