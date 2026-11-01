@@ -1,0 +1,165 @@
+{
+  "version": "0.1",
+  "status": "brouillon — à valider avant affichage",
+  "avertissement": "Informations générales, pas un conseil médical. Parlez-en à un professionnel de santé (médecin, diététicien·ne) avant de prendre un complément.",
+  "conseils": [
+    {
+      "id": "vitamine-b12",
+      "criteria": [
+        "vit_b12_ug"
+      ],
+      "titre": "Vitamine B12 : complément ou aliments enrichis",
+      "texte": "Selon l'ANSES, même une alimentation végétalienne optimisée ne couvre pas les besoins en vitamine B12. Solution : un complément de B12 ou des aliments enrichis, avec un suivi par un professionnel de santé.",
+      "sources": [
+        {
+          "publisher": "ANSES",
+          "title": "Avis relatif à l'établissement de repères alimentaires destinés aux personnes suivant un régime d'exclusion de tout ou partie des aliments d'origine animale",
+          "reference": "Saisine n° 2019-SA-0118",
+          "pages": "p. 22 (tableau 9), 30 et 31",
+          "date": "2025-02-03",
+          "url": "https://www.anses.fr/fr/system/files/NUT2019-SA-0118.pdf",
+          "accessedOn": "2026-11-01"
+        }
+      ]
+    },
+    {
+      "id": "iode",
+      "criteria": [
+        "i_ug"
+      ],
+      "titre": "Iode : sel iodé et produits enrichis",
+      "texte": "L'ANSES observe un statut en iode plus faible chez les végétariens. Le sel iodé fait partie des principales sources d'iode ; les analogues de produits laitiers enrichis y contribuent aussi. Les algues en contiennent beaucoup mais de façon très variable : un excès régulier peut perturber la thyroïde.",
+      "sources": [
+        {
+          "publisher": "ANSES",
+          "title": "Avis relatif à l'établissement de repères alimentaires destinés aux personnes suivant un régime d'exclusion de tout ou partie des aliments d'origine animale",
+          "reference": "Saisine n° 2019-SA-0118",
+          "pages": "p. 24 et 30",
+          "date": "2025-02-03",
+          "url": "https://www.anses.fr/fr/system/files/NUT2019-SA-0118.pdf",
+          "accessedOn": "2026-11-01"
+        },
+        {
+          "publisher": "ANSES",
+          "title": "Iode : pourquoi et comment en consommer ?",
+          "url": "https://www.anses.fr/fr/content/iode",
+          "accessedOn": "2026-11-01"
+        }
+      ]
+    },
+    {
+      "id": "omega-3-dha",
+      "criteria": [
+        "fa_c22_6_n3_dha_g",
+        "fa_c20_5_n3_epa_g"
+      ],
+      "titre": "Oméga-3 (EPA, DHA) : huiles riches en ALA, complément si besoin",
+      "texte": "Les plats végétaux n'apportent pas d'EPA ni de DHA. L'ANSES recommande qu'environ la moitié des huiles soit riche en acide alpha-linolénique (colza, noix, soja, lin), mais note que les besoins en EPA+DHA restent difficiles à couvrir : à l'échelle individuelle, une supplémentation peut être envisagée.",
+      "sources": [
+        {
+          "publisher": "ANSES",
+          "title": "Avis relatif à l'établissement de repères alimentaires destinés aux personnes suivant un régime d'exclusion de tout ou partie des aliments d'origine animale",
+          "reference": "Saisine n° 2019-SA-0118",
+          "pages": "p. 24, 30 et 31",
+          "date": "2025-02-03",
+          "url": "https://www.anses.fr/fr/system/files/NUT2019-SA-0118.pdf",
+          "accessedOn": "2026-11-01"
+        }
+      ]
+    },
+    {
+      "id": "calcium",
+      "criteria": [
+        "ca_mg"
+      ],
+      "titre": "Calcium : versions enrichies",
+      "texte": "L'ANSES conseille de privilégier les analogues de produits laitiers (boissons, desserts, yaourts végétaux) enrichis en calcium et non sucrés. Les fruits et légumes et les oléagineux contribuent aussi aux apports.",
+      "sources": [
+        {
+          "publisher": "ANSES",
+          "title": "Avis relatif à l'établissement de repères alimentaires destinés aux personnes suivant un régime d'exclusion de tout ou partie des aliments d'origine animale",
+          "reference": "Saisine n° 2019-SA-0118",
+          "pages": "p. 23 et 24",
+          "date": "2025-02-03",
+          "url": "https://www.anses.fr/fr/system/files/NUT2019-SA-0118.pdf",
+          "accessedOn": "2026-11-01"
+        }
+      ]
+    },
+    {
+      "id": "vitamine-d",
+      "criteria": [
+        "vit_d_ug",
+        "vit_d2_ug",
+        "vit_d3_ug"
+      ],
+      "titre": "Vitamine D : aliments enrichis, complément si besoin",
+      "texte": "Les besoins en vitamine D sont difficiles à couvrir par l'alimentation, pour les végétariens comme pour la population générale (ANSES). Les produits enrichis y contribuent ; à l'échelle individuelle, une supplémentation peut être envisagée avec un professionnel de santé.",
+      "sources": [
+        {
+          "publisher": "ANSES",
+          "title": "Avis relatif à l'établissement de repères alimentaires destinés aux personnes suivant un régime d'exclusion de tout ou partie des aliments d'origine animale",
+          "reference": "Saisine n° 2019-SA-0118",
+          "pages": "p. 24, 30 et 31",
+          "date": "2025-02-03",
+          "url": "https://www.anses.fr/fr/system/files/NUT2019-SA-0118.pdf",
+          "accessedOn": "2026-11-01"
+        }
+      ]
+    },
+    {
+      "id": "qualite-proteines",
+      "criteria": [
+        "protein_g",
+        "diaas"
+      ],
+      "titre": "Protéines : varier les sources végétales",
+      "texte": "Les céréales sont pauvres en lysine, les légumineuses en acides aminés soufrés : varier les sources de protéines sur la journée suffit, l'ANSES ne recommande pas de les associer systématiquement. Les légumes secs (repère ANSES : environ 120 g/j pour les végétaliens) et les analogues de viande riches en protéines sont de bons contributeurs.",
+      "sources": [
+        {
+          "publisher": "ANSES",
+          "title": "Protéines : rôle, sources et apports recommandés",
+          "url": "https://www.anses.fr/fr/content/les-prot%C3%A9ines",
+          "accessedOn": "2026-11-01"
+        },
+        {
+          "publisher": "ANSES",
+          "title": "Avis relatif à l'établissement de repères alimentaires destinés aux personnes suivant un régime d'exclusion de tout ou partie des aliments d'origine animale",
+          "reference": "Saisine n° 2019-SA-0118",
+          "pages": "p. 24 et 30",
+          "date": "2025-02-03",
+          "url": "https://www.anses.fr/fr/system/files/NUT2019-SA-0118.pdf",
+          "accessedOn": "2026-11-01"
+        }
+      ]
+    },
+    {
+      "id": "fer-vitamine-c",
+      "criteria": [
+        "fe_mg"
+      ],
+      "titre": "Fer : associer une source de vitamine C",
+      "texte": "Le fer des végétaux (non héminique) est mieux absorbé en présence de vitamine C, qui compense en grande partie l'effet des phytates (EFSA). Cet effet est plus faible à l'échelle d'une alimentation complète qu'au repas. Les légumes secs sont de forts contributeurs en fer (ANSES).",
+      "sources": [
+        {
+          "publisher": "EFSA",
+          "title": "Scientific Opinion on Dietary Reference Values for iron",
+          "reference": "EFSA Journal 2015;13(10):4254",
+          "pages": "p. 15-16",
+          "date": "2015",
+          "url": "https://doi.org/10.2903/j.efsa.2015.4254",
+          "accessedOn": "2026-11-01"
+        },
+        {
+          "publisher": "ANSES",
+          "title": "Avis relatif à l'établissement de repères alimentaires destinés aux personnes suivant un régime d'exclusion de tout ou partie des aliments d'origine animale",
+          "reference": "Saisine n° 2019-SA-0118",
+          "pages": "p. 24",
+          "date": "2025-02-03",
+          "url": "https://www.anses.fr/fr/system/files/NUT2019-SA-0118.pdf",
+          "accessedOn": "2026-11-01"
+        }
+      ]
+    }
+  ]
+}
