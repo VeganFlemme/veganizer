@@ -1,0 +1,88 @@
+{
+  "version": "1.0",
+  "date": "2026-11-01",
+  "status": "Correspondance relue par Claude (suite V1, étape 3 bis, point 3) : plat animal de nos paires → plat composé AGRIBALYSE dont la recette officielle est retenue (pipeline/reports/agribalyse_recipes_check.csv). La recette officielle remplace notre recette pour le plat lui-même, mise à l'échelle de la masse de ce plat dans notre recette ; les accompagnements listés restent ceux de notre recette type.",
+  "pairs": [
+    {
+      "slug": "hachis-parmentier",
+      "dishCode": "25009",
+      "sides": []
+    },
+    {
+      "slug": "lasagnes-bolognaise",
+      "dishCode": "25081",
+      "sides": []
+    },
+    {
+      "slug": "croque-monsieur",
+      "dishCode": "25400",
+      "sides": [
+        "20031",
+        "17130",
+        "11018"
+      ],
+      "note": "salade verte et vinaigrette"
+    },
+    {
+      "slug": "endives-au-jambon",
+      "dishCode": "25073",
+      "sides": [
+        "4003"
+      ],
+      "note": "pommes de terre"
+    },
+    {
+      "slug": "sandwich-jambon-beurre",
+      "dishCode": "25517",
+      "sides": [
+        "20009",
+        "17130",
+        "13009",
+        "13039"
+      ],
+      "note": "carottes râpées et pomme"
+    },
+    {
+      "slug": "pizza-jambon-fromage",
+      "dishCode": "25435",
+      "sides": [
+        "20031",
+        "17130",
+        "11018",
+        "11013"
+      ],
+      "note": "salade verte et vinaigrette"
+    },
+    {
+      "slug": "galette-complete",
+      "dishCode": "25562",
+      "sides": [
+        "20031",
+        "17130",
+        "11018",
+        "11013"
+      ],
+      "note": "salade verte et vinaigrette"
+    },
+    {
+      "slug": "poulet-curry-coco",
+      "dishCode": "25174",
+      "sides": [
+        "9104"
+      ],
+      "note": "riz"
+    }
+  ],
+  "excluded": [
+    {
+      "slug": "pates-carbonara",
+      "dishCode": "25135",
+      "reason": "AGRIBALYSE modélise ce plat avec la recette des lasagnes à la bolognaise (bouillon, carotte, tomate, porc) : pas une carbonara, recette officielle non reprise."
+    },
+    {
+      "slug": "pot-au-feu",
+      "dishCode": "25013",
+      "reason": "Plat approché par une autre recette dans AGRIBALYSE (annexe 10 du rapport méthodologique) : recette officielle non reprise."
+    }
+  ]
+}

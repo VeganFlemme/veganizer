@@ -3,8 +3,10 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ErrorReport } from "@/components/ErrorReport";
 import { FoodAlone } from "@/components/compare/FoodAlone";
-import { PairView } from "@/components/compare/PairView";
+import { AutoPairView } from "@/components/compare/AutoPairView";
 import { SourcesFooter } from "@/components/ui/SourcesFooter";
+import { buildAutoPage } from "@/lib/compare/auto";
+import { getAutoFood } from "@/lib/compare/auto-data";
 import { getFoodPage } from "@/lib/compare/data";
 
 // Rendered on first request and cached one day (cacheLife in lib/compare/data.ts).
@@ -15,44 +17,56 @@ export async function generateStaticParams() {
 
 export async function generateMetadata({ params }: PageProps<"/aliment/[code]">): Promise<Metadata> {
   const { code } = await params;
-  const page = await getFoodPage(code);
-  if (!page) return {};
+  const auto = await getAutoFood(code);
+  const name = auto ? auto.input.raw.animal.name_fr : (await getFoodPage(code))?.food.name;
+  if (!name) return {};
   return {
-    title: `${page.food.name} : comparaison automatique`,
-    description: `${page.food.name} comparé à des alternatives végétales du catalogue Ciqual / Agribalyse, pour 100 g : nutrition, santé, environnement, animaux, économie.`,
+    title: `${name} : comparaison automatique`,
+    description: `${name} comparé aux protéines végétales du catalogue Ciqual / Agribalyse, pour 100 g : nutrition, santé, environnement, animaux, économie.`,
     alternates: { canonical: `/aliment/${code}` },
   };
 }
 
 /** Same mention on every comparison (decision of Matt, 17 h 25). */
-const badge = (
-  <>
-    Comparaison automatique d’après Ciqual et Agribalyse, pour 100 g ·{" "}
-    <Link href="/methodologie" className="text-on-dark-1 underline hover:text-white">
-      Méthode
-    </Link>
-  </>
-);
+function badge(official: string | null) {
+  return (
+    <>
+      Comparaison automatique d’après Ciqual et Agribalyse, pour 100 g ·{" "}
+      <Link href="/methodologie#choix-proteine" className="text-on-dark-1 underline hover:text-white">
+        Méthode
+      </Link>
+      {official ? <> · recette officielle Agribalyse ({official})</> : null}
+    </>
+  );
+}
 
 export default async function FoodPage({ params }: PageProps<"/aliment/[code]">) {
   const { code } = await params;
-  const page = await getFoodPage(code);
-  if (!page) notFound();
-  const { pair, food } = page;
+  // Animal food or AGRIBALYSE dish with a retained official recipe: the visitor chooses the protein.
+  const auto = await getAutoFood(code);
+  const built = auto && buildAutoPage(auto.input, auto.defaultCode);
+  const page = built ? null : await getFoodPage(code);
+  if (!built && !page) notFound();
+  const name = built ? built.model.animal.name : page!.food.name;
+  const sources = built ? Object.values(built.model.sources) : Object.values(page!.food.sources);
 
   return (
     <main className="flex flex-1 flex-col">
-      {pair.choices.length > 0 ? <PairView model={pair} badge={badge} /> : <FoodAlone model={food} badge={badge} />}
-      <div id="signaler" className={`mx-auto w-full max-w-[1440px] scroll-mt-20 px-5 pb-6 md:px-8 min-[1440px]:px-12 ${pair.choices.length > 0 ? "xl:pl-[256px] min-[1440px]:pl-[272px]" : ""}`}>
+      {built && auto ? (
+        <AutoPairView input={auto.input} defaultCode={auto.defaultCode} wins={auto.wins} badge={badge(auto.input.recipe.kind === "officielle" ? (auto.input.recipe.officialName ?? null) : null)} />
+      ) : (
+        <FoodAlone model={page!.food} badge={badge(null)} />
+      )}
+      <div id="signaler" className={`mx-auto w-full max-w-[1440px] scroll-mt-20 px-5 pb-6 md:px-8 min-[1440px]:px-12 ${built ? "xl:pl-[256px] min-[1440px]:pl-[272px]" : ""}`}>
         <ErrorReport
-          page={`/aliment/${food.code}`}
-          title="Proposer une alternative ou signaler une erreur"
-          intro="Tu connais une alternative végétale qui joue le même rôle ? Propose-la, ou signale une erreur : chaque message est relu."
+          page={`/aliment/${code}`}
+          title="Signaler une erreur"
+          intro="Un chiffre te semble faux, ou une protéine manque à la liste ? Écris-nous : chaque message est relu."
           buttonLabel="Envoyer"
-          defaultMessage={`Je propose une alternative pour « ${food.name} » (code ${food.code}) : `}
+          defaultMessage={`À propos de « ${name} » (code ${code}) : `}
         />
       </div>
-      <SourcesFooter sources={Object.values(pair.choices.length > 0 ? pair.sources : food.sources)} indent={pair.choices.length > 0} />
+      <SourcesFooter sources={sources} indent={!!built} />
     </main>
   );
 }

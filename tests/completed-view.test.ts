@@ -88,6 +88,11 @@ describe("buildPairPage: completed version (decisions of Matt, 17 h 05 and 17 h 
     expect(row("ghg_100y_kgco2e").vegetal!.value!).toBeCloseTo((0.6 + 0.0048) / 2, 4);
   });
 
+  it("names the gaps that remain in the nutrition label (« Écarts comblés, sauf : vitamine B12 »)", () => {
+    const n = c.view.scores.verdict.categories.find((x) => x.id === "nutrition")!;
+    expect(n.constructedLabel).toMatch(/^Écarts comblés, sauf : .*B12/i);
+  });
+
   it("keeps the base version unchanged and has no completed version without a whitelist", () => {
     expect(page.variants.maison!.rows.perServing.find((r) => r.id === "ghg_100y_kgco2e")!.vegetal!.value!).toBeCloseTo(0.2);
     const r = raw();

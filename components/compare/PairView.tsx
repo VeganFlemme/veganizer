@@ -3,8 +3,10 @@
 import Link from "next/link";
 import { Fragment, useState, type ReactNode } from "react";
 import sante from "@/data/sante.json";
-import { AnimalBetterBox, AnimalBetterSummary } from "@/components/ui/AnimalBetterBox";
+import { AnimalBetterBox, AnimalBetterSummary, REMAINING_TITLE } from "@/components/ui/AnimalBetterBox";
 import { ChipGroup } from "@/components/ui/ChipGroup";
+import { ProteinPicker } from "@/components/ui/ProteinPicker";
+import { displayName } from "@/lib/compare/food";
 import { CategoryBanner } from "@/components/ui/CategoryBanner";
 import { CategoryCard } from "@/components/ui/CategoryCard";
 import { DataTable, type DataTableRow } from "@/components/ui/DataTable";
@@ -22,7 +24,7 @@ import { VerdictPanel } from "@/components/ui/VerdictPanel";
 import { animalBetterTitle, CLIMATE_MAIN, COVERAGE_WARNING } from "@/lib/compare/config";
 import { alignRecipes } from "@/lib/compare/align";
 import { NUTRIENT_REASON } from "@/lib/compare/views";
-import { additionLine, boostLine, co2Summary, completedSentence, ingredientsText, isVersionId, outsideLine, VERSIONS, type VersionId } from "@/lib/compare/views";
+import { additionLine, boostLine, co2Summary, completedSentence, ingredientsText, isVersionId, VERSIONS, type VersionId } from "@/lib/compare/views";
 import complementsFile from "@/data/complements.json";
 import type { CategoryId, CategoryScoreView } from "@/lib/compare/scores";
 import type { CompletedVariantView, CriterionRow, DishView, IngredientPrice, PairPageModel, PriceSide, SideValue, VariantView } from "@/lib/compare/view";
@@ -425,7 +427,7 @@ function Overview({ model, v, open, base, completed }: { model: PairPageModel; v
           animalsCounted={animals?.animal != null}
         />
       </div>
-      <AnimalBetterSummary items={v.animalBetter} collapsible />
+      <AnimalBetterSummary items={completed ? v.animalBetter.filter((x) => x.category !== "nutrition") : v.animalBetter} collapsible per={model.animal.servings === 1 ? "pour 100 g" : "par portion"} />
       <Panel title="Les recettes comparées" className="mt-3">
         {v.rationale && (
           <p className="m-0 text-[14px] leading-normal text-ink-2">
@@ -579,6 +581,27 @@ function NutritionTab({ v, basis, setBasis, servingLabel }: { v: VariantView; ba
   );
 }
 
+/** Soy in the plant version: ANSES opinion on isoflavones (2022-SA-0221, 8 January 2025, published 24 March 2025). No figure, no advice (rule 6). */
+function SoyNote({ names }: { names: string[] }) {
+  return (
+    <Panel title="Soja et isoflavones">
+      <p className="m-0 text-[14px] leading-normal md:text-[15px]">
+        Cette version végétale contient du soja ({names.map((n) => displayName(n).toLowerCase()).join(", ")}). Dans un avis rendu public le 24 mars 2025, l’Anses relève que
+        les isoflavones « sont principalement contenues dans le soja » et constate, chez les consommateurs de soja, des dépassements de la valeur de référence
+        qu’elle a établie ; elle ne recommande pas de servir des aliments à base de soja en restauration collective et conseille de diversifier les aliments
+        d’origine végétale. Varier les protéines (lentilles, pois chiches, haricots, seitan…) est possible dans la liste ci-dessus.
+      </p>
+      <p className="m-0 text-[13px] leading-normal text-ink-2">
+        Information générale, pas un conseil médical : parlez-en à un professionnel de santé. Source :{" "}
+        <a href="https://www.anses.fr/fr/actualite/eviter-isoflavones-menus-restaurations-collectives" rel="noopener noreferrer">
+          Anses, « Éviter les isoflavones dans les menus des restaurations collectives », 24 mars 2025
+        </a>{" "}
+        ; <a href="https://www.anses.fr/sites/default/files/NUT2022SA0221.pdf" rel="noopener noreferrer">avis, saisine n° 2022-SA-0221, 8 janvier 2025, p. 40-41</a>.
+      </p>
+    </Panel>
+  );
+}
+
 function SanteTab({ v }: { v: VariantView }) {
   const guide = (x: (typeof v.pnns)[number], per: string): DataTableRow => {
     const cell = (g: number, p: number | null) => (
@@ -637,6 +660,7 @@ function SanteTab({ v }: { v: VariantView }) {
           .
         </p>
       </Panel>
+      {v.soyIngredients.length > 0 && <SoyNote names={v.soyIngredients} />}
       <Panel title="Repères de consommation pour les adultes (PNNS)">
         <DataTable caption="Repères PNNS" unitLabel="Par portion" rows={v.pnns.map((x) => guide(x, "par semaine"))} footer={v.pnns[0] && <>Santé publique France, recommandations pour les adultes, {[...new Set(v.pnns.map((x) => x.entry.source.pages))].join(" ; ")}. Affiché, non compté dans le score (mêmes grammes que le CIRC).</>} />
       </Panel>
@@ -827,7 +851,7 @@ function EconomyTab({ v, animalName }: { v: VariantView; animalName: string }) {
  * Version complétée: the additions, as an example (never a recommendation, rule 6), with the
  * energy of both dishes in view.
  */
-function CompletedPanel({ c, animal }: { c: CompletedVariantView; animal: DishView }) {
+function CompletedPanel({ c, animal, per }: { c: CompletedVariantView; animal: DishView; per: string }) {
   const energy = c.view.rows.perServing.find((r) => r.id === "energy_eu_kcal");
   const kcal = (x: SideValue | null) => (x?.value == null ? MISSING : `${formatInt(x.value)}${NBSP}kcal`);
   return (
@@ -858,7 +882,7 @@ function CompletedPanel({ c, animal }: { c: CompletedVariantView; animal: DishVi
         ))}
         {!c.boost && c.additions.length === 0 && <li>Aucun ajout : la version végétale n’a pas d’écart que la liste permet de combler.</li>}
       </ul>
-      {outsideLine(c.open) && <p className="m-0 text-[14px] font-semibold text-animal-note">{outsideLine(c.open)}</p>}
+      <AnimalBetterBox items={c.view.animalBetter.filter((x) => x.category === "nutrition")} title={REMAINING_TITLE} collapsible per={per} />
       <p className="m-0 text-[13px] text-ink-3">
         Valeurs Ciqual et Agribalyse des aliments ajoutés ; limites de sécurité de l’ANSES (<Link href="/methodologie#version-complete">méthode</Link>).
       </p>
@@ -934,7 +958,6 @@ function CompletedRecipe({ c, animal }: { c: CompletedVariantView; animal: DishV
           ))}
         </tbody>
       </table>
-      {outsideLine(c.open) && <p className="m-0 text-[14px] text-animal-note">{outsideLine(c.open)}</p>}
       <div className="flex flex-wrap items-center gap-3">
         <button type="button" onClick={copy} className="min-h-11 cursor-pointer rounded-btn border border-action bg-surface px-4 text-[14px] font-bold text-action">
           Copier la liste des ingrédients
@@ -956,6 +979,10 @@ export function PairView({
   useUrl = true,
   viewInUrl = useUrl,
   base = "comparaison",
+  variant: controlledVariant,
+  onVariantChange,
+  choiceSentence,
+  notice,
 }: {
   model: PairPageModel;
   badge: ReactNode;
@@ -964,9 +991,18 @@ export function PairView({
   /** Keep the view (?vue=) in the URL, even when the tab is not (/recette). */
   viewInUrl?: boolean;
   base?: string;
+  /** Controlled choice (protein chosen by the visitor, kept in the URL by the parent). */
+  variant?: string;
+  onVariantChange?: (id: string) => void;
+  /** One sentence under the list of proteins (« avec 12 protéines sur 12 »). */
+  choiceSentence?: string;
+  /** Warning shown under the toolbar (animal ingredient without a replacement rule…). */
+  notice?: ReactNode;
 }) {
   const choices = model.choices;
-  const [variant, setVariant] = useState<string>(choices[0]?.id ?? "maison");
+  const [localVariant, setLocalVariant] = useState<string>(choices[0]?.id ?? "maison");
+  const variant = controlledVariant ?? localVariant;
+  const setVariant = onVariantChange ?? setLocalVariant;
   const choice = choices.find((c) => c.id === variant);
   const [basis, setBasis] = useState<Basis>("perServing");
   const [urlTab, setUrlTab] = useQueryParam("onglet", useUrl);
@@ -983,13 +1019,15 @@ export function PairView({
     document.getElementById(tabId(base, t))?.focus({ preventScroll: true });
   };
   const realistic = model.variants[variant];
+  // Food pages and AGRIBALYSE dishes: one « serving » of 100 g.
+  const per = model.animal.servings === 1 ? "pour 100 g" : "par portion";
   const completed = model.completed[variant];
   // « Version complétée »: the whole page (tabs, scores, simulator) uses the completed plant version.
   const isComplete = version === "complete" && !!completed;
   const v = isComplete ? completed!.view : realistic;
   if (!v || !realistic) return <p className="px-5">Alternative indisponible.</p>;
   const co2Of = (x: VariantView | undefined) => x?.rows.perServing.find((r) => r.id === CLIMATE_MAIN)?.reductionPercent ?? null;
-  const co2Line = co2Summary(co2Of(realistic), co2Of(completed?.view));
+  const co2Line = co2Summary(co2Of(realistic), co2Of(completed?.view), per);
   const score = v.scores.verdict.categories.find((c) => c.id === tab);
   const banner = score && (tab === "nutrition" ? v.scores.nutritionByBasis[basis] : score);
   const bannerUnit = tab === "nutrition" ? UNIT_OPTIONS.find((u) => u.id === basis)?.long.toLowerCase() : "par portion";
@@ -1010,15 +1048,21 @@ export function PairView({
             )}
             {/* Toolbar: alternative and view on one line on large screens. */}
             <div className="flex flex-col gap-2 md:self-start lg:flex-row lg:flex-wrap lg:items-center lg:gap-x-5 lg:self-stretch">
-              {choices.length > 1 && <ChipGroup tone="dark" wrap caption="Alternative" label="Alternative végétale" options={choices.map((c) => ({ id: c.id, label: c.label }))} value={variant} onChange={setVariant} />}
+              {choices.length > 3 ? (
+                <ProteinPicker choices={choices} value={variant} onChange={setVariant} />
+              ) : (
+                choices.length > 1 && <ChipGroup tone="dark" wrap caption="Alternative" label="Alternative végétale" options={choices.map((c) => ({ id: c.id, label: c.label }))} value={variant} onChange={setVariant} />
+              )}
               {completed && <ChipGroup tone="dark" caption="Version" label="Version comparée" options={VERSIONS} value={isComplete ? "complete" : "base"} onChange={setVersion} />}
             </div>
             <div className="flex flex-col gap-1">
               {choice?.reason && (
                 <p className="m-0 text-[14px] leading-normal text-on-dark-2">
-                  <strong className="text-on-dark-1">Pourquoi cette alternative :</strong> {choice.reason}
+                  <strong className="text-on-dark-1">{choices.length > 3 ? "Pourquoi cette protéine :" : "Pourquoi cette alternative :"}</strong> {choice.reason}
                 </p>
               )}
+              {choiceSentence && <p className="m-0 text-[14px] leading-normal text-on-dark-2">{choiceSentence}</p>}
+              {notice && <div className="m-0 text-[14px] leading-normal text-on-dark-1">{notice}</div>}
               {co2Line && <p className="m-0 text-[14px] font-semibold text-on-dark-1">{co2Line}</p>}
               {isComplete && <p className="m-0 text-[14px] font-semibold text-on-dark-1">{completedSentence(co2Of(completed!.view))}</p>}
             </div>
@@ -1039,7 +1083,7 @@ export function PairView({
         />
         <div className="min-w-0">
         <Legend />
-        {isComplete && <CompletedPanel c={completed!} animal={model.animal} />}
+        {isComplete && <CompletedPanel c={completed!} animal={model.animal} per={per} />}
         {TABS.map((t) => (
           <div key={t.id} role="tabpanel" id={panelId(base, t.id)} aria-labelledby={tabId(base, t.id)} hidden={t.id !== tab} tabIndex={-1} className="pt-3">
             {t.id === tab &&
@@ -1070,7 +1114,7 @@ export function PairView({
                           <CategoryBanner score={banner} unitLabel={bannerUnit} />
                         </div>
                       )}
-                      <AnimalBetterBox items={v.animalBetter.filter((x) => x.category === t.id)} title={animalBetterTitle(t.id)} collapsible />
+                      <AnimalBetterBox items={isComplete && t.id === "nutrition" ? [] : v.animalBetter.filter((x) => x.category === t.id)} title={animalBetterTitle(t.id)} collapsible per={per} />
                     </aside>
                   </div>
                 </div>

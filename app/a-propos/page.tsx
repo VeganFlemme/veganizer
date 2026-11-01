@@ -19,8 +19,8 @@ export default function AboutPage() {
             animaux, pour leur budget. Veganizer répond plat par plat, avec des chiffres issus de bases publiques et sans jugement.
           </p>
           <p className="m-0">
-            Nous montrons aussi les points où le plat animal fait mieux, avec une solution concrète et sourcée : c’est la condition pour que tu puisses nous faire
-            confiance.
+            Nous montrons aussi « ce qui reste à couvrir » : tout ce que le plat animal apporte de plus, avec les valeurs des deux plats et une solution
+            sourcée. C’est la condition pour que tu puisses nous faire confiance.
           </p>
         </ProseSection>
         <ProseSection id="comment" title="Comment c’est fait">

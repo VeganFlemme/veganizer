@@ -137,9 +137,9 @@ export function categoryOf(id: string): ScoreCategoryId | null {
   return CATEGORY_OF.get(id) ?? null;
 }
 
-/** « Là où le plat animal fait mieux en nutrition » (subject: « l’aliment d’origine » on /aliment). */
-export function animalBetterTitle(category: ScoreCategoryId, subject = "le plat animal"): string {
-  return `Là où ${subject} fait mieux en ${(CATEGORY_LABEL.get(category) ?? category).toLowerCase()}`;
+/** « Ce qui reste à couvrir en nutrition »: neutral title (decision of Matt, 18 h 27), same on every page. */
+export function animalBetterTitle(category: ScoreCategoryId): string {
+  return `Ce qui reste à couvrir en ${(CATEGORY_LABEL.get(category) ?? category).toLowerCase()}`;
 }
 
 /** Advantages grouped by category, in the order of the tabs; empty categories are dropped. */

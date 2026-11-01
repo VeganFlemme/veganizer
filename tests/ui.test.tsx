@@ -142,8 +142,26 @@ describe("components/ui", () => {
     const item = (criterion: string, category: "nutrition" | "economie") => ({ criterion, name: criterion, partial: false, category, conseil: null });
     const h = html(<AnimalBetterSummary items={[item("price_eur", "economie"), item("vit_b12_ug", "nutrition")]} />);
     expect(h.indexOf("En nutrition")).toBeLessThan(h.indexOf("En économie"));
-    expect(h).toContain("Là où le plat animal fait mieux");
+    expect(h).toContain("Ce qui reste à couvrir");
+    expect(h).not.toContain("fait mieux");
     expect(html(<AnimalBetterSummary items={[]} />)).toBe("");
+  });
+
+  it("« Ce qui reste à couvrir »: both values, « moins = mieux » apart with its main ingredients, never « Pas encore de conseil sourcé »", () => {
+    const side = (value: number) => ({ value, low: value, high: value, rangePublished: false, censored: false, coverage: 1, dqr: null });
+    const h = html(
+      <AnimalBetterBox
+        items={[
+          { criterion: "zn_mg", name: "Zinc", partial: false, category: "nutrition", conseil: null, animal: side(12.7), vegetal: side(5.3), unit: "mg", direction: "up" },
+          { criterion: "sugars_g", name: "dont sucres", partial: false, category: "nutrition", conseil: null, animal: side(5.5), vegetal: side(11.1), unit: "g", direction: "down", contributors: ["carottes", "vin rouge"] },
+        ]}
+      />,
+    );
+    expect(h).toContain("Plat animal : 12,7\u00a0mg par portion ; version végétale : 5,3\u00a0mg.");
+    expect(h).toContain("À surveiller (moins = mieux)");
+    expect(h).toContain("Surtout : carottes et vin rouge.");
+    expect(h.indexOf("Zinc")).toBeLessThan(h.indexOf("À surveiller"));
+    expect(h).not.toContain("Pas encore de conseil");
   });
 
   it("MissingValue and MedicalNote", () => {

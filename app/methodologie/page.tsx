@@ -90,10 +90,10 @@ function Formula({ children }: { children: ReactNode }) {
 
 const SECTIONS = [
   ["principe", "Le principe : comparer à fonction égale"],
-  ["paires", "Les paires de plats : maison et du commerce"],
+  ["paires", "Les plats et leur version végétale"],
   ["recettes-types", "Recettes types et recettes officielles"],
   ["version-complete", "Version de base et version complétée"],
-  ["comparaison-simplifiee", "Plats et aliments : une comparaison automatique"],
+  ["choix-proteine", "La protéine au choix"],
   ["ta-recette", "« Analyse ta recette »"],
   ["formule", "La formule de calcul"],
   ["vainqueur", "Comment on désigne un vainqueur"],
@@ -376,59 +376,29 @@ export default async function MethodologiePage() {
           égal.
         </p>
         <p>
-          Nous montrons aussi les points où le plat animal fait mieux (vitamine B12, qualité des
-          protéines, prix…), avec la solution correspondante : aliment enrichi, complément, association
-          de protéines.
+          Nous montrons aussi, sous le titre « Ce qui reste à couvrir », tout ce que le plat animal apporte de plus (vitamine B12,
+          qualité des protéines, prix…), avec les valeurs des deux plats et la solution sourcée : aliment enrichi, complément, association
+          de protéines. Les indicateurs où « moins = mieux » (sucres, sel, acides gras saturés…) sont présentés à part, avec les valeurs et
+          les ingrédients qui en apportent le plus ; sans conseil sourcé, seulement les faits.
         </p>
       </Section>
 
-      <Section id="paires" title="Les paires de plats : maison et du commerce">
+      <Section id="paires" title="Les plats et leur version végétale">
         <p>
-          Chaque plat animal est comparé, pour 4 portions, à une version végétale
-          <strong> faite maison</strong> (avec des ingrédients de base : tofu, tempeh, légumineuses,
-          farine…) et, quand un produit adapté existe, à une version avec un
-          <strong> produit du commerce</strong> prêt à l’emploi (haché végétal, galette, nuggets,
-          tranches ou râpé végétal…). Une version faite avec des ingrédients de base n’est pas une
-          version « du commerce » : sans produit adapté, il n’y a pas de version du commerce.
+          Chaque plat est d’abord une <strong>recette du plat animal</strong> : la recette officielle d’Agribalyse quand nous pouvons la reprendre (voir
+          ci-dessous), sinon une <strong>recette type rédigée par Veganizer</strong>. Ces recettes types ont été écrites par une IA, puis contrôlées par des
+          règles et des tests automatiques (masses, portions réalistes, ingrédients simples, données disponibles pour au moins 95 % de la masse) ; aucune n’a
+          été relue par un professionnel. Chaque page permet d’ouvrir la recette dans « Analyse ta recette » pour la modifier.
         </p>
-        <p>Les recettes végétales suivent ces règles :</p>
-        <ul className="list-disc space-y-1 pl-5">
-          <li>
-            <strong>on ne remplace que ce qui est animal</strong> : les ingrédients déjà végétaux
-            (légumes, féculents, compote, huile…) restent identiques, même aliment et même quantité ;
-          </li>
-          <li>
-            <strong>pas d’ajout hors recette</strong> : chaque ingrédient animal est remplacé par un
-            ingrédient végétal du même rôle ; on n’ajoute pas d’ingrédient sans équivalent dans le plat
-            d’origine ;
-          </li>
-          <li>
-            <strong>plafond de quantité</strong> : la masse des ingrédients « source de protéines » de
-            la version végétale (tofu, tempeh, seitan, légumineuses, produits végétaux prêts à l’emploi)
-            ne dépasse pas de plus de 20 % celle des ingrédients qu’ils remplacent dans le plat animal
-            (viande, poisson, œufs, fromage quand il est un élément principal, et la panure d’un produit
-            pané prêt à l’emploi) ;
-          </li>
-          <li>
-            <strong>70 % des protéines du plat animal : un objectif, pas un critère</strong>. S’il
-            n’est pas atteint, la paire est publiée quand même et l’écart de protéines apparaît dans
-            « Là où le plat animal fait mieux » et dans le score Nutrition ;
-          </li>
-          <li>proportions réalistes de la cuisine française courante, portion consommée entre 300 et 500 g ;</li>
-          <li>même rôle dans le repas que le plat animal ;</li>
-          <li>données disponibles pour au moins 95 % de la masse du plat ;</li>
-          <li>
-            uniquement des aliments simples (pas de plat préparé comme ingrédient), pour que les
-            impacts par espèce animale restent calculables ; seule exception, un produit végétal du
-            commerce classé « plat composé » par Ciqual (galette, nuggets…) quand le détail Agribalyse
-            ne contient aucun ingrédient animal.
-          </li>
-        </ul>
         <p>
-          Quand aucun code ne couvre exactement l’ingrédient (carotte cuite, champignon de Paris…),
-          nous retenons l’option la plus proche disposant de données complètes, de la même façon
-          dans les deux plats. Chaque choix est consigné dans le dépôt du projet
-          (<a href="https://github.com/VeganFlemme/veganizer/blob/main/docs/DECISIONS.md" className="underline" rel="noopener noreferrer">journal des décisions</a>).
+          La <strong>version végétale n’est plus écrite à la main</strong> : elle est calculée à partir de la recette du plat animal, par une règle unique
+          (voir « La protéine au choix »). Les versions « faite maison » et « du commerce » écrites auparavant ne servent plus ; les produits du commerce
+          (haché végétal, galettes, nuggets…) font partie de la liste des protéines proposées.
+        </p>
+        <p>
+          Quand aucun code ne couvre exactement un ingrédient (carotte cuite, champignon de Paris…), nous retenons l’option la plus proche disposant de données
+          complètes. Chaque choix est consigné dans le dépôt du projet (
+          <a href="https://github.com/VeganFlemme/veganizer/blob/main/docs/DECISIONS.md" className="underline" rel="noopener noreferrer">journal des décisions</a>).
         </p>
       </Section>
 
@@ -508,27 +478,36 @@ export default async function MethodologiePage() {
         </p>
       </Section>
 
-      <Section id="comparaison-simplifiee" title="Plats et aliments : une comparaison automatique">
+      <Section id="choix-proteine" title="La protéine au choix : une comparaison automatique">
         <p>
           Veganizer interroge les bases officielles (Ciqual, Agribalyse) : toutes les comparaisons sont automatiques, aucune n’a été relue par un
-          professionnel. Les <strong>plats</strong> sont décrits par des recettes types écrites par une IA, puis contrôlées par des règles et des tests
-          automatiques (masses, portions, ingrédients simples, règles de remplacement, données disponibles) ; elles sont marquées « recette type rédigée par
-          Veganizer ». Les <strong>aliments</strong> du catalogue sont comparés pour 100 g à une à trois alternatives végétales du même catalogue, avec le
-          même affichage que les plats.
+          professionnel. Sur chaque page (plat, aliment, « Analyse ta recette »), vous choisissez la protéine végétale qui remplace l’ingrédient animal
+          principal. Le choix reste dans l’adresse de la page (<code>?proteine=</code>).
         </p>
         <p>
-          Ces alternatives sont choisies par des règles écrites et relues (fichier
-          <code> pipeline/auto_alternatives_rules.csv</code> du dépôt) : même rôle dans le repas
-          (par exemple une viande cuite face à une protéine végétale prête à cuisiner ou à une
-          légumineuse cuite, un lait face à une boisson végétale), puis les protéines les plus proches.
-          Pour un plat composé, l’alternative doit être du même type (pizza, lasagnes, quiche…) ; s’il
-          n’y en a pas dans le catalogue, aucune alternative n’est proposée. L’écart de protéines est
-          toujours affiché. Faute de portion type sourcée, la comparaison est donnée pour 100 g, pour
-          100 kcal et pour 10 g de protéines.
+          <strong>Les protéines proposées</strong> sont lues dans la base, sans liste écrite à la main : aliments sans ingrédient animal identifié (noms
+          Ciqual et Agribalyse, détail Agribalyse par ingrédient), dont les protéines, les lipides, l’énergie et les émissions sont connus ; classés dans
+          les légumineuses, les ingrédients pour végétariens, les substituts de viande ou de charcuterie, ou les plats végétariens et composés ; prêts à
+          manger (ni secs ni crus) ; et « riches en protéines » au sens du règlement (CE) n° 1924/2006 (au moins 20 % de l’énergie apportée par les
+          protéines).
         </p>
         <p>
-          La recherche tolère les accents, les fautes légères et quelques abréviations courantes
-          (« bolo », « croque »…).
+          <strong>Le classement</strong> ne lit que les données nutritionnelles : toutes les protéines proposées jouent le même rôle (une source de
+          protéines à la place de l’ingrédient animal principal), puis elles sont rangées par écart de protéines pour 100 g avec cet ingrédient (au
+          gramme près), puis par écart de lipides, puis par écart d’énergie. Jamais selon les émissions, le prix ou le score. La première de la liste est
+          affichée par défaut, avec la raison de son rang (« la plus proche en protéines »).
+        </p>
+        <p>
+          <strong>La règle de remplacement</strong> est unique. L’ingrédient animal principal (l’ingrédient animal qui apporte le plus de protéines, parmi
+          les « sources de protéines » du même règlement : au moins 12 % de l’énergie ; le beurre ou la crème ne le sont jamais) est remplacé par la protéine
+          choisie, à masse égale dans la version de base et à protéines égales dans la version complétée. Les autres ingrédients animaux (beurre, lait,
+          crème, lardons, fromage…) sont remplacés par une table relue, dont chaque ligne est justifiée. Les ingrédients végétaux ne changent pas. Une
+          phrase indique pour combien de protéines de la liste la version végétale émet moins de gaz à effet de serre par portion (fourchettes qui ne se
+          chevauchent pas).
+        </p>
+        <p>
+          Les <strong>aliments</strong> du catalogue sont comparés de la même façon, pour 100 g : 100 g de l’aliment animal face à 100 g de la protéine
+          choisie. La recherche tolère les accents, les fautes légères et quelques abréviations courantes (« bolo », « croque »…).
         </p>
       </Section>
 

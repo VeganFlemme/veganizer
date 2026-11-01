@@ -72,7 +72,9 @@ Une seule famille : **Schibsted Grotesk** (Google Fonts, poids 400 à 900), char
 | `Logo` | Cercle coupé verticalement, moitié gauche `animal`, moitié droite `plant`, 2 px d'écart ; mot « veganizer » en minuscules, 800, `-0.03em`. SVG : `<path d="M13 1.04A13 13 0 0 0 13 26.96z"/>` et `<path d="M15 1.04A13 13 0 0 1 15 26.96z"/>` (viewBox 28). |
 | `SiteHeader` | Bandeau `ink` : logo, recherche, partage (téléphone : boutons icône 44 px avec `aria-label`). |
 | `DishTitle` | Pastille `animal` + nom du plat ; pastille `plant-on-dark` + nom de l'alternative. |
-| `ChipGroup` | Boutons-étiquettes à la largeur de leur texte (`aria-pressed`) : alternative (« Fait maison » / « Du commerce » ou alternatives d'un aliment), version (« Version de base » / « Version complétée », `?vue=complete`), unité. Remplace les boutons segmentés étirés. |
+| `ChipGroup` | Boutons-étiquettes à la largeur de leur texte (`aria-pressed`) : version (« Version de base » / « Version complétée », `?vue=complete`), unité, et alternative quand il y en a trois au plus. Remplace les boutons segmentés étirés. |
+| `ProteinPicker` | « Protéine » : bouton qui déplie la liste des protéines classées par proximité (nom, raison du rang, protéines pour 100 g), `?proteine=<code>`. La raison du choix et la phrase climat (« avec N protéines sur M ») sont écrites sous la barre d'outils. |
+| `AnimalBetterBox` | « Ce qui reste à couvrir » (titre neutre, décision de Matt 18 h 27) : valeurs des deux plats et solution sourcée ; « À surveiller (moins = mieux) » à part, avec les ingrédients qui en apportent le plus ; sans conseil sourcé, les faits seulement. Version complétée : un seul encadré, dans le panneau de la version complétée. |
 | `TabBar` | `role="tablist"`, onglets `role="tab"` + `aria-selected`, collante en haut, défilement horizontal sur téléphone. Ordre : Vue d'ensemble, Nutrition, Santé, Environnement, Protection animale, Économie. URL : `?onglet=nutrition` (partageable, rendu statique conservé). |
 | `VerdictPanel` | « X sur 5 » + phrase + barre de 5 segments (couleur du vainqueur, gris `line` pour égalité ou données insuffisantes) + légende + phrase de méthode. |
 | `CategoryCard` | Bouton entier vers l'onglet ; titre, `WinnerBadge`, `ScorePill`, une donnée clé en face-à-face, phrase de base. |
@@ -92,7 +94,7 @@ Une seule famille : **Schibsted Grotesk** (Google Fonts, poids 400 à 900), char
 ## 4. Pages
 
 ### `/compare/[slug]`
-1. `SiteHeader`, `DishTitle`, barre d'outils (`ChipGroup` alternative + version) dans le bandeau `ink`. Sur ordinateur, le `VerdictPanel` est dans le bandeau, à droite.
+1. `SiteHeader`, `DishTitle`, barre d'outils (`ProteinPicker` + `ChipGroup` version, sur une ligne dès 1 024 px) dans le bandeau `ink`. Sur ordinateur, le `VerdictPanel` est dans le bandeau, à droite.
 2. `TabBar` collante.
 3. **Vue d'ensemble** : `VerdictPanel` (téléphone), 5 `CategoryCard` dans l'ordre des onglets, `Simulator`.
 4. **Onglet détaillé** : bandeau vainqueur (`WinnerBadge` + `ScorePill` + phrase de base) puis toutes les données de la catégorie :
@@ -153,4 +155,4 @@ Sur ordinateur, une mise en page de tableau de bord ; **le téléphone ne change
 - **Onglets** : colonne de droite fixe (vainqueur, « Là où le plat animal fait mieux » avec conseils repliés sur leur première phrase) ; tableaux riches dès 1 440 px (écart, barre, couverture et DQR, source) ; Nutrition : les trois bases côte à côte dès 1 280 px.
 - **Recettes** : côte à côte, alignées ligne par ligne, remplacements mis en évidence ; version complétée : recette végétale entière (grammes pour la recette et par portion, raison de chaque ajout), bouton « Copier la liste des ingrédients ».
 - **Mention médicale** en bas du contenu. **Pages texte** (`/methodologie`, `/sources`) : sommaire fixe à gauche, lignes d'environ 70 caractères. **Accueil** : catalogue en 3 colonnes (4 dès 1 920 px), recherche large. **`/recette`** : saisie à gauche, remplacements à droite, comparaison complète en dessous.
-- **`/aliment/[code]`** : même `PairView` que les plats (un ingrédient, 100 g), alternatives en `ChipGroup`.
+- **`/aliment/[code]`** : même `PairView` que les plats (100 g d'un aliment animal, ou 100 g d'un plat Agribalyse à recette officielle), protéine au choix (`ProteinPicker`).

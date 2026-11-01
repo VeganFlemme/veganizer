@@ -2,14 +2,17 @@
 
 import { useId, useMemo, useRef, useState } from "react";
 import { PairView } from "@/components/compare/PairView";
+import { useQueryParam } from "@/components/compare/useQueryParam";
+import { buildAutoPage, rankedCandidates, type AutoInput, type CandidateRow } from "@/lib/compare/auto";
+import { parseSharedRecipe } from "@/lib/compare/recipe-link";
 import type { IngredientHit } from "@/lib/compare/data";
 import {
   applySubstitutions,
-  substitutionContext,
   buildRecipePage,
   type RecipeData,
   type RecipeFood,
   type RecipeIngredient,
+  type SubstitutionContext,
   type SubstitutionRule,
 } from "@/lib/compare/recipe";
 import { formatInt } from "@/lib/format";
@@ -27,13 +30,16 @@ export interface Draft {
   ingredients: DraftIngredient[];
 }
 
-type Loaded = RecipeData & { substitutions: SubstitutionRule[]; recipeFoods: RecipeFood[] };
+type Loaded = RecipeData & { substitutions: SubstitutionRule[]; recipeFoods: RecipeFood[]; context: SubstitutionContext; candidates: CandidateRow[] };
 
 const STORAGE_KEY = "veganizer:recette";
 const EMPTY: Draft = { name: "", servings: 4, ingredients: [] };
 
 function readDraft(): Draft {
   if (typeof window === "undefined") return EMPTY;
+  // « Modifier cette recette » from a comparison page: the recipe comes in the URL.
+  const shared = parseSharedRecipe(new URLSearchParams(window.location.search).get("recette"));
+  if (shared) return { name: shared.name, servings: shared.servings, ingredients: shared.ingredients.map((i) => ({ code: i.code, name: i.name, grams: i.grams, isAnimal: i.isAnimal })) };
   try {
     const d = JSON.parse(window.localStorage.getItem(STORAGE_KEY) ?? "null") as Draft | null;
     return d && Array.isArray(d.ingredients) ? d : EMPTY;
@@ -97,14 +103,46 @@ export function RecipeBuilder() {
 
   const valid = draft.ingredients.length > 0 && draft.ingredients.every((i) => i.grams > 0) && draft.servings > 0;
 
+  const [urlProtein, setUrlProtein] = useQueryParam("proteine");
+  const auto = useMemo(() => {
+    if (!data) return null;
+    const input: AutoInput = {
+      raw: {
+        ...data,
+        animal: { id: "R", slug: "ma-recette", name_fr: draft.name || "Ma recette", kind: "animal", servings: draft.servings, description: null },
+        vegetal: [],
+        pairs: [],
+        ingredients: draft.ingredients.map((i) => ({ dish_id: "R", food_code: i.code, grams: i.grams, note: i.name })),
+        dishPrices: [],
+      },
+      candidates: data.candidates,
+      rules: data.substitutions,
+      context: data.context,
+      recipe: { kind: "type" },
+    };
+    const ranked = rankedCandidates(input);
+    return ranked.length ? { input, defaultCode: ranked[0].code } : null;
+  }, [data, draft]);
+  const protein = auto && urlProtein && auto.input.candidates.some((c) => c.code === urlProtein) ? urlProtein : auto?.defaultCode ?? null;
+
   const result = useMemo(() => {
     if (!data) return null;
     const ingredients: RecipeIngredient[] = draft.ingredients.map((i) => ({ code: i.code, grams: i.grams }));
     const foods = Object.fromEntries(data.recipeFoods.map((f) => [f.code, f]));
-    const sub = applySubstitutions(ingredients, foods, data.substitutions, substitutionContext(data));
+    // The visitor's protein replaces the main animal ingredient (decision of Matt, 17 h 25);
+    // without an animal source of protein, the reviewed rules alone (butter, milk, cream…).
+    const built = auto && protein ? buildAutoPage(auto.input, protein) : null;
+    if (built) {
+      const sub = {
+        changes: built.changes.map((c) => ({ from: c.from, to: c.to, grams: c.grams, newGrams: c.newGrams, justification: c.kind === "main" ? "Protéine choisie, même masse que l’ingrédient animal principal (liste classée par proximité)." : (c.reason ?? "") })),
+        unmatched: built.unmatched,
+      };
+      return { mode: "auto" as const, sub, model: built.model, foods };
+    }
+    const sub = applySubstitutions(ingredients, foods, data.substitutions, data.context);
     const model = buildRecipePage({ name: draft.name, servings: draft.servings, ingredients }, sub.ingredients, data);
-    return { sub, model, foods };
-  }, [data, draft]);
+    return { mode: "rules" as const, sub, model, foods };
+  }, [data, draft, auto, protein]);
 
   const input = "h-11 rounded-btn border border-ink-3 bg-surface px-3 text-[16px] text-ink";
   const button = "h-11 cursor-pointer rounded-btn px-[18px] text-[15px] font-bold disabled:cursor-not-allowed disabled:opacity-60";
@@ -219,7 +257,7 @@ export function RecipeBuilder() {
         {result && (
           <section aria-labelledby={`${id}-s`} className="mt-6 flex flex-col gap-2 rounded-panel bg-surface p-5 md:p-6 lg:sticky lg:top-4 lg:mt-0">
             <h2 id={`${id}-s`} className="m-0 text-[19px] font-extrabold">
-              Version végétale : les remplacements proposés
+              Version végétale : les remplacements
             </h2>
             {result.sub.changes.length === 0 ? (
               <p className="m-0">Aucun ingrédient animal identifié : la recette est comparée à elle-même.</p>
@@ -238,11 +276,25 @@ export function RecipeBuilder() {
                 Pas encore de remplacement proposé pour : {result.sub.unmatched.map((c) => result.foods[c]?.name_fr ?? c).join(", ")} (gardé tel quel).
               </p>
             )}
-            <p className="m-0 text-[13px] text-ink-3">Remplacements tirés d’une table relue, même masse sauf mention : vérifie le goût et les quantités pour ta recette.</p>
+            <p className="m-0 text-[13px] text-ink-3">
+              {result.mode === "auto"
+                ? "L’ingrédient animal principal est remplacé par la protéine choisie (même masse) ; les autres ingrédients animaux par une table relue. Change de protéine dans la comparaison ci-dessous."
+                : "Remplacements tirés d’une table relue, même masse sauf mention : vérifie le goût et les quantités pour ta recette."}
+            </p>
           </section>
         )}
       </div>
-      {result && <PairView model={result.model} badge="Ta recette, calculée à partir de tes ingrédients (non relue)" headingAs="h2" useUrl={false} viewInUrl base="recette" />}
+      {result && (
+        <PairView
+          model={result.model}
+          badge="Ta recette, calculée à partir de tes ingrédients (non relue)"
+          headingAs="h2"
+          useUrl={false}
+          viewInUrl
+          base="recette"
+          {...(result.mode === "auto" && auto && protein ? { variant: protein, onVariantChange: (c: string) => setUrlProtein(c === auto.defaultCode ? null : c) } : {})}
+        />
+      )}
     </div>
   );
 }

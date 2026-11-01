@@ -1,6 +1,6 @@
 # Suite V1 — à exécuter d'une traite (décisions de Matt, 2026-11-01)
 
-Lis d'abord CLAUDE.md, docs/ROADMAP.md, docs/DESIGN.md, docs/DECISIONS.md et docs/A_VERIFIER.md. Exécute les étapes 0 à 4 sans attendre Matt entre les étapes, dans cet ordre (ordre mis à jour le 1er novembre à 16 h 50) : 0, 1, 2, 3, **3 quater (affichage sur ordinateur, prioritaire)**, 3 bis, 3 ter, 4. La décision de Matt de 17 h 25 (section suivante) s'applique à toutes les étapes restantes.
+Lis d'abord CLAUDE.md, docs/ROADMAP.md, docs/DESIGN.md, docs/DECISIONS.md et docs/A_VERIFIER.md. Exécute les étapes 0 à 5 sans attendre Matt entre les étapes, dans cet ordre (ordre mis à jour le 1er novembre à 16 h 50) : 0, 1, 2, 3, **3 quater (affichage sur ordinateur, prioritaire)**, 3 bis, 3 ter, 4, 5. La décision de Matt de 17 h 25 (section suivante) s'applique à toutes les étapes restantes.
 
 ## Autorisations données par Matt pour toute cette suite
 
@@ -141,16 +141,30 @@ Mets en œuvre la section « Décision de Matt (17 h 25) » en haut de ce fichie
 3. **Affichage** : la liste de choix est dans la barre d'outils de l'étape 3 quater. Elle se déplie, chaque ligne affichant le nom, la raison du classement et les protéines pour 100 g. Tout est recalculé : version de base et version complétée, onglets, scores, vainqueurs, simulateur. Une phrase sous la liste dit pour combien de protéines de la liste le végétal gagne sur le climat (« avec 12 protéines sur 12 »).
 4. **Soja** : dans l'onglet Santé, quand la protéine choisie est à base de soja, une mention sourcée de l'avis de l'Anses du 24 mars 2025 sur les isoflavones, sans chiffre et sans conseil médical (règle 6). Trouve l'avis sur anses.fr et cite-le ; s'il est inaccessible, note-le dans `TODO_SOURCES.md`.
 5. **Même chose sur les pages d'aliments et sur `/recette`.**
+5 quater. **Impacts des plats Agribalyse officiels : garder les étapes propres au plat (relectrice, 19 h 05)**. Le rapport `pipeline/reports/agribalyse_recipes_check.csv` montre que la somme « masse × impact par kg des ingrédients » ne retrouve en médiane que 81 % de l'impact publié du plat. Le reste correspond à la transformation, l'emballage, le transport et la cuisson, que le détail par ingrédient 3.2 regroupe dans la ligne « Autres étapes ». Si on les omet des deux côtés, l'écart en % entre les plats est **gonflé** en faveur du végétal (une même part fixe retirée des deux côtés).
+   - Pour un plat Agribalyse : impact du plat animal = impact 3.2 publié. Impact de la version végétale = impact publié − contributions 3.2 des ingrédients animaux remplacés + masse remplacée × impact par kg de la protéine choisie. « Autres étapes » reste ainsi identique des deux côtés.
+   - Teste-le sur 3 plats, et écris la méthode sur `/methodologie`.
+   - Pour nos recettes types, qui n'ont pas d'impact publié, écris clairement sur `/methodologie` que les étapes propres au plat (cuisson, emballage…) ne sont pas comptées, et que l'écart en % est donc un peu surestimé.
+5 ter. **Version complétée réaliste sur les produits bruts (constat de la relectrice, 19 h, page `/aliment/12115?vue=complete`)**. Pour 100 g d'emmental, la version complétée multiplie la spécialité végétale à tartiner (11,7 g de protéines pour 100 g) jusqu'à 238 g, puis ajoute du lin, du sésame et 67 g de boisson au soja : 532 kcal contre 373. L'Environnement passe alors au plat animal (11 indicateurs contre 5), alors que le CO₂e reste à −17 %. Un fromage multiplié par 2,4 n'est pas un remplacement crédible.
+   - Règle éditoriale, à écrire sur `/methodologie` : la protéine principale n'est augmentée que si elle reste une portion plausible. Repère : la portion de l'enquête INCA3 pour cet aliment si elle existe, sinon au plus 2 fois la masse de départ, présenté comme un choix éditorial.
+   - Au-delà, l'écart de protéines est comblé par l'ajout d'un aliment protéique courant de la liste blanche (ajoute tofu ferme, lentilles cuites et pois chiches cuits à `data/complements.json`, avec leurs maxima et leur justification), comme les autres manques.
+   - Si l'écart reste ouvert, il va dans « Ce qui reste à couvrir ».
+   - Quand le rôle de l'aliment n'est pas d'apporter des protéines (fromage, lait, beurre, crème…), dis-le dans la version complétée : « le fromage apporte surtout du calcium et des matières grasses ; l'égaler en protéines n'est qu'un repère ».
+   - Teste au moins l'emmental, un œuf, une dorade, un steak haché et un lait.
 5 bis. **Encadré « Là où le plat animal fait mieux » dans la version complétée (remarque de Matt, 18 h 25)**. Constat en ligne (bourguignon, `?vue=complete&onglet=nutrition`) : seuls les écarts restants sont listés, ce qui est bien (zinc, B12, sucres). Mais :
    - le zinc et la B12 apparaissent deux fois : dans « À couvrir hors de ce plat » et dans l'encadré ;
    - le titre « Là où le plat animal fait mieux » contredit « Écarts comblés par construction » ;
    - « dont sucres » affiche « Pas encore de conseil sourcé pour ce point », un texte provisoire qui fait amateur.
 
    À faire (tests d'abord) :
-   - Dans la version complétée, un seul encadré, « Ce qui reste à couvrir hors de ce plat ». Il liste les manques non comblés (B12, EPA + DHA, vitamine D, zinc si la liste ne suffit pas) avec le conseil Anses déjà présent, sans dose, et le renvoi vers un professionnel de santé. Supprime le doublon.
+   - Dans la version complétée, un seul encadré, « Ce qui reste à couvrir ». Il liste les manques non comblés (B12, EPA + DHA, vitamine D, zinc si la liste ne suffit pas) avec le conseil Anses déjà présent, sans dose, et le renvoi vers un professionnel de santé. Supprime le doublon.
    - Le libellé de la catégorie Nutrition devient « Écarts comblés, sauf : zinc, B12 » quand il en reste.
    - Les indicateurs où « moins = mieux » (sucres, sel, acides gras saturés…) ne se comblent pas en ajoutant un aliment : affiche-les à part, de façon factuelle, avec les valeurs des deux plats. Ajoute les principaux ingrédients qui y contribuent, calculés à partir de Ciqual (par exemple « surtout carottes et vin »). Plus jamais « Pas encore de conseil sourcé » sur le site : sans conseil sourcé, affiche seulement les faits.
    - Vérifie la même logique dans la version de base et sur les pages d'aliments.
+   - **Libellé neutre partout (décision de Matt, 18 h 27)** : « Là où le plat animal fait mieux » est un jugement de valeur. Il devient **« Ce qui reste à couvrir »**, dans la version de base comme dans la version complétée, sur toutes les pages (plats, aliments, `/recette`) et sur `/methodologie`.
+     - Dans la version de base, chaque point donne les deux valeurs (« plat animal : 12,7 mg de zinc par portion ; version végétale : 5,3 mg ») et la solution sourcée déjà présente.
+     - Le fond ne change pas : on montre toujours ce que le plat animal apporte de plus (règle 3). Seul le titre change.
+     - Mets à jour la formulation de la règle 3 dans `CLAUDE.md` dans ce sens, sans en changer le sens.
 6. **Tests** : Vitest pour le classement et le remplacement, e2e pour le changement de protéine, et un test qui échoue si le texte « vérifiée » réapparaît sur le site.
 
 ## Étape 3 quater — S24d : affichage sur ordinateur (ajout de Matt, 16 h 46)
@@ -249,6 +263,13 @@ Objectif : sur ordinateur (dès 1 024 px, surtout dès 1 280 px), une mise en pa
    - **Accessibilité** : contrôle automatique (axe-core) au niveau WCAG AA (contrastes, étiquettes, navigation au clavier), plus une simulation des daltonismes sur les captures des barres et pastilles.
 5. Corrige ce qui est justifié. Note chaque remarque dans `docs/RETOURS.md` : corrigée, refusée avec la raison, ou reportée.
 6. Sur `/methodologie` et `/a-propos`, écris honnêtement : « relu par des vérifications automatisées et des agents IA indépendants ; pas encore relu par un professionnel de santé ». Retire la mention « bêta » seulement si l'audit des chiffres ne trouve aucune erreur.
+
+## Étape 5 — Maintien en vie de Supabase (ajout de la relectrice, 18 h 58, petite étape)
+
+Le plan Free de Supabase met le projet en pause après 7 jours d'inactivité, et le site ne répondrait plus. Si aucun workflow ne s'en charge déjà :
+- ajoute `.github/workflows/supabase-keep-alive.yml` : deux fois par semaine (cron) et à la main (`workflow_dispatch`), une requête en lecture seule sur une table publique, avec la clé publishable (secret GitHub `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`, jamais la clé secrète) ;
+- si le secret n'existe pas dans le dépôt, note dans `docs/JOURNAL.md` la commande exacte que Matt devra lancer (`gh secret set …`), sans afficher la valeur ;
+- une PR, comme les autres étapes.
 
 ## Fin
 

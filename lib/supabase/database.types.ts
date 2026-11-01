@@ -12,31 +12,6 @@ export type Database = {
   __InternalSupabase: {
     PostgrestVersion: "14.18"
   }
-  graphql_public: {
-    Tables: {
-      [_ in never]: never
-    }
-    Views: {
-      [_ in never]: never
-    }
-    Functions: {
-      graphql: {
-        Args: {
-          extensions?: Json
-          operationName?: string
-          query?: string
-          variables?: Json
-        }
-        Returns: Json
-      }
-    }
-    Enums: {
-      [_ in never]: never
-    }
-    CompositeTypes: {
-      [_ in never]: never
-    }
-  }
   public: {
     Tables: {
       category_factors: {
@@ -49,6 +24,7 @@ export type Database = {
           low: number | null
           notes: string | null
           per: string
+          scope: string
           source_id: string
           unit_basis: string
           value: number
@@ -62,6 +38,7 @@ export type Database = {
           low?: number | null
           notes?: string | null
           per?: string
+          scope?: string
           source_id: string
           unit_basis: string
           value: number
@@ -75,6 +52,7 @@ export type Database = {
           low?: number | null
           notes?: string | null
           per?: string
+          scope?: string
           source_id?: string
           unit_basis?: string
           value?: number
@@ -133,10 +111,24 @@ export type Database = {
             referencedColumns: ["code"]
           },
           {
+            foreignKeyName: "cooking_yields_cooked_code_fkey"
+            columns: ["cooked_code"]
+            isOneToOne: true
+            referencedRelation: "protein_candidates"
+            referencedColumns: ["code"]
+          },
+          {
             foreignKeyName: "cooking_yields_raw_code_fkey"
             columns: ["raw_code"]
             isOneToOne: false
             referencedRelation: "foods"
+            referencedColumns: ["code"]
+          },
+          {
+            foreignKeyName: "cooking_yields_raw_code_fkey"
+            columns: ["raw_code"]
+            isOneToOne: false
+            referencedRelation: "protein_candidates"
             referencedColumns: ["code"]
           },
           {
@@ -215,6 +207,13 @@ export type Database = {
             columns: ["food_code"]
             isOneToOne: false
             referencedRelation: "foods"
+            referencedColumns: ["code"]
+          },
+          {
+            foreignKeyName: "dish_ingredients_food_code_fkey"
+            columns: ["food_code"]
+            isOneToOne: false
+            referencedRelation: "protein_candidates"
             referencedColumns: ["code"]
           },
         ]
@@ -428,10 +427,24 @@ export type Database = {
             referencedColumns: ["code"]
           },
           {
+            foreignKeyName: "food_alternatives_animal_code_fkey"
+            columns: ["animal_code"]
+            isOneToOne: false
+            referencedRelation: "protein_candidates"
+            referencedColumns: ["code"]
+          },
+          {
             foreignKeyName: "food_alternatives_plant_code_fkey"
             columns: ["plant_code"]
             isOneToOne: false
             referencedRelation: "foods"
+            referencedColumns: ["code"]
+          },
+          {
+            foreignKeyName: "food_alternatives_plant_code_fkey"
+            columns: ["plant_code"]
+            isOneToOne: false
+            referencedRelation: "protein_candidates"
             referencedColumns: ["code"]
           },
         ]
@@ -464,6 +477,13 @@ export type Database = {
             columns: ["food_code"]
             isOneToOne: false
             referencedRelation: "foods"
+            referencedColumns: ["code"]
+          },
+          {
+            foreignKeyName: "food_impact_ingredients_food_code_fkey"
+            columns: ["food_code"]
+            isOneToOne: false
+            referencedRelation: "protein_candidates"
             referencedColumns: ["code"]
           },
           {
@@ -519,6 +539,13 @@ export type Database = {
             referencedColumns: ["code"]
           },
           {
+            foreignKeyName: "food_impacts_food_code_fkey"
+            columns: ["food_code"]
+            isOneToOne: false
+            referencedRelation: "protein_candidates"
+            referencedColumns: ["code"]
+          },
+          {
             foreignKeyName: "food_impacts_indicator_id_fkey"
             columns: ["indicator_id"]
             isOneToOne: false
@@ -562,6 +589,13 @@ export type Database = {
             columns: ["food_code"]
             isOneToOne: false
             referencedRelation: "foods"
+            referencedColumns: ["code"]
+          },
+          {
+            foreignKeyName: "food_nutrients_food_code_fkey"
+            columns: ["food_code"]
+            isOneToOne: false
+            referencedRelation: "protein_candidates"
             referencedColumns: ["code"]
           },
           {
@@ -632,6 +666,13 @@ export type Database = {
             columns: ["ciqual_code"]
             isOneToOne: false
             referencedRelation: "foods"
+            referencedColumns: ["code"]
+          },
+          {
+            foreignKeyName: "foods_ciqual_code_fkey"
+            columns: ["ciqual_code"]
+            isOneToOne: false
+            referencedRelation: "protein_candidates"
             referencedColumns: ["code"]
           },
           {
@@ -710,6 +751,13 @@ export type Database = {
             columns: ["to_code"]
             isOneToOne: false
             referencedRelation: "foods"
+            referencedColumns: ["code"]
+          },
+          {
+            foreignKeyName: "ingredient_substitutions_to_code_fkey"
+            columns: ["to_code"]
+            isOneToOne: false
+            referencedRelation: "protein_candidates"
             referencedColumns: ["code"]
           },
         ]
@@ -861,6 +909,75 @@ export type Database = {
         }
         Relationships: []
       }
+      official_recipes: {
+        Row: {
+          dish_code: string
+          flow: string
+          food_code: string | null
+          ingredient_fr: string | null
+          is_published: boolean
+          kg_per_kg_dish: number
+          note: string | null
+          source_id: string
+        }
+        Insert: {
+          dish_code: string
+          flow: string
+          food_code?: string | null
+          ingredient_fr?: string | null
+          is_published?: boolean
+          kg_per_kg_dish: number
+          note?: string | null
+          source_id: string
+        }
+        Update: {
+          dish_code?: string
+          flow?: string
+          food_code?: string | null
+          ingredient_fr?: string | null
+          is_published?: boolean
+          kg_per_kg_dish?: number
+          note?: string | null
+          source_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "official_recipes_dish_code_fkey"
+            columns: ["dish_code"]
+            isOneToOne: false
+            referencedRelation: "foods"
+            referencedColumns: ["code"]
+          },
+          {
+            foreignKeyName: "official_recipes_dish_code_fkey"
+            columns: ["dish_code"]
+            isOneToOne: false
+            referencedRelation: "protein_candidates"
+            referencedColumns: ["code"]
+          },
+          {
+            foreignKeyName: "official_recipes_food_code_fkey"
+            columns: ["food_code"]
+            isOneToOne: false
+            referencedRelation: "foods"
+            referencedColumns: ["code"]
+          },
+          {
+            foreignKeyName: "official_recipes_food_code_fkey"
+            columns: ["food_code"]
+            isOneToOne: false
+            referencedRelation: "protein_candidates"
+            referencedColumns: ["code"]
+          },
+          {
+            foreignKeyName: "official_recipes_source_id_fkey"
+            columns: ["source_id"]
+            isOneToOne: false
+            referencedRelation: "sources"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       price_source_priority: {
         Row: {
           place: string
@@ -927,6 +1044,13 @@ export type Database = {
             columns: ["food_code"]
             isOneToOne: false
             referencedRelation: "foods"
+            referencedColumns: ["code"]
+          },
+          {
+            foreignKeyName: "prices_food_code_fkey"
+            columns: ["food_code"]
+            isOneToOne: false
+            referencedRelation: "protein_candidates"
             referencedColumns: ["code"]
           },
           {
@@ -1150,6 +1274,13 @@ export type Database = {
             referencedColumns: ["code"]
           },
           {
+            foreignKeyName: "prices_food_code_fkey"
+            columns: ["food_code"]
+            isOneToOne: false
+            referencedRelation: "protein_candidates"
+            referencedColumns: ["code"]
+          },
+          {
             foreignKeyName: "prices_source_id_fkey"
             columns: ["source_id"]
             isOneToOne: false
@@ -1174,9 +1305,22 @@ export type Database = {
         }
         Relationships: []
       }
+      protein_candidates: {
+        Row: {
+          code: string | null
+          energy_kcal: number | null
+          fat_g: number | null
+          food_group: string | null
+          food_subgroup: string | null
+          name_fr: string | null
+          protein_g: number | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
       f_unaccent: { Args: { "": string }; Returns: string }
+      purge_old_error_reports: { Args: never; Returns: number }
       search_catalog: {
         Args: { max_results?: number; q: string }
         Returns: {
@@ -1330,9 +1474,6 @@ export type CompositeTypes<
     : never
 
 export const Constants = {
-  graphql_public: {
-    Enums: {},
-  },
   public: {
     Enums: {},
   },

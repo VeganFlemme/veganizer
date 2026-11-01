@@ -1,4 +1,4 @@
-// « Là où le plat animal fait mieux » by category (suite V1, step 1, point 4).
+// « Ce qui reste à couvrir » (formerly « Là où le plat animal fait mieux ») by category (suite V1, step 1, point 4).
 import { describe, expect, it } from "vitest";
 import { advantagesByCategory, animalBetterTitle, categoryOf } from "@/lib/compare/config";
 import type { AdvantageView } from "@/lib/compare/view";
@@ -23,11 +23,9 @@ describe("advantagesByCategory and titles", () => {
     expect(g.map((x) => x.category)).toEqual(["nutrition", "economie"]);
     expect(g[0].items.map((x) => x.criterion)).toEqual(["vit_b12_ug", "ca_mg"]);
   });
-  it("names the category in the title", () => {
-    expect(animalBetterTitle("nutrition")).toBe("Là où le plat animal fait mieux en nutrition");
-    expect(animalBetterTitle("environnement")).toBe("Là où le plat animal fait mieux en environnement");
-    expect(animalBetterTitle("animaux")).toBe("Là où le plat animal fait mieux en protection animale");
-    expect(animalBetterTitle("nutrition", "l’aliment d’origine")).toBe("Là où l’aliment d’origine fait mieux en nutrition");
+  it("names the category in a neutral title (decision of Matt, 18 h 27)", () => {
+    expect(animalBetterTitle("nutrition")).toBe("Ce qui reste à couvrir en nutrition");
+    expect(animalBetterTitle("animaux")).toBe("Ce qui reste à couvrir en protection animale");
   });
 });
 

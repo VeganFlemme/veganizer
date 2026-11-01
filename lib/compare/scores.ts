@@ -37,6 +37,8 @@ export interface CategoryScoreView extends CategoryScore {
   summary: string;
   /** Completed version: the gaps of this category are closed by construction, no score (decision of Matt, 17 h 12). */
   constructed?: boolean;
+  /** « Écarts comblés » or « Écarts comblés, sauf : zinc, vitamine B12 » (gaps no food of the list closes). */
+  constructedLabel?: string;
 }
 
 export const CONSTRUCTED_TEXT = "Écarts comblés par construction";
@@ -110,7 +112,7 @@ export function verdictSentence(all: CategoryScoreView[]): string {
   const animal = categories.filter((c) => c.winner === "animal").map((c) => lower(c.label));
   const tie = categories.filter((c) => c.winner === "egal").map((c) => lower(c.label));
   const none = categories.filter((c) => c.winner === "insuffisant").map((c) => lower(c.label));
-  if (animal.length) parts.push(`Le plat animal fait mieux en ${list(animal)}.`);
+  if (animal.length) parts.push(`Le plat animal gagne en ${list(animal)}.`);
   if (tie.length) parts.push(`Égalité en ${list(tie)}.`);
   if (none.length) parts.push(`Données insuffisantes en ${list(none)}.`);
   const built = all.filter((c) => c.constructed).map((c) => c.label);
@@ -180,8 +182,12 @@ function scoreOf(category: RuleCategory, input: ScoreInput, basis: Basis, exclud
   const score = scoreCategory(rule, values(category, input, basis), SCORE_OPTIONS);
   const labels = Object.fromEntries(category.indicators.map((i) => [i.id, i.label]));
   if (constructed.includes(category.id)) {
-    const text = `${CONSTRUCTED_TEXT} : la version végétale complétée reçoit autant de protéines que le plat animal et ses autres manques sont comblés quand un aliment de la liste le permet. Pas de score, pour rester équitable.`;
-    return { ...score, animalPoints: 0, vegetalPoints: 0, winner: "egal", provisional: false, id: category.id as CategoryId, label: category.label, short: category.short, sentence: text, summary: text, constructed: true };
+    const left = score.indicators.filter((i) => i.outcome === "animal" && i.direction === "higher_is_better").map((i) => lower(labels[i.id] ?? i.id));
+    const constructedLabel = left.length ? `Écarts comblés, sauf : ${list(left)}` : "Écarts comblés";
+    const text = `${CONSTRUCTED_TEXT} : la version végétale complétée reçoit autant de protéines que le plat animal et ses autres manques sont comblés quand un aliment de la liste le permet${
+      left.length ? `, sauf : ${list(left)}` : ""
+    }. Pas de score, pour rester équitable.`;
+    return { ...score, animalPoints: 0, vegetalPoints: 0, winner: "egal", provisional: false, id: category.id as CategoryId, label: category.label, short: category.short, sentence: text, summary: text, constructed: true, constructedLabel };
   }
   const lead = score.vegetalCannotBeWorse ? `${ANIMAL_FREE_TEXT} ` : "";
   const summary = lead + (category.id === "sante" ? healthSummary(input.iarc) : categorySummary(score, labels));
