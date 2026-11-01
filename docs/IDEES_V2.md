@@ -10,3 +10,7 @@ Liste tenue par la relectrice. Claude Code : ne traite pas ce fichier pendant la
   - Contraintes : jamais de critère CO₂e, prix ou score pour ce choix, seulement les souhaits nutritionnels du visiteur ; aliments courants, quantités plausibles, nombre d'ajouts limité, pas de dose de complément ; dire clairement quand c'est impossible et pourquoi.
   - Faisable dans le navigateur : environ 35 protéines candidates × un petit programme linéaire chacune.
   - Base technique préparée en V1 (étape 3 quinquies, point 8 bis).
+- **Acides aminés essentiels et qualité des protéines** (Matt, 1er nov. 20 h 07). Ciqual 2025 ne contient aucun acide aminé (vérifié) : le site ne montre aujourd'hui que le conseil qualitatif de l'Anses (céréales pauvres en lysine, légumineuses en acides aminés soufrés ; varier sur la journée suffit).
+  - Piste : profils en acides aminés de l'USDA FoodData Central (domaine public, à vérifier), reliés aux codes Ciqual par une table relue, puis comparaison au profil de référence FAO 2013 (« Dietary protein quality evaluation in human nutrition ») : acide aminé limitant et indice chimique du plat, avec fourchette. DIAAS seulement si des digestibilités publiées et citables existent pour nos aliments.
+  - Dans le panneau d'ajustement : un interrupteur « Compléter les acides aminés », qui ajoute une céréale à une légumineuse, ou l'inverse.
+  - Prudence : la table de correspondance entre deux bases est une source d'erreurs ; la relire à la main, ou par un agent, aliment par aliment.

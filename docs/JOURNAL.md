@@ -81,6 +81,7 @@ Suivi étape par étape : heure, ce qui est fait, lien de la PR, état (en cours
 - 2026-11-01 20:02 — étape 4 commencée (branche `roadmap/s25` : marquage ✓ des lignes, e2e en CI, parcours ; 8 relectures simulées faites, rapport dans `docs/RETOURS.md` sur cette branche), puis interrompue à la demande de Matt pour faire d'abord cette étape. Branche `roadmap/s24e`. État : en cours.
 - Moteur (tests d'abord) : `lib/scoring/adjust.ts` (contraintes génériques, égalisation des protéines ou des calories, réglage à la main, « Combler », « Tout combler »), bases « par portion » et « pour 100 g » dans tout le moteur (`per100g` remplace `per100kcal` et `per10gProtein`).
 - Affichage : panneau « Ajuster la version végétale » (Nutrition), boutons rapides (vue d'ensemble), ligne « Version ajustée » (autres onglets), indicateurs comblés marqués et non comptés, `?ajuste=` / `?quantite=`, redirection de `?vue=complete` ; même chose sur `/aliment` et `/recette`. Sélecteur « Version de base / Version complétée » retiré. CLAUDE.md (règle 4), DESIGN.md, `/methodologie` mis à jour.
+- 2026-11-01 20:09 — fin de l'étape 3 quinquies : PR https://github.com/VeganFlemme/veganizer/pull/24, CI verte, conditions remplies (326 Vitest, tests pipeline, lint, typecheck, `test:db`, `test:db:scoring`, 124 e2e, 200 sur le build local), fusionnée (squash). État : fusionnée. Suite : reprise de l'étape 4 sur `roadmap/s25`, rebasée sur cette version.
 
 ## Bloqué par les permissions
 
