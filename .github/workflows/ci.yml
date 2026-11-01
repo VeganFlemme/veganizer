@@ -34,6 +34,14 @@ jobs:
         # The build prerenders /compare from Supabase: it needs the publishable key.
         if: ${{ env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY != '' && env.NEXT_PUBLIC_SUPABASE_URL != '' }}
         run: npm run build
+      - name: End-to-end tests (Playwright, against the production build)
+        # Suite V1, step 4: journeys at 375, 1 280 and 1 920 px, layout, wording, accessibility.
+        if: ${{ env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY != '' && env.NEXT_PUBLIC_SUPABASE_URL != '' }}
+        run: |
+          npx playwright install --with-deps chromium
+          npm start -- -p 3000 > /tmp/next.log 2>&1 &
+          for i in $(seq 1 60); do curl -sf -o /dev/null http://localhost:3000/ && break; sleep 2; done
+          BASE_URL=http://localhost:3000 npm run test:e2e -- --reporter=line
       - name: Build skipped
         if: ${{ env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY == '' || env.NEXT_PUBLIC_SUPABASE_URL == '' }}
         run: echo "::warning::Build skipped — set the repository secret NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY and variable NEXT_PUBLIC_SUPABASE_URL."
