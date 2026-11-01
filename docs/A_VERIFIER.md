@@ -83,3 +83,9 @@ Tous les critères sont respectés.
 - [ ] Le texte de partage (« j'éviterais environ … kg CO₂e ») : ton et exactitude.
 - [ ] « Si 10 % des Français… » : à activer seulement avec une fréquence de consommation sourcée (INCA 3, ANSES) et la population de référence (Insee).
 - [ ] Badge HENI « usage non commercial à vérifier » : à confirmer quand la licence des données HENI sera connue.
+
+## Étape F — GitHub Actions
+
+- [ ] **Ajouter le secret** `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` (clé publique, déjà visible dans le navigateur) : `gh secret set NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` puis coller la clé. Sans lui, la CI saute l'étape de construction (avertissement). Ne **jamais** y mettre `SUPABASE_SECRET_KEY`.
+- [ ] Lancer une fois la veille à la main (onglet Actions → « Sources watch » → *Run workflow*) pour vérifier les droits d'écriture des issues.
+- [ ] Quand une issue de veille s'ouvre : vérifier la source, relancer le script du pipeline, mettre à jour `/sources`, puis `python pipeline/sources_watch.py --update`.

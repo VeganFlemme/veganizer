@@ -46,3 +46,5 @@ next-env.d.ts
 pipeline/raw/
 .venv/
 __pycache__/
+
+pipeline/sources_watch_report.md

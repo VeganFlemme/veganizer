@@ -1,0 +1,38 @@
+name: Sources watch
+
+on:
+  schedule:
+    - cron: "0 6 1 * *" # monthly, 1st day, 06:00 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  watch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+      - name: Compare download pages with pipeline/sources_watch.json
+        id: check
+        run: |
+          if python pipeline/sources_watch.py --check; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          fi
+      - name: Open an issue (once per month)
+        if: steps.check.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          title="Veille des sources : changement détecté ($(date -u +%Y-%m))"
+          if gh issue list --state open --search "in:title \"$title\"" --json number --jq 'length' | grep -qv '^0$'; then
+            echo "Issue already open."
+          else
+            gh issue create --title "$title" --body-file pipeline/sources_watch_report.md
+          fi

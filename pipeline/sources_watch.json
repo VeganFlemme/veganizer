@@ -1,0 +1,45 @@
+{
+  "agribalyse-3.2 (data.ademe.fr)": {
+    "agribalyse-31-detail-par-ingredient": {
+      "dataUpdatedAt": "2025-02-27T16:25:38.984Z",
+      "mentions_v3.2": true
+    },
+    "agribalyse-31-synthese": {
+      "dataUpdatedAt": "2025-02-27T16:23:27.602Z",
+      "mentions_v3.2": true
+    }
+  },
+  "calnut / ciqual.anses.fr (statut de la page)": {
+    "status": "503"
+  },
+  "ciqual-2025 (Recherche Data Gouv)": {
+    "files": [
+      "Table Ciqual 2025 doc FR_2025_11_19.pdf",
+      "Table Ciqual 2025_FR_2025_11_03.xls",
+      "Table Ciqual 2025_FR_2025_11_03.xlsx",
+      "alim_2025_11_03.xml",
+      "alim_grp_2025_11_03.xml",
+      "compo_2025_11_03.xml",
+      "const_2025_11_03.xml",
+      "sources_2025_11_03.xml"
+    ],
+    "release": "2025-11-19T16:29:04Z",
+    "version": "1.0"
+  },
+  "faostat-qcl (FAOSTAT bulk)": {
+    "DateUpdate": "2025-12-31T00:00:00",
+    "FileLocation": "https://bulks-faostat.fao.org/production/Production_Crops_Livestock_E_All_Data_(Normalized).zip"
+  },
+  "fishcount": {
+    "status": "401"
+  },
+  "iarc-114 (page de la monographie)": {
+    "status": "200"
+  },
+  "open-prices (export Parquet)": {
+    "status": "200"
+  },
+  "pnns (mangerbouger.fr)": {
+    "status": "200"
+  }
+}
