@@ -14,7 +14,15 @@ for (const width of WIDTHS) {
       test(`no horizontal scroll, no overflowing value: ${path}`, async ({ page }) => {
         await page.goto(path, { waitUntil: "networkidle" });
         const overflow = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
-        expect(overflow).toBeLessThanOrEqual(0);
+        // Name the elements that stick out (fonts differ between macOS and the Linux CI).
+        const culprits = overflow > 0 ? await page.evaluate(() => {
+          const w = document.documentElement.clientWidth;
+          return [...document.querySelectorAll("body *")]
+            .filter((e) => e.getBoundingClientRect().right > w + 0.5 && ![...e.children].some((c) => c.getBoundingClientRect().right > w + 0.5))
+            .slice(0, 5)
+            .map((e) => `${e.tagName.toLowerCase()}.${String((e as HTMLElement).className).slice(0, 60)} «${(e.textContent ?? "").trim().slice(0, 30)}» right=${Math.round(e.getBoundingClientRect().right)}`);
+        }) : [];
+        expect(overflow, culprits.join(" | ")).toBeLessThanOrEqual(0);
         // A value never overflows its table cell (values do not wrap: they must fit).
         const cells = await page.evaluate(() =>
           [...document.querySelectorAll("td")]

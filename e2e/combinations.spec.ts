@@ -58,6 +58,8 @@ for (const width of WIDTHS) {
               if (tab) url.searchParams.set("onglet", tab);
               else url.searchParams.delete("onglet");
               await page.goto(url.toString(), { waitUntil: "load" });
+              // The adjusted version is computed in the browser: wait for it before reading scores.
+              if (ajuste) await page.getByRole("region", { name: "Carte d’équivalence" }).waitFor();
               const where = `${url.pathname}${url.search} @${width}`;
               await clean(page, where);
               if (!tab) {

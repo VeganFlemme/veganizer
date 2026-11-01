@@ -272,6 +272,9 @@ Matt ne veut plus deux versions (« de base » et « complétée »). Il veut **
    - À côté du nom de chaque indicateur, le sens en petit : « ↑ plus = mieux » ou « ↓ moins = mieux » (d'après `data/score_rules.json`). Les indicateurs sans sens défini (énergie…) n'ont pas de ✓.
    - Pas de code rouge/vert pour « bon/mauvais » : le vert est déjà la couleur du végétal, et le rouge/vert est la confusion de couleurs la plus fréquente. Le ✓ et le gras portent l'information, la couleur ne fait qu'aider.
    - Remplace la mention asymétrique « Avantage au plat animal » par ce marquage symétrique. La règle 3 reste respectée : ✓ côté animal et « Ce qui reste à couvrir ».
+0 ter. **Chiffres gagnants mis en valeur (demande de Matt, 21 h 10, complète le point 0)** : sur chaque ligne où un vainqueur est établi, **le nombre gagnant lui-même** est en gras et dans la couleur du plat qui gagne : vert si c'est le végétal, orange si c'est l'animal. Garde le ✓ pour les personnes daltoniennes.
+   - Pour le texte, utilise des teintes foncées de ces deux couleurs qui atteignent un contraste d'au moins 4,5:1 sur le fond (WCAG AA), par exemple des jetons `animal-ink` et `plant-ink` dans `docs/DESIGN.md`. L'orange actuel est trop clair pour du texte de taille normale.
+   - Pas de couleur sans vainqueur établi.
 0 bis. **[Remplacé par l'étape 3 quinquies, point 8.]** *Ancien texte, pour mémoire :* **Encadré des ajouts de la version complétée seulement dans l'onglet Nutrition (demande de Matt, 19 h 12).** Aujourd'hui, l'encadré « Version complétée : exemple d'ajouts possibles » (long texte, calories, liste des ajouts, ce qui reste à couvrir) s'affiche en haut de chaque onglet : sur téléphone, il repousse les données de l'Environnement ou de la Protection animale sous l'écran.
    - Encadré complet seulement dans l'onglet Nutrition.
    - Dans les autres onglets, et dans la vue d'ensemble, une seule ligne : « Version complétée : +76 g de protéines de soja texturées par portion, et 2 ajouts · Voir le détail dans Nutrition ». Le lien ouvre l'onglet Nutrition. Cette ligne explique pourquoi les chiffres ont changé.
@@ -374,7 +377,11 @@ Sur l'accueil, une rangée « Comparaisons du quotidien » : lait et boisson d'a
    - Une mention : « Ces objectifs sont les vôtres ; pour des besoins personnels, parlez-en à un professionnel de santé. »
 3. **Aliments à éviter** : le visiteur peut exclure des aliments ou des familles (soja, blé, fruits à coque, sésame…) des alternatives proposées et des ajouts. Mention visible à côté : « Préférences seulement : le site ne garantit pas l'absence d'allergènes ; vérifiez toujours les étiquettes. » Jamais de mention « sans allergène ».
 4. **Aucune donnée personnelle enregistrée** : tout reste dans l'URL de la page, rien n'est envoyé à Supabase.
-5. Ne fais pas : objectifs de poids, calcul d'IMC, plans garantis sans allergène, similarité de goût, acides aminés (décision de Matt : idées écartées pour l'instant).
+5. **La journée est le bon niveau pour les manques (remarque de Matt, 21 h 10)** : les références nutritionnelles sont des apports par jour.
+   - Sur `/journee`, « Ce qui reste à couvrir » compare les totaux de la journée végétale aux **apports de référence de l'étiquetage européen** (règlement (UE) n° 1169/2011, annexe XIII, partie B : adulte de référence, mêmes valeurs que sur les emballages), en % de ces apports, et au total de la journée animale. Pour les nutriments sans apport de référence dans ce règlement, compare seulement à la journée animale. Cite le règlement. Ce n'est pas un objectif personnel.
+   - Sur les pages d'aliments, de plats et de repas, le titre devient « Ce qui reste à couvrir sur la journée », avec un lien « Voir sur une journée » qui ouvre `/journee` avec ce plat déjà ajouté.
+6. **Protéines complémentaires sur la journée, sans chiffres d'acides aminés** : sur `/journee`, une ligne factuelle d'après les groupes d'aliments Ciqual : « Céréales ✓ · Légumineuses ✓ (ou soja ✓) », avec le conseil de l'Anses déjà cité (varier les sources de protéines sur la journée suffit). Si l'une manque, une note neutre : « pas de légumineuse aujourd'hui ». Aucun score d'acides aminés.
+7. Ne fais pas : objectifs de poids, calcul d'IMC, plans garantis sans allergène, similarité de goût, scores chiffrés d'acides aminés (décision de Matt : idées écartées pour l'instant).
 
 ## Étape 9 — V2d : relecture de la V2
 

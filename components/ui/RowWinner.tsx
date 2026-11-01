@@ -8,7 +8,8 @@ import type { ReactNode } from "react";
 export function WinnerValue({ side, winner, children }: { side: "animal" | "vegetal"; winner: "animal" | "vegetal" | "egal" | null | undefined; children: ReactNode }) {
   if (winner !== side) return <>{children}</>;
   return (
-    <strong className={`font-extrabold ${side === "animal" ? "text-animal-note" : "text-action"}`}>
+    // The ✓ may go on its own line in a narrow cell (the value keeps its own wrapping rules).
+    <strong className={`font-extrabold whitespace-normal ${side === "animal" ? "text-animal-note" : "text-action"}`}>
       <span aria-hidden="true">✓ </span>
       {children}
       <span className="sr-only"> (meilleure valeur)</span>
