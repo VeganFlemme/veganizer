@@ -117,10 +117,25 @@ describe("components/ui", () => {
   });
 
   it("DataTable: real table with a caption and header dots", () => {
-    const h = html(<DataTable caption="Nutrition" unitLabel="Par portion" rows={[{ id: "p", name: "Protéines, g", animal: "48,6", vegetal: "35,4", note: "Avantage au plat animal" }]} />);
+    const h = html(<DataTable caption="Nutrition" unitLabel="Par portion" rows={[{ id: "p", name: "Protéines, g", animal: "48,6", vegetal: "35,4", note: "Données partielles" }]} />);
     expect(h).toContain("<table");
     expect(h).toContain('<th scope="row"');
-    expect(h).toContain("Avantage au plat animal");
+    expect(h).toContain("Données partielles");
+  });
+
+  it("DataTable: the better value of an established verdict in bold with ✓, on either side; the direction under the name (step 4, point 0)", () => {
+    const rows = [
+      { id: "p", name: "Protéines, g", animal: "48,6", vegetal: "35,4", winner: "animal" as const, direction: "up" as const },
+      { id: "s", name: "Sel, g", animal: "2,1", vegetal: "1,2", winner: "vegetal" as const, direction: "down" as const },
+      { id: "e", name: "Énergie, kcal", animal: "483", vegetal: "474", winner: null, direction: "none" as const },
+    ];
+    const h = html(<DataTable caption="Nutrition" unitLabel="Par portion" rows={rows} />);
+    expect((h.match(/✓/g) ?? []).length).toBe(2);
+    expect(h).toMatch(/✓[^<]*<\/span>48,6/);
+    expect(h).toMatch(/✓[^<]*<\/span>1,2/);
+    expect(h).toContain("↑ plus = mieux");
+    expect(h).toContain("↓ moins = mieux");
+    expect(h).not.toContain("Avantage au plat animal");
   });
 
   it("UnitSwitch: per serving and per 100 g only", () => {

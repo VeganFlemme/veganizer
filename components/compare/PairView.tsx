@@ -6,6 +6,7 @@ import sante from "@/data/sante.json";
 import { AnimalBetterBox, AnimalBetterSummary, REMAINING_TITLE } from "@/components/ui/AnimalBetterBox";
 import { ChipGroup } from "@/components/ui/ChipGroup";
 import { ProteinPicker } from "@/components/ui/ProteinPicker";
+import { DirectionHint, WinnerValue } from "@/components/ui/RowWinner";
 import { displayName } from "@/lib/compare/food";
 import { CategoryBanner } from "@/components/ui/CategoryBanner";
 import { CategoryCard } from "@/components/ui/CategoryCard";
@@ -124,7 +125,6 @@ function rowNote(r: CriterionRow): ReactNode {
     else notes.push(`Données partielles : ${coverage}${r.direction === "none" ? "" : ", pas de verdict"}`);
   }
   if (r.winner === "egal" && (r.animal?.rangePublished || r.vegetal?.rangePublished)) notes.push("Fourchettes qui se chevauchent : égalité");
-  if (r.winner === "animal") notes.push("Avantage au plat animal");
   if ((r.animal?.value ?? 0) < 0 || (r.vegetal?.value ?? 0) < 0) notes.push("Valeur négative publiée telle quelle");
   return notes.length ? notes.join(". ") : undefined;
 }
@@ -168,6 +168,9 @@ export function tableRows(rows: CriterionRow[], servings = false): DataTableRow[
     vegetal: <Cell v={r.vegetal} unit={r.unit} servings={servings} />,
     note: rowNote(r),
     strong: r.direction !== "none",
+    // Step 4, point 0: ✓ on the better value of an established verdict, either side.
+    winner: r.direction !== "none" ? r.winner : null,
+    direction: r.direction,
     gap: r.reductionPercent == null ? <MissingValue label="—" /> : signedGap(r.reductionPercent),
     bar: <MiniBars animal={r.animal?.value ?? r.animal?.high ?? null} vegetal={r.vegetal?.value ?? r.vegetal?.high ?? null} />,
     reliability: reliability(r),
@@ -178,6 +181,11 @@ export function tableRows(rows: CriterionRow[], servings = false): DataTableRow[
 /** The chosen protein in the plant version (its label and grams for the recipe). */
 function mainOf(v: VariantView, code: string) {
   return v.dish.ingredients.find((i) => i.code === code) ?? null;
+}
+
+/** Outcome of a scored indicator as the winner of a table row (✓), or none. */
+function winnerOf(outcome: string | undefined): "animal" | "vegetal" | null {
+  return outcome === "animal" || outcome === "vegetal" ? outcome : null;
 }
 
 export function Panel({ title, children, className = "" }: { title?: string; children: ReactNode; className?: string }) {
@@ -519,19 +527,31 @@ function ThreeBasisTable({ v, ids, caption }: { v: VariantView; ids: string[]; c
                   {r0.name}
                   {unitOf(r0)}
                 </span>
-                {r0.winner && r0.winner !== "egal" && (
-                  <span className="ml-2 inline-flex items-center gap-1 text-[12px] font-semibold text-ink-2">
-                    <Dot series={r0.winner === "animal" ? "animal" : "plant"} /> {r0.winner === "animal" ? "animal" : "végétal"}
-                  </span>
-                )}
+                <DirectionHint direction={r0.direction} />
                 {rowNote(r0) && <span className="mt-[2px] block text-[12px] leading-snug text-animal-note">{rowNote(r0)}</span>}
               </th>
               {maps.map((m, i) => {
                 const r = m.get(id);
                 return (
                   <Fragment key={BASIS_ORDER[i]}>
-                    <td className="num border-l border-line-soft py-[6px] pl-3 text-right">{r ? <Cell v={r.animal} unit={r.unit} compact /> : <MissingValue />}</td>
-                    <td className="num py-[6px] pl-2 text-right">{r ? <Cell v={r.vegetal} unit={r.unit} compact /> : <MissingValue />}</td>
+                    <td className="num border-l border-line-soft py-[6px] pl-3 text-right">
+                      {r ? (
+                        <WinnerValue side="animal" winner={r.direction !== "none" ? r.winner : null}>
+                          <Cell v={r.animal} unit={r.unit} compact />
+                        </WinnerValue>
+                      ) : (
+                        <MissingValue />
+                      )}
+                    </td>
+                    <td className="num py-[6px] pl-2 text-right">
+                      {r ? (
+                        <WinnerValue side="vegetal" winner={r.direction !== "none" ? r.winner : null}>
+                          <Cell v={r.vegetal} unit={r.unit} compact />
+                        </WinnerValue>
+                      ) : (
+                        <MissingValue />
+                      )}
+                    </td>
                   </Fragment>
                 );
               })}
@@ -826,7 +846,15 @@ function EconomyTab({ v, animalName }: { v: VariantView; animalName: string }) {
           caption="Prix en magasin"
           unitLabel="Prix des ingrédients"
           rows={[
-            { id: "s", name: "Par portion", animal: price(animal, (p) => p.value), vegetal: price(vegetal, (p) => p.value), strong: true },
+            {
+              id: "s",
+              name: "Par portion",
+              animal: price(animal, (p) => p.value),
+              vegetal: price(vegetal, (p) => p.value),
+              strong: true,
+              direction: "down",
+              winner: winnerOf(v.scores.verdict.categories.find((c) => c.id === "economie")?.indicators.find((i) => i.id === "price_eur")?.outcome),
+            },
             { id: "k", name: "Pour 100 g", animal: price(animal, (p) => p.per100g), vegetal: price(vegetal, (p) => p.per100g) },
           ]}
           footer={
