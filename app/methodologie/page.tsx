@@ -46,7 +46,9 @@ function Formula({ children }: { children: ReactNode }) {
 
 const SECTIONS = [
   ["principe", "Le principe : comparer à fonction égale"],
+  ["paires", "Les paires de plats : maison et du commerce"],
   ["formule", "La formule de calcul"],
+  ["cout-climat", "Le coût climat"],
   ["sources", "Les sources"],
   ["hypotheses", "Catégories animales et hypothèses par défaut"],
   ["aucun-ingredient-animal", "« Aucun ingrédient animal identifié »"],
@@ -286,6 +288,33 @@ export default async function MethodologiePage() {
         </p>
       </Section>
 
+      <Section id="paires" title="Les paires de plats : maison et du commerce">
+        <p>
+          Chaque plat animal est comparé à deux alternatives végétales, pour 4 portions : une version
+          <strong> faite maison</strong> (tofu, tempeh, légumineuses, légumes…) et une version avec un
+          <strong> produit du commerce</strong> prêt à l’emploi (haché végétal, galette, seitan,
+          tranches ou râpé végétal…). Les accompagnements sont les mêmes des deux côtés.
+        </p>
+        <p>Une recette n’est publiée que si elle respecte ces critères :</p>
+        <ul className="list-disc space-y-1 pl-5">
+          <li>proportions réalistes de la cuisine française courante ;</li>
+          <li>portion consommée entre 300 et 500 g ;</li>
+          <li>même rôle dans le repas que le plat animal ;</li>
+          <li>au moins 70 % des protéines du plat animal ;</li>
+          <li>données disponibles pour au moins 95 % de la masse du plat ;</li>
+          <li>
+            uniquement des aliments simples (pas de plat préparé comme ingrédient), pour que les
+            impacts par espèce animale restent calculables.
+          </li>
+        </ul>
+        <p>
+          Quand aucun code ne couvre exactement l’ingrédient (carotte cuite, champignon de Paris…),
+          nous retenons l’option la plus proche disposant de données complètes, de la même façon
+          dans les deux plats. Chaque choix est consigné dans le dépôt du projet
+          (<a href="https://github.com/VeganFlemme/veganizer/blob/main/docs/DECISIONS.md" className="underline" rel="noopener noreferrer">journal des décisions</a>).
+        </p>
+      </Section>
+
       <Section id="formule" title="La formule de calcul">
         <p>
           Chaque recette est décrite ingrédient par ingrédient, en grammes, à l’état réellement
@@ -302,7 +331,7 @@ export default async function MethodologiePage() {
           portions
         </Formula>
         <p>L’écart entre les deux plats est exprimé par rapport au plat animal :</p>
-        <Formula>Écart (%) = (plat animal − plat végétal) ÷ plat animal × 100</Formula>
+        <Formula>Écart (%) = (plat animal − plat végétal) ÷ |plat animal| × 100</Formula>
         <p>
           Un écart positif signifie que l’alternative végétale a une valeur plus faible ; un écart
           négatif, qu’elle a une valeur plus élevée. Selon l’indicateur, plus faible est mieux
@@ -312,7 +341,26 @@ export default async function MethodologiePage() {
           <strong>Incertitude.</strong> Agribalyse attribue à chaque produit une note de qualité des
           données (DQR) de 1 (très fiable) à 5 (très incertaine) : nous affichons la moins bonne note
           parmi les ingrédients du plat. Quand une source publie une fourchette (valeur basse et
-          valeur haute), nous l’affichons aussi.
+          valeur haute), nous l’affichons aussi. Agribalyse 3.2 ne publie pas de fourchette par
+          aliment : pour ces indicateurs, la page l’indique et affiche la valeur centrale avec son DQR.
+        </p>
+        <p>
+          La valeur absolue au dénominateur garde un sens à l’écart quand la valeur publiée du plat
+          animal est négative. Quand la valeur du plat animal vaut 0 ou manque, l’écart n’est pas
+          calculé.
+        </p>
+      </Section>
+
+      <Section id="cout-climat" title="Le coût climat">
+        <p>
+          Le coût climat d’une portion est ses émissions (kg CO₂e, Agribalyse) multipliées par la
+          valeur de l’action pour le climat publiée par France Stratégie (rapport Quinet, mars 2025),
+          en euros 2023 par tonne. Pour une année sans valeur publiée, nous appliquons la règle de
+          croissance indiquée par la source ; la page le précise alors.
+        </p>
+        <p>
+          C’est un coût pour la collectivité (dommages climatiques évités ou causés), pas un prix
+          payé en caisse.
         </p>
       </Section>
 

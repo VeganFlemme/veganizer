@@ -54,3 +54,14 @@ Tous les critères sont respectés.
 - [ ] **Produits du commerce** : 30181 haché végétal (11,5 g de protéines/100 g, plus faible que la plupart des marques), 25593 galette blé-soja, 1030 fines tranches végétales, 1029_1/1029_2 spécialité végétale type fromage (0,25 g de protéines/100 g), 23412 pâte brisée végétale, 20914 pavé de soja, 25598 seitan. Vérifier qu'ils correspondent à des produits réellement vendus en France.
 - [ ] **Classement animal** : 9 aliments passés en `mixte` (liste dans `docs/DECISIONS.md`). À trancher aussi : 24048 « Biscuit sec, sablé… autre que pur beurre » et 42000 « Substitut de repas hypocalorique, crème dessert » restent `is_animal = false` alors qu'ils contiennent probablement du lait, du beurre ou des œufs.
 - [ ] **Textes** des descriptions et justifications (`pipeline/pair_dishes.csv`) : ton, exactitude (ex. « l'huile de colza apporte des oméga-3 ALA, pas d'EPA ni de DHA »).
+
+## Étape C — Interface publique
+
+- [ ] **Relire les textes** de l'accueil, de `/compare`, `/a-propos` et des ajouts de `/methodologie` (sections « Les paires de plats » et « Le coût climat ») : ton bienveillant, aucune promesse de santé.
+- [ ] **Encadré « Là où le plat animal fait mieux »** : certains points n'ont pas encore de conseil sourcé (sel, par ex. pour le tofu à la sauce soja). Ajouter des conseils dans `data/conseils.json` si souhaité.
+- [ ] **Couverture des micronutriments** : iode, vitamine D, B2, oméga-3 ne sont connus que pour une partie des ingrédients (ex. iode 9 % de la masse du bourguignon végétal). Une fois CALNUT importé (étape A), ces couvertures devraient monter.
+- [ ] **Coût climat** : l'année affichée est l'année en cours (2026), valeur calculée avec la règle de croissance de la VAC (0,256 €/kg en 2025 × 1,032). Vérifier que c'est la lecture voulue.
+- [ ] **Accessibilité AA** : contrôle automatique non fait (pas d'outil dans l'environnement). Vérifier avec axe ou Lighthouse : contrastes, ordre des titres, navigation au clavier des boutons de bascule (`aria-pressed`).
+- [ ] **Page inconnue** : `/compare/xxx` affiche bien « page introuvable » mais renvoie un code HTTP 200 (rendu en flux de Next.js 16 avec Cache Components). À corriger si le référencement le demande.
+- [ ] **Images de partage** : vérifier le rendu de `/compare/<plat>/opengraph-image` (accents, longueur des titres).
+- [ ] **Signaler une erreur** : tester un envoi réel depuis le site et vérifier la ligne dans `error_reports` (table lisible seulement avec la clé secrète).
