@@ -1,0 +1,81 @@
+kind,item,site,official,ok
+valeur Ciqual,17440 energy_eu_kcal,900.0,900.0,True
+valeur Ciqual,25571 salt_g,1.6,1.6,True
+valeur Ciqual,7013 protein_g,2.88,2.88,True
+valeur Ciqual,7410 energy_eu_kcal,385.0,385.0,True
+valeur Ciqual,15021 energy_eu_kcal,211.0,211.0,True
+valeur Ciqual,20518 salt_g,0.033,0.033,True
+valeur Ciqual,9686 fe_mg,1.1,1.1,True
+valeur Ciqual,31121 ca_mg,2330.0,2330.0,True
+valeur Ciqual,9121 salt_g,0.025,0.025,True
+valeur Ciqual,6205 fe_mg,4.0,4.0,True
+valeur Ciqual,36307 fe_mg,1.04,1.04,True
+valeur Ciqual,21503 protein_g,26.8,26.8,True
+valeur Ciqual,10012 protein_g,10.9,10.9,True
+valeur Ciqual,13152 energy_eu_kcal,89.3,89.3,True
+valeur Ciqual,16401 energy_eu_kcal,900.0,900.0,True
+valeur Ciqual,25101 fat_g,6.5,6.5,True
+valeur Ciqual,13999 protein_g,0.69,0.69,True
+valeur Ciqual,39209 fat_g,5.74,5.74,True
+valeur Ciqual,10089 energy_eu_kcal,91.7,91.7,True
+valeur Ciqual,6200 salt_g,0.16,0.16,True
+valeur Ciqual,25535 fat_g,11.4,11.4,True
+valeur Ciqual,20305 energy_eu_kcal,33.1,33.1,True
+valeur Ciqual,30110 fe_mg,0.9,0.9,True
+valeur Ciqual,23121 energy_eu_kcal,229.0,229.0,True
+valeur Ciqual,26031 fe_mg,0.6,0.6,True
+valeur Agribalyse,21516 water_scarcity_m3,6.93,6.93,True
+valeur Agribalyse,6260 land_use_pt,1120.0,1120.0,True
+valeur Agribalyse,23422 water_scarcity_m3,0.736,0.736,True
+valeur Agribalyse,40058 water_scarcity_m3,3.64,3.64,True
+valeur Agribalyse,25597_2 land_use_pt,121.0,121.0,True
+valeur Agribalyse,30011 land_use_pt,703.0,703.0,True
+valeur Agribalyse,12110 land_use_pt,293.0,293.0,True
+valeur Agribalyse,39200 land_use_pt,135.0,135.0,True
+valeur Agribalyse,2074 land_use_pt,18.8,18.8,True
+valeur Agribalyse,12736 water_scarcity_m3,0.861,0.861,True
+valeur Agribalyse,26063 ghg_100y_kgco2e,12.0,12.0,True
+valeur Agribalyse,26002 ghg_100y_kgco2e,14.9,14.9,True
+valeur Agribalyse,20183 water_scarcity_m3,0.0795,0.0795,True
+valeur Agribalyse,20163 land_use_pt,6.82,6.82,True
+valeur Agribalyse,25189 ghg_100y_kgco2e,3.27,3.27,True
+valeur Agribalyse,13549 water_scarcity_m3,10.9,10.9,True
+valeur Agribalyse,9320 land_use_pt,81.9,81.9,True
+valeur Agribalyse,30155 water_scarcity_m3,5.12,5.12,True
+valeur Agribalyse,36032 ghg_100y_kgco2e,7.48,7.48,True
+valeur Agribalyse,37001 ghg_100y_kgco2e,1.4,1.4,True
+valeur Agribalyse,26135 water_scarcity_m3,0.47,0.47,True
+valeur Agribalyse,20253 water_scarcity_m3,0.425,0.425,True
+valeur Agribalyse,11019 land_use_pt,688.0,688.0,True
+valeur Agribalyse,8111 ghg_100y_kgco2e,16.1,16.1,True
+valeur Agribalyse,36306 ghg_100y_kgco2e,7.53,7.53,True
+plat recalculé,boeuf-bourguignon (animal) energy_eu_kcal,482.7375,482.7375,True
+plat recalculé,boeuf-bourguignon (animal) protein_g,48.6025,48.6025,True
+plat recalculé,boeuf-bourguignon (animal) ghg_100y_kgco2e,5.030105000000001,5.030105000000001,True
+plat recalculé,boeuf-bourguignon (végétal) energy_eu_kcal,547.6375,547.6375,True
+plat recalculé,boeuf-bourguignon (végétal) protein_g,43.267500000000005,43.2675,True
+plat recalculé,boeuf-bourguignon (végétal) ghg_100y_kgco2e,0.5873549999999998,0.587355,True
+plat recalculé,lasagnes-bolognaise (animal) energy_eu_kcal,663.4100000000001,663.4100000000001,True
+plat recalculé,lasagnes-bolognaise (animal) protein_g,40.084625,40.084625,True
+plat recalculé,lasagnes-bolognaise (animal) ghg_100y_kgco2e,5.006002500000001,5.006002500000001,True
+plat recalculé,lasagnes-bolognaise (végétal) energy_eu_kcal,535.935,535.935,True
+plat recalculé,lasagnes-bolognaise (végétal) protein_g,31.521625,31.521625,True
+plat recalculé,lasagnes-bolognaise (végétal) ghg_100y_kgco2e,0.48478999999999994,0.48478999999999994,True
+plat recalculé,omelette (animal) energy_eu_kcal,482.6125,482.6125,True
+plat recalculé,omelette (animal) protein_g,23.670500000000004,23.670500000000004,True
+plat recalculé,omelette (animal) ghg_100y_kgco2e,0.5159499999999999,0.5159499999999999,True
+plat recalculé,omelette (végétal) energy_eu_kcal,534.8125000000001,534.8125000000001,True
+plat recalculé,omelette (végétal) protein_g,24.0885,24.0885,True
+plat recalculé,omelette (végétal) ghg_100y_kgco2e,0.5226249999999999,0.5226249999999999,True
+plat recalculé,saumon-riz (animal) energy_eu_kcal,582.6424999999999,582.6424999999999,True
+plat recalculé,saumon-riz (animal) protein_g,33.329375,33.329375,True
+plat recalculé,saumon-riz (animal) ghg_100y_kgco2e,1.0813025,1.0813025,True
+plat recalculé,saumon-riz (végétal) energy_eu_kcal,482.6425,482.6425,True
+plat recalculé,saumon-riz (végétal) protein_g,31.454375,31.454375,True
+plat recalculé,saumon-riz (végétal) ghg_100y_kgco2e,0.45005249999999997,0.4500525,True
+plat recalculé,quiche-lorraine (animal) energy_eu_kcal,776.4875000000001,776.4875,True
+plat recalculé,quiche-lorraine (animal) protein_g,20.637500000000003,20.637500000000003,True
+plat recalculé,quiche-lorraine (animal) ghg_100y_kgco2e,0.9999125,0.9999125000000001,True
+plat recalculé,quiche-lorraine (végétal) energy_eu_kcal,682.3000000000001,682.3,True
+plat recalculé,quiche-lorraine (végétal) protein_g,21.145000000000003,21.145000000000003,True
+plat recalculé,quiche-lorraine (végétal) ghg_100y_kgco2e,0.44034999999999996,0.44034999999999996,True

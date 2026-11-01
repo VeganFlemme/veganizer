@@ -1,6 +1,6 @@
 # Suite V1 — à exécuter d'une traite (décisions de Matt, 2026-11-01)
 
-Lis d'abord CLAUDE.md, docs/ROADMAP.md, docs/DESIGN.md, docs/DECISIONS.md et docs/A_VERIFIER.md. Exécute les étapes 0 à 5 (V1), puis 6 à 9 (V2, décision de Matt, 19 h 43) et 10 (recette finale), sans attendre Matt entre les étapes, dans cet ordre (ordre mis à jour le 1er novembre à 16 h 50) : 0, 1, 2, 3, **3 quater (affichage sur ordinateur, prioritaire)**, 3 bis, 3 ter, **3 quinquies (une seule version végétale ajustable, décision de Matt, 19 h 31)**, 4, 5, puis la V2 : 6, 7, 8, 9, puis 10 (recette finale de tout le site). La décision de Matt de 17 h 25 (section suivante) s'applique à toutes les étapes restantes.
+Lis d'abord CLAUDE.md, docs/ROADMAP.md, docs/DESIGN.md, docs/DECISIONS.md et docs/A_VERIFIER.md. Exécute les étapes 0 à 5 (V1), puis 6 à 9 avec 8 bis et 8 ter (V2, décisions de Matt, 19 h 43 et 20 h 54) et 10 (recette finale), sans attendre Matt entre les étapes, dans cet ordre (ordre mis à jour le 1er novembre à 16 h 50) : 0, 1, 2, 3, **3 quater (affichage sur ordinateur, prioritaire)**, 3 bis, 3 ter, **3 quinquies (une seule version végétale ajustable, décision de Matt, 19 h 31)**, 4, 5, puis la V2 : 6, 7, 8, 8 bis, 8 ter, 9, 9 bis, puis 10 (recette finale de tout le site). La décision de Matt de 17 h 25 (section suivante) s'applique à toutes les étapes restantes.
 
 ## Autorisations données par Matt pour toute cette suite
 
@@ -272,6 +272,9 @@ Matt ne veut plus deux versions (« de base » et « complétée »). Il veut **
    - À côté du nom de chaque indicateur, le sens en petit : « ↑ plus = mieux » ou « ↓ moins = mieux » (d'après `data/score_rules.json`). Les indicateurs sans sens défini (énergie…) n'ont pas de ✓.
    - Pas de code rouge/vert pour « bon/mauvais » : le vert est déjà la couleur du végétal, et le rouge/vert est la confusion de couleurs la plus fréquente. Le ✓ et le gras portent l'information, la couleur ne fait qu'aider.
    - Remplace la mention asymétrique « Avantage au plat animal » par ce marquage symétrique. La règle 3 reste respectée : ✓ côté animal et « Ce qui reste à couvrir ».
+0 ter. **Chiffres gagnants mis en valeur (demande de Matt, 21 h 10, complète le point 0)** : sur chaque ligne où un vainqueur est établi, **le nombre gagnant lui-même** est en gras et dans la couleur du plat qui gagne : vert si c'est le végétal, orange si c'est l'animal. Garde le ✓ pour les personnes daltoniennes.
+   - Pour le texte, utilise des teintes foncées de ces deux couleurs qui atteignent un contraste d'au moins 4,5:1 sur le fond (WCAG AA), par exemple des jetons `animal-ink` et `plant-ink` dans `docs/DESIGN.md`. L'orange actuel est trop clair pour du texte de taille normale.
+   - Pas de couleur sans vainqueur établi.
 0 bis. **[Remplacé par l'étape 3 quinquies, point 8.]** *Ancien texte, pour mémoire :* **Encadré des ajouts de la version complétée seulement dans l'onglet Nutrition (demande de Matt, 19 h 12).** Aujourd'hui, l'encadré « Version complétée : exemple d'ajouts possibles » (long texte, calories, liste des ajouts, ce qui reste à couvrir) s'affiche en haut de chaque onglet : sur téléphone, il repousse les données de l'Environnement ou de la Protection animale sous l'écran.
    - Encadré complet seulement dans l'onglet Nutrition.
    - Dans les autres onglets, et dans la vue d'ensemble, une seule ligne : « Version complétée : +76 g de protéines de soja texturées par portion, et 2 ajouts · Voir le détail dans Nutrition ». Le lien ouvre l'onglet Nutrition. Cette ligne explique pourquoi les chiffres ont changé.
@@ -328,6 +331,17 @@ Règles pour toute la V2 :
 
 ## Étape 6 — V2a : tout indicateur réglable
 
+0. **Réglage directement dans le tableau (décision de Matt, 20 h 57) : il remplace le panneau « Ajuster la version végétale » de l'étape 3 quinquies et toute section ou menu au-dessus du tableau.**
+   - Dans la colonne « Végétal » du tableau Nutrition, chaque valeur que le moteur peut faire varier a deux **petites flèches discrètes de part et d'autre du nombre** (‹ 34,5 ›) : ‹ diminue, › augmente.
+   - Sur téléphone, les flèches apparaissent quand on touche la valeur. Zone tactile d'au moins 24 × 24 px. Libellés accessibles, par exemple « Augmenter les protéines de la version végétale ».
+   - Le pas est adapté à l'indicateur. En passant la valeur du plat animal, le réglage **s'arrête dessus** et affiche « = plat animal » : c'est l'égalisation, sans bouton séparé. Monter un manque jusqu'au plat animal revient à le combler.
+   - Pas de flèches sur les lignes que les aliments ne peuvent pas changer (B12, EPA + DHA, vitamine D) : à la place, une petite note « complément ou aliment enrichi » au survol ou au toucher.
+   - Si un réglage est impossible avec les autres, la ligne l'indique sur place (« impossible avec les calories réglées ») sans rien casser.
+   - Seuls ajouts visibles hors du tableau : la carte d'équivalence en haut (point 4 bis de l'étape 3 quinquies, dès qu'un réglage est actif), et dans l'en-tête du tableau deux petits liens texte, « Tout combler » et « Revenir à la recette de base ». Rien d'autre au-dessus du tableau.
+   - Même principe sur `/repas` et `/journee`. Les objectifs du visiteur se règlent avec les flèches de la ligne Total, ou en tapant directement la valeur.
+   - **Manques, directement dans leur liste (décision de Matt, 20 h 57)** : dans « Ce qui reste à couvrir », chaque manque a sa petite flèche › au bout de sa ligne (« Zinc : 5,3 mg contre 12,7 mg › »). Un toucher le comble (même calcul qu'en montant la valeur dans le tableau), et la ligne affiche alors ce qui a été ajouté, avec un petit ‹ pour annuler. Plus d'interrupteurs « Combler » séparés. Les manques qu'aucun aliment ne comble n'ont pas de flèche.
+
+
 1. Dans l'onglet Nutrition, chaque ligne du tableau peut recevoir une contrainte : « = plat animal », « au moins », « au plus » ou une valeur choisie. Lipides, glucides, sucres, fibres, sel, acides gras saturés, vitamines, minéraux… La fonction générique de contraintes de l'étape 3 quinquies (point 8 bis) les résout avec le programme linéaire existant.
 2. **Ingrédients que le moteur peut ajouter ou doser** : la liste blanche élargie de façon traçable. Pour chaque aliment courant végétal (légumineuses, céréales complètes, oléagineux, graines, légumes, fruits, boissons enrichies), il faut nutriments et impacts, et respecter les règles 9 à 11. Chaque aliment a une quantité maximale par portion : celle de l'enquête INCA3 s'il y en a une, sinon un maximum éditorial écrit dans le fichier et sur `/methodologie`. Au plus 4 ajouts par recette. Jamais de dose de complément.
 3. Les ingrédients de base de la recette peuvent varier de ±50 % au plus. Le plat animal ne change jamais.
@@ -346,13 +360,56 @@ Règles pour toute la V2 :
 
 Sur l'accueil, une rangée « Comparaisons du quotidien » : lait et boisson d'avoine ou de soja, beurre et margarine ou huile, steak haché et galette végétale, yaourt et dessert au soja, fromage râpé et alternative, œufs et tofu brouillé. Ce sont des pages d'aliments existantes, choisies par une règle écrite (les aliments animaux les plus consommés selon INCA3 si les données le permettent, sinon une liste éditoriale annoncée comme telle).
 
+## Étape 8 bis — V2e : comparer un repas complet (décision de Matt, 20 h 54)
+
+1. Nouvelle page `/repas` : le visiteur compose un repas (entrée, plat, dessert, accompagnements : pain, fromage, boisson…) en cherchant dans le catalogue (nos plats, les plats Agribalyse, les aliments).
+   - Chaque élément a sa portion : la portion de la page de l'élément, ou 100 g pour un aliment, modifiable.
+   - Face au repas animal : le repas végétal, où chaque élément animal est remplacé par sa version végétale (protéine choisie, règles de l'étape 3 ter) ; les éléments déjà végétaux restent tels quels.
+2. Totaux du repas, mêmes 5 catégories, mêmes scores, verdict et « Ce qui reste à couvrir », avec la même règle d'honnêteté que partout.
+3. Même panneau d'ajustement que les plats, au niveau du repas : égaliser les protéines ou les calories du repas, combler un manque, réglages avancés de la V2.
+4. Le repas se partage par l'URL. Le site démarre sur un repas vide avec une recherche, plus au plus 2 exemples composés d'éléments du catalogue et marqués « exemple ». Aucune recette nouvelle écrite par l'IA.
+
+## Étape 8 ter — V2f : une journée, avec les objectifs choisis par le visiteur (décision de Matt, 20 h 54)
+
+1. Nouvelle page `/journee` : 3 à 5 repas (petit-déjeuner, déjeuner, collation, dîner…) composés comme sur `/repas`. Totaux de la journée animale et végétale, mêmes 5 catégories.
+2. **Objectifs entrés par le visiteur lui-même** : calories par jour, protéines par jour, et, s'il le souhaite, par repas. Le moteur ajuste la journée végétale pour les tenir (contraintes de la V2) et dit ce qui est impossible.
+   - **Aucun calculateur, aucune recommandation chiffrée personnalisée, aucun IMC, aucun objectif de perte ou de prise de poids** : le site ne propose pas de cible, il applique celle que le visiteur tape.
+   - Une mention : « Ces objectifs sont les vôtres ; pour des besoins personnels, parlez-en à un professionnel de santé. »
+3. **Aliments à éviter** : le visiteur peut exclure des aliments ou des familles (soja, blé, fruits à coque, sésame…) des alternatives proposées et des ajouts. Mention visible à côté : « Préférences seulement : le site ne garantit pas l'absence d'allergènes ; vérifiez toujours les étiquettes. » Jamais de mention « sans allergène ».
+4. **Aucune donnée personnelle enregistrée** : tout reste dans l'URL de la page, rien n'est envoyé à Supabase.
+5. **La journée est le bon niveau pour les manques (remarque de Matt, 21 h 10)** : les références nutritionnelles sont des apports par jour.
+   - Sur `/journee`, « Ce qui reste à couvrir » compare les totaux de la journée végétale aux **apports de référence de l'étiquetage européen** (règlement (UE) n° 1169/2011, annexe XIII, partie B : adulte de référence, mêmes valeurs que sur les emballages), en % de ces apports, et au total de la journée animale. Pour les nutriments sans apport de référence dans ce règlement, compare seulement à la journée animale. Cite le règlement. Ce n'est pas un objectif personnel.
+   - Sur les pages d'aliments, de plats et de repas, le titre devient « Ce qui reste à couvrir sur la journée », avec un lien « Voir sur une journée » qui ouvre `/journee` avec ce plat déjà ajouté.
+6. **Protéines complémentaires sur la journée, sans chiffres d'acides aminés** : sur `/journee`, une ligne factuelle d'après les groupes d'aliments Ciqual : « Céréales ✓ · Légumineuses ✓ (ou soja ✓) », avec le conseil de l'Anses déjà cité (varier les sources de protéines sur la journée suffit). Si l'une manque, une note neutre : « pas de légumineuse aujourd'hui ». Aucun score d'acides aminés.
+7. Ne fais pas : objectifs de poids, calcul d'IMC, plans garantis sans allergène, similarité de goût, scores chiffrés d'acides aminés (décision de Matt : idées écartées pour l'instant).
+
 ## Étape 9 — V2d : relecture de la V2
 
-1. e2e : les réglages avancés et le changement d'alternative, sur téléphone et sur ordinateur, avec l'URL qui garde l'état.
+1. e2e : les réglages avancés, le changement d'alternative, `/repas` et `/journee` (objectifs, aliments à éviter), sur téléphone et sur ordinateur, avec l'URL qui garde l'état.
 2. 3 visiteurs simulés (omnivore sceptique, personne de 70 ans, étudiant pressé), avec des tâches et des questions à réponse connue sur le panneau d'ajustement. Corrige ce qui n'est pas compris.
 3. Un sous-agent diététicienne relit 10 scénarios d'ajustement : quantités plausibles, ajouts sensés, aucune dose, mentions de prudence.
 4. Audit : recalcule indépendamment 10 scénarios et compare.
 5. Notes dans `docs/RETOURS.md`, puis bilan V2 dans `docs/JOURNAL.md`.
+
+## Étape 9 bis — Finitions du parcours visiteur (décision de Matt, 21 h 40)
+
+À faire après l'étape 9 et avant l'étape 10, une PR, tests d'abord. Objectif : que le message principal ne se perde pas dans les détails.
+
+1. **« En bref » tout en haut de chaque comparaison** (plats, aliments, repas, journée, `/recette`), avant le verdict : 3 ou 4 phrases en mots simples, calculées à partir des données de la page. Exemple : « Remplacer ce bourguignon par sa version au soja texturé : −90 % de CO₂e, soit l'équivalent de X km en voiture ; moins d'animaux tués ; 1,20 € de moins par portion. Nutrition : plus de fibres, moins de graisses saturées ; reste à couvrir sur la journée : B12. »
+   - **Équivalences** : facteurs de l'ADEME (outil Impact CO2 ou Base Empreinte). Vérifie la licence et cite la source sur `/sources`. Récupère les facteurs par un script du pipeline et stocke-les dans la base comme les autres sources, jamais en dur dans le code. Si la licence ou l'accès bloque, n'affiche pas d'équivalence et note-le dans `TODO_SOURCES.md`.
+   - Phrases neutres, sans jugement de valeur. Elles suivent les réglages du visiteur (protéine choisie, recette ajustée).
+2. **Accueil simplifié** :
+   - une seule question en haut, « Quel plat ou aliment voulez-vous comparer ? », avec la recherche ;
+   - 6 exemples populaires, choisis par une règle écrite (les plus consultés n'existent pas encore : prends une liste éditoriale annoncée comme telle) ;
+   - puis la rangée « Comparaisons du quotidien », et plus bas les outils (composer un repas, ma journée, analyser ma recette) ;
+   - un seul catalogue, sans séparer « recettes types » et « plats Agribalyse » : l'origine de la recette s'affiche sur la page du plat.
+3. **Jargon remplacé par des phrases** : partout où un score s'affiche en « 5 – 3 », écris « La version végétale fait mieux sur 5 points, le plat animal sur 3 » (forme courte sur téléphone si la place manque, avec cette phrase en libellé accessible). Les sigles (DQR, Pt, CO₂e, EPA, DHA…) ont une explication au toucher ou au survol, et un glossaire sur `/methodologie`.
+4. **Suite du parcours, en bas de chaque comparaison** :
+   - « Ajouter à ma journée » (ouvre `/journee` avec l'élément) ;
+   - « Comparer un plat proche » (3 plats ou aliments du même groupe Ciqual) ;
+   - « Partager », avec une **image de partage générée pour chaque comparaison** : le plat, sa version végétale, l'écart de CO₂e et le verdict. Génère-la au rendu sur le runtime Node (`next/og` sans runtime edge, voir les règles de portabilité), sans service propre à Vercel. Les métadonnées Open Graph et Twitter de chaque page pointent vers cette image, qui garde les chiffres de la recette de base.
+5. **« Comment lire cette page »** : un petit encadré replié de 3 lignes près du verdict (d'où viennent les chiffres, ce que signifient le ✓ et les couleurs, on peut ajuster la version végétale), avec un lien vers `/methodologie`.
+6. Vérification : e2e pour l'« En bref » (chiffres identiques à ceux de la page), l'accueil, les liens « Ajouter à ma journée » et « Comparer un plat proche », et l'image de partage (taille 1 200 × 630, réponse 200). Repose aux visiteurs simulés la question « Qu'as-tu compris en 5 secondes ? » : objectif 5 sur 5.
 
 ## Étape 10 — Recette finale de tout le site (demande de Matt, 19 h 57)
 

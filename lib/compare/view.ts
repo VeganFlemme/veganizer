@@ -457,7 +457,7 @@ export interface CompletedVariantView {
   roleNote: string | null;
   /** Step 3 quinquies: the whole plant serving scaled (calories), null otherwise. */
   scale?: number | null;
-  /** Indicators reached by the adjustment: « comblé », not counted in the score. */
+  /** Indicators reached by the adjustment: marked « comblé », counted in the score (19 h 50). */
   filled?: string[];
   additions: ComplementAddition[];
   /** Gaps no whitelisted food closes (B12, EPA + DHA, vitamin D…): advice only, no dose. */

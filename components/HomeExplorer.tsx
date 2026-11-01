@@ -8,13 +8,8 @@ import type { AutoCard } from "@/lib/compare/auto-data";
 import type { SearchHit } from "@/lib/compare/data";
 import { COVERAGE_WARNING } from "@/lib/compare/config";
 import { formatForUnit, signedGap } from "@/lib/format";
+import { fold, fuzzyMatch } from "@/lib/fuzzy";
 
-const fold = (s: string) =>
-  s
-    .toLowerCase()
-    .replace(/œ/g, "oe")
-    .normalize("NFD")
-    .replace(/[̀-ͯ]/g, "");
 
 /** Home: dark band with the search, featured verdict, verified pairs face to face (same scale), catalogue hits. */
 export function HomeExplorer({ cards, featured }: { cards: AutoCard[]; featured: ReactNode }) {
@@ -56,7 +51,8 @@ export function HomeExplorer({ cards, featured }: { cards: AutoCard[]; featured:
     const q = fold(query.trim());
     const list = [...cards].sort((a, b) => (b.co2 ?? -1) - (a.co2 ?? -1));
     if (!q) return list;
-    return list.filter((p) => fold([p.name, p.description ?? "", p.plant.name].join(" ")).includes(q));
+    // Tolerant to typos (« bourguinon »), step 4 reviews.
+    return list.filter((p) => fuzzyMatch([p.name, p.description ?? "", p.plant.name].join(" "), q));
   }, [cards, query]);
   const ours = shown.filter((c) => c.kind === "paire");
   const agb = shown.filter((c) => c.kind === "agribalyse");

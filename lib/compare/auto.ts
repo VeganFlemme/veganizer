@@ -384,7 +384,9 @@ export function buildAdjusted(input: AutoInput, code: string, request: AdjustReq
     dishPriceFromFoods(VEGETAL_ID, v.servings, plantRows.map((i) => ({ code: i.food_code, grams: Number(i.grams) })), r.raw.foodPrices),
   ].filter((p): p is DishPriceRow => p != null);
   const raw: RawPairData = { ...r.raw, ingredients: [...rowsOf(a.id), ...plantRows], dishPrices: prices };
-  const page = buildPairPage(raw, { withViews: false, excludeFromScore: res.filled });
+  // Point 4 (decision of Matt, 19 h 50): the score compares the animal dish and the plant version
+  // as displayed; filled indicators are marked « comblé » and counted.
+  const page = buildPairPage(raw, { withViews: false });
   const view = page.variants[code];
   if (!view) return null;
   for (const rows of Object.values(view.rows)) for (const row of rows) if (res.filled.includes(row.id)) row.filled = true;

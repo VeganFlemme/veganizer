@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import { Dot } from "./Dot";
+import { DirectionHint, WinnerValue } from "./RowWinner";
 
 export interface DataTableRow {
   id: string;
@@ -11,6 +12,10 @@ export interface DataTableRow {
   note?: ReactNode;
   /** Counted by the score: name in bold. */
   strong?: boolean;
+  /** Established verdict of the row: the better value gets ✓ (step 4, point 0). */
+  winner?: "animal" | "vegetal" | "egal" | null;
+  /** Sense of the indicator, shown under its name. */
+  direction?: "up" | "down" | "none" | null;
   /** Desktop columns (from 1 440 px): gap in %, face-to-face bar, reliability, source. */
   gap?: ReactNode;
   bar?: ReactNode;
@@ -67,7 +72,7 @@ export function DataTable({ caption, unitLabel, rows, footer, rich = false }: { 
                   <span className="sr-only">Barres face-à-face</span>
                 </th>
                 <th scope="col" className={`${x} py-[10px] pl-3 text-left font-bold`}>
-                  Fiabilité
+                  <abbr title="Masse couverte par les données (plat animal · version végétale) ; DQR = qualité des données Agribalyse, de 1 (très bonne) à 5 (très mauvaise), prudence au-delà de 3">Fiabilité</abbr>
                 </th>
                 {showSource && <th scope="col" className={`${x} py-[10px] pl-3 text-left font-bold`}>Source</th>}
               </>
@@ -79,10 +84,19 @@ export function DataTable({ caption, unitLabel, rows, footer, rich = false }: { 
             <tr key={r.id} className="border-b border-line-soft align-top">
               <th scope="row" className="py-[10px] pr-2 text-left font-normal xl:py-[6px]">
                 <span className={r.strong ? "font-semibold" : ""}>{r.name}</span>
+                <DirectionHint direction={r.direction} />
                 {r.note && <span className="mt-[3px] block text-[12px] leading-snug text-animal-note">{r.note}</span>}
               </th>
-              <td className="num py-[10px] pl-2 text-right xl:py-[6px]">{r.animal}</td>
-              <td className="num py-[10px] pl-2 text-right xl:py-[6px]">{r.vegetal}</td>
+              <td className="num py-[10px] pl-2 text-right xl:py-[6px]">
+                <WinnerValue side="animal" winner={r.winner}>
+                  {r.animal}
+                </WinnerValue>
+              </td>
+              <td className="num py-[10px] pl-2 text-right xl:py-[6px]">
+                <WinnerValue side="vegetal" winner={r.winner}>
+                  {r.vegetal}
+                </WinnerValue>
+              </td>
               {rich && (
                 <>
                   <td className={`${x} num py-[6px] pl-3 text-right`}>{r.gap}</td>

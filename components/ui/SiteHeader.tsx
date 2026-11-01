@@ -26,7 +26,7 @@ export function SiteHeader() {
         <Link href="/" aria-label="Veganizer, accueil" className="text-white no-underline hover:text-white">
           <Logo />
         </Link>
-        <form action="/" method="get" role="search" className="hidden h-[46px] max-w-[460px] flex-[1_1_320px] items-center gap-[10px] rounded-btn bg-white/8 px-[14px] md:flex">
+        <form action="/" method="get" role="search" className="hidden h-[46px] max-w-[460px] flex-[1_1_320px] items-center gap-[10px] rounded-btn bg-white/8 px-[14px] md:flex md:min-w-0">
           <SearchIcon color="#B9D9CF" />
           <label htmlFor="recherche-entete" className="sr-only">
             Rechercher un plat
@@ -39,7 +39,7 @@ export function SiteHeader() {
             className="h-11 min-w-0 flex-1 border-0 bg-transparent text-[15px] text-white placeholder:text-on-dark-3 focus-visible:outline-none"
           />
         </form>
-        <nav aria-label="Navigation principale" className="hidden gap-[22px] text-[15px] font-semibold md:flex">
+        <nav aria-label="Navigation principale" className="hidden flex-none gap-[14px] text-[14px] font-semibold whitespace-nowrap md:flex lg:gap-[22px] lg:text-[15px]">
           {LINKS.map((l) => (
             <Link key={l.href} href={l.href} className="text-on-dark-1 no-underline hover:text-white hover:underline">
               {l.label}

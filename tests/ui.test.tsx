@@ -86,7 +86,7 @@ describe("components/ui", () => {
 
   it("VerdictPanel: X sur 5, segments and method", () => {
     const verdict: VerdictView = {
-      vegetalWins: 4, animalWins: 1, total: 5, sentence: "catégories gagnées par la version végétale.",
+      vegetalWins: 4, animalWins: 1, total: 5, sentence: "catégories gagnées par la version végétale.", notes: [],
       categories: [score({ id: "nutrition", winner: "animal", short: "Nutrition" }), score(), score(), score(), score({ winner: "insuffisant" })],
     };
     const h = html(<VerdictPanel verdict={verdict} />);
@@ -94,6 +94,9 @@ describe("components/ui", () => {
     expect(h).toContain("bg-animal");
     expect(h).toContain("bg-line");
     expect(h).toContain("Une donnée manquante n’est jamais comptée");
+    // adjusted version: both scores, the base recipe first (step 3 quinquies, point 4)
+    const adjusted = html(<VerdictPanel verdict={{ ...verdict, vegetalWins: 5 }} base={verdict} />);
+    expect(adjusted).toContain("Recette de base : 4 sur 5 → ta version ajustée : 5 sur 5");
   });
 
   it("CategoryCard: whole card is a button with the winner and the basis", () => {
@@ -117,10 +120,25 @@ describe("components/ui", () => {
   });
 
   it("DataTable: real table with a caption and header dots", () => {
-    const h = html(<DataTable caption="Nutrition" unitLabel="Par portion" rows={[{ id: "p", name: "Protéines, g", animal: "48,6", vegetal: "35,4", note: "Avantage au plat animal" }]} />);
+    const h = html(<DataTable caption="Nutrition" unitLabel="Par portion" rows={[{ id: "p", name: "Protéines, g", animal: "48,6", vegetal: "35,4", note: "Données partielles" }]} />);
     expect(h).toContain("<table");
     expect(h).toContain('<th scope="row"');
-    expect(h).toContain("Avantage au plat animal");
+    expect(h).toContain("Données partielles");
+  });
+
+  it("DataTable: the better value of an established verdict in bold with ✓, on either side; the direction under the name (step 4, point 0)", () => {
+    const rows = [
+      { id: "p", name: "Protéines, g", animal: "48,6", vegetal: "35,4", winner: "animal" as const, direction: "up" as const },
+      { id: "s", name: "Sel, g", animal: "2,1", vegetal: "1,2", winner: "vegetal" as const, direction: "down" as const },
+      { id: "e", name: "Énergie, kcal", animal: "483", vegetal: "474", winner: null, direction: "none" as const },
+    ];
+    const h = html(<DataTable caption="Nutrition" unitLabel="Par portion" rows={rows} />);
+    expect((h.match(/✓/g) ?? []).length).toBe(2);
+    expect(h).toMatch(/✓[^<]*<\/span>48,6/);
+    expect(h).toMatch(/✓[^<]*<\/span>1,2/);
+    expect(h).toContain("↑ plus = mieux");
+    expect(h).toContain("↓ moins = mieux");
+    expect(h).not.toContain("Avantage au plat animal");
   });
 
   it("UnitSwitch: per serving and per 100 g only", () => {

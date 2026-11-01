@@ -12,8 +12,8 @@ describe("versions", () => {
     expect(isVersionId(null)).toBe(false);
   });
   it("gives both CO2e results", () => {
-    expect(nb(co2Summary(87.2, 81.6))).toBe("CO₂e : −87 % par portion, −82 % une fois ajustée");
-    expect(nb(co2Summary(87.2, null))).toBe("CO₂e : −87 % par portion");
+    expect(nb(co2Summary(87.2, 81.6))).toBe("Gaz à effet de serre (CO₂e) : −87 % par portion, −82 % une fois ajustée");
+    expect(nb(co2Summary(87.2, null))).toBe("Gaz à effet de serre (CO₂e) : −87 % par portion");
     expect(co2Summary(null, null)).toBeNull();
   });
   it("says what changes once the plant version is completed", () => {

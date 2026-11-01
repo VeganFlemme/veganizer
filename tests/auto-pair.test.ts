@@ -89,9 +89,10 @@ describe("buildAutoPage", () => {
     const adj = buildAdjusted(input(), "seitan", { equalize: "protein", close: [] })!;
     expect(adj.boost?.code).toBe("seitan");
     expect(adj.filled).toEqual(["protein_g"]);
-    // filled indicators are marked and not counted in the score
+    // filled indicators are marked « comblé » and, since 19 h 50 (point 4), counted: the score
+    // compares the animal dish and the plant version as displayed
     expect(adj.view.rows.perServing.find((r) => r.id === "protein_g")?.filled).toBe(true);
-    expect(adj.view.scores.verdict.categories.find((c) => c.id === "nutrition")!.indicators.map((i) => i.id)).not.toContain("protein_g");
+    expect(adj.view.scores.verdict.categories.find((c) => c.id === "nutrition")!.indicators.map((i) => i.id)).toContain("protein_g");
   });
   it("has no precomputed completed version any more: one plant version, adjusted on demand", () => {
     expect(buildAutoPage(input(), "beans")!.model.completed).toEqual({});

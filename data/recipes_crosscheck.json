@@ -1,0 +1,1032 @@
+{
+  "date": "2026-11-01",
+  "note": "Notre recette (accompagnements compris, comme sur le site), ramenée à 100 g et à 1 kg, comparée au plat moyen : kg CO₂e/kg (AGRIBALYSE 3.2) ; énergie, protéines, lipides, sel pour 100 g (Ciqual 2025). Écart > 25 % : recette à revoir. Fourchette : un ingrédient « < x » donne [0 ; x] ; écart nul si la valeur officielle est dans la fourchette.",
+  "threshold": 25,
+  "rows": [
+    {
+      "slug": "boeuf-bourguignon",
+      "side": "animal",
+      "dish": "Bœuf bourguignon",
+      "officialCode": "25033",
+      "officialName": "Boeuf bourguignon",
+      "recipe": "type",
+      "values": {
+        "ghg_kg": {
+          "oursLow": 12.42,
+          "oursHigh": 12.42,
+          "official": 25.0,
+          "gapPercent": -50
+        },
+        "energy_eu_kcal": {
+          "oursLow": 119.194,
+          "oursHigh": 119.194,
+          "official": 84.3,
+          "gapPercent": 41
+        },
+        "protein_g": {
+          "oursLow": 12.001,
+          "oursHigh": 12.001,
+          "official": 10.3,
+          "gapPercent": 17
+        },
+        "fat_g": {
+          "oursLow": 3.68,
+          "oursHigh": 3.835,
+          "official": 2.61,
+          "gapPercent": 41
+        },
+        "salt_g": {
+          "oursLow": 0.206,
+          "oursHigh": 0.515,
+          "official": 0.88,
+          "gapPercent": -41
+        }
+      },
+      "flagged": true
+    },
+    {
+      "slug": "lasagnes-bolognaise",
+      "side": "animal",
+      "dish": "Lasagnes à la bolognaise",
+      "officialCode": "25081",
+      "officialName": "Lasagnes ou cannelloni à la viande (bolognaise)",
+      "recipe": "type",
+      "values": {
+        "ghg_kg": {
+          "oursLow": 11.676,
+          "oursHigh": 11.676,
+          "official": 6.1,
+          "gapPercent": 91
+        },
+        "energy_eu_kcal": {
+          "oursLow": 154.731,
+          "oursHigh": 154.731,
+          "official": 134.0,
+          "gapPercent": 15
+        },
+        "protein_g": {
+          "oursLow": 9.349,
+          "oursHigh": 9.349,
+          "official": 6.29,
+          "gapPercent": 49
+        },
+        "fat_g": {
+          "oursLow": 7.961,
+          "oursHigh": 7.985,
+          "official": 5.72,
+          "gapPercent": 39
+        },
+        "salt_g": {
+          "oursLow": 0.293,
+          "oursHigh": 0.293,
+          "official": 0.97,
+          "gapPercent": -70
+        }
+      },
+      "flagged": true
+    },
+    {
+      "slug": "hachis-parmentier",
+      "side": "animal",
+      "dish": "Hachis parmentier",
+      "officialCode": "25009",
+      "officialName": "Hachis Parmentier à la viande",
+      "recipe": "officielle",
+      "values": {
+        "ghg_kg": {
+          "oursLow": 9.493,
+          "oursHigh": 9.493,
+          "official": 12.0,
+          "gapPercent": -21
+        },
+        "energy_eu_kcal": {
+          "oursLow": 137.163,
+          "oursHigh": 137.163,
+          "official": 138.0,
+          "gapPercent": -1
+        },
+        "protein_g": {
+          "oursLow": 7.46,
+          "oursHigh": 7.46,
+          "official": 5.99,
+          "gapPercent": 25
+        },
+        "fat_g": {
+          "oursLow": 7.491,
+          "oursHigh": 7.517,
+          "official": 8.22,
+          "gapPercent": -9
+        },
+        "salt_g": {
+          "oursLow": 0.071,
+          "oursHigh": 0.071,
+          "official": 0.83,
+          "gapPercent": -91
+        }
+      },
+      "flagged": true
+    },
+    {
+      "slug": "blanquette-de-veau",
+      "side": "animal",
+      "dish": "Blanquette de veau",
+      "officialCode": "25001",
+      "officialName": "Blanquette de veau",
+      "recipe": "type",
+      "values": {
+        "ghg_kg": {
+          "oursLow": 7.227,
+          "oursHigh": 7.227,
+          "official": 19.5,
+          "gapPercent": -63
+        },
+        "energy_eu_kcal": {
+          "oursLow": 153.459,
+          "oursHigh": 153.459,
+          "official": 113.0,
+          "gapPercent": 36
+        },
+        "protein_g": {
+          "oursLow": 11.337,
+          "oursHigh": 11.337,
+          "official": 15.4,
+          "gapPercent": -26
+        },
+        "fat_g": {
+          "oursLow": 7.16,
+          "oursHigh": 7.234,
+          "official": 4.0,
+          "gapPercent": 79
+        },
+        "salt_g": {
+          "oursLow": 0.038,
+          "oursHigh": 0.038,
+          "official": 0.74,
+          "gapPercent": -95
+        }
+      },
+      "flagged": true
+    },
+    {
+      "slug": "quiche-lorraine",
+      "side": "animal",
+      "dish": "Quiche lorraine et salade verte",
+      "officialCode": "25405",
+      "officialName": "Quiche lorraine",
+      "recipe": "type",
+      "values": {
+        "ghg_kg": {
+          "oursLow": 2.974,
+          "oursHigh": 2.974,
+          "official": 4.57,
+          "gapPercent": -35
+        },
+        "energy_eu_kcal": {
+          "oursLow": 230.926,
+          "oursHigh": 230.926,
+          "official": 269.0,
+          "gapPercent": -14
+        },
+        "protein_g": {
+          "oursLow": 6.138,
+          "oursHigh": 6.138,
+          "official": 8.39,
+          "gapPercent": -27
+        },
+        "fat_g": {
+          "oursLow": 17.184,
+          "oursHigh": 17.184,
+          "official": 16.4,
+          "gapPercent": 5
+        },
+        "salt_g": {
+          "oursLow": 0.39,
+          "oursHigh": 0.39,
+          "official": 1.01,
+          "gapPercent": -61
+        }
+      },
+      "flagged": true
+    },
+    {
+      "slug": "paella",
+      "side": "animal",
+      "dish": "Paëlla au poulet, chorizo et crevettes",
+      "officialCode": "25031",
+      "officialName": "Paëlla",
+      "recipe": "type",
+      "values": {
+        "ghg_kg": {
+          "oursLow": 5.603,
+          "oursHigh": 5.603,
+          "official": 3.28,
+          "gapPercent": 71
+        },
+        "energy_eu_kcal": {
+          "oursLow": 151.889,
+          "oursHigh": 151.889,
+          "official": 148.0,
+          "gapPercent": 3
+        },
+        "protein_g": {
+          "oursLow": 9.93,
+          "oursHigh": 9.93,
+          "official": 7.86,
+          "gapPercent": 26
+        },
+        "fat_g": {
+          "oursLow": 5.409,
+          "oursHigh": 5.409,
+          "official": 4.9,
+          "gapPercent": 10
+        },
+        "salt_g": {
+          "oursLow": 0.459,
+          "oursHigh": 0.459,
+          "official": 0.87,
+          "gapPercent": -47
+        }
+      },
+      "flagged": true
+    },
+    {
+      "slug": "couscous-poulet-merguez",
+      "side": "animal",
+      "dish": "Couscous poulet et merguez",
+      "officialCode": "25127",
+      "officialName": "Couscous royal (avec plusieurs viandes)",
+      "recipe": "type",
+      "values": {
+        "ghg_kg": {
+          "oursLow": 5.969,
+          "oursHigh": 5.969,
+          "official": 3.85,
+          "gapPercent": 55
+        },
+        "energy_eu_kcal": {
+          "oursLow": 137.26,
+          "oursHigh": 137.26,
+          "official": 132.0,
+          "gapPercent": 4
+        },
+        "protein_g": {
+          "oursLow": 10.234,
+          "oursHigh": 10.234,
+          "official": 7.69,
+          "gapPercent": 33
+        },
+        "fat_g": {
+          "oursLow": 5.056,
+          "oursHigh": 5.132,
+          "official": 4.53,
+          "gapPercent": 12
+        },
+        "salt_g": {
+          "oursLow": 0.304,
+          "oursHigh": 0.304,
+          "official": 0.88,
+          "gapPercent": -65
+        }
+      },
+      "flagged": true
+    },
+    {
+      "slug": "chili-con-carne",
+      "side": "animal",
+      "dish": "Chili con carne et riz",
+      "officialCode": "25111",
+      "officialName": "Chili con carne",
+      "recipe": "type",
+      "values": {
+        "ghg_kg": {
+          "oursLow": 10.243,
+          "oursHigh": 10.243,
+          "official": 19.6,
+          "gapPercent": -48
+        },
+        "energy_eu_kcal": {
+          "oursLow": 129.896,
+          "oursHigh": 129.896,
+          "official": 118.0,
+          "gapPercent": 10
+        },
+        "protein_g": {
+          "oursLow": 8.098,
+          "oursHigh": 8.098,
+          "official": 7.13,
+          "gapPercent": 14
+        },
+        "fat_g": {
+          "oursLow": 4.767,
+          "oursHigh": 4.871,
+          "official": 3.35,
+          "gapPercent": 42
+        },
+        "salt_g": {
+          "oursLow": 0.075,
+          "oursHigh": 0.075,
+          "official": 0.93,
+          "gapPercent": -92
+        }
+      },
+      "flagged": true
+    },
+    {
+      "slug": "tartiflette",
+      "side": "animal",
+      "dish": "Tartiflette et salade verte",
+      "officialCode": "25137",
+      "officialName": "Tartiflette",
+      "recipe": "type",
+      "values": {
+        "ghg_kg": {
+          "oursLow": 2.522,
+          "oursHigh": 2.522,
+          "official": 3.52,
+          "gapPercent": -28
+        },
+        "energy_eu_kcal": {
+          "oursLow": 138.588,
+          "oursHigh": 138.588,
+          "official": 161.0,
+          "gapPercent": -14
+        },
+        "protein_g": {
+          "oursLow": 5.203,
+          "oursHigh": 5.203,
+          "official": 6.0,
+          "gapPercent": -13
+        },
+        "fat_g": {
+          "oursLow": 8.915,
+          "oursHigh": 8.915,
+          "official": 8.9,
+          "gapPercent": 0
+        },
+        "salt_g": {
+          "oursLow": 0.446,
+          "oursHigh": 0.446,
+          "official": 0.75,
+          "gapPercent": -41
+        }
+      },
+      "flagged": true
+    },
+    {
+      "slug": "pot-au-feu",
+      "side": "animal",
+      "dish": "Pot-au-feu",
+      "officialCode": "25013",
+      "officialName": "Pot-au-feu",
+      "recipe": "type",
+      "values": {
+        "ghg_kg": {
+          "oursLow": 11.129,
+          "oursHigh": 11.129,
+          "official": 17.7,
+          "gapPercent": -37
+        },
+        "energy_eu_kcal": {
+          "oursLow": 84.688,
+          "oursHigh": 84.688,
+          "official": 77.5,
+          "gapPercent": 9
+        },
+        "protein_g": {
+          "oursLow": 10.747,
+          "oursHigh": 10.747,
+          "official": 10.9,
+          "gapPercent": -1
+        },
+        "fat_g": {
+          "oursLow": 1.454,
+          "oursHigh": 1.549,
+          "official": 2.02,
+          "gapPercent": -23
+        },
+        "salt_g": {
+          "oursLow": 0.175,
+          "oursHigh": 0.175,
+          "official": 0.32,
+          "gapPercent": -45
+        }
+      },
+      "flagged": true
+    },
+    {
+      "slug": "croque-monsieur",
+      "side": "animal",
+      "dish": "Croque-monsieur et salade verte",
+      "officialCode": "25400",
+      "officialName": "Croque-monsieur",
+      "recipe": "officielle",
+      "values": {
+        "ghg_kg": {
+          "oursLow": 3.285,
+          "oursHigh": 3.285,
+          "official": 4.4,
+          "gapPercent": -25
+        },
+        "energy_eu_kcal": {
+          "oursLow": 199.755,
+          "oursHigh": 199.755,
+          "official": null,
+          "gapPercent": null
+        },
+        "protein_g": {
+          "oursLow": 9.757,
+          "oursHigh": 9.757,
+          "official": 14.3,
+          "gapPercent": -32
+        },
+        "fat_g": {
+          "oursLow": 10.521,
+          "oursHigh": 10.521,
+          "official": 18.4,
+          "gapPercent": -43
+        },
+        "salt_g": {
+          "oursLow": 0.463,
+          "oursHigh": 0.463,
+          "official": 1.71,
+          "gapPercent": -73
+        }
+      },
+      "flagged": true
+    },
+    {
+      "slug": "pizza-jambon-fromage",
+      "side": "animal",
+      "dish": "Pizza jambon-fromage et salade verte",
+      "officialCode": "25435",
+      "officialName": "Pizza jambon fromage",
+      "recipe": "officielle",
+      "values": {
+        "ghg_kg": {
+          "oursLow": 2.479,
+          "oursHigh": 2.479,
+          "official": 3.23,
+          "gapPercent": -23
+        },
+        "energy_eu_kcal": {
+          "oursLow": 163.114,
+          "oursHigh": 163.114,
+          "official": 228.0,
+          "gapPercent": -28
+        },
+        "protein_g": {
+          "oursLow": 7.349,
+          "oursHigh": 7.349,
+          "official": 10.7,
+          "gapPercent": -31
+        },
+        "fat_g": {
+          "oursLow": 9.009,
+          "oursHigh": 9.132,
+          "official": 8.49,
+          "gapPercent": 6
+        },
+        "salt_g": {
+          "oursLow": 0.471,
+          "oursHigh": 0.472,
+          "official": 1.33,
+          "gapPercent": -65
+        }
+      },
+      "flagged": true
+    },
+    {
+      "slug": "galette-complete",
+      "side": "animal",
+      "dish": "Galette complète (jambon, œuf, emmental) et salade verte",
+      "officialCode": "25562",
+      "officialName": "Crêpe ou Galette complète (œuf, jambon, fromage)",
+      "recipe": "officielle",
+      "values": {
+        "ghg_kg": {
+          "oursLow": 3.087,
+          "oursHigh": 3.087,
+          "official": 3.83,
+          "gapPercent": -19
+        },
+        "energy_eu_kcal": {
+          "oursLow": 157.521,
+          "oursHigh": 157.521,
+          "official": 219.0,
+          "gapPercent": -28
+        },
+        "protein_g": {
+          "oursLow": 9.384,
+          "oursHigh": 9.384,
+          "official": 15.3,
+          "gapPercent": -39
+        },
+        "fat_g": {
+          "oursLow": 9.622,
+          "oursHigh": 9.622,
+          "official": 9.8,
+          "gapPercent": -2
+        },
+        "salt_g": {
+          "oursLow": 0.469,
+          "oursHigh": 0.469,
+          "official": 1.12,
+          "gapPercent": -58
+        }
+      },
+      "flagged": true
+    },
+    {
+      "slug": "pates-carbonara",
+      "side": "animal",
+      "dish": "Pâtes à la carbonara",
+      "officialCode": "25135",
+      "officialName": "Pâtes à la carbonara (spaghetti, tagliatelles…)",
+      "recipe": "type",
+      "values": {
+        "ghg_kg": {
+          "oursLow": 2.913,
+          "oursHigh": 2.913,
+          "official": 3.61,
+          "gapPercent": -19
+        },
+        "energy_eu_kcal": {
+          "oursLow": 217.409,
+          "oursHigh": 217.409,
+          "official": 161.0,
+          "gapPercent": 35
+        },
+        "protein_g": {
+          "oursLow": 9.038,
+          "oursHigh": 9.038,
+          "official": 5.91,
+          "gapPercent": 53
+        },
+        "fat_g": {
+          "oursLow": 10.123,
+          "oursHigh": 10.123,
+          "official": 8.7,
+          "gapPercent": 16
+        },
+        "salt_g": {
+          "oursLow": 0.531,
+          "oursHigh": 0.531,
+          "official": 0.86,
+          "gapPercent": -38
+        }
+      },
+      "flagged": true
+    },
+    {
+      "slug": "endives-au-jambon",
+      "side": "animal",
+      "dish": "Endives au jambon et pommes de terre",
+      "officialCode": "25073",
+      "officialName": "Endive au jambon",
+      "recipe": "officielle",
+      "values": {
+        "ghg_kg": {
+          "oursLow": 2.996,
+          "oursHigh": 2.996,
+          "official": 3.89,
+          "gapPercent": -23
+        },
+        "energy_eu_kcal": {
+          "oursLow": 84.348,
+          "oursHigh": 84.348,
+          "official": 109.0,
+          "gapPercent": -23
+        },
+        "protein_g": {
+          "oursLow": 7.355,
+          "oursHigh": 7.355,
+          "official": 7.44,
+          "gapPercent": -1
+        },
+        "fat_g": {
+          "oursLow": 3.621,
+          "oursHigh": 3.827,
+          "official": 6.3,
+          "gapPercent": -39
+        },
+        "salt_g": {
+          "oursLow": 0.468,
+          "oursHigh": 0.473,
+          "official": 0.65,
+          "gapPercent": -27
+        }
+      },
+      "flagged": true
+    },
+    {
+      "slug": "sandwich-jambon-beurre",
+      "side": "animal",
+      "dish": "Sandwich jambon-beurre, carottes râpées et pomme",
+      "officialCode": "25517",
+      "officialName": "Sandwich baguette, jambon, beurre",
+      "recipe": "officielle",
+      "values": {
+        "ghg_kg": {
+          "oursLow": 2.483,
+          "oursHigh": 2.483,
+          "official": 5.61,
+          "gapPercent": -56
+        },
+        "energy_eu_kcal": {
+          "oursLow": 122.338,
+          "oursHigh": 122.338,
+          "official": 285.0,
+          "gapPercent": -57
+        },
+        "protein_g": {
+          "oursLow": 5.662,
+          "oursHigh": 5.662,
+          "official": 11.6,
+          "gapPercent": -51
+        },
+        "fat_g": {
+          "oursLow": 3.923,
+          "oursHigh": 4.036,
+          "official": 10.5,
+          "gapPercent": -62
+        },
+        "salt_g": {
+          "oursLow": 0.467,
+          "oursHigh": 0.467,
+          "official": 1.78,
+          "gapPercent": -74
+        }
+      },
+      "flagged": true
+    },
+    {
+      "slug": "poulet-curry-coco",
+      "side": "animal",
+      "dish": "Poulet au curry et lait de coco, riz",
+      "officialCode": "25174",
+      "officialName": "Poulet au curry et au lait de coco",
+      "recipe": "officielle",
+      "values": {
+        "ghg_kg": {
+          "oursLow": 3.358,
+          "oursHigh": 3.358,
+          "official": 5.68,
+          "gapPercent": -41
+        },
+        "energy_eu_kcal": {
+          "oursLow": 148.605,
+          "oursHigh": 148.605,
+          "official": 125.0,
+          "gapPercent": 19
+        },
+        "protein_g": {
+          "oursLow": 11.608,
+          "oursHigh": 11.608,
+          "official": 10.6,
+          "gapPercent": 10
+        },
+        "fat_g": {
+          "oursLow": 5.573,
+          "oursHigh": 5.593,
+          "official": 6.9,
+          "gapPercent": -19
+        },
+        "salt_g": {
+          "oursLow": 0.116,
+          "oursHigh": 0.116,
+          "official": 1.07,
+          "gapPercent": -89
+        }
+      },
+      "flagged": true
+    },
+    {
+      "slug": "gratin-dauphinois",
+      "side": "animal",
+      "dish": "Gratin dauphinois et salade verte",
+      "officialCode": "25056",
+      "officialName": "Gratin dauphinois",
+      "recipe": "type",
+      "values": {
+        "ghg_kg": {
+          "oursLow": 1.684,
+          "oursHigh": 1.684,
+          "official": 2.01,
+          "gapPercent": -16
+        },
+        "energy_eu_kcal": {
+          "oursLow": 111.769,
+          "oursHigh": 111.769,
+          "official": 113.0,
+          "gapPercent": -1
+        },
+        "protein_g": {
+          "oursLow": 2.965,
+          "oursHigh": 2.965,
+          "official": 3.38,
+          "gapPercent": -12
+        },
+        "fat_g": {
+          "oursLow": 6.742,
+          "oursHigh": 6.744,
+          "official": 4.2,
+          "gapPercent": 61
+        },
+        "salt_g": {
+          "oursLow": 0.093,
+          "oursHigh": 0.093,
+          "official": 0.81,
+          "gapPercent": -89
+        }
+      },
+      "flagged": true
+    },
+    {
+      "slug": "tomates-farcies",
+      "side": "animal",
+      "dish": "Tomates farcies et riz",
+      "officialCode": "25103",
+      "officialName": "Tomate farcie",
+      "recipe": "type",
+      "values": {
+        "ghg_kg": {
+          "oursLow": 2.483,
+          "oursHigh": 2.483,
+          "official": 3.47,
+          "gapPercent": -28
+        },
+        "energy_eu_kcal": {
+          "oursLow": 137.397,
+          "oursHigh": 137.397,
+          "official": 127.0,
+          "gapPercent": 8
+        },
+        "protein_g": {
+          "oursLow": 4.846,
+          "oursHigh": 4.846,
+          "official": 6.0,
+          "gapPercent": -19
+        },
+        "fat_g": {
+          "oursLow": 7.916,
+          "oursHigh": 7.916,
+          "official": 9.67,
+          "gapPercent": -18
+        },
+        "salt_g": {
+          "oursLow": 0.368,
+          "oursHigh": 0.374,
+          "official": 0.7,
+          "gapPercent": -47
+        }
+      },
+      "flagged": true
+    },
+    {
+      "slug": "boulettes-tomate-spaghetti",
+      "side": "animal",
+      "dish": "Boulettes de bœuf à la tomate et spaghetti",
+      "officialCode": "25211",
+      "officialName": "Boulettes au bœuf, à la sauce tomate",
+      "recipe": "type",
+      "values": {
+        "ghg_kg": {
+          "oursLow": 11.861,
+          "oursHigh": 11.861,
+          "official": 12.3,
+          "gapPercent": -4
+        },
+        "energy_eu_kcal": {
+          "oursLow": 164.582,
+          "oursHigh": 164.582,
+          "official": 117.0,
+          "gapPercent": 41
+        },
+        "protein_g": {
+          "oursLow": 9.889,
+          "oursHigh": 9.889,
+          "official": 9.0,
+          "gapPercent": 10
+        },
+        "fat_g": {
+          "oursLow": 6.655,
+          "oursHigh": 6.655,
+          "official": 6.5,
+          "gapPercent": 2
+        },
+        "salt_g": {
+          "oursLow": 0.367,
+          "oursHigh": 0.367,
+          "official": null,
+          "gapPercent": null
+        }
+      },
+      "flagged": true
+    },
+    {
+      "slug": "flammekueche",
+      "side": "animal",
+      "dish": "Flammekueche et salade verte",
+      "officialCode": "25550",
+      "officialName": "Flammenkueche ou Tarte flambée aux lardons",
+      "recipe": "type",
+      "values": {
+        "ghg_kg": {
+          "oursLow": 2.393,
+          "oursHigh": 2.393,
+          "official": 2.94,
+          "gapPercent": -19
+        },
+        "energy_eu_kcal": {
+          "oursLow": 183.457,
+          "oursHigh": 183.457,
+          "official": 300.0,
+          "gapPercent": -39
+        },
+        "protein_g": {
+          "oursLow": 5.197,
+          "oursHigh": 5.197,
+          "official": 8.81,
+          "gapPercent": -41
+        },
+        "fat_g": {
+          "oursLow": 9.89,
+          "oursHigh": 9.89,
+          "official": 14.8,
+          "gapPercent": -33
+        },
+        "salt_g": {
+          "oursLow": 0.785,
+          "oursHigh": 0.785,
+          "official": 1.64,
+          "gapPercent": -52
+        }
+      },
+      "flagged": true
+    },
+    {
+      "slug": "salade-cesar",
+      "side": "animal",
+      "dish": "Salade César au poulet",
+      "officialCode": "25628",
+      "officialName": "Salade César au poulet (salade verte, fromage, croûtos, sauce)",
+      "recipe": "type",
+      "values": {
+        "ghg_kg": {
+          "oursLow": 2.92,
+          "oursHigh": 2.92,
+          "official": 3.94,
+          "gapPercent": -26
+        },
+        "energy_eu_kcal": {
+          "oursLow": 134.946,
+          "oursHigh": 134.946,
+          "official": 151.0,
+          "gapPercent": -11
+        },
+        "protein_g": {
+          "oursLow": 11.328,
+          "oursHigh": 11.328,
+          "official": 8.13,
+          "gapPercent": 39
+        },
+        "fat_g": {
+          "oursLow": 6.862,
+          "oursHigh": 6.942,
+          "official": 10.0,
+          "gapPercent": -31
+        },
+        "salt_g": {
+          "oursLow": 0.312,
+          "oursHigh": 0.314,
+          "official": 0.75,
+          "gapPercent": -58
+        }
+      },
+      "flagged": true
+    },
+    {
+      "slug": "saucisse-lentilles",
+      "side": "animal",
+      "dish": "Saucisses de Toulouse aux lentilles",
+      "officialCode": "25010",
+      "officialName": "Petit salé ou saucisse aux lentilles",
+      "recipe": "type",
+      "values": {
+        "ghg_kg": {
+          "oursLow": 4.132,
+          "oursHigh": 4.132,
+          "official": 1.66,
+          "gapPercent": 149
+        },
+        "energy_eu_kcal": {
+          "oursLow": 156.557,
+          "oursHigh": 156.557,
+          "official": 118.0,
+          "gapPercent": 33
+        },
+        "protein_g": {
+          "oursLow": 10.587,
+          "oursHigh": 10.587,
+          "official": 8.24,
+          "gapPercent": 28
+        },
+        "fat_g": {
+          "oursLow": 7.792,
+          "oursHigh": 7.868,
+          "official": 4.87,
+          "gapPercent": 60
+        },
+        "salt_g": {
+          "oursLow": 0.549,
+          "oursHigh": 0.549,
+          "official": 0.98,
+          "gapPercent": -44
+        }
+      },
+      "flagged": true
+    },
+    {
+      "slug": "lasagnes-bolognaise",
+      "side": "vegetal",
+      "dish": "Lasagnes à la bolognaise",
+      "officialCode": "25131",
+      "officialName": "Lasagnes ou cannelloni aux légumes",
+      "recipe": "type",
+      "values": {
+        "ghg_kg": {
+          "oursLow": 1.134,
+          "oursHigh": 1.134,
+          "official": 3.23,
+          "gapPercent": -65
+        },
+        "energy_eu_kcal": {
+          "oursLow": 125.372,
+          "oursHigh": 125.372,
+          "official": 120.0,
+          "gapPercent": 4
+        },
+        "protein_g": {
+          "oursLow": 7.374,
+          "oursHigh": 7.374,
+          "official": 4.38,
+          "gapPercent": 68
+        },
+        "fat_g": {
+          "oursLow": 4.51,
+          "oursHigh": 4.534,
+          "official": 5.9,
+          "gapPercent": -23
+        },
+        "salt_g": {
+          "oursLow": 0.566,
+          "oursHigh": 0.567,
+          "official": 0.6,
+          "gapPercent": -6
+        }
+      },
+      "flagged": true
+    },
+    {
+      "slug": "pizza-jambon-fromage",
+      "side": "vegetal",
+      "dish": "Pizza jambon-fromage et salade verte",
+      "officialCode": "25472",
+      "officialName": "Pizza aux légumes ou Pizza 4 saisons",
+      "recipe": "officielle",
+      "values": {
+        "ghg_kg": {
+          "oursLow": 1.446,
+          "oursHigh": 1.446,
+          "official": 3.42,
+          "gapPercent": -58
+        },
+        "energy_eu_kcal": {
+          "oursLow": 152.065,
+          "oursHigh": 152.065,
+          "official": 206.0,
+          "gapPercent": -26
+        },
+        "protein_g": {
+          "oursLow": 5.16,
+          "oursHigh": 5.16,
+          "official": 7.58,
+          "gapPercent": -32
+        },
+        "fat_g": {
+          "oursLow": 7.51,
+          "oursHigh": 7.633,
+          "official": 7.78,
+          "gapPercent": -2
+        },
+        "salt_g": {
+          "oursLow": 0.383,
+          "oursHigh": 0.383,
+          "official": 1.06,
+          "gapPercent": -64
+        }
+      },
+      "flagged": true
+    }
+  ]
+}
