@@ -306,4 +306,4 @@ Chiffres clés par portion (nouvelles paires) :
 - [ ] **axe** : 0 erreur WCAG 2.1 AA sur 15 pages et onglets × 2 largeurs, navigation clavier des onglets (`npm run test:e2e`, 31 tests). Pas encore lancé en CI (il faut un serveur et la clé publique).
 - [ ] **Référencement** : `sitemap.xml` (pages fixes + 40 paires), `robots.txt` (exclut `/api/`, `/etat`, `/introuvable`), titres et descriptions, `canonical`, données structurées (`WebSite` sur l'accueil, `WebPage` + sources `Dataset` sur `/compare`), images de partage. Les 3 684 pages `/aliment` ne sont pas dans le plan du site (comparaisons simplifiées) : à décider.
 - [ ] **Base Supabase** : 97 Mo, soit 19 % des 500 Mo du plan Free (sous le seuil d'alerte de 60 %). Plus grosses tables : `food_nutrients` 35 Mo, `food_impact_ingredients` 32 Mo, `food_impacts` 13 Mo.
-- [ ] **Captures** (`docs/captures/`, 42 JPEG, 13 Mo) : à supprimer du dépôt après relecture si leur poids gêne.
+- [x] **Captures** (42 JPEG) : relues par Matt et retirées du dépôt (2026-11-01) ; elles restent consultables par les liens de la PR #15 et se régénèrent avec `npm run captures`.
