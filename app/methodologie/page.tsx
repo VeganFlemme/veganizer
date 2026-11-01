@@ -81,6 +81,8 @@ function Formula({ children }: { children: ReactNode }) {
 const SECTIONS = [
   ["principe", "Le principe : comparer à fonction égale"],
   ["paires", "Les paires de plats : maison et du commerce"],
+  ["comparaison-simplifiee", "Paires vérifiées et comparaisons simplifiées"],
+  ["ta-recette", "« Analyse ta recette »"],
   ["formule", "La formule de calcul"],
   ["cout-climat", "Le coût climat"],
   ["animaux", "Animaux : une estimation basse"],
@@ -352,6 +354,48 @@ export default async function MethodologiePage() {
         </p>
       </Section>
 
+      <Section id="comparaison-simplifiee" title="Paires vérifiées et comparaisons simplifiées">
+        <p>
+          Chaque résultat affiche son niveau de fiabilité. Une <strong>paire vérifiée</strong> est une
+          recette détaillée ingrédient par ingrédient et relue, comparée sur les cinq piliers. Une{" "}
+          <strong>comparaison simplifiée</strong> compare un aliment ou un plat du catalogue Ciqual /
+          Agribalyse, pour 100 g, à une à trois alternatives végétales du même catalogue.
+        </p>
+        <p>
+          Ces alternatives sont choisies par des règles écrites et relues (fichier
+          <code> pipeline/auto_alternatives_rules.csv</code> du dépôt) : même rôle dans le repas
+          (par exemple une viande cuite face à une protéine végétale prête à cuisiner ou à une
+          légumineuse cuite, un lait face à une boisson végétale), puis les protéines les plus proches.
+          Pour un plat composé, l’alternative doit être du même type (pizza, lasagnes, quiche…) ; s’il
+          n’y en a pas dans le catalogue, aucune alternative n’est proposée. L’écart de protéines est
+          toujours affiché. Faute de portion type sourcée, la comparaison est donnée pour 100 g, pour
+          100 kcal et pour 10 g de protéines.
+        </p>
+        <p>
+          La recherche tolère les accents, les fautes légères et quelques abréviations courantes
+          (« bolo », « croque »…).
+        </p>
+      </Section>
+
+      <Section id="ta-recette" title="« Analyse ta recette »">
+        <p>
+          Sur la page Recette, vous choisissez des aliments simples du catalogue (jamais un plat
+          préparé, pour que les impacts par espèce animale restent calculables), avec leur poids tel
+          que mangé. Le calcul utilise le même moteur que les paires vérifiées, dans votre navigateur.
+        </p>
+        <p>
+          La version végétale remplace chaque ingrédient animal selon une table de substitutions relue
+          (fichier <code>pipeline/substitutions.csv</code>) : par exemple viande hachée → lentilles
+          vertes cuites, charcuterie → tofu fumé, lait → boisson au soja enrichie en calcium. La
+          justification de chaque remplacement est affichée ; la masse reste la même sauf mention.
+          Les ingrédients sans remplacement prévu sont gardés et signalés.
+        </p>
+        <p>
+          Sans compte, la recette reste dans votre navigateur. Avec un compte (lien de connexion par
+          e-mail), elle est enregistrée de façon privée : vous seul·e pouvez la voir.
+        </p>
+      </Section>
+
       <Section id="formule" title="La formule de calcul">
         <p>
           Chaque recette est décrite ingrédient par ingrédient, en grammes, à l’état réellement
@@ -489,7 +533,12 @@ export default async function MethodologiePage() {
         <p>
           Nous gardons les prix des 12 derniers mois, hors promotions, et publions la médiane à partir
           de 5 relevés (ou 5 moyennes mensuelles). Un prix de produit cru n’est jamais appliqué à un
-          ingrédient pesé cuit. Le prix d’un plat, par portion, pour 100 kcal et pour 10 g de
+          ingrédient pesé cuit, sauf par un rendement de cuisson publié : pour les viandes, nous
+          utilisons la table de l’USDA (<em>Table of Cooking Yields for Meat and Poultry</em>,
+          Release 2, domaine public). Par exemple, le prix du steak haché cuit est celui du steak
+          haché cru divisé par son rendement de cuisson à la poêle ; le rendement utilisé est affiché
+          avec chaque prix. Les recettes restent pesées cuites ; sans rendement sourcé (légumes, pâtes,
+          riz, légumineuses), le prix reste « donnée manquante ». Le prix d’un plat, par portion, pour 100 kcal et pour 10 g de
           protéines, n’est affiché que si ces prix couvrent au moins 95 % de sa masse ; sinon nous
           indiquons la part couverte et le prix au kilo de chaque ingrédient, avec la source, le lieu
           et la période des relevés.

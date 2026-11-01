@@ -28,7 +28,7 @@ Valeurs **non saisies** faute d'avoir pu citer la page exacte de la source offic
 | Élément | Source visée | État au 2026-11-01 |
 |---|---|---|
 | Prix au détail (RNM) | FranceAgriMer, stade détail GMS | **Fait (S13)** pour carotte, oignon jaune, steak haché 15 % cru. Le RNM détail ne publie que 7 viandes (souvent avec os ou label rouge/bio), des fruits et légumes ; pas de poisson, d'œufs, de fromage, de légumineuses ni de céréales au stade détail. |
-| Prix des ingrédients cuits (viandes, légumineuses, pâtes, riz, pommes de terre) | Rendements de cuisson sourcés (ex. USDA « Table of Cooking Yields for Meat and Poultry », ANSES/Ciqual si disponible) | Non fait : un prix cru ne peut pas être appliqué à un poids cuit sans rendement de cuisson sourcé (ce n'est pas une conversion d'unité). Bloque l'affichage du prix total de tous les plats (couverture max 53 %). |
+| Prix des ingrédients cuits (viandes, légumineuses, pâtes, riz, pommes de terre) | Rendements de cuisson sourcés | **S17b** : table USDA (viandes) importée ; seul le steak haché 15 % a aujourd'hui un prix cru correspondant. Pâtes, riz, légumineuses, pommes de terre : Agriculture Handbook No. 102 non exploitable (images scannées) → donnée manquante. |
 | Produits vendus au litre (huiles, lait, boissons végétales, vin, sauce soja) | Open Prices + Open Food Facts | Quantités en ml : conversion en grammes impossible sans masse volumique sourcée. |
 | Cheddar, emmental râpé, fécule de maïs, farine de pois chiche | Open Prices (catégories OFF) | 0 à 2 relevés exploitables sur 12 mois : moins de 5, donc non publiés. |
 
@@ -36,3 +36,10 @@ Valeurs **non saisies** faute d'avoir pu citer la page exacte de la source offic
 | Élément | Source visée | Blocage |
 |---|---|---|
 | CALNUT (compléter les valeurs manquantes de Ciqual) | ANSES, ciqual.anses.fr | Site en maintenance (503) le 2026-11-01, revérifié en S14 : toujours 503. |
+
+## Recettes (S17)
+| Élément | Source visée | État au 2026-11-01 |
+|---|---|---|
+| Base de recettes à licence ouverte | « Recettes de chefs pour professionnels » (data.gouv.fr) | Producteur non vérifiable (organisation non certifiée, sans SIREN) : non utilisée. Demander confirmation à METRO France. |
+| Base de recettes à licence ouverte | Wikilivres « Livre de cuisine » (CC BY-SA) | Non utilisée : le partage à l'identique s'appliquerait à toute la table des paires. Décision à prendre (licence de `veganizer-pairs`). |
+| Portions types | INCA 3 (ANSES) | Accessible, licence « non spécifiée » : utilisée seulement pour classer les plats, pas pour afficher des portions. |

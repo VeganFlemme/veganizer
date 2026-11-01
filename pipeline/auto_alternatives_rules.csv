@@ -1,0 +1,26 @@
+animal_subgroup,candidate_subgroups,candidate_name_regex,require_shared_word,rule
+viandes cuites,ingrédients pour végétariens|substituts de viande|légumineuses,,false,Viande cuite → protéine végétale prête à cuisiner ou légumineuse cuite (même rôle : source principale de protéines du plat)
+viandes crues,ingrédients pour végétariens|substituts de viande|légumineuses,,false,Viande crue → protéine végétale ou légumineuse (même rôle)
+autres produits à base de viande,ingrédients pour végétariens|substituts de viande,,false,Produit à base de viande → protéine végétale prête à cuisiner
+charcuteries et alternatives végétales,charcuteries et alternatives végétales|substituts de charcuterie|ingrédients pour végétariens,,false,Charcuterie → alternative végétale de charcuterie ou tofu fumé
+charcuteries,charcuteries et alternatives végétales|substituts de charcuterie|ingrédients pour végétariens,,false,Charcuterie → alternative végétale de charcuterie ou tofu fumé
+poissons cuits,ingrédients pour végétariens|substituts de viande|légumineuses,,false,Poisson cuit → protéine végétale (même rôle ; pas d'EPA ni de DHA)
+poissons crus,ingrédients pour végétariens|substituts de viande|légumineuses,,false,Poisson cru → protéine végétale (même rôle ; pas d'EPA ni de DHA)
+produits à base de poissons et produits de la mer,ingrédients pour végétariens|substituts de viande,,false,Produit de la mer → protéine végétale prête à cuisiner
+mollusques et crustacés cuits,ingrédients pour végétariens|substituts de viande,,false,Fruits de mer → protéine végétale prête à cuisiner
+mollusques et crustacés crus,ingrédients pour végétariens|substituts de viande,,false,Fruits de mer → protéine végétale prête à cuisiner
+oeufs,ingrédients pour végétariens|légumineuses,,false,Œuf → tofu ou légumineuse (même rôle : protéines du repas)
+fromages et alternatives végétales,fromages et alternatives végétales|fromages,,false,Fromage → spécialité végétale de même usage
+fromages,fromages et alternatives végétales|fromages,,false,Fromage → spécialité végétale de même usage
+laits,boissons sans alcool,^Boisson (au|à base d'|à l'|à la|de) ,false,Lait → boisson végétale (même usage)
+produits laitiers frais et alternatives végétales,produits laitiers frais et alternatives végétales|produits laitiers frais et assimilés,,false,Produit laitier frais → alternative végétale du même rayon
+produits laitiers frais et assimilés,produits laitiers frais et alternatives végétales|produits laitiers frais et assimilés,,false,Produit laitier frais → alternative végétale du même rayon
+crèmes et spécialités à base de crème,aides culinaires|sauces,crème de soja|à base de soja,false,Crème → préparation culinaire végétale type crème de soja
+beurres,margarines|huiles et graisses végétales,,false,Beurre → matière grasse végétale
+autres matières grasses,huiles et graisses végétales|margarines,,false,Graisse animale → matière grasse végétale
+plats composés,plats composés|plats végétariens,,true,Plat composé → plat composé ou végétarien sans ingrédient animal identifié
+"pizzas, tartes et crêpes salées","pizzas, tartes et crêpes salées|plats végétariens",,true,Tarte ou pizza → même famille sans ingrédient animal identifié
+feuilletées et autres entrées,feuilletées et autres entrées|plats végétariens,,true,Entrée → même famille sans ingrédient animal identifié
+sandwichs,sandwichs|plats végétariens,,true,Sandwich → même famille sans ingrédient animal identifié
+salades composées et crudités,salades composées et crudités,,true,Salade composée → même famille sans ingrédient animal identifié
+soupes,soupes,,true,Soupe → même famille sans ingrédient animal identifié

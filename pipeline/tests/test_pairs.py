@@ -62,9 +62,9 @@ class RepositoryFiles(unittest.TestCase):
     def test_pair_files_are_valid(self):
         validate(read_csv(DISHES_CSV), read_csv(PAIRS_CSV), load_animal_composition())
 
-    def test_ten_pairs_with_four_servings(self):
+    def test_at_least_ten_pairs_with_four_servings(self):
         dishes = read_csv(DISHES_CSV)
-        self.assertEqual(len({d["pair"] for d in dishes}), 10)
+        self.assertGreaterEqual(len({d["pair"] for d in dishes}), 10)
         self.assertTrue(all(d["servings"] == "4" for d in dishes))
 
 

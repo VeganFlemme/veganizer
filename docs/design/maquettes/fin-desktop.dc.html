@@ -1,0 +1,374 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>Veganizer — comparaison à onglets (ordinateur)</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#0B6E5D}a:hover{color:#08513F}
+</style>
+</helmet>
+<div style="min-height: 1500px; background: #EEF2EF; color: #0F2724; font-family: 'Schibsted Grotesk', system-ui, sans-serif">
+
+  <div style="background: #0F2724; color: #FFFFFF">
+    <div style="max-width: 1200px; margin: 0 auto; padding: 18px 32px; box-sizing: border-box; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px">
+      <a href="fin-home.dc.html" style="display: flex; align-items: center; gap: 10px; text-decoration: none; color: #FFFFFF">
+        <svg width="30" height="30" viewBox="0 0 28 28" aria-hidden="true"><path d="M13 1.04A13 13 0 0 0 13 26.96z" fill="#D9662B"></path><path d="M15 1.04A13 13 0 0 1 15 26.96z" fill="#0E8A74"></path></svg>
+        <span style="font-size: 23px; font-weight: 800; letter-spacing: -0.03em">veganizer</span>
+      </a>
+      <form style="flex: 1 1 320px; max-width: 460px; display: flex; align-items: center; gap: 10px; height: 46px; padding: 0 14px; border-radius: 12px; background: rgba(255,255,255,0.08)">
+        <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="#B9D9CF" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="6.5"></circle><path d="M20 20l-4.2-4.2"></path></svg>
+        <label for="dq" style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0)">Rechercher un plat</label>
+        <input id="dq" type="search" placeholder="Comparer un autre plat" style="flex: 1; min-width: 0; height: 44px; border: 0; background: transparent; color: #FFFFFF; font-family: inherit; font-size: 15px">
+      </form>
+      <nav style="display: flex; gap: 22px; font-size: 15px; font-weight: 600"><a href="#" style="color: #DCEBE5; text-decoration: none">Méthodologie</a><a href="#" style="color: #DCEBE5; text-decoration: none">Sources</a><a href="#" style="color: #DCEBE5; text-decoration: none">Analyser ma recette</a></nav>
+    </div>
+
+    <div style="max-width: 1200px; margin: 0 auto; padding: 28px 32px 40px; box-sizing: border-box; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(460px, 100%), 1fr)); gap: 40px; align-items: end">
+      <div style="display: flex; flex-direction: column; gap: 16px">
+        <span style="display: flex; align-items: center; gap: 6px; font-size: 14px; font-weight: 600; color: #B9D9CF"><svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="#3FC1A3" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"></path></svg>Paire vérifiée, recette pour 4 portions, même accompagnement</span>
+        <h1 style="margin: 0; display: flex; align-items: center; gap: 14px; font-size: 52px; line-height: 1; font-weight: 800; letter-spacing: -0.04em"><span style="flex: none; width: 14px; height: 14px; border-radius: 999px; background: #D9662B"></span>Bœuf bourguignon</h1>
+        <p style="margin: 0; display: flex; align-items: center; gap: 14px; font-size: 32px; line-height: 1.1; font-weight: 700; letter-spacing: -0.025em; color: #DCEBE5"><span style="flex: none; width: 14px; height: 14px; border-radius: 999px; background: #3FC1A3"></span>{{ p.name }}</p>
+        <div role="group" aria-label="Version de l'alternative végétale" style="align-self: flex-start; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 4px; padding: 4px; border-radius: 14px; background: rgba(255,255,255,0.08); margin-top: 6px">
+          <button aria-pressed="{{ isMaison }}" onClick="{{ pickMaison }}" style="height: 44px; padding: 0 22px; border: 0; border-radius: 11px; font-family: inherit; font-size: 15px; font-weight: 700; cursor: pointer; background: {{ segA.bg }}; color: {{ segA.fg }}">Fait maison</button>
+          <button aria-pressed="{{ isCommerce }}" onClick="{{ pickCommerce }}" style="height: 44px; padding: 0 22px; border: 0; border-radius: 11px; font-family: inherit; font-size: 15px; font-weight: 700; cursor: pointer; background: {{ segB.bg }}; color: {{ segB.fg }}">Du commerce</button>
+        </div>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 14px; background: #FFFFFF; color: #0F2724; border-radius: 22px; padding: 24px">
+        <span style="display: flex; align-items: baseline; justify-content: space-between; gap: 12px; flex-wrap: wrap"><span style="font-size: 15px; font-weight: 700; color: #3E5550">Verdict</span><span style="font-size: 13px; color: #55696A">Score : indicateurs gagnés par chaque plat</span></span>
+        <span style="display: flex; align-items: baseline; gap: 14px; flex-wrap: wrap"><span style="font-size: 64px; line-height: 0.9; font-weight: 800; letter-spacing: -0.05em">4 sur 5</span><span style="font-size: 17px; line-height: 1.35; max-width: 260px">catégories gagnées par la version végétale</span></span>
+        <div style="display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 6px">
+          <sc-for list="{{ catList }}" as="c" hint-placeholder-count="5">
+            <span style="display: flex; flex-direction: column; gap: 6px"><span style="height: 10px; border-radius: 4px; background: {{ c.dot }}"></span><span style="font-size: 13px; font-weight: 600">{{ c.short }}</span><span style="font-size: 13px; color: #3E5550; font-variant-numeric: tabular-nums">{{ c.sa }} – {{ c.sv }}</span></span>
+          </sc-for>
+        </div>
+        <span style="display: flex; gap: 18px; font-size: 13px; flex-wrap: wrap"><span style="display: flex; align-items: center; gap: 6px"><span style="width: 8px; height: 8px; border-radius: 999px; background: #0E8A74"></span>Végétal gagne</span><span style="display: flex; align-items: center; gap: 6px"><span style="width: 8px; height: 8px; border-radius: 999px; background: #D9662B"></span>Plat animal gagne</span><span style="color: #55696A">Une donnée manquante n'est jamais comptée</span></span>
+      </div>
+    </div>
+  </div>
+
+  <div style="position: sticky; top: 0; background: #FFFFFF; border-bottom: 1px solid #D5DEDA">
+    <div role="tablist" aria-label="Impacts" style="max-width: 1200px; margin: 0 auto; padding: 12px 32px; box-sizing: border-box; display: flex; gap: 8px; overflow-x: auto">
+      <sc-for list="{{ tabs }}" as="t" hint-placeholder-count="6">
+        <button role="tab" aria-selected="{{ t.on }}" onClick="{{ t.pick }}" style="flex: none; height: 44px; padding: 0 18px; border-radius: 999px; border: 1px solid {{ t.border }}; background: {{ t.bg }}; color: {{ t.fg }}; font-family: inherit; font-size: 15px; font-weight: 700; cursor: pointer; white-space: nowrap">{{ t.label }}</button>
+      </sc-for>
+    </div>
+  </div>
+
+  <div style="max-width: 1200px; margin: 0 auto; padding: 28px 32px 40px; box-sizing: border-box">
+
+    <sc-if value="{{ isApercu }}" hint-placeholder-val="{{ true }}">
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(340px, 100%), 1fr)); gap: 18px">
+        <sc-for list="{{ cardList }}" as="c" hint-placeholder-count="5">
+          <button onClick="{{ c.go }}" style="all: unset; cursor: pointer; box-sizing: border-box; display: flex; flex-direction: column; gap: 14px; background: #FFFFFF; border-radius: 20px; padding: 22px; box-shadow: 0 1px 0 rgba(15,39,36,0.06)">
+            <span style="display: flex; justify-content: space-between; align-items: center; gap: 8px"><span style="font-size: 19px; font-weight: 800; letter-spacing: -0.01em">{{ c.title }}</span><span style="font-size: 14px; font-weight: 600; color: #0B6E5D">Tout voir</span></span>
+            <span style="display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 10px 12px; border-radius: 12px; background: {{ c.bg }}">
+              <span style="display: flex; align-items: center; gap: 7px; font-size: 14px; font-weight: 700"><span style="flex: none; width: 8px; height: 8px; border-radius: 999px; background: {{ c.dot }}"></span>{{ c.winner }}</span>
+              <span aria-label="{{ c.aria }}" style="display: flex; align-items: center; gap: 5px; font-size: 16px; font-weight: 800; font-variant-numeric: tabular-nums"><span style="width: 7px; height: 7px; border-radius: 999px; background: #D9662B"></span>{{ c.sa }} – {{ c.sv }}<span style="width: 7px; height: 7px; border-radius: 999px; background: #0E8A74"></span></span>
+            </span>
+            <span style="display: flex; flex-direction: column; gap: 6px">
+              <span style="display: flex; justify-content: space-between; gap: 8px; font-size: 14px"><span style="font-weight: 600">{{ c.metric }}</span><span style="font-variant-numeric: tabular-nums">{{ c.a }} · {{ c.v }}</span></span>
+              <span style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 2px"><span style="display: flex; justify-content: flex-end"><span style="height: 10px; width: {{ c.wa }}; background: #D9662B; border-radius: 4px 0 0 4px"></span></span><span style="display: flex"><span style="height: 10px; width: {{ c.wv }}; background: #0E8A74; border-radius: 0 4px 4px 0"></span></span></span>
+            </span>
+            <span style="font-size: 13px; line-height: 1.5; color: #3E5550">{{ c.basis }}</span>
+          </button>
+        </sc-for>
+        <div style="display: flex; flex-direction: column; gap: 14px; background: #0F2724; color: #FFFFFF; border-radius: 20px; padding: 22px">
+          <span style="font-size: 19px; font-weight: 800">Et si je change ?</span>
+          <div role="group" aria-label="Fréquence" style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px">
+            <sc-for list="{{ freqs }}" as="f" hint-placeholder-count="3">
+              <button aria-pressed="{{ f.on }}" onClick="{{ f.pick }}" style="height: 44px; border-radius: 10px; border: 0; font-family: inherit; font-size: 14px; font-weight: 700; cursor: pointer; background: {{ f.bg }}; color: {{ f.fg }}">{{ f.label }}</button>
+            </sc-for>
+          </div>
+          <div role="group" aria-label="Durée" style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px">
+            <sc-for list="{{ years }}" as="y" hint-placeholder-count="3">
+              <button aria-pressed="{{ y.on }}" onClick="{{ y.pick }}" style="height: 44px; border-radius: 10px; border: 0; font-family: inherit; font-size: 14px; font-weight: 700; cursor: pointer; background: {{ y.bg }}; color: {{ y.fg }}">{{ y.label }}</button>
+            </sc-for>
+          </div>
+          <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; padding-top: 10px; border-top: 1px solid rgba(255,255,255,0.14)">
+            <span style="display: flex; flex-direction: column; gap: 2px"><span style="font-size: 26px; font-weight: 800; letter-spacing: -0.02em">{{ sim.kg }}</span><span style="font-size: 12px; color: #B9D9CF">kg CO₂e évités</span></span>
+            <span style="display: flex; flex-direction: column; gap: 2px"><span style="font-size: 26px; font-weight: 800; letter-spacing: -0.02em">{{ sim.eur }} €</span><span style="font-size: 12px; color: #B9D9CF">coût climat évité</span></span>
+            <span style="display: flex; flex-direction: column; gap: 2px"><span style="font-size: 26px; font-weight: 800; letter-spacing: -0.02em">{{ sim.ani }}</span><span style="font-size: 12px; color: #B9D9CF">animal épargné</span></span>
+          </div>
+        </div>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ isDetail }}" hint-placeholder-val="{{ false }}">
+      <div style="display: flex; flex-wrap: wrap; gap: 24px; align-items: flex-start">
+        <div style="flex: 999 1 560px; min-width: 0; display: flex; flex-direction: column; gap: 18px">
+
+          <sc-if value="{{ isNut }}" hint-placeholder-val="{{ false }}">
+            <div style="display: flex; flex-direction: column; background: #FFFFFF; border-radius: 20px; padding: 10px 24px 18px">
+              <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; padding: 12px 0">
+                <span style="font-size: 19px; font-weight: 800">Composition nutritionnelle</span>
+                <div role="group" aria-label="Unité" style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 4px; padding: 4px; border-radius: 12px; background: #DDE7E2">
+                  <sc-for list="{{ units }}" as="u" hint-placeholder-count="3">
+                    <button aria-pressed="{{ u.on }}" onClick="{{ u.pick }}" style="height: 40px; padding: 0 12px; border: 0; border-radius: 9px; font-family: inherit; font-size: 13px; font-weight: 700; cursor: pointer; background: {{ u.bg }}; color: #0F2724">{{ u.label }}</button>
+                  </sc-for>
+                </div>
+              </div>
+              <span style="display: grid; grid-template-columns: minmax(0, 1fr) 120px 120px; gap: 12px; padding: 10px 0; font-size: 13px; font-weight: 700; color: #3E5550; border-bottom: 1px solid #D5DEDA"><span>{{ unitLabel }}</span><span style="display: flex; align-items: center; justify-content: flex-end; gap: 6px"><span style="width: 8px; height: 8px; border-radius: 999px; background: #D9662B"></span>Plat animal</span><span style="display: flex; align-items: center; justify-content: flex-end; gap: 6px"><span style="width: 8px; height: 8px; border-radius: 999px; background: #0E8A74"></span>Végétal</span></span>
+              <sc-for list="{{ nutRows }}" as="r" hint-placeholder-count="14">
+                <span style="display: grid; grid-template-columns: minmax(0, 1fr) 120px 120px; gap: 12px; padding: 11px 0; font-size: 15px; border-bottom: 1px solid #E3EAE6; font-variant-numeric: tabular-nums">
+                  <span style="display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 10px"><span style="font-weight: {{ r.weight }}">{{ r.name }}</span><sc-if value="{{ r.hasNote }}" hint-placeholder-val="{{ false }}"><span style="font-size: 12px; color: #8A4A1E">{{ r.note }}</span></sc-if></span>
+                  <span style="text-align: right; color: {{ r.color }}">{{ r.a }}</span>
+                  <span style="text-align: right; color: {{ r.color }}">{{ r.v }}</span>
+                </span>
+              </sc-for>
+              <span style="font-size: 13px; line-height: 1.5; color: #55696A; padding-top: 12px">Ciqual 2025, 74 constituants. Une couverture inférieure à 95 % de la masse est signalée.</span>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{ isSante }}" hint-placeholder-val="{{ false }}">
+            <div style="display: flex; flex-direction: column; gap: 14px; background: #FFFFFF; border-radius: 20px; padding: 24px">
+              <span style="font-size: 19px; font-weight: 800">Classement du CIRC (OMS)</span>
+              <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(200px, 100%), 1fr)); gap: 12px">
+                <div style="display: flex; flex-direction: column; gap: 4px; padding: 16px; border-radius: 14px; background: #FBEDE4"><span style="font-size: 13px; font-weight: 700; color: #8A4A1E">Groupe 1, cancérogène pour l'humain</span><span style="font-size: 17px; font-weight: 700">Lardons (viande transformée)</span></div>
+                <div style="display: flex; flex-direction: column; gap: 4px; padding: 16px; border-radius: 14px; background: #FBEDE4"><span style="font-size: 13px; font-weight: 700; color: #8A4A1E">Groupe 2A, probablement cancérogène</span><span style="font-size: 17px; font-weight: 700">Bœuf (viande rouge)</span></div>
+                <div style="display: flex; flex-direction: column; gap: 4px; padding: 16px; border-radius: 14px; background: #E1F0EA"><span style="font-size: 13px; font-weight: 700; color: #0B6E5D">Version végétale</span><span style="font-size: 17px; font-weight: 700">Aucun ingrédient classé</span></div>
+              </div>
+              <p style="margin: 0; font-size: 14px; line-height: 1.5; color: #3E5550">Le classement indique la solidité des preuves, pas l'ampleur du risque. Source : CIRC, monographies, volume 114.</p>
+            </div>
+            <div style="display: flex; flex-direction: column; background: #FFFFFF; border-radius: 20px; padding: 10px 24px 16px">
+              <span style="font-size: 19px; font-weight: 800; padding: 12px 0 6px">Autres repères</span>
+              <span style="display: flex; justify-content: space-between; gap: 12px; padding: 12px 0; border-top: 1px solid #E3EAE6; font-size: 15px"><span>Repères PNNS (viande et charcuterie par semaine)</span><span style="color: #55696A; font-style: italic">à venir</span></span>
+              <span style="display: flex; justify-content: space-between; gap: 12px; padding: 12px 0; border-top: 1px solid #E3EAE6; font-size: 15px"><span>Minutes de vie en bonne santé (HENI)</span><span style="color: #55696A; font-style: italic">à venir</span></span>
+              <span style="display: flex; justify-content: space-between; gap: 12px; padding: 12px 0; border-top: 1px solid #E3EAE6; font-size: 15px"><span>Repères EAT-Lancet 2025</span><span style="color: #55696A; font-style: italic">à venir</span></span>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{ isEnv }}" hint-placeholder-val="{{ false }}">
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr)); gap: 18px">
+              <div style="display: flex; flex-direction: column; gap: 14px; background: #FFFFFF; border-radius: 20px; padding: 24px">
+                <span style="font-size: 15px; font-weight: 700; color: #3E5550">Gaz à effet de serre, par portion</span>
+                <span style="font-size: 72px; line-height: 0.9; font-weight: 800; letter-spacing: -0.05em">{{ p.gap }}</span>
+                <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 2px; align-items: center">
+                  <span style="display: flex; flex-direction: column; align-items: flex-end; gap: 6px"><span style="height: 18px; width: 100%; background: #D9662B; border-radius: 4px 0 0 4px"></span><span style="font-size: 20px; font-weight: 800">5,03 kg</span></span>
+                  <span style="display: flex; flex-direction: column; align-items: flex-start; gap: 6px"><span style="height: 18px; width: {{ p.co2w }}; background: #0E8A74; border-radius: 0 4px 4px 0"></span><span style="font-size: 20px; font-weight: 800">{{ p.co2 }} kg</span></span>
+                </div>
+                <span style="font-size: 13px; line-height: 1.5; color: #55696A">Fourchette non publiée par la source. Masse couverte : 100 % des deux côtés.</span>
+              </div>
+              <div style="display: flex; flex-direction: column; gap: 12px; background: #FFFFFF; border-radius: 20px; padding: 24px">
+                <span style="font-size: 17px; font-weight: 800">Selon l'unité de comparaison, kg CO₂e</span>
+                <sc-for list="{{ envNorm }}" as="n" hint-placeholder-count="3">
+                  <div style="display: flex; flex-direction: column; gap: 6px; padding-top: 10px; border-top: 1px solid #E3EAE6">
+                    <span style="display: flex; justify-content: space-between; font-size: 14px"><span style="font-weight: 600">{{ n.label }}</span><span style="color: #3E5550">{{ n.gap }}</span></span>
+                    <span style="display: grid; grid-template-columns: 52px minmax(0, 1fr) minmax(0, 1fr) 52px; gap: 2px; align-items: center; font-size: 14px; font-variant-numeric: tabular-nums">
+                      <span style="padding-right: 6px; text-align: right">{{ n.a }}</span>
+                      <span style="display: flex; justify-content: flex-end"><span style="height: 10px; width: 100%; background: #D9662B; border-radius: 4px 0 0 4px"></span></span>
+                      <span style="display: flex"><span style="height: 10px; width: {{ n.w }}; background: #0E8A74; border-radius: 0 4px 4px 0"></span></span>
+                      <span style="padding-left: 6px">{{ n.v }}</span>
+                    </span>
+                  </div>
+                </sc-for>
+              </div>
+            </div>
+            <div style="display: flex; flex-direction: column; background: #FFFFFF; border-radius: 20px; padding: 10px 24px 18px">
+              <span style="font-size: 19px; font-weight: 800; padding: 12px 0 6px">Les 16 indicateurs Agribalyse</span>
+              <span style="display: grid; grid-template-columns: minmax(0, 1fr) 120px 120px; gap: 12px; padding: 10px 0; font-size: 13px; font-weight: 700; color: #3E5550; border-bottom: 1px solid #D5DEDA"><span>Par portion</span><span style="text-align: right">Plat animal</span><span style="text-align: right">Végétal</span></span>
+              <sc-for list="{{ envRows }}" as="r" hint-placeholder-count="8">
+                <span style="display: grid; grid-template-columns: minmax(0, 1fr) 120px 120px; gap: 12px; padding: 11px 0; font-size: 15px; border-bottom: 1px solid #E3EAE6; font-variant-numeric: tabular-nums"><span>{{ r.name }}</span><span style="text-align: right; color: {{ r.color }}">{{ r.a }}</span><span style="text-align: right; color: {{ r.color }}">{{ r.v }}</span></span>
+              </sc-for>
+              <span style="font-size: 13px; line-height: 1.5; color: #55696A; padding-top: 12px">Qualité des données (DQR, de 1 à 5, plus bas = plus fiable) : 2,87 et {{ p.dqr }}. Les valeurs négatives publiées par Agribalyse sont affichées telles quelles.</span>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{ isAni }}" hint-placeholder-val="{{ false }}">
+            <div style="display: flex; flex-direction: column; gap: 10px; background: #FFFFFF; border-radius: 20px; padding: 24px">
+              <span style="font-size: 15px; font-weight: 700; color: #3E5550">Animaux tués pour ce plat</span>
+              <span style="font-size: 56px; line-height: 1; font-weight: 800; letter-spacing: -0.04em">Au moins 1 animal tué pour 1 686 portions (estimation basse)</span>
+              <span style="font-size: 16px; color: #3E5550">Version végétale : aucun. Estimation basse : animaux abattus par kg de carcasse en France (FAOSTAT), appliqués aux grammes de viande de la recette.</span>
+            </div>
+            <div style="display: flex; flex-direction: column; background: #FFFFFF; border-radius: 20px; padding: 10px 24px 18px">
+              <span style="display: grid; grid-template-columns: minmax(0, 1fr) 120px 120px; gap: 12px; padding: 12px 0 10px; font-size: 13px; font-weight: 700; color: #3E5550; border-bottom: 1px solid #D5DEDA"><span>Par portion</span><span style="text-align: right">Plat animal</span><span style="text-align: right">Végétal</span></span>
+              <span style="display: grid; grid-template-columns: minmax(0, 1fr) 120px 120px; gap: 12px; padding: 11px 0; font-size: 15px; border-bottom: 1px solid #E3EAE6"><span>Animaux tués</span><span style="text-align: right">0,00059</span><span style="text-align: right">0</span></span>
+              <span style="display: grid; grid-template-columns: minmax(0, 1fr) 120px 120px; gap: 12px; padding: 11px 0; font-size: 15px; border-bottom: 1px solid #E3EAE6"><span>Jours de vie en élevage</span><span style="text-align: right; color: #55696A; font-style: italic">donnée manquante</span><span style="text-align: right">0</span></span>
+              <span style="display: grid; grid-template-columns: minmax(0, 1fr) 120px 120px; gap: 12px; padding: 11px 0; font-size: 15px; border-bottom: 1px solid #E3EAE6"><span>Heures de douleur</span><span style="text-align: right; color: #55696A; font-style: italic">donnée manquante</span><span style="text-align: right">0</span></span>
+              <span style="display: grid; grid-template-columns: minmax(0, 1fr) 120px 120px; gap: 12px; padding: 11px 0; font-size: 15px"><span>Poissons tués</span><span style="text-align: right">0</span><span style="text-align: right">0</span></span>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{ isCout }}" hint-placeholder-val="{{ false }}">
+            <div style="display: flex; flex-direction: column; gap: 12px; background: #FFFFFF; border-radius: 20px; padding: 24px">
+              <span style="font-size: 19px; font-weight: 800">Coût climat payé par la société, par portion</span>
+              <sc-for list="{{ costRows }}" as="c" hint-placeholder-count="3">
+                <div style="display: flex; flex-direction: column; gap: 6px; padding-top: 10px; border-top: 1px solid #E3EAE6">
+                  <span style="font-size: 14px; font-weight: 700">{{ c.year }}</span>
+                  <span style="display: grid; grid-template-columns: 64px minmax(0, 1fr) minmax(0, 1fr) 64px; gap: 2px; align-items: center; font-size: 15px; font-variant-numeric: tabular-nums">
+                    <span style="padding-right: 8px; text-align: right">{{ c.a }}</span>
+                    <span style="display: flex; justify-content: flex-end"><span style="height: 12px; width: {{ c.wa }}; background: #D9662B; border-radius: 4px 0 0 4px"></span></span>
+                    <span style="display: flex"><span style="height: 12px; width: {{ c.wv }}; background: #0E8A74; border-radius: 0 4px 4px 0"></span></span>
+                    <span style="padding-left: 8px">{{ c.v }}</span>
+                  </span>
+                </div>
+              </sc-for>
+              <span style="font-size: 13px; line-height: 1.5; color: #55696A">Valeur de l'action pour le climat (France Stratégie) : 256 € la tonne de CO₂e en 2025, 300 € en 2030, 563 € en 2050.</span>
+            </div>
+            <div style="display: flex; flex-direction: column; background: #FFFFFF; border-radius: 20px; padding: 10px 24px 18px">
+              <span style="font-size: 19px; font-weight: 800; padding: 12px 0 6px">Ton porte-monnaie</span>
+              <span style="display: flex; justify-content: space-between; gap: 12px; padding: 12px 0; border-top: 1px solid #E3EAE6; font-size: 15px"><span>Prix en magasin, par portion</span><span style="color: #55696A; font-style: italic">donnée manquante</span></span>
+              <span style="display: flex; justify-content: space-between; gap: 12px; padding: 12px 0; border-top: 1px solid #E3EAE6; font-size: 15px"><span>Prix pour 10 g de protéines</span><span style="color: #55696A; font-style: italic">donnée manquante</span></span>
+            </div>
+          </sc-if>
+        </div>
+
+        <aside style="flex: 1 1 300px; min-width: 0; display: flex; flex-direction: column; gap: 18px">
+          <div style="display: flex; flex-direction: column; gap: 12px; padding: 20px; border-radius: 20px; background: {{ cur.bg }}">
+            <span style="font-size: 14px; color: #3E5550">Vainqueur {{ cur.inLabel }}</span>
+            <span style="display: flex; align-items: center; gap: 10px; font-size: 24px; font-weight: 800; letter-spacing: -0.02em"><span style="flex: none; width: 12px; height: 12px; border-radius: 999px; background: {{ cur.dot }}"></span>{{ cur.winner }}</span>
+            <span aria-label="{{ cur.aria }}" style="display: flex; align-items: center; gap: 8px; font-size: 30px; font-weight: 800; font-variant-numeric: tabular-nums"><span style="width: 10px; height: 10px; border-radius: 999px; background: #D9662B"></span>{{ cur.sa }}<span style="font-weight: 500; color: #55696A">–</span>{{ cur.sv }}<span style="width: 10px; height: 10px; border-radius: 999px; background: #0E8A74"></span><span style="font-size: 14px; font-weight: 500; color: #3E5550">indicateurs gagnés</span></span>
+            <p style="margin: 0; font-size: 14px; line-height: 1.5">{{ cur.basis }}</p>
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 12px; background: #FBEDE4; border-radius: 20px; padding: 20px">
+            <span style="font-size: 17px; font-weight: 800">Là où le plat animal fait mieux</span>
+            <p style="margin: 0; font-size: 14px; line-height: 1.5"><strong>Protéines.</strong> Varier les sources de protéines végétales sur la journée suffit (ANSES).</p>
+            <p style="margin: 0; font-size: 14px; line-height: 1.5"><strong>Vitamine B12.</strong> Même une alimentation végétalienne optimisée ne couvre pas les besoins : complément ou aliments enrichis (ANSES).</p>
+          </div>
+          <p style="margin: 0; font-size: 13px; line-height: 1.5; color: #3E5550; background: #DDE7E2; border-radius: 14px; padding: 14px">Informations générales, pas un conseil médical. Parle à un professionnel de santé avant de changer ton alimentation.</p>
+        </aside>
+      </div>
+    </sc-if>
+  </div>
+
+  <footer style="border-top: 1px solid #D5DEDA">
+    <div style="max-width: 1200px; margin: 0 auto; padding: 22px 32px 36px; box-sizing: border-box; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 16px; font-size: 14px; color: #3E5550">
+      <span>Sources : Agribalyse 3.2 (ADEME), Ciqual 2025 (ANSES), FAOSTAT (FAO), CIRC vol. 114, France Stratégie</span>
+      <nav style="display: flex; gap: 18px"><a href="#">Méthodologie</a><a href="#">Signaler une erreur</a><a href="#">Télécharger les données</a></nav>
+    </div>
+  </footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":1500}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { tab: 'apercu', variant: 'maison', freq: 52, years: 1, unit: 'portion' };
+  }
+  renderVals() {
+    const s = this.state;
+    const fr = (x, d) => x.toFixed(d).replace('.', ',');
+    const A = { co2: 5.03, kcal: 483, prot: 48.6, g: 405, dqr: 2.87 };
+    const P = s.variant === 'maison'
+      ? { name: 'Bourguignon de tempeh et lentilles', co2: 0.647, kcal: 553, prot: 35.4, g: 498, dqr: 3.01 }
+      : { name: 'Bourguignon de seitan', co2: 0.57, kcal: 430, prot: 36.6, g: 422, dqr: 2.87 };
+    const VAC = { 2025: 0.256, 2030: 0.300, 2050: 0.563 };
+    const ANI = 1 / 1686;
+    const pct = (a, v) => Math.round((v - a) / a * 100);
+    const sign = (n) => (n > 0 ? '+' : '−') + Math.abs(n) + ' %';
+    const p = {
+      name: P.name,
+      co2: fr(P.co2, 2),
+      co2w: (P.co2 / A.co2 * 100).toFixed(1) + '%',
+      gap: sign(pct(A.co2, P.co2)),
+      prot: fr(P.prot, 1),
+      protw: (P.prot / A.prot * 100).toFixed(1) + '%',
+      kcal: String(P.kcal),
+      cost25: fr(P.co2 * VAC[2025], 2),
+      dqr: fr(P.dqr, 2)
+    };
+
+    const tabDefs = [['apercu', 'Vue d’ensemble'], ['nut', 'Nutrition'], ['sante', 'Santé'], ['env', 'Environnement'], ['ani', 'Protection animale'], ['cout', 'Économie']];
+
+    const cat = (inLabel, short, side, sa, sv, basis) => ({
+      inLabel, short, sa: String(sa), sv: String(sv), basis,
+      winner: side === 'v' ? 'Version végétale' : 'Plat animal, provisoire',
+      dot: side === 'v' ? '#0E8A74' : '#D9662B',
+      bg: side === 'v' ? '#E1F0EA' : '#FBEDE4',
+      aria: 'Indicateurs gagnés : plat animal ' + sa + ', version végétale ' + sv
+    });
+    const cats = {
+      nut: cat('en nutrition', 'Nutrition', 'a', 1, 0, 'Le plat animal apporte plus de protéines. Les autres nutriments (fibres, fer, B12…) seront comptés quand leurs valeurs seront affichées.'),
+      sante: cat('en santé', 'Santé', 'v', 0, 2, 'Deux ingrédients du plat animal sont classés par le CIRC : la viande rouge (2A) et les lardons (1).'),
+      env: cat('en environnement', 'Environ­nement', 'v', 0, 1, 'Gaz à effet de serre. Les 15 autres indicateurs Agribalyse seront comptés quand leurs valeurs seront affichées.'),
+      ani: cat('en protection animale', 'Animaux', 'v', 0, 1, 'Animaux tués. Jours de vie et heures de douleur : données manquantes, non comptées.'),
+      cout: cat('en économie', 'Économie', 'v', 0, 1, 'Coût climat pour la société. Prix en magasin : donnée manquante, non comptée.')
+    };
+    const catList = ['nut', 'sante', 'env', 'ani', 'cout'].map((k) => cats[k]);
+    const cur = cats[s.tab] || cats.nut;
+    const card = (k, title, metric, a, v, aw, vw) => ({ ...cats[k], title, metric, a, v, wa: aw, wv: vw, go: () => this.setState({ tab: k }) });
+    const tabs = tabDefs.map(([id, label]) => {
+      const on = s.tab === id;
+      return { label, on, pick: () => this.setState({ tab: id }), bg: on ? '#0F2724' : '#FFFFFF', fg: on ? '#FFFFFF' : '#0F2724', border: on ? '#0F2724' : '#C9D5D0' };
+    });
+    const go = (id) => () => this.setState({ tab: id });
+
+    const envNorm = [
+      ['Par portion', A.co2, P.co2],
+      ['Par 100 kcal', A.co2 / A.kcal * 100, P.co2 / P.kcal * 100],
+      ['Par 10 g de protéines', A.co2 / A.prot * 10, P.co2 / P.prot * 10]
+    ].map(([label, a, v]) => ({ label, a: fr(a, 2), v: fr(v, 2), w: (v / a * 100).toFixed(1) + '%', gap: sign(pct(a, v)) }));
+
+    const ph = { color: '#55696A' };
+    const envRows = [
+      { name: 'Changement climatique, kg CO₂e', a: '5,03', v: p.co2, color: '#0F2724' },
+      { name: 'Score unique EF (mPt)', a: '[valeur]', v: '[valeur]', ...ph },
+      { name: 'Épuisement des ressources en eau', a: '[valeur]', v: '[valeur]', ...ph },
+      { name: 'Qualité des sols (Pt)', a: '[valeur]', v: '[valeur]', ...ph },
+      { name: 'Eutrophisation des eaux douces', a: '[valeur]', v: '[valeur]', ...ph },
+      { name: 'Acidification', a: '[valeur]', v: '[valeur]', ...ph },
+      { name: 'Particules fines', a: '[valeur]', v: '[valeur]', ...ph },
+      { name: '+ 9 autres indicateurs', a: '', v: '', ...ph }
+    ];
+
+    const unitDefs = [['portion', 'Portion'], ['kcal', '100 kcal'], ['prot', '10 g prot.']];
+    const units = unitDefs.map(([id, label]) => ({ label, on: s.unit === id, bg: s.unit === id ? '#FFFFFF' : 'transparent', pick: () => this.setState({ unit: id }) }));
+    const f = s.unit === 'portion' ? [1, 1] : s.unit === 'kcal' ? [100 / A.kcal, 100 / P.kcal] : [10 / A.prot, 10 / P.prot];
+    const unitLabel = s.unit === 'portion' ? 'Par portion' : s.unit === 'kcal' ? 'Pour 100 kcal' : 'Pour 10 g de protéines';
+    const known = (name, a, v, d, unit) => ({ name: name + ', ' + unit, a: fr(a * f[0], d), v: fr(v * f[1], d), color: '#0F2724', weight: 600, hasNote: false, note: '' });
+    const todo = (name, note) => ({ name, a: '[valeur]', v: '[valeur]', color: '#55696A', weight: 400, hasNote: !!note, note: note || '' });
+    const nutRows = [
+      { name: 'Poids, g', a: String(A.g), v: String(P.g), color: '#0F2724', weight: 600, hasNote: false, note: '' },
+      known('Énergie', A.kcal, P.kcal, 0, 'kcal'),
+      { ...known('Protéines', A.prot, P.prot, 1, 'g'), hasNote: true, note: 'Avantage au plat animal' },
+      todo('Lipides, g'), todo('dont acides gras saturés, g'), todo('Glucides, g'), todo('Fibres, g'), todo('Sel, g'),
+      todo('Fer, mg'), todo('Calcium, mg'), todo('Zinc, mg'), todo('Vitamine B12, µg'),
+      todo('Iode, µg', 'Connu pour 9 % de la masse du plat végétal'), todo('Vitamine D, µg')
+    ];
+
+    const costRows = [2025, 2030, 2050].map((y) => {
+      const a = A.co2 * VAC[y], v = P.co2 * VAC[y], max = A.co2 * VAC[2050];
+      return { year: String(y), a: fr(a, 2) + ' €', v: fr(v, 2) + ' €', wa: (a / max * 100).toFixed(1) + '%', wv: (v / max * 100).toFixed(1) + '%' };
+    });
+
+    const chip = (on) => ({ bg: on ? '#FFFFFF' : 'rgba(255,255,255,0.08)', fg: on ? '#0F2724' : '#FFFFFF' });
+    const freqs = [[12, '1×/mois'], [52, '1×/sem.'], [104, '2×/sem.']].map(([n, label]) => ({ label, on: s.freq === n, ...chip(s.freq === n), pick: () => this.setState({ freq: n }) }));
+    const years = [[1, '1 an'], [5, '5 ans'], [10, '10 ans']].map(([n, label]) => ({ label, on: s.years === n, ...chip(s.years === n), pick: () => this.setState({ years: n }) }));
+    const portions = s.freq * s.years;
+    const kg = Math.round((A.co2 - P.co2) * portions);
+    const sim = {
+      kg: kg.toLocaleString('fr-FR'),
+      eur: Math.round((A.co2 - P.co2) * VAC[2025] * portions).toLocaleString('fr-FR'),
+      ani: fr(portions * ANI, 2)
+    };
+
+    const maison = s.variant === 'maison';
+    return {
+      cardList: [
+        card('nut', 'Nutrition', 'Protéines par portion', '48,6 g', fr(P.prot, 1) + ' g', '100%', (P.prot / A.prot * 100).toFixed(1) + '%'),
+        card('sante', 'Santé', 'Ingrédients classés par le CIRC', '2', '0', '100%', '0%'),
+        card('env', 'Environnement', 'kg CO₂e par portion', '5,03', fr(P.co2, 2), '100%', (P.co2 / A.co2 * 100).toFixed(1) + '%'),
+        card('ani', 'Protection animale', 'Animaux tués pour 1 000 portions', '0,59', '0', '100%', '0%'),
+        card('cout', 'Économie', 'Coût climat par portion (2025)', '1,29 €', fr(P.co2 * VAC[2025], 2) + ' €', '100%', (P.co2 / A.co2 * 100).toFixed(1) + '%')
+      ],
+      p, tabs, cats, catList, cur, isDetail: s.tab !== 'apercu', envNorm, envRows, units, unitLabel, nutRows, costRows, freqs, years, sim,
+      isApercu: s.tab === 'apercu', isEnv: s.tab === 'env', isNut: s.tab === 'nut', isSante: s.tab === 'sante', isAni: s.tab === 'ani', isCout: s.tab === 'cout',
+      goEnv: go('env'), goNut: go('nut'), goSante: go('sante'), goAni: go('ani'), goCout: go('cout'),
+      isMaison: maison, isCommerce: !maison,
+      segA: { bg: maison ? '#FFFFFF' : 'transparent', fg: maison ? '#0F2724' : '#FFFFFF' },
+      segB: { bg: maison ? 'transparent' : '#FFFFFF', fg: maison ? '#FFFFFF' : '#0F2724' },
+      pickMaison: () => this.setState({ variant: 'maison' }),
+      pickCommerce: () => this.setState({ variant: 'commerce' })
+    };
+  }
+}
+</script>
+</body>
+</html>

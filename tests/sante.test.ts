@@ -22,10 +22,18 @@ describe("data/sante.json", () => {
     }
   });
 
+  it("cites the EAT-Lancet summary page for every target", () => {
+    for (const x of file.eatLancet) {
+      expect(x.source.sourceId).toBe("eat-lancet-summary-2025");
+      expect(x.source.pages).toMatch(/p\. 11/);
+      expect(x.grammesJour).toBeGreaterThan(0);
+    }
+  });
+
   it("every source id exists in the seed or a migration", () => {
     const dir = "supabase/migrations";
     const sql = [readFileSync("supabase/seed.sql", "utf8"), ...readdirSync(dir).map((f) => readFileSync(`${dir}/${f}`, "utf8"))].join("\n");
-    for (const x of [...file.iarc, ...file.pnns]) expect(sql).toContain(`('${x.source.sourceId}',`);
+    for (const x of [...file.iarc, ...file.pnns, ...file.eatLancet]) expect(sql).toContain(`('${x.source.sourceId}',`);
   });
 
   it("carries the medical disclaimer", () => {

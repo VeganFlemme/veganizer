@@ -4,7 +4,13 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
-from common import UnknownValueFormat, infer_state, parse_ciqual_value, parse_number  # noqa: E402
+from common import UnknownValueFormat, infer_state, order_columns, parse_ciqual_value, parse_number  # noqa: E402
+
+
+class OrderColumns(unittest.TestCase):
+    def test_pages_are_sorted_on_every_selected_column(self):
+        self.assertEqual(order_columns("food_code, value_per_100g"), ["food_code", "value_per_100g"])
+        self.assertEqual(order_columns("*"), [])
 
 
 class ParseCiqualValue(unittest.TestCase):

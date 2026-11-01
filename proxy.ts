@@ -24,12 +24,46 @@ async function publishedSlugs(): Promise<Set<string> | null> {
   }
 }
 
+// /aliment/<code>: existence checked code by code (3 684 foods), answers cached for TTL_MS.
+const foodCache = new Map<string, { at: number; exists: boolean }>();
+const FOOD_CACHE_MAX = 5000;
+
+async function foodExists(code: string): Promise<boolean | null> {
+  const hit = foodCache.get(code);
+  if (hit && Date.now() - hit.at < TTL_MS) return hit.exists;
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const key = process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY;
+  if (!url || !key) return null;
+  try {
+    const res = await fetch(`${url}/rest/v1/foods?select=code&code=eq.${encodeURIComponent(code)}`, {
+      headers: { apikey: key, Authorization: `Bearer ${key}` },
+    });
+    if (!res.ok) return null;
+    const exists = ((await res.json()) as unknown[]).length > 0;
+    if (foodCache.size > FOOD_CACHE_MAX) foodCache.clear();
+    foodCache.set(code, { at: Date.now(), exists });
+    return exists;
+  } catch {
+    return null;
+  }
+}
+
 export async function proxy(request: NextRequest) {
-  const slug = request.nextUrl.pathname.split("/")[2];
-  if (!slug) return NextResponse.next();
+  const [, section, rawSlug] = request.nextUrl.pathname.split("/");
+  if (!rawSlug) return NextResponse.next();
+  const slug = decodeURIComponent(rawSlug);
+  // Fail open: if the data cannot be read, the page itself still shows "introuvable".
+  if (section === "aliment") {
+    const exists = await foodExists(slug);
+    if (exists !== false) return NextResponse.next();
+    return notFoundResponse(request);
+  }
   const slugs = await publishedSlugs();
-  // Fail open: if the list cannot be read, the page itself still shows "introuvable".
-  if (!slugs || slugs.has(decodeURIComponent(slug))) return NextResponse.next();
+  if (!slugs || slugs.has(slug)) return NextResponse.next();
+  return notFoundResponse(request);
+}
+
+async function notFoundResponse(request: NextRequest) {
   const target = new URL("/introuvable", request.url);
   // Client-side navigations (RSC requests) keep Next's rewrite; full page loads get the HTML
   // of /introuvable with a real 404 status (a rewrite cannot change the status code).
@@ -42,4 +76,4 @@ export async function proxy(request: NextRequest) {
   }
 }
 
-export const config = { matcher: "/compare/:slug*" };
+export const config = { matcher: ["/compare/:slug*", "/aliment/:code*"] };

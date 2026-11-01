@@ -46,6 +46,15 @@ def upsert(client, table: str, rows: list[dict[str, Any]], on_conflict: str, lab
     return total
 
 
+def order_columns(columns: str) -> list[str]:
+    """Columns used to sort pages: every selected column, so pagination is stable.
+
+    Without an explicit order, PostgREST pages are not guaranteed to be consistent: rows were
+    duplicated or skipped between pages (3 255 distinct rows out of 3 484 for food_nutrients).
+    """
+    return [c.strip() for c in columns.split(",") if c.strip() and c.strip() != "*"]
+
+
 def fetch_all(client, table: str, columns: str, page: int = 1000, **eq: Any) -> list[dict[str, Any]]:
     out: list[dict[str, Any]] = []
     start = 0
@@ -53,6 +62,8 @@ def fetch_all(client, table: str, columns: str, page: int = 1000, **eq: Any) -> 
         q = client.table(table).select(columns)
         for k, v in eq.items():
             q = q.eq(k, v)
+        for col in order_columns(columns):
+            q = q.order(col)
         res = q.range(start, start + page - 1).execute()
         out.extend(res.data)
         if len(res.data) < page:

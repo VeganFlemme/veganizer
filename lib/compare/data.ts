@@ -5,6 +5,8 @@ import santeFile from "@/data/sante.json";
 import { createPublicClient } from "@/lib/supabase/public";
 import type { Conseil } from "@/lib/scoring";
 import { CIQUAL_SOURCE, CLIMATE_COST_YEARS, CLIMATE_INDICATORS, CLIMATE_MAIN, NUTRIENTS } from "./config";
+import { buildFoodPage, displayName, type FoodPageModel } from "./food";
+import type { RecipeData, RecipeFood, SubstitutionRule } from "./recipe";
 import { buildPairPage, reductionPercent, type IarcEntry, type PairPageModel, type PnnsEntry, type RawPairData } from "./view";
 
 // Supabase caps a response at 1000 rows: a full page means rows may be missing.
@@ -99,7 +101,7 @@ export async function getPairPage(slug: string): Promise<PairPageModel | null> {
     db.from("monetization_factors").select("indicator_id, year, eur_per_unit, method, source_id").eq("indicator_id", CLIMATE_MAIN),
     db.from("monetization_rules").select("indicator_id, method, growth_rate, start_year, cap_year, source_id").eq("indicator_id", CLIMATE_MAIN),
     db.from("dish_prices_best").select("dish_id, source_ids, per_serving, low_per_serving, high_per_serving, mass_coverage, first_observed_on, last_observed_on").in("dish_id", dishIds),
-    db.from("food_prices_best").select("food_code, source_id, median_eur_per_kg, observations, first_observed_on, last_observed_on, place").in("food_code", codes),
+    db.from("food_prices_best").select("food_code, source_id, median_eur_per_kg, observations, first_observed_on, last_observed_on, place, derived_from, yield_pct").in("food_code", codes),
   ]);
 
   const raw: RawPairData = {
@@ -149,12 +151,15 @@ export async function getPairPage(slug: string): Promise<PairPageModel | null> {
               first_observed_on: p.first_observed_on,
               last_observed_on: p.last_observed_on,
               place: p.place,
+              derived_from: p.derived_from,
+              yield_pct: p.yield_pct,
             },
           ]
         : [],
     ),
     iarc: santeFile.iarc as IarcEntry[],
     pnns: santeFile.pnns as PnnsEntry[],
+    eatLancet: santeFile.eatLancet as PnnsEntry[],
   };
   return buildPairPage(raw);
 }
@@ -180,4 +185,133 @@ export async function listSources(): Promise<SourceListRow[]> {
     await db.from("sources").select("id, name, publisher, version, url, license, commercial_use, share_alike, accessed_on, notes").order("id"),
     "sources",
   );
+}
+
+/** /aliment/[code]: the food, its plant alternatives (food_alternatives) and the data to compare them. */
+export async function getFoodPage(code: string): Promise<FoodPageModel | null> {
+  "use cache";
+  cacheLife({ stale: 3600, revalidate: 86400, expire: 604800 });
+  const db = createPublicClient();
+  const food = rows(
+    await db.from("foods").select("code, name_fr, is_animal, animal_category, ciqual_code, iarc_meat, food_subgroup, food_group").eq("code", code),
+    "foods",
+  )[0];
+  if (!food) return null;
+  const alternatives = rows(await db.from("food_alternatives").select("plant_code, rank, rule").eq("animal_code", code), "food_alternatives");
+  const codes = [code, ...alternatives.map((a) => a.plant_code)];
+  const foods = rows(
+    await db.from("foods").select("code, name_fr, is_animal, animal_category, ciqual_code, iarc_meat, food_subgroup").in("code", codes),
+    "foods",
+  );
+  const nutrientCodes = [...new Set(foods.map((f) => f.ciqual_code ?? f.code))];
+  const nutrientIds = NUTRIENTS.map((n) => n.id);
+  const [nutrientValues, impacts, categoryFactors, nutrients, indicators, sources] = await Promise.all([
+    db.from("food_nutrients").select("food_code, nutrient_id, value_per_100g, source_id").in("food_code", nutrientCodes).in("nutrient_id", nutrientIds).eq("source_id", CIQUAL_SOURCE),
+    db.from("food_impacts").select("food_code, indicator_id, value_per_kg, low_per_kg, high_per_kg, dqr, source_id").in("food_code", codes).in("indicator_id", CLIMATE_INDICATORS),
+    db.from("category_factors").select("category, indicator_id, value, low, high, source_id, unit_basis, notes, per, food_codes"),
+    db.from("nutrients").select("id, name_fr, unit").in("id", nutrientIds),
+    db.from("indicators").select("id, name_fr, unit, higher_is_better, pillar"),
+    db.from("sources").select("id, name, publisher, version, license, commercial_use, url"),
+  ]);
+  return buildFoodPage({
+    code,
+    foodGroup: food.food_group,
+    foodSubgroup: food.food_subgroup,
+    alternatives,
+    foods,
+    nutrientValues: rows(nutrientValues, "food_nutrients"),
+    impacts: rows(impacts, "food_impacts"),
+    categoryFactors: rows(categoryFactors, "category_factors"),
+    nutrients: rows(nutrients, "nutrients"),
+    indicators: rows(indicators, "indicators"),
+    sources: rows(sources, "sources"),
+    conseils: conseilsFile.conseils as Conseil[],
+  });
+}
+
+export interface SearchHit {
+  kind: "paire" | "aliment";
+  ref: string;
+  name: string;
+  isAnimal: boolean;
+  hasAlternatives: boolean;
+}
+
+/** Catalogue search (Postgres pg_trgm + unaccent, see migration 20261102012000). */
+export async function searchCatalog(q: string): Promise<SearchHit[]> {
+  const db = createPublicClient();
+  const { data, error } = await db.rpc("search_catalog", { q, max_results: 30 });
+  if (error) throw new Error(`search_catalog: ${error.message}`);
+  return (data ?? []).map((r) => ({
+    kind: r.kind === "paire" ? "paire" : "aliment",
+    ref: r.ref,
+    name: displayName(r.name_fr),
+    isAnimal: r.is_animal,
+    hasAlternatives: r.has_alternatives,
+  }));
+}
+
+export interface IngredientHit {
+  code: string;
+  name: string;
+  isAnimal: boolean;
+}
+
+/** /recette autocompletion: pure foods only (rule 9), see search_ingredients. */
+export async function searchIngredients(q: string): Promise<IngredientHit[]> {
+  const db = createPublicClient();
+  const { data, error } = await db.rpc("search_ingredients", { q, max_results: 15 });
+  if (error) throw new Error(`search_ingredients: ${error.message}`);
+  return (data ?? []).map((r) => ({ code: r.code, name: displayName(r.name_fr), isAnimal: r.is_animal }));
+}
+
+const MAX_RECIPE_CODES = 40;
+
+/** Everything the browser needs to compute a recipe and its plant version with lib/scoring. */
+export async function getRecipeData(requested: string[]): Promise<(RecipeData & { substitutions: SubstitutionRule[]; recipeFoods: RecipeFood[] }) | null> {
+  const db = createPublicClient();
+  const subs = rows(await db.from("ingredient_substitutions").select("priority, match_type, match_value, to_code, ratio, justification"), "ingredient_substitutions");
+  const codes = [...new Set([...requested.slice(0, MAX_RECIPE_CODES), ...subs.map((s) => s.to_code)])];
+  const foods = rows(await db.from("foods").select("code, name_fr, is_animal, animal_category, ciqual_code, iarc_meat, food_subgroup").in("code", codes), "foods");
+  if (foods.length === 0) return null;
+  const nutrientCodes = [...new Set(foods.map((f) => f.ciqual_code ?? f.code))];
+  const nutrientIds = NUTRIENTS.map((n) => n.id);
+  const [nutrientValues, impacts, categoryFactors, nutrients, indicators, sources, factors, rules, foodPrices] = await Promise.all([
+    db.from("food_nutrients").select("food_code, nutrient_id, value_per_100g, source_id").in("food_code", nutrientCodes).in("nutrient_id", nutrientIds).eq("source_id", CIQUAL_SOURCE),
+    db.from("food_impacts").select("food_code, indicator_id, value_per_kg, low_per_kg, high_per_kg, dqr, source_id").in("food_code", codes).in("indicator_id", CLIMATE_INDICATORS),
+    db.from("category_factors").select("category, indicator_id, value, low, high, source_id, unit_basis, notes, per, food_codes"),
+    db.from("nutrients").select("id, name_fr, unit").in("id", nutrientIds),
+    db.from("indicators").select("id, name_fr, unit, higher_is_better, pillar"),
+    db.from("sources").select("id, name, publisher, version, license, commercial_use, url"),
+    db.from("monetization_factors").select("indicator_id, year, eur_per_unit, method, source_id").eq("indicator_id", CLIMATE_MAIN),
+    db.from("monetization_rules").select("indicator_id, method, growth_rate, start_year, cap_year, source_id").eq("indicator_id", CLIMATE_MAIN),
+    db.from("food_prices_best").select("food_code, source_id, median_eur_per_kg, observations, first_observed_on, last_observed_on, place, derived_from, yield_pct").in("food_code", codes),
+  ]);
+  return {
+    foods,
+    recipeFoods: foods.map((f) => ({ code: f.code, name_fr: displayName(f.name_fr), is_animal: f.is_animal, animal_category: f.animal_category, food_subgroup: f.food_subgroup, iarc_meat: f.iarc_meat })),
+    substitutions: subs.map((s) => ({ ...s, ratio: Number(s.ratio), match_type: s.match_type as SubstitutionRule["match_type"] })),
+    nutrientValues: rows(nutrientValues, "food_nutrients"),
+    impacts: rows(impacts, "food_impacts"),
+    categoryFactors: rows(categoryFactors, "category_factors"),
+    nutrients: rows(nutrients, "nutrients"),
+    indicators: rows(indicators, "indicators"),
+    sources: rows(sources, "sources"),
+    monetizationFactors: rows(factors, "monetization_factors").map((f) => ({
+      indicatorId: f.indicator_id, year: f.year, eurPerUnit: Number(f.eur_per_unit), method: f.method, sourceId: f.source_id,
+    })),
+    monetizationRules: rows(rules, "monetization_rules").map((r) => ({
+      indicatorId: r.indicator_id, method: r.method, growthRate: Number(r.growth_rate), startYear: r.start_year, capYear: r.cap_year, sourceId: r.source_id,
+    })),
+    foodPrices: rows(foodPrices, "food_prices_best").flatMap((p) =>
+      p.food_code && p.source_id && p.median_eur_per_kg != null
+        ? [{ food_code: p.food_code, source_id: p.source_id, median_eur_per_kg: Number(p.median_eur_per_kg), observations: Number(p.observations), first_observed_on: p.first_observed_on, last_observed_on: p.last_observed_on, place: p.place, derived_from: p.derived_from, yield_pct: p.yield_pct }]
+        : [],
+    ),
+    conseils: conseilsFile.conseils as Conseil[],
+    climateCostYears: CLIMATE_COST_YEARS,
+    iarc: santeFile.iarc as IarcEntry[],
+    pnns: santeFile.pnns as PnnsEntry[],
+    eatLancet: santeFile.eatLancet as PnnsEntry[],
+  };
 }

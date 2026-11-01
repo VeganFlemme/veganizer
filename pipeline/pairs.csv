@@ -220,3 +220,631 @@ croque-monsieur,croque-tranches-vegetales-commerce,vegetal,commerce,17270,30,hui
 croque-monsieur,croque-tranches-vegetales-commerce,vegetal,commerce,20031,320,salade verte en accompagnement
 croque-monsieur,croque-tranches-vegetales-commerce,vegetal,commerce,17130,20,huile de colza de la vinaigrette
 croque-monsieur,croque-tranches-vegetales-commerce,vegetal,commerce,11018,10,vinaigre de la vinaigrette
+pizza-jambon-fromage,pizza-jambon-fromage,animal,,96778,400,pâte à pizza cuite
+pizza-jambon-fromage,pizza-jambon-fromage,animal,,20260,200,coulis de tomate
+pizza-jambon-fromage,pizza-jambon-fromage,animal,,28910,150,jambon cuit
+pizza-jambon-fromage,pizza-jambon-fromage,animal,,19590,200,mozzarella
+pizza-jambon-fromage,pizza-jambon-fromage,animal,,17270,15,huile d'olive
+pizza-jambon-fromage,pizza-jambon-fromage,animal,,20031,300,salade verte en accompagnement
+pizza-jambon-fromage,pizza-jambon-fromage,animal,,17130,30,huile de colza de la vinaigrette
+pizza-jambon-fromage,pizza-jambon-fromage,animal,,11018,10,vinaigre de la vinaigrette
+pizza-jambon-fromage,pizza-jambon-fromage,animal,,11013,5,moutarde de la vinaigrette
+pizza-jambon-fromage,pizza-tofu-fume-maison,vegetal,maison,96778,400,pâte à pizza cuite
+pizza-jambon-fromage,pizza-tofu-fume-maison,vegetal,maison,20260,200,coulis de tomate
+pizza-jambon-fromage,pizza-tofu-fume-maison,vegetal,maison,20912,200,tofu fumé en dés
+pizza-jambon-fromage,pizza-tofu-fume-maison,vegetal,maison,20507,150,pois chiches cuits
+pizza-jambon-fromage,pizza-tofu-fume-maison,vegetal,maison,17270,25,huile d'olive
+pizza-jambon-fromage,pizza-tofu-fume-maison,vegetal,maison,20031,300,salade verte en accompagnement
+pizza-jambon-fromage,pizza-tofu-fume-maison,vegetal,maison,17130,30,huile de colza de la vinaigrette
+pizza-jambon-fromage,pizza-tofu-fume-maison,vegetal,maison,11018,10,vinaigre de la vinaigrette
+pizza-jambon-fromage,pizza-tofu-fume-maison,vegetal,maison,11013,5,moutarde de la vinaigrette
+pizza-jambon-fromage,pizza-tranches-vegetales-commerce,vegetal,commerce,96778,400,pâte à pizza cuite
+pizza-jambon-fromage,pizza-tranches-vegetales-commerce,vegetal,commerce,20260,200,coulis de tomate
+pizza-jambon-fromage,pizza-tranches-vegetales-commerce,vegetal,commerce,1030,150,fines tranches végétales
+pizza-jambon-fromage,pizza-tranches-vegetales-commerce,vegetal,commerce,1029_2,120,spécialité végétale type fromage râpé
+pizza-jambon-fromage,pizza-tranches-vegetales-commerce,vegetal,commerce,17270,15,huile d'olive
+pizza-jambon-fromage,pizza-tranches-vegetales-commerce,vegetal,commerce,20031,300,salade verte en accompagnement
+pizza-jambon-fromage,pizza-tranches-vegetales-commerce,vegetal,commerce,17130,30,huile de colza de la vinaigrette
+pizza-jambon-fromage,pizza-tranches-vegetales-commerce,vegetal,commerce,11018,10,vinaigre de la vinaigrette
+pizza-jambon-fromage,pizza-tranches-vegetales-commerce,vegetal,commerce,11013,5,moutarde de la vinaigrette
+gratin-dauphinois,gratin-dauphinois,animal,,4003,800,pommes de terre cuites en gratin
+gratin-dauphinois,gratin-dauphinois,animal,,19410,200,crème fraîche 30 %
+gratin-dauphinois,gratin-dauphinois,animal,,19041,300,lait demi-écrémé
+gratin-dauphinois,gratin-dauphinois,animal,,12118,60,emmental râpé
+gratin-dauphinois,gratin-dauphinois,animal,,11000,5,ail
+gratin-dauphinois,gratin-dauphinois,animal,,20031,300,salade verte en accompagnement
+gratin-dauphinois,gratin-dauphinois,animal,,17130,30,huile de colza de la vinaigrette
+gratin-dauphinois,gratin-dauphinois,animal,,11018,10,vinaigre de la vinaigrette
+gratin-dauphinois,gratin-dauphinois,animal,,11013,5,moutarde de la vinaigrette
+gratin-dauphinois,gratin-dauphinois-vegetal-maison,vegetal,maison,4003,800,pommes de terre cuites en gratin
+gratin-dauphinois,gratin-dauphinois-vegetal-maison,vegetal,maison,11214,200,crème de soja
+gratin-dauphinois,gratin-dauphinois-vegetal-maison,vegetal,maison,18901,300,boisson au soja enrichie en calcium
+gratin-dauphinois,gratin-dauphinois-vegetal-maison,vegetal,maison,11000,5,ail
+gratin-dauphinois,gratin-dauphinois-vegetal-maison,vegetal,maison,20507,150,pois chiches cuits dans la salade
+gratin-dauphinois,gratin-dauphinois-vegetal-maison,vegetal,maison,20031,300,salade verte en accompagnement
+gratin-dauphinois,gratin-dauphinois-vegetal-maison,vegetal,maison,17130,30,huile de colza de la vinaigrette
+gratin-dauphinois,gratin-dauphinois-vegetal-maison,vegetal,maison,11018,10,vinaigre de la vinaigrette
+gratin-dauphinois,gratin-dauphinois-vegetal-maison,vegetal,maison,11013,5,moutarde de la vinaigrette
+gratin-dauphinois,gratin-dauphinois-vegetal-commerce,vegetal,commerce,4003,800,pommes de terre cuites en gratin
+gratin-dauphinois,gratin-dauphinois-vegetal-commerce,vegetal,commerce,11214,200,crème de soja
+gratin-dauphinois,gratin-dauphinois-vegetal-commerce,vegetal,commerce,18901,300,boisson au soja enrichie en calcium
+gratin-dauphinois,gratin-dauphinois-vegetal-commerce,vegetal,commerce,1027,100,spécialité végétale à tartiner au soja
+gratin-dauphinois,gratin-dauphinois-vegetal-commerce,vegetal,commerce,11000,5,ail
+gratin-dauphinois,gratin-dauphinois-vegetal-commerce,vegetal,commerce,20031,300,salade verte en accompagnement
+gratin-dauphinois,gratin-dauphinois-vegetal-commerce,vegetal,commerce,17130,30,huile de colza de la vinaigrette
+gratin-dauphinois,gratin-dauphinois-vegetal-commerce,vegetal,commerce,11018,10,vinaigre de la vinaigrette
+gratin-dauphinois,gratin-dauphinois-vegetal-commerce,vegetal,commerce,11013,5,moutarde de la vinaigrette
+nuggets-frites,nuggets-frites,animal,,36018,400,filet de poulet cuit
+nuggets-frites,nuggets-frites,animal,,9435,40,farine (panure)
+nuggets-frites,nuggets-frites,animal,,22000,60,œuf (panure)
+nuggets-frites,nuggets-frites,animal,,7004,60,pain grillé mixé (chapelure)
+nuggets-frites,nuggets-frites,animal,,17440,40,huile de tournesol
+nuggets-frites,nuggets-frites,animal,,4030,600,frites au four
+nuggets-frites,nuggets-frites,animal,,11008,60,ketchup
+nuggets-frites,nuggets-tofu-frites-maison,vegetal,maison,20904,600,tofu ferme pané
+nuggets-frites,nuggets-tofu-frites-maison,vegetal,maison,9435,40,farine (panure)
+nuggets-frites,nuggets-tofu-frites-maison,vegetal,maison,18901,60,boisson au soja enrichie en calcium (panure)
+nuggets-frites,nuggets-tofu-frites-maison,vegetal,maison,7004,60,pain grillé mixé (chapelure)
+nuggets-frites,nuggets-tofu-frites-maison,vegetal,maison,17440,40,huile de tournesol
+nuggets-frites,nuggets-tofu-frites-maison,vegetal,maison,4030,600,frites au four
+nuggets-frites,nuggets-tofu-frites-maison,vegetal,maison,11008,60,ketchup
+nuggets-frites,nuggets-soja-ble-frites-commerce,vegetal,commerce,25227_1,600,nuggets soja et blé préemballés
+nuggets-frites,nuggets-soja-ble-frites-commerce,vegetal,commerce,4030,600,frites au four
+nuggets-frites,nuggets-soja-ble-frites-commerce,vegetal,commerce,11008,60,ketchup
+sandwich-jambon-beurre,sandwich-jambon-beurre,animal,,7001,480,baguette
+sandwich-jambon-beurre,sandwich-jambon-beurre,animal,,28910,200,jambon cuit
+sandwich-jambon-beurre,sandwich-jambon-beurre,animal,,16400,60,beurre
+sandwich-jambon-beurre,sandwich-jambon-beurre,animal,,20009,400,carottes râpées
+sandwich-jambon-beurre,sandwich-jambon-beurre,animal,,17130,20,huile de colza
+sandwich-jambon-beurre,sandwich-jambon-beurre,animal,,13009,20,citron
+sandwich-jambon-beurre,sandwich-jambon-beurre,animal,,13039,600,pomme
+sandwich-jambon-beurre,sandwich-tofu-fume-maison,vegetal,maison,7001,480,baguette
+sandwich-jambon-beurre,sandwich-tofu-fume-maison,vegetal,maison,20912,220,tofu fumé en tranches
+sandwich-jambon-beurre,sandwich-tofu-fume-maison,vegetal,maison,17270,30,huile d'olive
+sandwich-jambon-beurre,sandwich-tofu-fume-maison,vegetal,maison,20009,400,carottes râpées
+sandwich-jambon-beurre,sandwich-tofu-fume-maison,vegetal,maison,17130,20,huile de colza
+sandwich-jambon-beurre,sandwich-tofu-fume-maison,vegetal,maison,13009,20,citron
+sandwich-jambon-beurre,sandwich-tofu-fume-maison,vegetal,maison,13039,600,pomme
+sandwich-jambon-beurre,sandwich-tranches-vegetales-commerce,vegetal,commerce,7001,480,baguette
+sandwich-jambon-beurre,sandwich-tranches-vegetales-commerce,vegetal,commerce,1030,200,fines tranches végétales
+sandwich-jambon-beurre,sandwich-tranches-vegetales-commerce,vegetal,commerce,1027,80,spécialité végétale à tartiner au soja
+sandwich-jambon-beurre,sandwich-tranches-vegetales-commerce,vegetal,commerce,20009,400,carottes râpées
+sandwich-jambon-beurre,sandwich-tranches-vegetales-commerce,vegetal,commerce,17130,20,huile de colza
+sandwich-jambon-beurre,sandwich-tranches-vegetales-commerce,vegetal,commerce,13009,20,citron
+sandwich-jambon-beurre,sandwich-tranches-vegetales-commerce,vegetal,commerce,13039,600,pomme
+boulettes-tomate-spaghetti,boulettes-tomate-spaghetti,animal,,6255,400,bœuf haché 15 % cuit en boulettes
+boulettes-tomate-spaghetti,boulettes-tomate-spaghetti,animal,,22000,50,œuf (liant)
+boulettes-tomate-spaghetti,boulettes-tomate-spaghetti,animal,,7004,40,pain grillé mixé
+boulettes-tomate-spaghetti,boulettes-tomate-spaghetti,animal,,20260,400,coulis de tomate
+boulettes-tomate-spaghetti,boulettes-tomate-spaghetti,animal,,20035,100,oignons cuits
+boulettes-tomate-spaghetti,boulettes-tomate-spaghetti,animal,,17270,20,huile d'olive
+boulettes-tomate-spaghetti,boulettes-tomate-spaghetti,animal,,9811,600,spaghetti cuits
+boulettes-tomate-spaghetti,boulettes-tomate-spaghetti,animal,,12120,40,parmesan
+boulettes-tomate-spaghetti,boulettes-lentilles-tofu-maison,vegetal,maison,20587,300,lentilles vertes cuites
+boulettes-tomate-spaghetti,boulettes-lentilles-tofu-maison,vegetal,maison,20904,200,tofu ferme émietté
+boulettes-tomate-spaghetti,boulettes-lentilles-tofu-maison,vegetal,maison,9580,40,farine de pois chiche (liant)
+boulettes-tomate-spaghetti,boulettes-lentilles-tofu-maison,vegetal,maison,7004,40,pain grillé mixé
+boulettes-tomate-spaghetti,boulettes-lentilles-tofu-maison,vegetal,maison,20260,400,coulis de tomate
+boulettes-tomate-spaghetti,boulettes-lentilles-tofu-maison,vegetal,maison,20035,100,oignons cuits
+boulettes-tomate-spaghetti,boulettes-lentilles-tofu-maison,vegetal,maison,17270,20,huile d'olive
+boulettes-tomate-spaghetti,boulettes-lentilles-tofu-maison,vegetal,maison,9811,600,spaghetti cuits
+boulettes-tomate-spaghetti,boulettes-vegetales-spaghetti-commerce,vegetal,commerce,25589_1,450,boulettes végétales au soja et blé
+boulettes-tomate-spaghetti,boulettes-vegetales-spaghetti-commerce,vegetal,commerce,20260,400,coulis de tomate
+boulettes-tomate-spaghetti,boulettes-vegetales-spaghetti-commerce,vegetal,commerce,20035,100,oignons cuits
+boulettes-tomate-spaghetti,boulettes-vegetales-spaghetti-commerce,vegetal,commerce,17270,20,huile d'olive
+boulettes-tomate-spaghetti,boulettes-vegetales-spaghetti-commerce,vegetal,commerce,9811,600,spaghetti cuits
+boulettes-tomate-spaghetti,boulettes-vegetales-spaghetti-commerce,vegetal,commerce,1029_2,40,spécialité végétale type fromage râpé
+tortilla-espagnole,tortilla-espagnole,animal,,22000,500,10 œufs
+tortilla-espagnole,tortilla-espagnole,animal,,4003,500,pommes de terre cuites
+tortilla-espagnole,tortilla-espagnole,animal,,17270,60,huile d'olive
+tortilla-espagnole,tortilla-espagnole,animal,,20035,150,oignons cuits
+tortilla-espagnole,tortilla-espagnole,animal,,20031,300,salade verte en accompagnement
+tortilla-espagnole,tortilla-espagnole,animal,,17130,30,huile de colza de la vinaigrette
+tortilla-espagnole,tortilla-espagnole,animal,,11018,10,vinaigre de la vinaigrette
+tortilla-espagnole,tortilla-espagnole,animal,,11013,5,moutarde de la vinaigrette
+tortilla-espagnole,tortilla-pois-chiche-maison,vegetal,maison,9580,220,farine de pois chiche
+tortilla-espagnole,tortilla-pois-chiche-maison,vegetal,maison,18066,330,eau de la pâte
+tortilla-espagnole,tortilla-pois-chiche-maison,vegetal,maison,4003,500,pommes de terre cuites
+tortilla-espagnole,tortilla-pois-chiche-maison,vegetal,maison,17270,60,huile d'olive
+tortilla-espagnole,tortilla-pois-chiche-maison,vegetal,maison,20035,150,oignons cuits
+tortilla-espagnole,tortilla-pois-chiche-maison,vegetal,maison,20031,300,salade verte en accompagnement
+tortilla-espagnole,tortilla-pois-chiche-maison,vegetal,maison,17130,30,huile de colza de la vinaigrette
+tortilla-espagnole,tortilla-pois-chiche-maison,vegetal,maison,11018,10,vinaigre de la vinaigrette
+tortilla-espagnole,tortilla-pois-chiche-maison,vegetal,maison,11013,5,moutarde de la vinaigrette
+tortilla-espagnole,tortilla-tofu-commerce,vegetal,commerce,20904,400,tofu ferme mixé
+tortilla-espagnole,tortilla-tofu-commerce,vegetal,commerce,9580,50,farine de pois chiche
+tortilla-espagnole,tortilla-tofu-commerce,vegetal,commerce,4003,500,pommes de terre cuites
+tortilla-espagnole,tortilla-tofu-commerce,vegetal,commerce,17270,60,huile d'olive
+tortilla-espagnole,tortilla-tofu-commerce,vegetal,commerce,20035,150,oignons cuits
+tortilla-espagnole,tortilla-tofu-commerce,vegetal,commerce,20031,300,salade verte en accompagnement
+tortilla-espagnole,tortilla-tofu-commerce,vegetal,commerce,17130,30,huile de colza de la vinaigrette
+tortilla-espagnole,tortilla-tofu-commerce,vegetal,commerce,11018,10,vinaigre de la vinaigrette
+tortilla-espagnole,tortilla-tofu-commerce,vegetal,commerce,11013,5,moutarde de la vinaigrette
+tartiflette,tartiflette,animal,,4003,800,pommes de terre cuites
+tartiflette,tartiflette,animal,,12045,250,reblochon
+tartiflette,tartiflette,animal,,28725,150,lardons fumés cuits
+tartiflette,tartiflette,animal,,20035,150,oignons cuits
+tartiflette,tartiflette,animal,,19410,100,crème fraîche 30 %
+tartiflette,tartiflette,animal,,5215,50,vin blanc
+tartiflette,tartiflette,animal,,20031,300,salade verte en accompagnement
+tartiflette,tartiflette,animal,,17130,30,huile de colza de la vinaigrette
+tartiflette,tartiflette,animal,,11018,10,vinaigre de la vinaigrette
+tartiflette,tartiflette,animal,,11013,5,moutarde de la vinaigrette
+tartiflette,tartiflette-tofu-fume-maison,vegetal,maison,4003,800,pommes de terre cuites
+tartiflette,tartiflette-tofu-fume-maison,vegetal,maison,20912,220,tofu fumé en dés
+tartiflette,tartiflette-tofu-fume-maison,vegetal,maison,20502,150,haricots blancs cuits
+tartiflette,tartiflette-tofu-fume-maison,vegetal,maison,20035,150,oignons cuits
+tartiflette,tartiflette-tofu-fume-maison,vegetal,maison,11214,150,crème de soja
+tartiflette,tartiflette-tofu-fume-maison,vegetal,maison,5215,50,vin blanc
+tartiflette,tartiflette-tofu-fume-maison,vegetal,maison,20031,300,salade verte en accompagnement
+tartiflette,tartiflette-tofu-fume-maison,vegetal,maison,17130,30,huile de colza de la vinaigrette
+tartiflette,tartiflette-tofu-fume-maison,vegetal,maison,11018,10,vinaigre de la vinaigrette
+tartiflette,tartiflette-tofu-fume-maison,vegetal,maison,11013,5,moutarde de la vinaigrette
+tartiflette,tartiflette-vegetale-commerce,vegetal,commerce,4003,800,pommes de terre cuites
+tartiflette,tartiflette-vegetale-commerce,vegetal,commerce,1029_1,200,spécialité végétale type fromage en tranche
+tartiflette,tartiflette-vegetale-commerce,vegetal,commerce,20912,300,tofu fumé en dés
+tartiflette,tartiflette-vegetale-commerce,vegetal,commerce,20035,150,oignons cuits
+tartiflette,tartiflette-vegetale-commerce,vegetal,commerce,11214,100,crème de soja
+tartiflette,tartiflette-vegetale-commerce,vegetal,commerce,5215,50,vin blanc
+tartiflette,tartiflette-vegetale-commerce,vegetal,commerce,20031,300,salade verte en accompagnement
+tartiflette,tartiflette-vegetale-commerce,vegetal,commerce,17130,30,huile de colza de la vinaigrette
+tartiflette,tartiflette-vegetale-commerce,vegetal,commerce,11018,10,vinaigre de la vinaigrette
+tartiflette,tartiflette-vegetale-commerce,vegetal,commerce,11013,5,moutarde de la vinaigrette
+paella,paella,animal,,9104,700,riz cuit
+paella,paella,animal,,36006,300,cuisse de poulet cuite
+paella,paella,animal,,30315,80,chorizo
+paella,paella,animal,,10007,200,crevettes cuites
+paella,paella,animal,,20088,150,poivron cuit
+paella,paella,animal,,20037,150,petits pois cuits
+paella,paella,animal,,17270,30,huile d'olive
+paella,paella,animal,,20035,80,oignons cuits
+paella,paella-vegetale-maison,vegetal,maison,9104,700,riz cuit
+paella,paella-vegetale-maison,vegetal,maison,20507,300,pois chiches cuits
+paella,paella-vegetale-maison,vegetal,maison,20912,300,tofu fumé en dés
+paella,paella-vegetale-maison,vegetal,maison,20088,150,poivron cuit
+paella,paella-vegetale-maison,vegetal,maison,20037,150,petits pois cuits
+paella,paella-vegetale-maison,vegetal,maison,17270,30,huile d'olive
+paella,paella-vegetale-maison,vegetal,maison,20035,80,oignons cuits
+paella,paella-vegetale-maison,vegetal,maison,11049,5,paprika
+paella,paella-vegetale-maison,vegetal,maison,20917,150,tempeh en dés
+paella,paella-seitan-commerce,vegetal,commerce,9104,700,riz cuit
+paella,paella-seitan-commerce,vegetal,commerce,25598,300,seitan en morceaux
+paella,paella-seitan-commerce,vegetal,commerce,25232_1,120,saucisse végétale au blé
+paella,paella-seitan-commerce,vegetal,commerce,20088,150,poivron cuit
+paella,paella-seitan-commerce,vegetal,commerce,20037,150,petits pois cuits
+paella,paella-seitan-commerce,vegetal,commerce,17270,30,huile d'olive
+paella,paella-seitan-commerce,vegetal,commerce,20035,80,oignons cuits
+chili-con-carne,chili-con-carne,animal,,6255,400,bœuf haché 15 % cuit
+chili-con-carne,chili-con-carne,animal,,20503,400,haricots rouges cuits
+chili-con-carne,chili-con-carne,animal,,20169,400,tomates en morceaux
+chili-con-carne,chili-con-carne,animal,,20035,100,oignons cuits
+chili-con-carne,chili-con-carne,animal,,20088,150,poivron cuit
+chili-con-carne,chili-con-carne,animal,,17270,20,huile d'olive
+chili-con-carne,chili-con-carne,animal,,9104,450,riz cuit
+chili-con-carne,chili-con-carne,animal,,11042,5,cumin
+chili-con-carne,chili-sin-carne-maison,vegetal,maison,20503,500,haricots rouges cuits
+chili-con-carne,chili-sin-carne-maison,vegetal,maison,20587,200,lentilles vertes cuites
+chili-con-carne,chili-sin-carne-maison,vegetal,maison,20169,400,tomates en morceaux
+chili-con-carne,chili-sin-carne-maison,vegetal,maison,20035,100,oignons cuits
+chili-con-carne,chili-sin-carne-maison,vegetal,maison,20088,150,poivron cuit
+chili-con-carne,chili-sin-carne-maison,vegetal,maison,17270,20,huile d'olive
+chili-con-carne,chili-sin-carne-maison,vegetal,maison,9104,450,riz cuit
+chili-con-carne,chili-sin-carne-maison,vegetal,maison,11042,5,cumin
+chili-con-carne,chili-sin-carne-maison,vegetal,maison,20904,150,tofu ferme émietté
+chili-con-carne,chili-proteines-soja-commerce,vegetal,commerce,20591_2,400,protéines de soja texturées réhydratées
+chili-con-carne,chili-proteines-soja-commerce,vegetal,commerce,20503,400,haricots rouges cuits
+chili-con-carne,chili-proteines-soja-commerce,vegetal,commerce,20169,400,tomates en morceaux
+chili-con-carne,chili-proteines-soja-commerce,vegetal,commerce,20035,100,oignons cuits
+chili-con-carne,chili-proteines-soja-commerce,vegetal,commerce,20088,150,poivron cuit
+chili-con-carne,chili-proteines-soja-commerce,vegetal,commerce,17270,20,huile d'olive
+chili-con-carne,chili-proteines-soja-commerce,vegetal,commerce,9104,450,riz cuit
+chili-con-carne,chili-proteines-soja-commerce,vegetal,commerce,11042,5,cumin
+endives-au-jambon,endives-au-jambon,animal,,20026,700,endives (code cru : cuites dans le plat)
+endives-au-jambon,endives-au-jambon,animal,,28910,200,jambon cuit
+endives-au-jambon,endives-au-jambon,animal,,19041,400,lait demi-écrémé (béchamel)
+endives-au-jambon,endives-au-jambon,animal,,16400,40,beurre (béchamel)
+endives-au-jambon,endives-au-jambon,animal,,9435,40,farine (béchamel)
+endives-au-jambon,endives-au-jambon,animal,,12118,80,emmental râpé
+endives-au-jambon,endives-au-jambon,animal,,4003,400,pommes de terre cuites
+endives-au-jambon,endives-tofu-fume-maison,vegetal,maison,20026,700,endives (code cru : cuites dans le plat)
+endives-au-jambon,endives-tofu-fume-maison,vegetal,maison,20912,250,tofu fumé en tranches
+endives-au-jambon,endives-tofu-fume-maison,vegetal,maison,18901,400,boisson au soja enrichie en calcium (béchamel)
+endives-au-jambon,endives-tofu-fume-maison,vegetal,maison,17130,30,huile de colza (béchamel)
+endives-au-jambon,endives-tofu-fume-maison,vegetal,maison,9435,40,farine (béchamel)
+endives-au-jambon,endives-tofu-fume-maison,vegetal,maison,4003,400,pommes de terre cuites
+endives-au-jambon,endives-tranches-vegetales-commerce,vegetal,commerce,20026,700,endives (code cru : cuites dans le plat)
+endives-au-jambon,endives-tranches-vegetales-commerce,vegetal,commerce,1030,200,fines tranches végétales
+endives-au-jambon,endives-tranches-vegetales-commerce,vegetal,commerce,18901,400,boisson au soja enrichie en calcium (béchamel)
+endives-au-jambon,endives-tranches-vegetales-commerce,vegetal,commerce,17130,30,huile de colza (béchamel)
+endives-au-jambon,endives-tranches-vegetales-commerce,vegetal,commerce,9435,40,farine (béchamel)
+endives-au-jambon,endives-tranches-vegetales-commerce,vegetal,commerce,1029_2,80,spécialité végétale type fromage râpé
+endives-au-jambon,endives-tranches-vegetales-commerce,vegetal,commerce,4003,400,pommes de terre cuites
+tomates-farcies,tomates-farcies,animal,,20289,800,tomates cuites au four
+tomates-farcies,tomates-farcies,animal,,30050,400,chair à saucisse (code cru : cuite au four dans la tomate)
+tomates-farcies,tomates-farcies,animal,,7004,40,pain grillé mixé
+tomates-farcies,tomates-farcies,animal,,20035,80,oignons cuits
+tomates-farcies,tomates-farcies,animal,,11014,10,persil
+tomates-farcies,tomates-farcies,animal,,17270,15,huile d'olive
+tomates-farcies,tomates-farcies,animal,,9104,400,riz cuit
+tomates-farcies,tomates-farcies-lentilles-maison,vegetal,maison,20289,800,tomates cuites au four
+tomates-farcies,tomates-farcies-lentilles-maison,vegetal,maison,20587,250,lentilles vertes cuites
+tomates-farcies,tomates-farcies-lentilles-maison,vegetal,maison,20904,150,tofu ferme émietté
+tomates-farcies,tomates-farcies-lentilles-maison,vegetal,maison,7004,40,pain grillé mixé
+tomates-farcies,tomates-farcies-lentilles-maison,vegetal,maison,20035,80,oignons cuits
+tomates-farcies,tomates-farcies-lentilles-maison,vegetal,maison,11014,10,persil
+tomates-farcies,tomates-farcies-lentilles-maison,vegetal,maison,17270,20,huile d'olive
+tomates-farcies,tomates-farcies-lentilles-maison,vegetal,maison,9104,400,riz cuit
+tomates-farcies,tomates-farcies-soja-commerce,vegetal,commerce,20289,800,tomates cuites au four
+tomates-farcies,tomates-farcies-soja-commerce,vegetal,commerce,20591_2,350,protéines de soja texturées réhydratées
+tomates-farcies,tomates-farcies-soja-commerce,vegetal,commerce,7004,40,pain grillé mixé
+tomates-farcies,tomates-farcies-soja-commerce,vegetal,commerce,20035,80,oignons cuits
+tomates-farcies,tomates-farcies-soja-commerce,vegetal,commerce,11014,10,persil
+tomates-farcies,tomates-farcies-soja-commerce,vegetal,commerce,17270,20,huile d'olive
+tomates-farcies,tomates-farcies-soja-commerce,vegetal,commerce,9104,400,riz cuit
+steak-frites,steak-frites,animal,,6200,600,steak de bœuf grillé
+steak-frites,steak-frites,animal,,4030,600,frites au four
+steak-frites,steak-frites,animal,,20031,300,salade verte en accompagnement
+steak-frites,steak-frites,animal,,17130,30,huile de colza de la vinaigrette
+steak-frites,steak-frites,animal,,11018,10,vinaigre de la vinaigrette
+steak-frites,steak-frites,animal,,11013,5,moutarde de la vinaigrette
+steak-frites,steak-tempeh-frites-maison,vegetal,maison,20917,400,tempeh grillé
+steak-frites,steak-tempeh-frites-maison,vegetal,maison,20912,300,tofu fumé grillé
+steak-frites,steak-tempeh-frites-maison,vegetal,maison,17270,20,huile d'olive
+steak-frites,steak-tempeh-frites-maison,vegetal,maison,4030,600,frites au four
+steak-frites,steak-tempeh-frites-maison,vegetal,maison,20031,300,salade verte en accompagnement
+steak-frites,steak-tempeh-frites-maison,vegetal,maison,17130,30,huile de colza de la vinaigrette
+steak-frites,steak-tempeh-frites-maison,vegetal,maison,11018,10,vinaigre de la vinaigrette
+steak-frites,steak-tempeh-frites-maison,vegetal,maison,11013,5,moutarde de la vinaigrette
+steak-frites,steak-vegetal-frites-commerce,vegetal,commerce,25593,700,galettes au blé et soja
+steak-frites,steak-vegetal-frites-commerce,vegetal,commerce,4030,600,frites au four
+steak-frites,steak-vegetal-frites-commerce,vegetal,commerce,20031,300,salade verte en accompagnement
+steak-frites,steak-vegetal-frites-commerce,vegetal,commerce,17130,30,huile de colza de la vinaigrette
+steak-frites,steak-vegetal-frites-commerce,vegetal,commerce,11018,10,vinaigre de la vinaigrette
+steak-frites,steak-vegetal-frites-commerce,vegetal,commerce,11013,5,moutarde de la vinaigrette
+escalope-poulet-creme-riz,escalope-poulet-creme-riz,animal,,36018,500,filet de poulet cuit
+escalope-poulet-creme-riz,escalope-poulet-creme-riz,animal,,19410,150,crème fraîche 30 %
+escalope-poulet-creme-riz,escalope-poulet-creme-riz,animal,,9104,600,riz cuit
+escalope-poulet-creme-riz,escalope-poulet-creme-riz,animal,,17270,15,huile d'olive
+escalope-poulet-creme-riz,escalope-poulet-creme-riz,animal,,20030,400,haricots verts cuits
+escalope-poulet-creme-riz,tempeh-tofu-creme-riz-maison,vegetal,maison,20917,400,tempeh poêlé
+escalope-poulet-creme-riz,tempeh-tofu-creme-riz-maison,vegetal,maison,20904,300,tofu ferme poêlé
+escalope-poulet-creme-riz,tempeh-tofu-creme-riz-maison,vegetal,maison,11214,150,crème de soja
+escalope-poulet-creme-riz,tempeh-tofu-creme-riz-maison,vegetal,maison,9104,600,riz cuit
+escalope-poulet-creme-riz,tempeh-tofu-creme-riz-maison,vegetal,maison,17270,15,huile d'olive
+escalope-poulet-creme-riz,tempeh-tofu-creme-riz-maison,vegetal,maison,20030,400,haricots verts cuits
+escalope-poulet-creme-riz,seitan-creme-riz-commerce,vegetal,commerce,25598,650,seitan poêlé
+escalope-poulet-creme-riz,seitan-creme-riz-commerce,vegetal,commerce,11214,150,crème de soja
+escalope-poulet-creme-riz,seitan-creme-riz-commerce,vegetal,commerce,9104,600,riz cuit
+escalope-poulet-creme-riz,seitan-creme-riz-commerce,vegetal,commerce,17270,15,huile d'olive
+escalope-poulet-creme-riz,seitan-creme-riz-commerce,vegetal,commerce,20030,400,haricots verts cuits
+saucisse-lentilles,saucisse-lentilles,animal,,30011,400,saucisses de Toulouse cuites
+saucisse-lentilles,saucisse-lentilles,animal,,20587,600,lentilles vertes cuites
+saucisse-lentilles,saucisse-lentilles,animal,,20009,200,carottes (code cru : pas de code cuit avec nutriments et impacts)
+saucisse-lentilles,saucisse-lentilles,animal,,20035,100,oignons cuits
+saucisse-lentilles,saucisse-lentilles,animal,,17270,10,huile d'olive
+saucisse-lentilles,tofu-fume-lentilles-maison,vegetal,maison,20912,400,tofu fumé en tranches épaisses
+saucisse-lentilles,tofu-fume-lentilles-maison,vegetal,maison,20587,600,lentilles vertes cuites
+saucisse-lentilles,tofu-fume-lentilles-maison,vegetal,maison,20009,200,carottes (code cru : pas de code cuit avec nutriments et impacts)
+saucisse-lentilles,tofu-fume-lentilles-maison,vegetal,maison,20035,100,oignons cuits
+saucisse-lentilles,tofu-fume-lentilles-maison,vegetal,maison,17270,20,huile d'olive
+saucisse-lentilles,saucisses-vegetales-lentilles-commerce,vegetal,commerce,25232_1,400,saucisses végétales au blé
+saucisse-lentilles,saucisses-vegetales-lentilles-commerce,vegetal,commerce,20587,600,lentilles vertes cuites
+saucisse-lentilles,saucisses-vegetales-lentilles-commerce,vegetal,commerce,20009,200,carottes (code cru : pas de code cuit avec nutriments et impacts)
+saucisse-lentilles,saucisses-vegetales-lentilles-commerce,vegetal,commerce,20035,100,oignons cuits
+saucisse-lentilles,saucisses-vegetales-lentilles-commerce,vegetal,commerce,17270,10,huile d'olive
+coquillettes-jambon,coquillettes-jambon,animal,,9811,800,coquillettes cuites
+coquillettes-jambon,coquillettes-jambon,animal,,28910,200,jambon cuit en dés
+coquillettes-jambon,coquillettes-jambon,animal,,12118,100,emmental râpé
+coquillettes-jambon,coquillettes-jambon,animal,,16400,30,beurre
+coquillettes-jambon,coquillettes-jambon,animal,,20037,300,petits pois cuits
+coquillettes-jambon,coquillettes-tofu-fume-maison,vegetal,maison,9811,800,coquillettes cuites
+coquillettes-jambon,coquillettes-tofu-fume-maison,vegetal,maison,20912,250,tofu fumé en dés
+coquillettes-jambon,coquillettes-tofu-fume-maison,vegetal,maison,17270,30,huile d'olive
+coquillettes-jambon,coquillettes-tofu-fume-maison,vegetal,maison,20037,300,petits pois cuits
+coquillettes-jambon,coquillettes-tranches-vegetales-commerce,vegetal,commerce,9811,800,coquillettes cuites
+coquillettes-jambon,coquillettes-tranches-vegetales-commerce,vegetal,commerce,1030,200,fines tranches végétales en dés
+coquillettes-jambon,coquillettes-tranches-vegetales-commerce,vegetal,commerce,1029_2,100,spécialité végétale type fromage râpé
+coquillettes-jambon,coquillettes-tranches-vegetales-commerce,vegetal,commerce,17270,30,huile d'olive
+coquillettes-jambon,coquillettes-tranches-vegetales-commerce,vegetal,commerce,20037,300,petits pois cuits
+poisson-pane-puree,poisson-pane-puree,animal,,26015,500,lieu noir cuit
+poisson-pane-puree,poisson-pane-puree,animal,,9435,40,farine (panure)
+poisson-pane-puree,poisson-pane-puree,animal,,22000,50,œuf (panure)
+poisson-pane-puree,poisson-pane-puree,animal,,7004,80,pain grillé mixé (chapelure)
+poisson-pane-puree,poisson-pane-puree,animal,,17440,40,huile de tournesol
+poisson-pane-puree,poisson-pane-puree,animal,,4003,700,pommes de terre à l'eau (purée)
+poisson-pane-puree,poisson-pane-puree,animal,,19041,150,lait demi-écrémé (purée)
+poisson-pane-puree,poisson-pane-puree,animal,,16400,30,beurre (purée)
+poisson-pane-puree,tofu-pane-puree-maison,vegetal,maison,20904,600,tofu ferme pané
+poisson-pane-puree,tofu-pane-puree-maison,vegetal,maison,9435,40,farine (panure)
+poisson-pane-puree,tofu-pane-puree-maison,vegetal,maison,7004,80,pain grillé mixé (chapelure)
+poisson-pane-puree,tofu-pane-puree-maison,vegetal,maison,17440,40,huile de tournesol
+poisson-pane-puree,tofu-pane-puree-maison,vegetal,maison,4003,700,pommes de terre à l'eau (purée)
+poisson-pane-puree,tofu-pane-puree-maison,vegetal,maison,17270,20,huile d'olive (purée)
+poisson-pane-puree,tofu-pane-puree-maison,vegetal,maison,18901,200,boisson au soja enrichie en calcium (panure et purée)
+poisson-pane-puree,batonnets-panes-puree-commerce,vegetal,commerce,25229,600,bâtonnets panés soja et blé
+poisson-pane-puree,batonnets-panes-puree-commerce,vegetal,commerce,4003,700,pommes de terre à l'eau (purée)
+poisson-pane-puree,batonnets-panes-puree-commerce,vegetal,commerce,18901,150,boisson au soja enrichie en calcium (purée)
+poisson-pane-puree,batonnets-panes-puree-commerce,vegetal,commerce,17270,20,huile d'olive (purée)
+galette-complete,galette-complete,animal,,9540,250,farine de sarrasin
+galette-complete,galette-complete,animal,,18066,400,eau de la pâte
+galette-complete,galette-complete,animal,,16400,40,beurre de cuisson
+galette-complete,galette-complete,animal,,28910,200,jambon cuit
+galette-complete,galette-complete,animal,,22000,200,4 œufs
+galette-complete,galette-complete,animal,,12118,100,emmental râpé
+galette-complete,galette-complete,animal,,20031,300,salade verte en accompagnement
+galette-complete,galette-complete,animal,,17130,30,huile de colza de la vinaigrette
+galette-complete,galette-complete,animal,,11018,10,vinaigre de la vinaigrette
+galette-complete,galette-complete,animal,,11013,5,moutarde de la vinaigrette
+galette-complete,galette-tofu-maison,vegetal,maison,9540,250,farine de sarrasin
+galette-complete,galette-tofu-maison,vegetal,maison,18066,400,eau de la pâte
+galette-complete,galette-tofu-maison,vegetal,maison,17270,30,huile d'olive de cuisson
+galette-complete,galette-tofu-maison,vegetal,maison,20912,250,tofu fumé
+galette-complete,galette-tofu-maison,vegetal,maison,20904,150,tofu ferme brouillé
+galette-complete,galette-tofu-maison,vegetal,maison,20031,300,salade verte en accompagnement
+galette-complete,galette-tofu-maison,vegetal,maison,17130,30,huile de colza de la vinaigrette
+galette-complete,galette-tofu-maison,vegetal,maison,11018,10,vinaigre de la vinaigrette
+galette-complete,galette-tofu-maison,vegetal,maison,11013,5,moutarde de la vinaigrette
+galette-complete,galette-tranches-vegetales-commerce,vegetal,commerce,9540,250,farine de sarrasin
+galette-complete,galette-tranches-vegetales-commerce,vegetal,commerce,18066,400,eau de la pâte
+galette-complete,galette-tranches-vegetales-commerce,vegetal,commerce,17270,30,huile d'olive de cuisson
+galette-complete,galette-tranches-vegetales-commerce,vegetal,commerce,1030,200,fines tranches végétales
+galette-complete,galette-tranches-vegetales-commerce,vegetal,commerce,1029_2,100,spécialité végétale type fromage râpé
+galette-complete,galette-tranches-vegetales-commerce,vegetal,commerce,20031,300,salade verte en accompagnement
+galette-complete,galette-tranches-vegetales-commerce,vegetal,commerce,17130,30,huile de colza de la vinaigrette
+galette-complete,galette-tranches-vegetales-commerce,vegetal,commerce,11018,10,vinaigre de la vinaigrette
+galette-complete,galette-tranches-vegetales-commerce,vegetal,commerce,11013,5,moutarde de la vinaigrette
+pates-carbonara,pates-carbonara,animal,,9811,800,spaghetti cuits
+pates-carbonara,pates-carbonara,animal,,28725,200,lardons fumés cuits
+pates-carbonara,pates-carbonara,animal,,22009,80,4 jaunes d'œufs
+pates-carbonara,pates-carbonara,animal,,12120,60,parmesan
+pates-carbonara,pates-carbonara,animal,,19410,100,crème fraîche 30 %
+pates-carbonara,pates-carbonara,animal,,11015,2,poivre noir
+pates-carbonara,pates-carbonara-tofu-maison,vegetal,maison,9811,800,spaghetti cuits
+pates-carbonara,pates-carbonara-tofu-maison,vegetal,maison,20912,250,tofu fumé en dés
+pates-carbonara,pates-carbonara-tofu-maison,vegetal,maison,11214,150,crème de soja
+pates-carbonara,pates-carbonara-tofu-maison,vegetal,maison,9580,30,farine de pois chiche (liaison)
+pates-carbonara,pates-carbonara-tofu-maison,vegetal,maison,17270,20,huile d'olive
+pates-carbonara,pates-carbonara-tofu-maison,vegetal,maison,11015,2,poivre noir
+pates-carbonara,pates-carbonara-vegetale-commerce,vegetal,commerce,9811,800,spaghetti cuits
+pates-carbonara,pates-carbonara-vegetale-commerce,vegetal,commerce,1030,200,fines tranches végétales en lanières
+pates-carbonara,pates-carbonara-vegetale-commerce,vegetal,commerce,11214,150,crème de soja
+pates-carbonara,pates-carbonara-vegetale-commerce,vegetal,commerce,1029_2,60,spécialité végétale type fromage râpé
+pates-carbonara,pates-carbonara-vegetale-commerce,vegetal,commerce,17270,20,huile d'olive
+pates-carbonara,pates-carbonara-vegetale-commerce,vegetal,commerce,11015,2,poivre noir
+flammekueche,flammekueche,animal,,96778,400,pâte à pizza fine cuite
+flammekueche,flammekueche,animal,,19410,150,crème fraîche 30 %
+flammekueche,flammekueche,animal,,19646,150,fromage blanc
+flammekueche,flammekueche,animal,,28725,150,lardons fumés cuits
+flammekueche,flammekueche,animal,,20035,250,oignons cuits
+flammekueche,flammekueche,animal,,20031,300,salade verte en accompagnement
+flammekueche,flammekueche,animal,,17130,30,huile de colza de la vinaigrette
+flammekueche,flammekueche,animal,,11018,10,vinaigre de la vinaigrette
+flammekueche,flammekueche,animal,,11013,5,moutarde de la vinaigrette
+flammekueche,flammekueche-tofu-maison,vegetal,maison,96778,400,pâte à pizza fine cuite
+flammekueche,flammekueche-tofu-maison,vegetal,maison,11214,200,crème de soja
+flammekueche,flammekueche-tofu-maison,vegetal,maison,19693,100,dessert au soja nature (à la place du fromage blanc)
+flammekueche,flammekueche-tofu-maison,vegetal,maison,20912,200,tofu fumé en lardons
+flammekueche,flammekueche-tofu-maison,vegetal,maison,20035,250,oignons cuits
+flammekueche,flammekueche-tofu-maison,vegetal,maison,20031,300,salade verte en accompagnement
+flammekueche,flammekueche-tofu-maison,vegetal,maison,17130,30,huile de colza de la vinaigrette
+flammekueche,flammekueche-tofu-maison,vegetal,maison,11018,10,vinaigre de la vinaigrette
+flammekueche,flammekueche-tofu-maison,vegetal,maison,11013,5,moutarde de la vinaigrette
+flammekueche,flammekueche-vegetale-commerce,vegetal,commerce,96778,400,pâte à pizza fine cuite
+flammekueche,flammekueche-vegetale-commerce,vegetal,commerce,11214,150,crème de soja
+flammekueche,flammekueche-vegetale-commerce,vegetal,commerce,1027,150,spécialité végétale à tartiner au soja
+flammekueche,flammekueche-vegetale-commerce,vegetal,commerce,1030,150,fines tranches végétales en lanières
+flammekueche,flammekueche-vegetale-commerce,vegetal,commerce,20035,250,oignons cuits
+flammekueche,flammekueche-vegetale-commerce,vegetal,commerce,20031,300,salade verte en accompagnement
+flammekueche,flammekueche-vegetale-commerce,vegetal,commerce,17130,30,huile de colza de la vinaigrette
+flammekueche,flammekueche-vegetale-commerce,vegetal,commerce,11018,10,vinaigre de la vinaigrette
+flammekueche,flammekueche-vegetale-commerce,vegetal,commerce,11013,5,moutarde de la vinaigrette
+risotto-petits-pois,risotto-petits-pois,animal,,9104,900,riz cuit en risotto
+risotto-petits-pois,risotto-petits-pois,animal,,12120,80,parmesan
+risotto-petits-pois,risotto-petits-pois,animal,,16400,40,beurre
+risotto-petits-pois,risotto-petits-pois,animal,,5215,100,vin blanc
+risotto-petits-pois,risotto-petits-pois,animal,,20035,80,oignons cuits
+risotto-petits-pois,risotto-petits-pois,animal,,20037,300,petits pois cuits
+risotto-petits-pois,risotto-tofu-fume-maison,vegetal,maison,9104,900,riz cuit en risotto
+risotto-petits-pois,risotto-tofu-fume-maison,vegetal,maison,20912,120,tofu fumé en dés
+risotto-petits-pois,risotto-tofu-fume-maison,vegetal,maison,17270,30,huile d'olive
+risotto-petits-pois,risotto-tofu-fume-maison,vegetal,maison,5215,100,vin blanc
+risotto-petits-pois,risotto-tofu-fume-maison,vegetal,maison,20035,80,oignons cuits
+risotto-petits-pois,risotto-tofu-fume-maison,vegetal,maison,20037,300,petits pois cuits
+risotto-petits-pois,risotto-saucisse-vegetale-commerce,vegetal,commerce,9104,900,riz cuit en risotto
+risotto-petits-pois,risotto-saucisse-vegetale-commerce,vegetal,commerce,25232_1,150,saucisse végétale au blé en rondelles
+risotto-petits-pois,risotto-saucisse-vegetale-commerce,vegetal,commerce,1029_2,60,spécialité végétale type fromage râpé
+risotto-petits-pois,risotto-saucisse-vegetale-commerce,vegetal,commerce,17270,30,huile d'olive
+risotto-petits-pois,risotto-saucisse-vegetale-commerce,vegetal,commerce,5215,100,vin blanc
+risotto-petits-pois,risotto-saucisse-vegetale-commerce,vegetal,commerce,20035,80,oignons cuits
+risotto-petits-pois,risotto-saucisse-vegetale-commerce,vegetal,commerce,20037,300,petits pois cuits
+couscous-poulet-merguez,couscous-poulet-merguez,animal,,9683,500,semoule cuite
+couscous-poulet-merguez,couscous-poulet-merguez,animal,,36004,400,cuisses de poulet rôties
+couscous-poulet-merguez,couscous-poulet-merguez,animal,,30155,160,merguez cuites
+couscous-poulet-merguez,couscous-poulet-merguez,animal,,20507,150,pois chiches cuits
+couscous-poulet-merguez,couscous-poulet-merguez,animal,,20009,150,carottes (code cru : pas de code cuit avec nutriments et impacts)
+couscous-poulet-merguez,couscous-poulet-merguez,animal,,20021,200,courgettes cuites
+couscous-poulet-merguez,couscous-poulet-merguez,animal,,20033,100,navets cuits
+couscous-poulet-merguez,couscous-poulet-merguez,animal,,20169,120,tomates en morceaux
+couscous-poulet-merguez,couscous-tempeh-maison,vegetal,maison,9683,500,semoule cuite
+couscous-poulet-merguez,couscous-tempeh-maison,vegetal,maison,20917,400,tempeh en cubes
+couscous-poulet-merguez,couscous-tempeh-maison,vegetal,maison,20507,350,pois chiches cuits
+couscous-poulet-merguez,couscous-tempeh-maison,vegetal,maison,20009,150,carottes (code cru : pas de code cuit avec nutriments et impacts)
+couscous-poulet-merguez,couscous-tempeh-maison,vegetal,maison,20021,200,courgettes cuites
+couscous-poulet-merguez,couscous-tempeh-maison,vegetal,maison,20033,100,navets cuits
+couscous-poulet-merguez,couscous-tempeh-maison,vegetal,maison,20169,120,tomates en morceaux
+couscous-poulet-merguez,couscous-tempeh-maison,vegetal,maison,17270,15,huile d'olive
+couscous-poulet-merguez,couscous-seitan-commerce,vegetal,commerce,9683,500,semoule cuite
+couscous-poulet-merguez,couscous-seitan-commerce,vegetal,commerce,25598,300,seitan en morceaux
+couscous-poulet-merguez,couscous-seitan-commerce,vegetal,commerce,25232_1,160,saucisses végétales au blé
+couscous-poulet-merguez,couscous-seitan-commerce,vegetal,commerce,20507,150,pois chiches cuits
+couscous-poulet-merguez,couscous-seitan-commerce,vegetal,commerce,20009,150,carottes (code cru : pas de code cuit avec nutriments et impacts)
+couscous-poulet-merguez,couscous-seitan-commerce,vegetal,commerce,20021,200,courgettes cuites
+couscous-poulet-merguez,couscous-seitan-commerce,vegetal,commerce,20033,100,navets cuits
+couscous-poulet-merguez,couscous-seitan-commerce,vegetal,commerce,20169,120,tomates en morceaux
+poulet-curry-coco,poulet-curry-coco,animal,,36018,450,filet de poulet cuit
+poulet-curry-coco,poulet-curry-coco,animal,,18041,300,lait de coco
+poulet-curry-coco,poulet-curry-coco,animal,,20035,100,oignons cuits
+poulet-curry-coco,poulet-curry-coco,animal,,11005,10,curry
+poulet-curry-coco,poulet-curry-coco,animal,,9104,600,riz cuit
+poulet-curry-coco,poulet-curry-coco,animal,,17270,15,huile d'olive
+poulet-curry-coco,curry-tempeh-pois-chiches-maison,vegetal,maison,20917,400,tempeh en cubes
+poulet-curry-coco,curry-tempeh-pois-chiches-maison,vegetal,maison,20507,300,pois chiches cuits
+poulet-curry-coco,curry-tempeh-pois-chiches-maison,vegetal,maison,18041,300,lait de coco
+poulet-curry-coco,curry-tempeh-pois-chiches-maison,vegetal,maison,20035,100,oignons cuits
+poulet-curry-coco,curry-tempeh-pois-chiches-maison,vegetal,maison,11005,10,curry
+poulet-curry-coco,curry-tempeh-pois-chiches-maison,vegetal,maison,9104,600,riz cuit
+poulet-curry-coco,curry-tempeh-pois-chiches-maison,vegetal,maison,17270,15,huile d'olive
+poulet-curry-coco,curry-seitan-commerce,vegetal,commerce,25598,550,seitan en morceaux
+poulet-curry-coco,curry-seitan-commerce,vegetal,commerce,18041,300,lait de coco
+poulet-curry-coco,curry-seitan-commerce,vegetal,commerce,20035,100,oignons cuits
+poulet-curry-coco,curry-seitan-commerce,vegetal,commerce,11005,10,curry
+poulet-curry-coco,curry-seitan-commerce,vegetal,commerce,9104,600,riz cuit
+poulet-curry-coco,curry-seitan-commerce,vegetal,commerce,17270,15,huile d'olive
+pot-au-feu,pot-au-feu,animal,,6230,450,bœuf cuit (pot-au-feu)
+pot-au-feu,pot-au-feu,animal,,20009,300,carottes (code cru : pas de code cuit avec nutriments et impacts)
+pot-au-feu,pot-au-feu,animal,,20033,200,navets cuits
+pot-au-feu,pot-au-feu,animal,,20039,200,poireaux (code cru : cuits dans le bouillon)
+pot-au-feu,pot-au-feu,animal,,4003,400,pommes de terre cuites
+pot-au-feu,pot-au-feu,animal,,11013,20,moutarde
+pot-au-feu,pot-au-feu-tempeh-maison,vegetal,maison,20917,650,tempeh en morceaux
+pot-au-feu,pot-au-feu-tempeh-maison,vegetal,maison,20009,300,carottes (code cru : pas de code cuit avec nutriments et impacts)
+pot-au-feu,pot-au-feu-tempeh-maison,vegetal,maison,20033,200,navets cuits
+pot-au-feu,pot-au-feu-tempeh-maison,vegetal,maison,20039,200,poireaux (code cru : cuits dans le bouillon)
+pot-au-feu,pot-au-feu-tempeh-maison,vegetal,maison,4003,400,pommes de terre cuites
+pot-au-feu,pot-au-feu-tempeh-maison,vegetal,maison,11013,20,moutarde
+pot-au-feu,pot-au-feu-seitan-commerce,vegetal,commerce,25598,600,seitan en morceaux
+pot-au-feu,pot-au-feu-seitan-commerce,vegetal,commerce,20009,300,carottes (code cru : pas de code cuit avec nutriments et impacts)
+pot-au-feu,pot-au-feu-seitan-commerce,vegetal,commerce,20033,200,navets cuits
+pot-au-feu,pot-au-feu-seitan-commerce,vegetal,commerce,20039,200,poireaux (code cru : cuits dans le bouillon)
+pot-au-feu,pot-au-feu-seitan-commerce,vegetal,commerce,4003,400,pommes de terre cuites
+pot-au-feu,pot-au-feu-seitan-commerce,vegetal,commerce,11013,20,moutarde
+pates-saumon-epinards,pates-saumon-epinards,animal,,9811,700,pâtes cuites
+pates-saumon-epinards,pates-saumon-epinards,animal,,26230,300,saumon cuit au four
+pates-saumon-epinards,pates-saumon-epinards,animal,,19410,200,crème fraîche 30 %
+pates-saumon-epinards,pates-saumon-epinards,animal,,20027,200,épinards cuits
+pates-saumon-epinards,pates-saumon-epinards,animal,,13009,20,citron
+pates-saumon-epinards,pates-tofu-fume-epinards-maison,vegetal,maison,9811,700,pâtes cuites
+pates-saumon-epinards,pates-tofu-fume-epinards-maison,vegetal,maison,20912,300,tofu fumé en dés
+pates-saumon-epinards,pates-tofu-fume-epinards-maison,vegetal,maison,11214,200,crème de soja
+pates-saumon-epinards,pates-tofu-fume-epinards-maison,vegetal,maison,20027,200,épinards cuits
+pates-saumon-epinards,pates-tofu-fume-epinards-maison,vegetal,maison,13009,20,citron
+pates-saumon-epinards,pates-tranches-vegetales-epinards-commerce,vegetal,commerce,9811,700,pâtes cuites
+pates-saumon-epinards,pates-tranches-vegetales-epinards-commerce,vegetal,commerce,1030,200,fines tranches végétales en lanières
+pates-saumon-epinards,pates-tranches-vegetales-epinards-commerce,vegetal,commerce,11214,200,crème de soja
+pates-saumon-epinards,pates-tranches-vegetales-epinards-commerce,vegetal,commerce,20027,200,épinards cuits
+pates-saumon-epinards,pates-tranches-vegetales-epinards-commerce,vegetal,commerce,13009,20,citron
+salade-cesar,salade-cesar,animal,,20171,500,laitue romaine
+salade-cesar,salade-cesar,animal,,36018,350,filet de poulet grillé
+salade-cesar,salade-cesar,animal,,22010,100,2 œufs durs
+salade-cesar,salade-cesar,animal,,12120,60,parmesan
+salade-cesar,salade-cesar,animal,,7432,100,croûtons
+salade-cesar,salade-cesar,animal,,20172,200,tomates cerises
+salade-cesar,salade-cesar,animal,,17270,40,huile d'olive
+salade-cesar,salade-cesar,animal,,13009,20,citron
+salade-cesar,salade-cesar,animal,,11013,10,moutarde
+salade-cesar,salade-cesar-tempeh-maison,vegetal,maison,20171,500,laitue romaine
+salade-cesar,salade-cesar-tempeh-maison,vegetal,maison,20917,400,tempeh grillé
+salade-cesar,salade-cesar-tempeh-maison,vegetal,maison,20904,300,tofu ferme grillé
+salade-cesar,salade-cesar-tempeh-maison,vegetal,maison,7432,100,croûtons
+salade-cesar,salade-cesar-tempeh-maison,vegetal,maison,20172,200,tomates cerises
+salade-cesar,salade-cesar-tempeh-maison,vegetal,maison,17270,40,huile d'olive
+salade-cesar,salade-cesar-tempeh-maison,vegetal,maison,13009,20,citron
+salade-cesar,salade-cesar-tempeh-maison,vegetal,maison,11013,10,moutarde
+salade-cesar,salade-cesar-seitan-commerce,vegetal,commerce,20171,500,laitue romaine
+salade-cesar,salade-cesar-seitan-commerce,vegetal,commerce,25598,500,seitan grillé
+salade-cesar,salade-cesar-seitan-commerce,vegetal,commerce,1029_2,50,spécialité végétale type fromage râpé
+salade-cesar,salade-cesar-seitan-commerce,vegetal,commerce,7432,100,croûtons
+salade-cesar,salade-cesar-seitan-commerce,vegetal,commerce,20172,200,tomates cerises
+salade-cesar,salade-cesar-seitan-commerce,vegetal,commerce,17270,40,huile d'olive
+salade-cesar,salade-cesar-seitan-commerce,vegetal,commerce,13009,20,citron
+salade-cesar,salade-cesar-seitan-commerce,vegetal,commerce,11013,10,moutarde
+oeufs-brouilles-tartines,oeufs-brouilles-tartines,animal,,22000,500,10 œufs
+oeufs-brouilles-tartines,oeufs-brouilles-tartines,animal,,16400,30,beurre
+oeufs-brouilles-tartines,oeufs-brouilles-tartines,animal,,19041,50,lait demi-écrémé
+oeufs-brouilles-tartines,oeufs-brouilles-tartines,animal,,7100,320,pain de campagne
+oeufs-brouilles-tartines,oeufs-brouilles-tartines,animal,,2013,600,jus d'orange
+oeufs-brouilles-tartines,tofu-brouille-tartines-maison,vegetal,maison,20904,500,tofu ferme émietté et poêlé
+oeufs-brouilles-tartines,tofu-brouille-tartines-maison,vegetal,maison,17270,20,huile d'olive
+oeufs-brouilles-tartines,tofu-brouille-tartines-maison,vegetal,maison,7100,320,pain de campagne
+oeufs-brouilles-tartines,tofu-brouille-tartines-maison,vegetal,maison,2013,600,jus d'orange
+oeufs-brouilles-tartines,tartines-vegetales-commerce,vegetal,commerce,1027,200,spécialité végétale à tartiner au soja
+oeufs-brouilles-tartines,tartines-vegetales-commerce,vegetal,commerce,1030,100,fines tranches végétales
+oeufs-brouilles-tartines,tartines-vegetales-commerce,vegetal,commerce,7100,320,pain de campagne
+oeufs-brouilles-tartines,tartines-vegetales-commerce,vegetal,commerce,2013,600,jus d'orange
+crepes-compote,crepes-compote,animal,,9435,250,farine
+crepes-compote,crepes-compote,animal,,22000,200,4 œufs
+crepes-compote,crepes-compote,animal,,19041,500,lait demi-écrémé
+crepes-compote,crepes-compote,animal,,16400,40,beurre
+crepes-compote,crepes-compote,animal,,31016,40,sucre
+crepes-compote,crepes-compote,animal,,13038,400,compote de pommes
+crepes-compote,crepes-vegetales-maison,vegetal,maison,9435,250,farine
+crepes-compote,crepes-vegetales-maison,vegetal,maison,9580,50,farine de pois chiche
+crepes-compote,crepes-vegetales-maison,vegetal,maison,18901,600,boisson au soja enrichie en calcium
+crepes-compote,crepes-vegetales-maison,vegetal,maison,17130,30,huile de colza
+crepes-compote,crepes-vegetales-maison,vegetal,maison,31016,40,sucre
+crepes-compote,crepes-vegetales-maison,vegetal,maison,13038,400,compote de pommes
+crepes-compote,crepes-dessert-soja-commerce,vegetal,commerce,9435,250,farine
+crepes-compote,crepes-dessert-soja-commerce,vegetal,commerce,9580,50,farine de pois chiche
+crepes-compote,crepes-dessert-soja-commerce,vegetal,commerce,18903,600,"boisson au soja aromatisée sucrée, enrichie en calcium"
+crepes-compote,crepes-dessert-soja-commerce,vegetal,commerce,17130,30,huile de colza
+crepes-compote,crepes-dessert-soja-commerce,vegetal,commerce,20911,400,dessert au soja aromatisé
+cordon-bleu-puree,cordon-bleu-puree,animal,,36306,480,escalopes de dinde cuites
+cordon-bleu-puree,cordon-bleu-puree,animal,,28910,80,jambon cuit
+cordon-bleu-puree,cordon-bleu-puree,animal,,12115,80,emmental en tranches
+cordon-bleu-puree,cordon-bleu-puree,animal,,9435,30,farine (panure)
+cordon-bleu-puree,cordon-bleu-puree,animal,,22000,50,œuf (panure)
+cordon-bleu-puree,cordon-bleu-puree,animal,,7004,60,pain grillé mixé (chapelure)
+cordon-bleu-puree,cordon-bleu-puree,animal,,17440,40,huile de tournesol
+cordon-bleu-puree,cordon-bleu-puree,animal,,4003,700,pommes de terre à l'eau (purée)
+cordon-bleu-puree,cordon-bleu-puree,animal,,19041,150,lait demi-écrémé (purée)
+cordon-bleu-puree,cordon-bleu-puree,animal,,16400,30,beurre (purée)
+cordon-bleu-puree,cordon-bleu-tempeh-maison,vegetal,maison,20917,600,tempeh en tranches
+cordon-bleu-puree,cordon-bleu-tempeh-maison,vegetal,maison,20912,150,tofu fumé en tranches fines
+cordon-bleu-puree,cordon-bleu-tempeh-maison,vegetal,maison,9435,30,farine (panure)
+cordon-bleu-puree,cordon-bleu-tempeh-maison,vegetal,maison,7004,60,pain grillé mixé (chapelure)
+cordon-bleu-puree,cordon-bleu-tempeh-maison,vegetal,maison,17440,40,huile de tournesol
+cordon-bleu-puree,cordon-bleu-tempeh-maison,vegetal,maison,4003,700,pommes de terre à l'eau (purée)
+cordon-bleu-puree,cordon-bleu-tempeh-maison,vegetal,maison,17270,20,huile d'olive (purée)
+cordon-bleu-puree,cordon-bleu-tempeh-maison,vegetal,maison,18901,200,boisson au soja enrichie en calcium (panure et purée)
+cordon-bleu-puree,cordon-bleu-seitan-commerce,vegetal,commerce,25598,500,seitan en escalopes
+cordon-bleu-puree,cordon-bleu-seitan-commerce,vegetal,commerce,1030,80,fines tranches végétales
+cordon-bleu-puree,cordon-bleu-seitan-commerce,vegetal,commerce,1029_1,80,spécialité végétale type fromage en tranche
+cordon-bleu-puree,cordon-bleu-seitan-commerce,vegetal,commerce,9435,30,farine (panure)
+cordon-bleu-puree,cordon-bleu-seitan-commerce,vegetal,commerce,7004,60,pain grillé mixé (chapelure)
+cordon-bleu-puree,cordon-bleu-seitan-commerce,vegetal,commerce,17440,40,huile de tournesol
+cordon-bleu-puree,cordon-bleu-seitan-commerce,vegetal,commerce,4003,700,pommes de terre à l'eau (purée)
+cordon-bleu-puree,cordon-bleu-seitan-commerce,vegetal,commerce,17270,20,huile d'olive (purée)
+cordon-bleu-puree,cordon-bleu-seitan-commerce,vegetal,commerce,18901,200,boisson au soja enrichie en calcium (panure et purée)
+roti-porc-pommes-de-terre,roti-porc-pommes-de-terre,animal,,28301,500,rôti de porc cuit
+roti-porc-pommes-de-terre,roti-porc-pommes-de-terre,animal,,4026,600,pommes de terre rôties
+roti-porc-pommes-de-terre,roti-porc-pommes-de-terre,animal,,20030,400,haricots verts cuits
+roti-porc-pommes-de-terre,roti-porc-pommes-de-terre,animal,,17270,20,huile d'olive
+roti-porc-pommes-de-terre,roti-tempeh-tofu-maison,vegetal,maison,20917,450,tempeh rôti
+roti-porc-pommes-de-terre,roti-tempeh-tofu-maison,vegetal,maison,20904,250,tofu ferme rôti
+roti-porc-pommes-de-terre,roti-tempeh-tofu-maison,vegetal,maison,11104,20,sauce soja (marinade)
+roti-porc-pommes-de-terre,roti-tempeh-tofu-maison,vegetal,maison,4026,600,pommes de terre rôties
+roti-porc-pommes-de-terre,roti-tempeh-tofu-maison,vegetal,maison,20030,400,haricots verts cuits
+roti-porc-pommes-de-terre,roti-tempeh-tofu-maison,vegetal,maison,17270,30,huile d'olive
+roti-porc-pommes-de-terre,roti-seitan-commerce,vegetal,commerce,25598,600,seitan rôti
+roti-porc-pommes-de-terre,roti-seitan-commerce,vegetal,commerce,4026,600,pommes de terre rôties
+roti-porc-pommes-de-terre,roti-seitan-commerce,vegetal,commerce,20030,400,haricots verts cuits
+roti-porc-pommes-de-terre,roti-seitan-commerce,vegetal,commerce,17270,20,huile d'olive
+cabillaud-pommes-vapeur,cabillaud-pommes-vapeur,animal,,26023,600,cabillaud cuit au four
+cabillaud-pommes-vapeur,cabillaud-pommes-vapeur,animal,,4003,700,pommes de terre cuites
+cabillaud-pommes-vapeur,cabillaud-pommes-vapeur,animal,,16400,40,beurre
+cabillaud-pommes-vapeur,cabillaud-pommes-vapeur,animal,,13009,40,citron
+cabillaud-pommes-vapeur,cabillaud-pommes-vapeur,animal,,11014,10,persil
+cabillaud-pommes-vapeur,cabillaud-pommes-vapeur,animal,,20027,300,épinards cuits
+cabillaud-pommes-vapeur,tofu-haricots-pommes-vapeur-maison,vegetal,maison,20904,600,tofu ferme rôti
+cabillaud-pommes-vapeur,tofu-haricots-pommes-vapeur-maison,vegetal,maison,20502,200,haricots blancs cuits
+cabillaud-pommes-vapeur,tofu-haricots-pommes-vapeur-maison,vegetal,maison,4003,700,pommes de terre cuites
+cabillaud-pommes-vapeur,tofu-haricots-pommes-vapeur-maison,vegetal,maison,17270,30,huile d'olive
+cabillaud-pommes-vapeur,tofu-haricots-pommes-vapeur-maison,vegetal,maison,13009,40,citron
+cabillaud-pommes-vapeur,tofu-haricots-pommes-vapeur-maison,vegetal,maison,11014,10,persil
+cabillaud-pommes-vapeur,tofu-haricots-pommes-vapeur-maison,vegetal,maison,20027,300,épinards cuits
+cabillaud-pommes-vapeur,batonnets-panes-pommes-vapeur-commerce,vegetal,commerce,25229,600,bâtonnets panés soja et blé
+cabillaud-pommes-vapeur,batonnets-panes-pommes-vapeur-commerce,vegetal,commerce,4003,700,pommes de terre cuites
+cabillaud-pommes-vapeur,batonnets-panes-pommes-vapeur-commerce,vegetal,commerce,17270,20,huile d'olive
+cabillaud-pommes-vapeur,batonnets-panes-pommes-vapeur-commerce,vegetal,commerce,13009,40,citron
+cabillaud-pommes-vapeur,batonnets-panes-pommes-vapeur-commerce,vegetal,commerce,11014,10,persil
+cabillaud-pommes-vapeur,batonnets-panes-pommes-vapeur-commerce,vegetal,commerce,20027,300,épinards cuits
