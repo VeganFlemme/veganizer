@@ -9,6 +9,9 @@ export default function Home() {
         produits animaux et son alternative végétale : nutrition, santé, climat,
         animaux et coût.
       </p>
+      <Link href="/methodologie" className="underline">
+        Comment nous calculons : la méthodologie
+      </Link>
       <Link href="/etat" className="underline">
         Voir l’état de la base
       </Link>
