@@ -49,12 +49,12 @@ Impact d'un plat par portion = Σ (grammes_i / 1000 × impact_par_kg_i) / nombre
 - `npm test` — tests Vitest (doivent passer avant chaque commit)
 - `npm run lint` et `npm run typecheck`
 - `supabase db push` — appliquer les migrations au projet distant
-- `python pipeline/<source>.py` — importer une source (lit `SUPABASE_URL` et `SUPABASE_SERVICE_ROLE_KEY` depuis `.env`, jamais commités)
+- `python pipeline/<source>.py` — importer une source (lit `NEXT_PUBLIC_SUPABASE_URL` et `SUPABASE_SECRET_KEY` depuis `.env`, jamais commités)
 
 ## Façon de travailler
 - Petites étapes, une fonctionnalité par branche, une pull request par étape.
 - Écrire d'abord les tests du moteur de calcul, puis le code.
-- La clé `service_role` ne sert qu'au pipeline, jamais dans le navigateur ni dans Vercel côté client.
+- La clé secrète (`SUPABASE_SECRET_KEY`) ne sert qu'au pipeline, jamais dans le navigateur ni dans Vercel côté client.
 - Après chaque import, imprimer un résumé : nombre de lignes, valeurs manquantes, 5 exemples, et vérifier un aliment connu à la main.
 - Mettre à jour `/sources` (page publique) quand une source est ajoutée ou change de version.
 
