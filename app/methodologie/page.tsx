@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { formatValue, NBSP, publicLicense } from "@/lib/format";
 import Link from "next/link";
 import type { ReactNode } from "react";
+import complementsFile from "@/data/complements.json";
 import { PageHero, Prose } from "@/components/ui/PageHero";
 import { ScoreMethod } from "@/components/methodology/ScoreMethod";
 import { getMethodologyStats, type MethodologyStats } from "@/lib/methodology/data";
@@ -85,6 +86,7 @@ const SECTIONS = [
   ["principe", "Le principe : comparer à fonction égale"],
   ["paires", "Les paires de plats : maison et du commerce"],
   ["proteines-egales", "Portion réaliste ou « à protéines égales »"],
+  ["complements", "« Avec compléments » : combler les écarts"],
   ["comparaison-simplifiee", "Paires vérifiées et comparaisons simplifiées"],
   ["ta-recette", "« Analyse ta recette »"],
   ["formule", "La formule de calcul"],
@@ -429,6 +431,37 @@ export default async function MethodologiePage() {
           <a href="https://www.anses.fr/fr/content/les-prot%C3%A9ines" className="underline" rel="noopener noreferrer">anses.fr</a>) ; ANSES, «{NBSP}Actualisation des repères du PNNS : élaboration des références nutritionnelles{NBSP}», décembre 2016, p. 22 du PDF (fibres, 30 g/j) (
           <a href="https://www.anses.fr/fr/system/files/NUT2012SA0103Ra-1.pdf" className="underline" rel="noopener noreferrer">PDF</a>) ; ANSES, dossier de presse INCA 3, 12 juillet 2017, p. 11 du PDF (fibres, 20 g/j chez les adultes de 18 à 79 ans) (
           <a href="https://www.anses.fr/fr/system/files/PRES2017DPA04.pdf" className="underline" rel="noopener noreferrer">PDF</a>).
+        </p>
+      </Section>
+
+      <Section id="complements" title="« Avec compléments » : combler les écarts">
+        <p>
+          La vue <strong>« Avec compléments »</strong> montre que chaque écart où le plat animal fait mieux peut souvent être comblé, et ce que cela change pour
+          le climat, le prix et les autres piliers. Pour chaque nutriment compté dans le score (« plus = mieux ») où l’autre plat fait mieux, nous cherchons les plus
+          petites quantités d’aliments d’une liste blanche relue qui comblent l’écart par portion, tous les écarts ensemble (un ajout peut en combler plusieurs) :
+          les aliments courants d’abord, les aliments enrichis seulement s’il le faut. Les quantités sont arrondies au dixième de gramme supérieur.
+        </p>
+        <ul className="list-disc space-y-1 pl-5">
+          {complementsFile.foods.map((f) => (
+            <li key={f.code}>
+              <strong>{f.label}</strong> ({f.kind === "enrichi" ? "aliment enrichi" : "aliment courant"}, au plus {f.maxGramsPerServing}
+              {NBSP}g par portion) : {f.justification}
+            </li>
+          ))}
+        </ul>
+        <p>
+          Chaque aliment ajouté a ses valeurs Ciqual et ses impacts Agribalyse, comptés comme ceux de la recette. Le total d’une portion ne dépasse jamais une limite
+          supérieure de sécurité de l’ANSES (calcium, fer, zinc, iode, vitamine D, par jour). Les écarts qu’aucun aliment de la liste ne comble (souvent vitamine B12,
+          EPA + DHA, vitamine D) ne sont pas complétés : l’encadré « Là où le plat animal fait mieux » donne le conseil de l’ANSES (complément ou aliment enrichi),
+          sans dose. La même méthode est appliquée au plat animal sur les nutriments où la version végétale fait mieux (fibres…), pour une comparaison équitable.
+        </p>
+        <p>
+          <strong>Limite :</strong> {complementsFile.dailyNeeds.text}{" "}
+          <a href={complementsFile.dailyNeeds.source.url} className="underline" rel="noopener noreferrer">
+            ANSES, {complementsFile.dailyNeeds.source.title}
+          </a>
+          , page mise à jour le {complementsFile.dailyNeeds.source.date}. Les quantités maximales par portion sont des choix éditoriaux (une cuillère de graines,
+          un verre de boisson), à faire valider par un·e diététicien·ne. Ajouter du sel iodé augmente le sel du plat, qui reste compté.
         </p>
       </Section>
 

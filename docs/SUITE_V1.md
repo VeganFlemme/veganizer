@@ -1,6 +1,6 @@
 # Suite V1 — à exécuter d'une traite (décisions de Matt, 2026-11-01)
 
-Lis d'abord CLAUDE.md, docs/ROADMAP.md, docs/DESIGN.md, docs/DECISIONS.md et docs/A_VERIFIER.md. Exécute les étapes 0 à 4 (y compris 3 bis) dans l'ordre, sans attendre Matt entre les étapes.
+Lis d'abord CLAUDE.md, docs/ROADMAP.md, docs/DESIGN.md, docs/DECISIONS.md et docs/A_VERIFIER.md. Exécute les étapes 0 à 4 sans attendre Matt entre les étapes, dans cet ordre (ordre mis à jour le 1er novembre à 16 h 50) : 0, 1, 2, 3, **3 quater (affichage sur ordinateur, prioritaire)**, 3 bis, 3 ter, 4.
 
 ## Autorisations données par Matt pour toute cette suite
 
@@ -96,12 +96,68 @@ Objectif : remplacer autant que possible les recettes écrites par l'IA par des 
 3. **Si une composition officielle est disponible** pour un plat animal de nos paires : remplace notre recette animale par cette composition (mise à l'échelle de nos portions), puis dérive les versions végétales par les règles de substitution relues (`pipeline/substitutions.csv` et règles de la S22), en ne remplaçant que les ingrédients animaux. Marque ces paires « recette d'après Agribalyse » sur le site.
 4. **Pour les plats sans composition officielle**, garde nos recettes, marquées « recette Veganizer, comparée au plat moyen Agribalyse » (contrôle croisé de l'étape 4).
 
+## Étape 3 ter — S24c : plusieurs alternatives végétales par plat (ajout de Matt, 16 h 46)
+
+Constat : sur 37 versions maison, presque toutes reposent sur le soja (protéines de soja texturées 19 fois, tofu fumé 15, tofu ferme 8). Dans son avis du 24 mars 2025 sur les isoflavones, l'Anses recommande de ne pas servir d'aliments à base de soja en restauration collective et de diversifier avec les légumes secs autres que le soja. Trouve l'avis sur anses.fr et cite-le ; s'il est inaccessible, note-le dans `TODO_SOURCES.md`.
+
+1. **Jusqu'à 3 versions maison par paire**, chacune avec une protéine principale d'une famille différente :
+   - `soja` : protéines de soja texturées ou tofu (les recettes actuelles) ;
+   - `legumineuse` : lentilles, pois chiches, haricots, pois cassés, fèves… (sans soja) ;
+   - `autre` : seitan, protéines de pois… **seulement** si l'aliment existe dans Ciqual et Agribalyse avec nutriments et impacts (règle 11). Sinon, pas de troisième version, et tu le notes dans `docs/A_VERIFIER.md`.
+2. **Recettes** : même recette que la version actuelle ; seule la protéine change, sauf si le rôle en cuisine l'impose (raison écrite dans `rationale`). Règle 9, règles de relecture des recettes et version complétée (S24) s'appliquent à chaque version. Modèle de données : une colonne `protein_family` (ou équivalent) dans `pair_dishes.csv`, migration additive, contrôlée par `pairs.py`.
+3. **Portions** : à protéines égales, une version aux légumineuses donne une assiette plus grosse. Affiche les grammes et les kcal tels quels. Signale « portion copieuse » seulement si un repère publié existe (portions consommées de l'enquête INCA3, déjà dans `pipeline/raw/inca3`) ; n'invente aucun seuil.
+4. **Choix par défaut, jamais selon le score** (sinon on choisirait l'alternative qui fait gagner le végétal). Règle fixe, publiée sur `/methodologie` : la protéine qui joue le même rôle en cuisine (morceaux, haché, tranche, liant… d'après la colonne `replaces`) ; à rôle égal, celle sans soja. Écris le choix et sa raison pour chaque paire (colonne `default_reason`), contrôlés par `pairs.py`.
+5. **Affichage** : en mode « Fait maison », des boutons « Lentilles · Soja texturé · Seitan… » dans la barre d'outils créée à l'étape 3 quater, à côté de « Fait maison / Du commerce ». Tout est recalculé : vues (portion, protéines égales, avec compléments), onglets, scores, vainqueurs, simulateur. Choix gardé dans l'URL (`?proteine=…`) pour le partage.
+6. **Vue d'ensemble — « Selon l'alternative »** : pour chaque catégorie, avec combien de versions le végétal gagne (« Environnement : la version végétale gagne avec les 3 alternatives »). Si la conclusion change selon l'alternative, dis-le clairement.
+7. **Onglet Santé des versions au soja** : une mention sourcée de l'avis de l'Anses sur les isoflavones, sans chiffre et sans conseil médical (règle 6). Même mention sur `/methodologie`.
+8. **`/recette`** : propose les familles pour lesquelles une règle de substitution relue existe (`pipeline/substitutions.csv`).
+9. **Tests** : `pairs.py` (familles, règle 9, choix par défaut), Vitest pour la sélection, e2e pour le changement d'alternative.
+
+## Étape 3 quater — S24d : affichage sur ordinateur (ajout de Matt, 16 h 46)
+
+Constat (captures à 1 440 et 1 920 px, 1er novembre) : sur ordinateur, la page ressemble à la version téléphone agrandie.
+- À 1 920 px, le contenu tient dans une colonne de 1 200 px, avec de grandes marges vides.
+- Les cartes de la vue d'ensemble sont surtout vides : 1 ou 2 chiffres chacune.
+- Boutons segmentés et onglets en pastilles, comme sur téléphone ; il faut cliquer onglet par onglet pour voir les données.
+- Le tableau nutrition montre une seule base à la fois (portion, 100 kcal ou 10 g de protéines).
+- Colonne de droite en bloc de texte ; chiffres coupés sur deux lignes (« au moins / 0,03 » dans le simulateur) ; « Au moins 1 animal tué pour 1686 portions » en très gros, sur 3 lignes.
+
+Constat de Matt (captures Safari sur MacBook, page de comparaison simple « Poulet, cuisse… » face à « Seitan, préemballé ») : l'affichage est disproportionné.
+- Titre en 52 px sur deux lignes avec un mot seul à la ligne (« four ») ; la pastille de couleur est centrée sur les deux lignes au lieu d'être alignée sur la première.
+- Le choix « Seitan / Tempeh / Tofu fumé » est un bouton segmenté étiré sur toute la largeur, avec trois cases énormes et des textes mal alignés.
+- Bouton « 100 g / 100 kcal / 10 g prot. » trop gros ; colonne de droite occupée seulement par la mention médicale.
+- Lignes du tableau très hautes ; fourchettes identiques affichées (« 79,2 à 79,2 », « 1,71 à 1,71 ») ; « donnée manquante » coupé sur deux lignes ; chiffres qui paraissent trop espacés autour de la virgule (vérifie `tabular-nums` et l'espacement des lettres).
+
+Objectif : sur ordinateur (dès 1 024 px, surtout dès 1 280 px), une mise en page de tableau de bord qui utilise la largeur et montre plus de données d'un coup. **La version téléphone ne change pas**, sauf les corrections valables partout (fourchettes identiques, retours à la ligne, espacement des chiffres).
+
+1. **Largeur** : conteneur jusqu'à 1 440 px, grille de 12 colonnes, marges 48 px dès 1 440 px, texte courant 16 px. Mets à jour `docs/DESIGN.md` (le « conteneur max 1 200 px » et la maquette `fin-desktop` sont remplacés par cette étape).
+2. **En-tête plus compact** : titre, alternatives et boutons de vue sur une seule barre d'outils, verdict à droite. Le contenu commence plus haut.
+3. **Navigation** : dès 1 280 px, les 5 catégories deviennent une colonne de gauche fixe au défilement, avec le score et le vainqueur de chacune. Même URL (`?onglet=`). Le téléphone garde les onglets horizontaux.
+4. **Vue d'ensemble** : les 5 cartes de catégorie visibles sans défiler à 1 440 × 900, de même hauteur. Chacune montre ses 3 ou 4 indicateurs principaux en barres face-à-face, pas un seul chiffre. Le simulateur à côté. Aucune grande zone vide.
+5. **Onglets de catégorie** : tableaux avec plus de colonnes : indicateur, plat animal, végétal, écart en %, barre face-à-face, fiabilité (couverture, DQR), source. Dès 1 280 px, les trois bases (par portion, par 100 kcal, par 10 g de protéines) côte à côte au lieu du bouton segmenté. Environnement : les 16 indicateurs en barres.
+6. **« Là où le plat animal fait mieux »** : dans la colonne de droite, fixe au défilement. Chaque conseil est replié sur sa première phrase, avec « Lire la suite ».
+7. **Recettes** : les versions côte à côte, alignées ligne par ligne (même ingrédient sur la même ligne, ingrédient remplacé mis en évidence).
+8. **Chiffres** : une valeur et son unité ne se coupent jamais ; les gros chiffres s'adaptent à la largeur et tiennent sur 2 lignes au plus.
+9. **Corrections valables partout** :
+   - quand la borne basse égale la borne haute, une seule valeur, sans « fourchette » ;
+   - titres longs : taille adaptée à la longueur, coupure équilibrée (`text-wrap: balance`), pastille alignée sur la première ligne ;
+   - sélecteur d'alternative en boutons à la largeur de leur texte (comme des étiquettes), pas un bouton segmenté étiré ;
+   - boutons de vue compacts ; lignes de tableau plus serrées sur ordinateur ;
+   - mention médicale en bas du contenu ou dans le pied de page, pas seule dans une colonne ;
+   - sur la page de comparaison simple, la colonne de droite reçoit un résumé utile (écart climat, animaux, prix), sinon le tableau prend toute la largeur.
+10. **Autres pages** : la page de comparaison simple (`components/compare/FoodCompare.tsx`, mêmes règles que les pages de plats), accueil (catalogue en grille de 3 ou 4 colonnes, recherche large), `/recette` (saisie à gauche, résultat à droite), `/methodologie` et `/sources` (sommaire fixe à gauche, texte d'environ 70 caractères de large).
+11. **Vérification** :
+    - captures Playwright à 375, 768, 1 280, 1 440, 1 920 et 2 560 px de l'accueil, de chaque onglet d'une page `/compare`, d'une comparaison simple (poulet face au seitan) et de `/recette` (hors git) ;
+    - tests e2e : aucun défilement horizontal, quelle que soit la largeur ; à 1 440 × 900, les 5 scores visibles sans défiler ; aucune valeur coupée sur deux lignes ;
+    - un sous-agent « designer », qui ne lit pas le code, relit les captures à 1 440 et 1 920 px et liste ce qui fait encore « téléphone agrandi » ; corrige, puis refais une passe ;
+    - téléphone : compare les captures à 375 px avant et après ; toute différence doit être voulue.
+
 ## Étape 4 — S25 : relecture automatisée (en dernier, pour relire aussi la version complétée) (remplace les tests humains et la relecture d'experts)
 
-1. **Tests de parcours** : fais tourner `npm run test:e2e` dans la CI, avec un serveur lancé dans le workflow. Parcours, en 375 et 1 280 px : chercher un plat avec une faute de frappe, ouvrir chaque onglet, passer de maison à commerce, changer de vue (portion / protéines / avec compléments), utiliser le simulateur, analyser une recette, signaler une erreur.
-2. **Visiteurs simulés** : lance 4 sous-agents indépendants, qui ne lisent ni le code ni nos documents, chacun avec un profil : omnivore sceptique, personne de 70 ans sur petit téléphone, personne daltonienne, étudiant pressé. Chacun parcourt le site en ligne avec Playwright (captures hors git) et rend la liste de ce qui l'a bloqué ou fait douter.
+1. **Tests de parcours** : fais tourner `npm run test:e2e` dans la CI, avec un serveur lancé dans le workflow. Parcours, en 375, 1 280 et 1 920 px : chercher un plat avec une faute de frappe, ouvrir chaque onglet, passer de maison à commerce, changer de vue (portion / protéines / avec compléments), utiliser le simulateur, analyser une recette, signaler une erreur.
+2. **Visiteurs simulés** : lance 5 sous-agents indépendants, qui ne lisent ni le code ni nos documents, chacun avec un profil : omnivore sceptique, personne de 70 ans sur petit téléphone, personne daltonienne, étudiant pressé, et (ajout de Matt) analyste sur grand écran d'ordinateur qui veut tout comparer d'un coup. Chacun parcourt le site en ligne avec Playwright (captures hors git) et rend la liste de ce qui l'a bloqué ou fait douter.
 3. **Experts simulés** : lance 2 sous-agents indépendants.
-   - Le premier joue une diététicienne : il relit recettes, portions, `data/conseils.json` et le sens des indicateurs de `data/score_rules.json`.
+   - Le premier joue une diététicienne : il relit recettes (y compris la variété des alternatives), portions, `data/conseils.json` et le sens des indicateurs de `data/score_rules.json`.
    - Le second joue un expert en analyse de cycle de vie : il relit l'usage d'Agribalyse, des variantes et du DQR, puis `/methodologie`.
    - Chaque remarque doit citer une source ouverte et vérifiée, sinon elle est rejetée.
 4. **Audit des chiffres** : tire au hasard 50 valeurs affichées et compare-les aux fichiers officiels Ciqual et Agribalyse ; recalcule indépendamment 5 plats.

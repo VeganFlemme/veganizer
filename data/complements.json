@@ -1,0 +1,148 @@
+{
+  "version": "1.0",
+  "date": "2026-11-01",
+  "status": "Liste blanche relue (suite V1, S24). Quantités maximales par portion : choix éditoriaux réalistes (une cuillère à soupe de graines, un verre de boisson), à valider par un·e diététicien·ne (docs/A_VERIFIER.md).",
+  "dailyNeeds": {
+    "text": "Les références nutritionnelles de l'ANSES sont des apports par jour (mg/j, µg/j) et la limite supérieure de sécurité est « l'apport journalier chronique maximal » : elles portent sur l'alimentation de la journée, pas sur un plat. Compléter un plat isolé est une illustration, pas une recommandation.",
+    "source": {
+      "publisher": "ANSES",
+      "title": "Les références nutritionnelles en vitamines et minéraux",
+      "url": "https://www.anses.fr/fr/content/les-r%C3%A9f%C3%A9rences-nutritionnelles-en-vitamines-et-min%C3%A9raux",
+      "date": "21/02/2025",
+      "accessedOn": "2026-11-01"
+    }
+  },
+  "limits": [
+    {
+      "nutrient": "ca_mg",
+      "perDay": 2500
+    },
+    {
+      "nutrient": "fe_mg",
+      "perDay": 40
+    },
+    {
+      "nutrient": "zn_mg",
+      "perDay": 25
+    },
+    {
+      "nutrient": "i_ug",
+      "perDay": 600
+    },
+    {
+      "nutrient": "vit_d_ug",
+      "perDay": 100
+    }
+  ],
+  "limitsSource": {
+    "publisher": "ANSES",
+    "title": "Les références nutritionnelles en vitamines et minéraux",
+    "url": "https://www.anses.fr/fr/content/les-r%C3%A9f%C3%A9rences-nutritionnelles-en-vitamines-et-min%C3%A9raux",
+    "date": "21/02/2025",
+    "accessedOn": "2026-11-01",
+    "note": "Limites supérieures de sécurité (LSS) des adultes, par jour ; jamais dépassées par le total d'une portion. Fer : « valeur d'apport sans risque » (EFSA 2024). Zinc : tableau de la page difficile à lire, valeur à vérifier."
+  },
+  "foods": [
+    {
+      "code": "15034",
+      "label": "graines de lin",
+      "kind": "courant",
+      "maxGramsPerServing": 10,
+      "targets": [
+        "fa_c18_3_n3_ala_g",
+        "fiber_g",
+        "ca_mg",
+        "fe_mg",
+        "zn_mg",
+        "protein_g"
+      ],
+      "justification": "Le lin fait partie des sources d'acide alpha-linolénique citées par l'ANSES (« colza, noix, soja, lin ») ; les oléagineux contribuent aux apports en calcium et en zinc.",
+      "conseils": [
+        "omega-3-dha",
+        "calcium",
+        "zinc"
+      ]
+    },
+    {
+      "code": "15005",
+      "label": "cerneaux de noix",
+      "kind": "courant",
+      "maxGramsPerServing": 15,
+      "targets": [
+        "fa_c18_3_n3_ala_g",
+        "protein_g",
+        "zn_mg"
+      ],
+      "justification": "La noix fait partie des sources d'acide alpha-linolénique citées par l'ANSES ; oléagineux.",
+      "conseils": [
+        "omega-3-dha",
+        "zinc"
+      ]
+    },
+    {
+      "code": "15010",
+      "label": "graines de sésame",
+      "kind": "courant",
+      "maxGramsPerServing": 10,
+      "targets": [
+        "ca_mg",
+        "fe_mg",
+        "zn_mg",
+        "fiber_g"
+      ],
+      "justification": "Oléagineux : l'ANSES note qu'ils contribuent aux apports en calcium et en zinc.",
+      "conseils": [
+        "calcium",
+        "zinc",
+        "fer-vitamine-c"
+      ]
+    },
+    {
+      "code": "15000",
+      "label": "amandes avec peau",
+      "kind": "courant",
+      "maxGramsPerServing": 20,
+      "targets": [
+        "ca_mg",
+        "protein_g",
+        "fiber_g",
+        "zn_mg",
+        "vit_b2_mg"
+      ],
+      "justification": "Oléagineux : l'ANSES note qu'ils contribuent aux apports en calcium et en zinc.",
+      "conseils": [
+        "calcium",
+        "zinc"
+      ]
+    },
+    {
+      "code": "18901",
+      "label": "boisson au soja enrichie en calcium",
+      "kind": "enrichi",
+      "maxGramsPerServing": 250,
+      "targets": [
+        "ca_mg",
+        "vit_d_ug",
+        "protein_g"
+      ],
+      "justification": "L'ANSES conseille de privilégier les analogues de produits laitiers enrichis en calcium et non sucrés ; les produits enrichis contribuent aux apports en vitamine D.",
+      "conseils": [
+        "calcium",
+        "vitamine-d"
+      ]
+    },
+    {
+      "code": "11058",
+      "label": "sel iodé",
+      "kind": "enrichi",
+      "maxGramsPerServing": 1,
+      "targets": [
+        "i_ug"
+      ],
+      "justification": "Le sel iodé fait partie des principales sources d'iode (ANSES). Ajouter du sel augmente la teneur en sel du plat, affichée et comptée dans le score.",
+      "conseils": [
+        "iode"
+      ]
+    }
+  ]
+}
