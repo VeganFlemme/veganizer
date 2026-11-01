@@ -96,6 +96,58 @@ export type Database = {
           },
         ]
       }
+      cooking_yields: {
+        Row: {
+          cooked_code: string
+          raw_code: string
+          reference: string
+          source_id: string
+          yield_max: number | null
+          yield_min: number | null
+          yield_pct: number
+        }
+        Insert: {
+          cooked_code: string
+          raw_code: string
+          reference: string
+          source_id: string
+          yield_max?: number | null
+          yield_min?: number | null
+          yield_pct: number
+        }
+        Update: {
+          cooked_code?: string
+          raw_code?: string
+          reference?: string
+          source_id?: string
+          yield_max?: number | null
+          yield_min?: number | null
+          yield_pct?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "cooking_yields_cooked_code_fkey"
+            columns: ["cooked_code"]
+            isOneToOne: true
+            referencedRelation: "foods"
+            referencedColumns: ["code"]
+          },
+          {
+            foreignKeyName: "cooking_yields_raw_code_fkey"
+            columns: ["raw_code"]
+            isOneToOne: false
+            referencedRelation: "foods"
+            referencedColumns: ["code"]
+          },
+          {
+            foreignKeyName: "cooking_yields_source_id_fkey"
+            columns: ["source_id"]
+            isOneToOne: false
+            referencedRelation: "sources"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       dish_ingredients: {
         Row: {
           dish_id: string
@@ -1102,6 +1154,7 @@ export type Database = {
       }
       food_prices_best: {
         Row: {
+          derived_from: string | null
           first_observed_on: string | null
           food_code: string | null
           last_observed_on: string | null
@@ -1111,23 +1164,9 @@ export type Database = {
           observations: number | null
           place: string | null
           source_id: string | null
+          yield_pct: number | null
         }
-        Relationships: [
-          {
-            foreignKeyName: "prices_food_code_fkey"
-            columns: ["food_code"]
-            isOneToOne: false
-            referencedRelation: "foods"
-            referencedColumns: ["code"]
-          },
-          {
-            foreignKeyName: "prices_source_id_fkey"
-            columns: ["source_id"]
-            isOneToOne: false
-            referencedRelation: "sources"
-            referencedColumns: ["id"]
-          },
-        ]
+        Relationships: []
       }
     }
     Functions: {

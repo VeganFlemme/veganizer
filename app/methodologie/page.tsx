@@ -533,7 +533,12 @@ export default async function MethodologiePage() {
         <p>
           Nous gardons les prix des 12 derniers mois, hors promotions, et publions la médiane à partir
           de 5 relevés (ou 5 moyennes mensuelles). Un prix de produit cru n’est jamais appliqué à un
-          ingrédient pesé cuit. Le prix d’un plat, par portion, pour 100 kcal et pour 10 g de
+          ingrédient pesé cuit, sauf par un rendement de cuisson publié : pour les viandes, nous
+          utilisons la table de l’USDA (<em>Table of Cooking Yields for Meat and Poultry</em>,
+          Release 2, domaine public). Par exemple, le prix du steak haché cuit est celui du steak
+          haché cru divisé par son rendement de cuisson à la poêle ; le rendement utilisé est affiché
+          avec chaque prix. Les recettes restent pesées cuites ; sans rendement sourcé (légumes, pâtes,
+          riz, légumineuses), le prix reste « donnée manquante ». Le prix d’un plat, par portion, pour 100 kcal et pour 10 g de
           protéines, n’est affiché que si ces prix couvrent au moins 95 % de sa masse ; sinon nous
           indiquons la part couverte et le prix au kilo de chaque ingrédient, avec la source, le lieu
           et la période des relevés.

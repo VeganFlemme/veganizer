@@ -258,3 +258,9 @@ Chiffres clés par portion (nouvelles paires) :
 | cabillaud-pommes-vapeur | Cabillaud, pommes de terre vapeur et épinards (animal) | 422 | 39.2 | 377 | 2.61 (2.61–2.61) | 3.68 | 1.00 | OK |
 | cabillaud-pommes-vapeur | Tofu au citron, haricots blancs, pommes de terre vapeur et épinards (maison) | 470 | 29.1 (74%) | 504 | 0.50 (0.50–0.50), −81 % | 3.68 | 1.00 | OK |
 | cabillaud-pommes-vapeur | Bâtonnets panés soja et blé, pommes de terre vapeur et épinards (commerce) | 418 | 31.0 (79%) | 572 | 0.59 (0.59–0.59), −77 % | 3.68 | 1.00 | OK |
+
+## Lot B — S17b Rendements de cuisson
+
+- [ ] **Correspondance** 6254 (steak haché 15 % cru) → 6255 (cuit) avec la ligne USDA NDB 23574 « Beef, ground, medium fat (12%-22%), patty », Pan-broiled, 73 % (70,78-75,97 %, n = 4) : la poêle correspond-elle bien à la cuisson de Ciqual ? Prix dérivé : 17,53 ÷ 0,73 = 24,01 €/kg (fourchette 22,09-25,08).
+- [ ] **Effet** : la couverture des prix des plats au bœuf haché monte (burger 33 %, lasagnes 30 %, hachis 25 %, boulettes 24 %, chili 21 %) mais reste sous 95 % : aucun prix total n'est encore affiché.
+- [ ] **Suite** : ajouter des prix crus au détail pour d'autres viandes (sans os) et des rendements pour pâtes, riz, légumineuses (pas de source exploitable trouvée : l'Agriculture Handbook 102 n'existe qu'en images scannées).

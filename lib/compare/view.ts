@@ -112,6 +112,9 @@ export interface FoodPriceRow {
   first_observed_on: string | null;
   last_observed_on: string | null;
   place: string | null;
+  /** Raw food whose price was divided by the cooking yield (null = direct price). */
+  derived_from?: string | null;
+  yield_pct?: number | null;
 }
 export interface IarcEntry {
   id: string;
@@ -265,6 +268,8 @@ export interface IngredientPrice {
   observations: number | null;
   firstObservedOn: string | null;
   lastObservedOn: string | null;
+  /** Cooking yield (%) used when the price comes from the raw product. */
+  yieldPct: number | null;
 }
 
 export interface PriceView {
@@ -586,6 +591,7 @@ export function buildPairPage(raw: RawPairData): PairPageModel {
           observations: fp ? Number(fp.observations) : null,
           firstObservedOn: fp?.first_observed_on ?? null,
           lastObservedOn: fp?.last_observed_on ?? null,
+          yieldPct: fp?.yield_pct != null ? Number(fp.yield_pct) : null,
         };
       });
     const price: PriceView = {

@@ -107,6 +107,7 @@ const SOURCE_LABELS: Record<string, string> = {
   "faostat-qcl": "FAOSTAT",
   "open-prices": "Open Prices (ODbL)",
   rnm: "RNM FranceAgriMer",
+  "usda-cooking-yields-r2": "USDA rendements de cuisson",
   "vac-2025": "Valeur carbone 2025",
   "iarc-114": "CIRC vol. 114",
   "eat-lancet-summary-2025": "EAT-Lancet (résumé 2025)",
@@ -230,7 +231,8 @@ function IngredientPrices({ title, items, sources }: { title: string; items: Ing
             ) : (
               <>
                 {formatEur(i.eurPerKg)}/kg ({i.place ?? (i.sourceId ? sourceLabel(i.sourceId) : "")}, {formatInt(i.observations)} {i.sourceId === "rnm" ? "moyennes mensuelles" : "relevés"},{" "}
-                {period(i.firstObservedOn, i.lastObservedOn)})
+                {period(i.firstObservedOn, i.lastObservedOn)}
+                {i.yieldPct != null && `, prix du produit cru ÷ rendement de cuisson ${formatInt(i.yieldPct)} % (USDA)`})
               </>
             )}
           </li>

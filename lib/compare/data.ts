@@ -101,7 +101,7 @@ export async function getPairPage(slug: string): Promise<PairPageModel | null> {
     db.from("monetization_factors").select("indicator_id, year, eur_per_unit, method, source_id").eq("indicator_id", CLIMATE_MAIN),
     db.from("monetization_rules").select("indicator_id, method, growth_rate, start_year, cap_year, source_id").eq("indicator_id", CLIMATE_MAIN),
     db.from("dish_prices_best").select("dish_id, source_ids, per_serving, low_per_serving, high_per_serving, mass_coverage, first_observed_on, last_observed_on").in("dish_id", dishIds),
-    db.from("food_prices_best").select("food_code, source_id, median_eur_per_kg, observations, first_observed_on, last_observed_on, place").in("food_code", codes),
+    db.from("food_prices_best").select("food_code, source_id, median_eur_per_kg, observations, first_observed_on, last_observed_on, place, derived_from, yield_pct").in("food_code", codes),
   ]);
 
   const raw: RawPairData = {
@@ -151,6 +151,8 @@ export async function getPairPage(slug: string): Promise<PairPageModel | null> {
               first_observed_on: p.first_observed_on,
               last_observed_on: p.last_observed_on,
               place: p.place,
+              derived_from: p.derived_from,
+              yield_pct: p.yield_pct,
             },
           ]
         : [],
@@ -283,7 +285,7 @@ export async function getRecipeData(requested: string[]): Promise<(RecipeData & 
     db.from("sources").select("id, name, publisher, version, license, commercial_use, url"),
     db.from("monetization_factors").select("indicator_id, year, eur_per_unit, method, source_id").eq("indicator_id", CLIMATE_MAIN),
     db.from("monetization_rules").select("indicator_id, method, growth_rate, start_year, cap_year, source_id").eq("indicator_id", CLIMATE_MAIN),
-    db.from("food_prices_best").select("food_code, source_id, median_eur_per_kg, observations, first_observed_on, last_observed_on, place").in("food_code", codes),
+    db.from("food_prices_best").select("food_code, source_id, median_eur_per_kg, observations, first_observed_on, last_observed_on, place, derived_from, yield_pct").in("food_code", codes),
   ]);
   return {
     foods,
@@ -303,7 +305,7 @@ export async function getRecipeData(requested: string[]): Promise<(RecipeData & 
     })),
     foodPrices: rows(foodPrices, "food_prices_best").flatMap((p) =>
       p.food_code && p.source_id && p.median_eur_per_kg != null
-        ? [{ food_code: p.food_code, source_id: p.source_id, median_eur_per_kg: Number(p.median_eur_per_kg), observations: Number(p.observations), first_observed_on: p.first_observed_on, last_observed_on: p.last_observed_on, place: p.place }]
+        ? [{ food_code: p.food_code, source_id: p.source_id, median_eur_per_kg: Number(p.median_eur_per_kg), observations: Number(p.observations), first_observed_on: p.first_observed_on, last_observed_on: p.last_observed_on, place: p.place, derived_from: p.derived_from, yield_pct: p.yield_pct }]
         : [],
     ),
     conseils: conseilsFile.conseils as Conseil[],
