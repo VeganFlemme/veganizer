@@ -67,6 +67,14 @@ function Cell({ v, unit, range = true, servings = false, compact = false }: { v:
   const show = (x: number | null) => {
     const t = fmt(x);
     const k = t.indexOf(" pour ");
+    // Scientific notation: « 3,23 » then « × 10⁻⁸ » may go on the next line in a narrow cell.
+    const x10 = t.indexOf(" ×");
+    if (k < 0 && x10 > 0)
+      return (
+        <>
+          <span className="whitespace-nowrap">{t.slice(0, x10)}</span> <span className="whitespace-nowrap">{t.slice(x10 + 1)}</span>
+        </>
+      );
     return k < 0 ? (
       <span className="whitespace-nowrap">{t}</span>
     ) : (
