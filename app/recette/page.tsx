@@ -3,24 +3,30 @@ import Link from "next/link";
 import { RecipeBuilderClient } from "@/components/recipe/RecipeBuilderClient";
 
 export const metadata: Metadata = {
-  title: "Analyse ta recette",
-  description: "Saisissez les ingrédients de votre recette : nutrition, climat, animaux et coût, puis une version végétale ingrédient par ingrédient.",
+  title: "Analyser ma recette",
+  description: "Saisis les ingrédients de ta recette : nutrition, santé, environnement, protection animale et économie, puis une version végétale ingrédient par ingrédient.",
+  alternates: { canonical: "/recette" },
 };
 
 export default function RecipePage() {
   return (
-    <main className="mx-auto flex w-full max-w-5xl flex-1 flex-col gap-6 px-4 py-8">
-      <header className="flex flex-col gap-2">
-        <span className="self-start rounded-full border border-sky-800 bg-sky-50 px-3 py-0.5 text-sm font-medium text-sky-900">Ta recette</span>
-        <h1 className="text-3xl font-bold leading-tight">Analyse ta recette</h1>
-        <p className="text-zinc-800">
-          Ajoutez vos ingrédients et leurs quantités : Veganizer calcule nutrition, climat, animaux et coût avec les mêmes bases publiques que
-          les paires vérifiées, puis propose une version végétale ingrédient par ingrédient. Le calcul se fait dans votre navigateur, sans compte.
-        </p>
-        <p className="text-sm text-zinc-700">
-          Résultat indicatif : la recette n’est pas relue par l’équipe. <Link href="/methodologie#ta-recette" className="underline">Méthode</Link>
-        </p>
-      </header>
+    <main className="flex flex-1 flex-col gap-6 pb-8">
+      <section className="on-dark bg-ink text-white">
+        <div className="mx-auto flex max-w-[1200px] flex-col gap-4 px-5 pb-8 pt-2 md:px-8 md:pb-10 md:pt-6">
+          <span className="self-start rounded-full bg-white/8 px-3 py-1 text-[13px] font-bold text-on-dark-1">Ta recette</span>
+          <h1 className="m-0 text-[36px] font-extrabold leading-[1.02] tracking-[-0.04em] md:text-[52px]">Analyser ma recette</h1>
+          <p className="m-0 max-w-[720px] text-[16px] leading-normal text-on-dark-2">
+            Ajoute tes ingrédients et leurs grammes : le site calcule les cinq catégories avec les mêmes bases publiques que les paires vérifiées, puis propose une
+            version végétale ingrédient par ingrédient. Le calcul se fait dans ton navigateur, sans compte.
+          </p>
+          <p className="m-0 text-[14px] text-on-dark-3">
+            Résultat indicatif : la recette n’est pas relue par l’équipe.{" "}
+            <Link href="/methodologie#ta-recette" className="text-on-dark-1 underline hover:text-white">
+              Méthode
+            </Link>
+          </p>
+        </div>
+      </section>
       <RecipeBuilderClient />
     </main>
   );

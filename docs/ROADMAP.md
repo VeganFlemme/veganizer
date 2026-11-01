@@ -118,3 +118,4 @@ Objectif : la recherche ne doit plus se limiter aux paires publiées. Trois nive
 - Migration vers Cloudflare Workers (`@opennextjs/cloudflare`).
 - Remplacement ou vérification des sources `commercial_use = false` ou `null`.
 - Liens affiliés Greenweez (règles « affiliation future » de `CLAUDE.md`).
+- Comptes utilisateurs (enregistrement des recettes de `/recette`) : nom de domaine + SMTP personnalisé (Brevo ou Resend) avant de réactiver la connexion par e-mail (le SMTP par défaut de Supabase n'envoie qu'aux membres de l'équipe).

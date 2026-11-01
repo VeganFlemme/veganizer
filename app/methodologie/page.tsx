@@ -1,10 +1,13 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import type { ReactNode } from "react";
+import { PageHero, Prose } from "@/components/ui/PageHero";
+import { ScoreMethod } from "@/components/methodology/ScoreMethod";
 import { getMethodologyStats, type MethodologyStats } from "@/lib/methodology/data";
 
 export const metadata: Metadata = {
-  title: "Méthodologie — Veganizer",
+  title: "Méthodologie",
+  alternates: { canonical: "/methodologie" },
   description:
     "Comment Veganizer calcule ses comparaisons : formule, sources, hypothèses, valeurs négatives et données manquantes.",
 };
@@ -16,7 +19,7 @@ const integerFr = new Intl.NumberFormat("fr-FR");
 const percentFr = new Intl.NumberFormat("fr-FR", { style: "percent", maximumFractionDigits: 1 });
 
 function Missing() {
-  return <span className="text-amber-700">donnée manquante</span>;
+  return <span className="italic text-ink-3">donnée manquante</span>;
 }
 
 function Count({ value }: { value: number | null }) {
@@ -29,8 +32,8 @@ function Percent({ value }: { value: number | null }) {
 
 function Section({ id, title, children }: { id: string; title: string; children: ReactNode }) {
   return (
-    <section id={id} className="flex scroll-mt-8 flex-col gap-3">
-      <h2 className="text-xl font-semibold">{title}</h2>
+    <section id={id} className="flex scroll-mt-20 flex-col gap-3 rounded-panel bg-surface p-5 md:p-6">
+      <h2 className="m-0 text-[19px] font-extrabold tracking-[-0.01em] md:text-[22px]">{title}</h2>
       {children}
     </section>
   );
@@ -45,7 +48,7 @@ function AnimalFactors({ stats }: { stats: MethodologyStats }) {
       <table className="w-full text-left text-sm">
         <caption className="mb-1 text-left font-medium">Facteurs utilisés (lus dans la base)</caption>
         <thead>
-          <tr className="border-b border-zinc-300">
+          <tr className="border-b border-line">
             <th className="py-1 pr-2">Indicateur</th>
             <th className="py-1 pr-2">Catégorie</th>
             <th className="py-1 pr-2">Valeur</th>
@@ -54,11 +57,11 @@ function AnimalFactors({ stats }: { stats: MethodologyStats }) {
         </thead>
         <tbody>
           {stats.animalFactors.map((f) => (
-            <tr key={`${f.indicator}-${f.category}-${f.sourceId}`} className="border-b border-zinc-200 align-top">
+            <tr key={`${f.indicator}-${f.category}-${f.sourceId}`} className="border-b border-line-soft align-top">
               <td className="py-1 pr-2">{f.indicator}</td>
               <td className="py-1 pr-2">{f.category}</td>
               <td className="py-1 pr-2">{valueFr.format(f.value)}</td>
-              <td className="py-1 text-xs text-zinc-700">
+              <td className="py-1 text-xs text-ink-2">
                 {f.unitBasis} — <Link href={`/sources#${f.sourceId}`} className="underline">{f.sourceId}</Link>
                 {f.notes ? `. ${f.notes}` : ""}
               </td>
@@ -72,7 +75,7 @@ function AnimalFactors({ stats }: { stats: MethodologyStats }) {
 
 function Formula({ children }: { children: ReactNode }) {
   return (
-    <p className="rounded border border-zinc-200 bg-zinc-50 px-4 py-3 font-mono text-sm leading-relaxed">
+    <p className="rounded-select bg-track px-4 py-3 text-sm leading-relaxed">
       {children}
     </p>
   );
@@ -84,6 +87,7 @@ const SECTIONS = [
   ["comparaison-simplifiee", "Paires vérifiées et comparaisons simplifiées"],
   ["ta-recette", "« Analyse ta recette »"],
   ["formule", "La formule de calcul"],
+  ["vainqueur", "Comment on désigne un vainqueur"],
   ["cout-climat", "Le coût climat"],
   ["animaux", "Animaux : une estimation basse"],
   ["sante-circ", "Santé : le classement du CIRC"],
@@ -236,19 +240,19 @@ function MissingData({ stats }: { stats: MethodologyStats }) {
       </p>
       <div className="overflow-x-auto">
         <table className="w-full border-collapse text-left text-sm">
-          <caption className="mb-2 text-left text-zinc-600">
+          <caption className="mb-2 text-left text-ink-2">
             Part des aliments Ciqual sans valeur chiffrée (sur <Count value={stats.ciqualFoods} />{" "}
             aliments)
           </caption>
           <thead>
-            <tr className="border-b border-zinc-300">
+            <tr className="border-b border-line">
               <th className="py-2 pr-4 font-medium">Nutriment</th>
               <th className="py-2 font-medium">Sans valeur chiffrée</th>
             </tr>
           </thead>
           <tbody>
             {stats.nutrients.map((n) => (
-              <tr key={n.id} className="border-b border-zinc-100">
+              <tr key={n.id} className="border-b border-line-soft">
                 <td className="py-2 pr-4">{n.name}</td>
                 <td className="py-2">
                   <Percent value={n.missingShare} />
@@ -293,26 +297,24 @@ export default async function MethodologiePage() {
   const stats = await getMethodologyStats();
 
   return (
-    <main className="mx-auto flex w-full max-w-2xl flex-col gap-10 px-6 py-16 leading-relaxed">
-      <header className="flex flex-col gap-3">
-        <h1 className="text-3xl font-semibold">Méthodologie</h1>
-        <p className="text-lg text-zinc-600">
-          Veganizer compare un plat contenant des produits animaux et son alternative végétale sur
-          cinq plans : nutrition, santé, climat et environnement, animaux, coût. Chaque chiffre vient
-          d’une source publique citée. Quand une donnée manque, nous l’écrivons.
+    <main className="flex flex-1 flex-col">
+      <PageHero title="Méthodologie">
+        <p className="m-0">
+          Veganizer compare un plat contenant des produits animaux et sa version végétale sur cinq catégories : nutrition, santé, environnement, protection
+          animale, économie. Chaque chiffre vient d’une source publique citée. Quand une donnée manque, nous l’écrivons.
         </p>
-        <nav aria-label="Sommaire">
-          <ol className="list-decimal space-y-1 pl-5 text-sm">
+      </PageHero>
+      <Prose>
+      <nav aria-label="Sommaire" className="rounded-panel bg-surface p-5 md:p-6">
+          <h2 className="m-0 mb-2 text-[17px] font-extrabold">Sommaire</h2>
+          <ol className="m-0 list-decimal space-y-1 pl-5 text-[15px]">
             {SECTIONS.map(([id, title]) => (
               <li key={id}>
-                <a href={`#${id}`} className="underline">
-                  {title}
-                </a>
+                <a href={`#${id}`}>{title}</a>
               </li>
             ))}
           </ol>
-        </nav>
-      </header>
+      </nav>
 
       <Section id="principe" title="Le principe : comparer à fonction égale">
         <p>
@@ -391,8 +393,8 @@ export default async function MethodologiePage() {
           Les ingrédients sans remplacement prévu sont gardés et signalés.
         </p>
         <p>
-          Sans compte, la recette reste dans votre navigateur. Avec un compte (lien de connexion par
-          e-mail), elle est enregistrée de façon privée : vous seul·e pouvez la voir.
+          Aucun compte n’est nécessaire : la recette reste enregistrée dans votre navigateur. L’enregistrement
+          en ligne (avec un compte) viendra plus tard.
         </p>
       </Section>
 
@@ -430,6 +432,10 @@ export default async function MethodologiePage() {
           animal est négative. Quand la valeur du plat animal vaut 0 ou manque, l’écart n’est pas
           calculé.
         </p>
+      </Section>
+
+      <Section id="vainqueur" title="Comment on désigne un vainqueur">
+        <ScoreMethod />
       </Section>
 
       <Section id="cout-climat" title="Le coût climat">
@@ -566,16 +572,14 @@ export default async function MethodologiePage() {
       <MissingData stats={stats} />
 
       <Section id="sante" title="Santé : pas de conseil médical">
-        <p className="rounded border border-amber-300 bg-amber-50 px-4 py-3">
+        <p className="m-0 rounded-select bg-track px-4 py-3">
           Les informations de Veganizer sont générales et ne remplacent pas l’avis d’un professionnel
           de santé (médecin, diététicien·ne). Pour toute question sur votre alimentation, notamment en
           cas de grossesse, de maladie ou pour un enfant, consultez un professionnel.
         </p>
       </Section>
 
-      <Link href="/" className="underline">
-        Retour à l’accueil
-      </Link>
+      </Prose>
     </main>
   );
 }

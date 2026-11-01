@@ -4,7 +4,7 @@ import conseilsFile from "@/data/conseils.json";
 import santeFile from "@/data/sante.json";
 import { createPublicClient } from "@/lib/supabase/public";
 import type { Conseil } from "@/lib/scoring";
-import { CIQUAL_SOURCE, CLIMATE_COST_YEARS, CLIMATE_INDICATORS, CLIMATE_MAIN, NUTRIENTS } from "./config";
+import { CIQUAL_SOURCE, CLIMATE_COST_YEARS, CLIMATE_INDICATORS, CLIMATE_MAIN } from "./config";
 import { buildFoodPage, displayName, type FoodPageModel } from "./food";
 import type { RecipeData, RecipeFood, SubstitutionRule } from "./recipe";
 import { buildPairPage, reductionPercent, type IarcEntry, type PairPageModel, type PnnsEntry, type RawPairData } from "./view";
@@ -19,11 +19,28 @@ function rows<T>(res: { data: T[] | null; error: { message: string } | null }, w
   return data;
 }
 
+/** Reads every row of a query, 1000 at a time (the query must have a stable order). */
+async function paged<T>(
+  what: string,
+  query: (from: number, to: number) => PromiseLike<{ data: T[] | null; error: { message: string } | null }>,
+): Promise<T[]> {
+  const out: T[] = [];
+  for (let from = 0; ; from += MAX_ROWS) {
+    const res = await query(from, from + MAX_ROWS - 1);
+    if (res.error) throw new Error(`${what}: ${res.error.message}`);
+    const data = res.data ?? [];
+    out.push(...data);
+    if (data.length < MAX_ROWS) return out;
+  }
+}
+
 export interface PairCard {
   slug: string;
   name: string;
   description: string | null;
-  variants: { variant: "maison" | "commerce"; name: string; co2Reduction: number | null; coverage: number | null }[];
+  /** kg CO2e per serving of the animal dish (dish_impacts view); null = missing. */
+  co2: number | null;
+  variants: { variant: "maison" | "commerce"; name: string; co2: number | null; co2Reduction: number | null; coverage: number | null }[];
 }
 
 /** Published pairs for the home page grid, with the CO2e gap read from the dish_impacts view. */
@@ -49,12 +66,13 @@ export async function listPairs(): Promise<PairCard[]> {
     const a = d.get(p.animal_dish_id);
     const v = d.get(p.vegan_dish_id);
     if (!a || !v || (p.variant !== "maison" && p.variant !== "commerce")) continue;
-    const card = cards.get(a.id) ?? { slug: a.slug, name: a.name_fr, description: a.description, variants: [] };
     const ca = co2.get(a.id);
     const cv = co2.get(v.id);
+    const card = cards.get(a.id) ?? { slug: a.slug, name: a.name_fr, description: a.description, co2: ca?.per_serving ?? null, variants: [] };
     card.variants.push({
       variant: p.variant,
       name: v.name_fr,
+      co2: cv?.per_serving ?? null,
       co2Reduction: reductionPercent(ca?.per_serving ?? null, cv?.per_serving ?? null),
       coverage: ca && cv ? Math.min(Number(ca.mass_coverage), Number(cv.mass_coverage)) : null,
     });
@@ -89,13 +107,15 @@ export async function getPairPage(slug: string): Promise<PairPageModel | null> {
   const codes = [...new Set(ingredients.map((i) => i.food_code))];
   const foods = rows(await db.from("foods").select("code, name_fr, is_animal, animal_category, ciqual_code, iarc_meat, food_subgroup").in("code", codes), "foods");
   const nutrientCodes = [...new Set(foods.map((f) => f.ciqual_code ?? f.code))];
-  const nutrientIds = NUTRIENTS.map((n) => n.id);
 
   const [nutrientValues, impacts, categoryFactors, nutrients, indicators, sources, factors, rules, prices, foodPrices] = await Promise.all([
-    db.from("food_nutrients").select("food_code, nutrient_id, value_per_100g, source_id").in("food_code", nutrientCodes).in("nutrient_id", nutrientIds).eq("source_id", CIQUAL_SOURCE),
+    paged("food_nutrients", (from, to) =>
+      db.from("food_nutrients").select("food_code, nutrient_id, value_per_100g, source_id").in("food_code", nutrientCodes).eq("source_id", CIQUAL_SOURCE)
+        .order("food_code").order("nutrient_id").range(from, to),
+    ),
     db.from("food_impacts").select("food_code, indicator_id, value_per_kg, low_per_kg, high_per_kg, dqr, source_id").in("food_code", codes).in("indicator_id", CLIMATE_INDICATORS),
     db.from("category_factors").select("category, indicator_id, value, low, high, source_id, unit_basis, notes, per, food_codes"),
-    db.from("nutrients").select("id, name_fr, unit").in("id", nutrientIds),
+    db.from("nutrients").select("id, name_fr, unit"),
     db.from("indicators").select("id, name_fr, unit, higher_is_better, pillar"),
     db.from("sources").select("id, name, publisher, version, license, commercial_use, url"),
     db.from("monetization_factors").select("indicator_id, year, eur_per_unit, method, source_id").eq("indicator_id", CLIMATE_MAIN),
@@ -110,7 +130,7 @@ export async function getPairPage(slug: string): Promise<PairPageModel | null> {
     pairs,
     ingredients,
     foods,
-    nutrientValues: rows(nutrientValues, "food_nutrients"),
+    nutrientValues,
     impacts: rows(impacts, "food_impacts"),
     categoryFactors: rows(categoryFactors, "category_factors"),
     nutrients: rows(nutrients, "nutrients"),
@@ -204,12 +224,14 @@ export async function getFoodPage(code: string): Promise<FoodPageModel | null> {
     "foods",
   );
   const nutrientCodes = [...new Set(foods.map((f) => f.ciqual_code ?? f.code))];
-  const nutrientIds = NUTRIENTS.map((n) => n.id);
   const [nutrientValues, impacts, categoryFactors, nutrients, indicators, sources] = await Promise.all([
-    db.from("food_nutrients").select("food_code, nutrient_id, value_per_100g, source_id").in("food_code", nutrientCodes).in("nutrient_id", nutrientIds).eq("source_id", CIQUAL_SOURCE),
+    paged("food_nutrients", (from, to) =>
+      db.from("food_nutrients").select("food_code, nutrient_id, value_per_100g, source_id").in("food_code", nutrientCodes).eq("source_id", CIQUAL_SOURCE)
+        .order("food_code").order("nutrient_id").range(from, to),
+    ),
     db.from("food_impacts").select("food_code, indicator_id, value_per_kg, low_per_kg, high_per_kg, dqr, source_id").in("food_code", codes).in("indicator_id", CLIMATE_INDICATORS),
     db.from("category_factors").select("category, indicator_id, value, low, high, source_id, unit_basis, notes, per, food_codes"),
-    db.from("nutrients").select("id, name_fr, unit").in("id", nutrientIds),
+    db.from("nutrients").select("id, name_fr, unit"),
     db.from("indicators").select("id, name_fr, unit, higher_is_better, pillar"),
     db.from("sources").select("id, name, publisher, version, license, commercial_use, url"),
   ]);
@@ -219,7 +241,7 @@ export async function getFoodPage(code: string): Promise<FoodPageModel | null> {
     foodSubgroup: food.food_subgroup,
     alternatives,
     foods,
-    nutrientValues: rows(nutrientValues, "food_nutrients"),
+    nutrientValues,
     impacts: rows(impacts, "food_impacts"),
     categoryFactors: rows(categoryFactors, "category_factors"),
     nutrients: rows(nutrients, "nutrients"),
@@ -275,12 +297,14 @@ export async function getRecipeData(requested: string[]): Promise<(RecipeData & 
   const foods = rows(await db.from("foods").select("code, name_fr, is_animal, animal_category, ciqual_code, iarc_meat, food_subgroup").in("code", codes), "foods");
   if (foods.length === 0) return null;
   const nutrientCodes = [...new Set(foods.map((f) => f.ciqual_code ?? f.code))];
-  const nutrientIds = NUTRIENTS.map((n) => n.id);
   const [nutrientValues, impacts, categoryFactors, nutrients, indicators, sources, factors, rules, foodPrices] = await Promise.all([
-    db.from("food_nutrients").select("food_code, nutrient_id, value_per_100g, source_id").in("food_code", nutrientCodes).in("nutrient_id", nutrientIds).eq("source_id", CIQUAL_SOURCE),
+    paged("food_nutrients", (from, to) =>
+      db.from("food_nutrients").select("food_code, nutrient_id, value_per_100g, source_id").in("food_code", nutrientCodes).eq("source_id", CIQUAL_SOURCE)
+        .order("food_code").order("nutrient_id").range(from, to),
+    ),
     db.from("food_impacts").select("food_code, indicator_id, value_per_kg, low_per_kg, high_per_kg, dqr, source_id").in("food_code", codes).in("indicator_id", CLIMATE_INDICATORS),
     db.from("category_factors").select("category, indicator_id, value, low, high, source_id, unit_basis, notes, per, food_codes"),
-    db.from("nutrients").select("id, name_fr, unit").in("id", nutrientIds),
+    db.from("nutrients").select("id, name_fr, unit"),
     db.from("indicators").select("id, name_fr, unit, higher_is_better, pillar"),
     db.from("sources").select("id, name, publisher, version, license, commercial_use, url"),
     db.from("monetization_factors").select("indicator_id, year, eur_per_unit, method, source_id").eq("indicator_id", CLIMATE_MAIN),
@@ -291,7 +315,7 @@ export async function getRecipeData(requested: string[]): Promise<(RecipeData & 
     foods,
     recipeFoods: foods.map((f) => ({ code: f.code, name_fr: displayName(f.name_fr), is_animal: f.is_animal, animal_category: f.animal_category, food_subgroup: f.food_subgroup, iarc_meat: f.iarc_meat })),
     substitutions: subs.map((s) => ({ ...s, ratio: Number(s.ratio), match_type: s.match_type as SubstitutionRule["match_type"] })),
-    nutrientValues: rows(nutrientValues, "food_nutrients"),
+    nutrientValues,
     impacts: rows(impacts, "food_impacts"),
     categoryFactors: rows(categoryFactors, "category_factors"),
     nutrients: rows(nutrients, "nutrients"),

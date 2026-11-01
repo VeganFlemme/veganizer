@@ -1,4 +1,6 @@
 "use client";
+// Disabled in V1 (decision of Matt, 2026-11-01): the default Supabase SMTP only mails team members.
+// Re-enable after a custom domain and SMTP (docs/ROADMAP.md, "Hors V1").
 
 import { useEffect, useId, useState } from "react";
 import type { Session } from "@supabase/supabase-js";

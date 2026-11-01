@@ -29,3 +29,19 @@ export {
   type Simulation,
   type YearlyClimateCost,
 } from "./simulate";
+export {
+  roundSignificant,
+  scoreCategory,
+  scoreIndicator,
+  verdict,
+  type CategoryScore,
+  type CategoryWinner,
+  type Direction,
+  type IndicatorOutcome,
+  type IndicatorScore,
+  type IndicatorValues,
+  type ScoreCategoryRule,
+  type ScoreIndicatorRule,
+  type ScoreOptions,
+  type Verdict,
+} from "./score";

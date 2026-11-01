@@ -21,6 +21,7 @@ import {
   CLIMATE_INDICATORS,
   CLIMATE_MAIN,
   COVERAGE_WARNING,
+  directionOf,
   EAT_POULTRY_CATEGORIES,
   EAT_RED_MEAT_CATEGORIES,
   EAT_SEAFOOD_CATEGORIES,
@@ -33,6 +34,7 @@ import {
   PNNS_MEAT_CATEGORIES,
   VEGAN_WORD,
 } from "./config";
+import { scorePair, type PairScores } from "./scores";
 
 // ---------------------------------------------------------------------------
 // Raw rows (subset of the Supabase rows)
@@ -188,6 +190,8 @@ export interface SideValue {
   /** true when the source publishes no range (low = high = value). */
   rangePublished: boolean;
   coverage: number;
+  /** Worst Agribalyse DQR among the ingredients of this dish (null for nutrients and animal factors). */
+  dqr: number | null;
 }
 
 export interface CriterionRow {
@@ -285,6 +289,9 @@ export interface IarcView {
   /** Grams per serving of foods in this IARC category; plant dish: real 0 when no animal ingredient. */
   animalGrams: number;
   vegetalGrams: number;
+  /** Ingredients of each dish in this IARC category (recipe labels). */
+  animalFoods: string[];
+  vegetalFoods: string[];
 }
 
 export interface PnnsView {
@@ -334,6 +341,8 @@ export interface VariantView {
   pnns: PnnsView[];
   eatLancet: PnnsView[];
   sim: SimInput;
+  /** Scores and winners per category (lib/compare/scores.ts, data/score_rules.json). */
+  scores: PairScores;
 }
 
 export interface PairPageModel {
@@ -434,13 +443,17 @@ function side(a: Amount | undefined, basis: Basis): SideValue | null {
     high,
     rangePublished: low != null && high != null && value != null && (low !== value || high !== value),
     coverage: a.massCoverage,
+    dqr: a.worstDqr,
   };
 }
 
+/** Directions of the criteria counted by the score (data/score_rules.json); others get no verdict. */
 function directions(raw: RawPairData): Directions {
   const d: Directions = {};
-  for (const n of NUTRIENTS) if (n.direction !== "none") d[n.id] = { higherIsBetter: n.direction === "up" };
-  for (const i of raw.indicators) d[i.id] = { higherIsBetter: Boolean(i.higher_is_better) };
+  for (const m of [...raw.nutrients, ...raw.indicators]) {
+    const dir = directionOf(m.id);
+    if (dir !== "none") d[m.id] = { higherIsBetter: dir === "up" };
+  }
   return d;
 }
 
@@ -485,16 +498,20 @@ export function rowsFor(animal: DishTotals, vegetal: DishTotals, raw: RawPairDat
     });
   };
 
+  // Every Ciqual constituent is shown (featured ones first); only those of the score get a verdict.
+  const featured = new Set(NUTRIENTS.map((n) => n.id));
+  const others = raw.nutrients
+    .filter((n) => !featured.has(n.id) && (animal.nutrients[n.id] || vegetal.nutrients[n.id]))
+    .sort((x, y) => x.name_fr.localeCompare(y.name_fr, "fr"));
   for (const n of NUTRIENTS) push(n.id, "nutrients", n.direction);
-  for (const id of CLIMATE_INDICATORS) {
-    push(id, "impacts", dirs[id]?.higherIsBetter ? "up" : "down");
-  }
+  for (const n of others) push(n.id, "nutrients", directionOf(n.id));
+  for (const id of CLIMATE_INDICATORS) push(id, "impacts", directionOf(id));
   const animalIds = new Set([...Object.keys(animal.animalImpacts), ...Object.keys(vegetal.animalImpacts)]);
   // Display order: animals, days of life, then pain by increasing intensity (never summed).
   const ORDER = ["animals_killed_land", "fish_killed", "life_days_farmed", "pain_hours_annoying", "pain_hours_hurtful", "pain_hours_disabling", "pain_hours_excruciating"];
   const rank = (id: string) => (ORDER.includes(id) ? ORDER.indexOf(id) : ORDER.length);
   for (const id of [...animalIds].sort((x, y) => rank(x) - rank(y) || x.localeCompare(y))) {
-    push(id, "animalImpacts", dirs[id]?.higherIsBetter ? "up" : "down");
+    push(id, "animalImpacts", directionOf(id));
   }
   return rows;
 }
@@ -609,7 +626,8 @@ export function buildPairPage(raw: RawPairData): PairPageModel {
         .reduce((sum, i) => sum + Number(i.grams), 0) / d.servings;
     const iarc = raw.iarc.map((entry) => {
       usedSources.add(entry.source.sourceId);
-      return { entry, animalGrams: iarcGrams(raw.animal, entry.id), vegetalGrams: iarcGrams(dish, entry.id) };
+      const labels = (d: DishRow) => dishView(d, raw).ingredients.filter((i) => foodsByCode.get(i.code)?.iarc_meat === entry.id).map((i) => i.label);
+      return { entry, animalGrams: iarcGrams(raw.animal, entry.id), vegetalGrams: iarcGrams(dish, entry.id), animalFoods: labels(raw.animal), vegetalFoods: labels(dish) };
     });
 
     const pnnsMatch: Record<string, (f: FoodRow) => boolean> = {
@@ -693,6 +711,7 @@ export function buildPairPage(raw: RawPairData): PairPageModel {
       pnns,
       eatLancet,
       sim: { animal: simTotals(animalTotals), vegetal: simTotals(vegTotals) },
+      scores: scorePair({ rows, iarc, price, climateCost }),
     };
   }
 

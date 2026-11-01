@@ -299,3 +299,15 @@ describe("EAT-Lancet reference diet", () => {
     expect(red.vegetalPercent).toBe(0);
   });
 });
+
+describe("scores on the page model", () => {
+  it("attaches a verdict to each variant and shows every nutrient of the base", () => {
+    const p = buildPairPage(raw());
+    const m = p.variants.maison!;
+    expect(m.scores.verdict.total).toBe(5);
+    expect(m.scores.verdict.categories.find((c) => c.id === "environnement")?.winner).toBe("vegetal");
+    // energy is shown without verdict; B12 is counted
+    expect(m.rows.perServing.find((r) => r.id === "energy_eu_kcal")?.direction).toBe("none");
+    expect(m.rows.perServing.find((r) => r.id === "vit_b12_ug")?.direction).toBe("up");
+  });
+});

@@ -5,7 +5,7 @@ import { Suspense } from "react";
 import { createClient } from "@/lib/supabase/server";
 
 export const metadata: Metadata = {
-  title: "État de la base — Veganizer",
+  title: "État de la base",
   description: "Vérification des droits de lecture publics sur la base Supabase.",
 };
 
@@ -16,7 +16,7 @@ const numberFr = new Intl.NumberFormat("fr-FR", { maximumFractionDigits: 6 });
 
 function Value({ value }: { value: number | null | undefined }) {
   if (value === null || value === undefined) {
-    return <span className="text-amber-700">donnée manquante</span>;
+    return <span className="italic text-ink-3">donnée manquante</span>;
   }
   return <>{numberFr.format(value)}</>;
 }
@@ -79,7 +79,7 @@ async function DatabaseStatus() {
               <li key={year} data-testid={`carbon-${year}`}>
                 {year} : <Value value={row?.eur_per_unit} /> € par kg de CO₂e
                 {row && (
-                  <span className="text-sm text-zinc-500">
+                  <span className="text-sm text-ink-3">
                     {" "}
                     ({row.method}, source <code>{row.source_id}</code>)
                   </span>
@@ -97,7 +97,7 @@ export default function EtatPage() {
   return (
     <main className="mx-auto flex w-full max-w-2xl flex-col gap-6 px-6 py-16">
       <h1 className="text-2xl font-semibold">État de la base</h1>
-      <p className="text-zinc-600">
+      <p className="text-ink-2">
         Lecture en direct avec la clé publique : cette page vérifie que les
         droits de lecture publics fonctionnent.
       </p>

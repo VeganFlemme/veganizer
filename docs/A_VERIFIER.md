@@ -149,9 +149,9 @@ Tous les critères sont respectés.
 
 ## Lot B — S16 « Analyse ta recette »
 
-- [ ] **Table de substitutions** (`pipeline/substitutions.csv`) : relire chaque remplacement et sa justification (viande hachée → lentilles vertes cuites, viande → seitan, poisson et œuf → tofu ferme, charcuterie → tofu fumé, lait → boisson soja enrichie, crème → crème de soja, beurre → huile de colza, fromage → spécialités végétales, yaourt → dessert au soja nature). Ratio 1 (même masse) partout : à ajuster ?
+- [ ] **Table de substitutions** (`pipeline/substitutions.csv`) : relire chaque remplacement et sa justification (viande hachée → lentilles vertes cuites, viande → seitan, poisson et œuf → tofu ferme, charcuterie → tofu fumé, lait → boisson soja enrichie, crème → crème de soja, beurre → huile de colza, fromage → spécialités végétales, yaourt → dessert au soja nature). Ratio 1 (même masse) partout : à ajuster ? *En cours de relecture par Matt (2026-11-01) : ne bloque pas les lots C et D.*
 - [ ] **Vérification faite** : bolognaise de test (400 g de bœuf haché 15 % cuit, 100 g de lardons fumés cuits, 350 g de pâtes cuites, 350 g de coulis, 4 portions) : 4,908 kg CO₂e et 34,4 g de protéines par portion ; version végétale 0,261 kg CO₂e et 21,0 g de protéines. Identique au calcul à la main.
-- [ ] **Connexion par e-mail** : à tester en production. Il faut que `https://veganizer.vercel.app/recette` soit dans les « Redirect URLs » de Supabase Auth (tableau de bord, non vérifiable d'ici) et que l'envoi d'e-mails soit configuré (le service par défaut de Supabase est très limité en volume).
+- [x] **Connexion par e-mail** : à tester en production. Il faut que `https://veganizer.vercel.app/recette` soit dans les « Redirect URLs » de Supabase Auth (tableau de bord, non vérifiable d'ici) et que l'envoi d'e-mails soit configuré (le service par défaut de Supabase est très limité en volume). **Décision de Matt (2026-11-01) : pas de compte en V1**, enregistrement masqué (« bientôt ») ; nom de domaine + SMTP personnalisé dans « Hors V1 ».
 - [ ] **Ingrédients sans remplacement** (ex. miel) : gardés et signalés. Faut-il des règles supplémentaires ?
 
 
@@ -159,9 +159,9 @@ Tous les critères sont respectés.
 
 30 nouvelles paires (40 au total), **toutes à relire** : recettes rédigées par Claude (aucune base de recettes externe utilisée), choisies parmi les plats les plus consommés d'INCA 3 (groupes « plats composés », œufs, sandwichs, pizzas…), pour tous les moments de repas (petit-déjeuner, déjeuner, dîner, goûter). Critères vérifiés automatiquement pour les 90 plats : portion 300-500 g, protéines ≥ 70 % du plat animal, couverture 1,00.
 
-- [ ] **Relire chaque recette** (`pipeline/pairs.csv`, colonne `note`) : réalisme des proportions et des portions. Cas à surveiller : gratin dauphinois végétal avec pois chiches dans la salade (pour atteindre 70 % des protéines) ; tartiflette végétale avec haricots blancs ; steak frites remplacé par 700 g de galettes pour 4 ; pot-au-feu au tempeh (650 g pour 4) ; « cordon bleu » de tempeh ; crêpes du commerce à la boisson au soja aromatisée.
+- [ ] **Relire chaque recette** (`pipeline/pairs.csv`, colonne `note`) : réalisme des proportions et des portions. Cas à surveiller : gratin dauphinois végétal avec pois chiches dans la salade (pour atteindre 70 % des protéines) ; tartiflette végétale avec haricots blancs ; steak frites remplacé par 700 g de galettes pour 4 ; pot-au-feu au tempeh (650 g pour 4) ; « cordon bleu » de tempeh ; crêpes du commerce à la boisson au soja aromatisée. *En cours de relecture par Matt (2026-11-01) : ne bloque pas les lots C et D.*
 - [ ] **Conventions de codes** reprises des 10 premières paires : carottes, endives, poireaux et chair à saucisse au code cru (cuits dans le plat) ; œufs au code « œuf cru » ; pain grillé (7004) comme chapelure.
-- [ ] **Règle 9 et produits du commerce** : des produits végétaux transformés classés « plats composés » par Ciqual sont utilisés comme ingrédients des versions « du commerce » (galette blé-soja 25593, nuggets 25227_1, boulettes 25589_1, bâtonnets panés 25229 ; déjà présents : haché végétal 30181, pavé de soja 20914). Interprétation retenue : la règle vise les ingrédients qui rendraient les impacts animaux incalculables (aliments `mixte`, plats contenant des produits animaux) ; un produit végétal transformé est admis. À valider, sinon ces versions doivent être réécrites.
+- [x] **Règle 9 et produits du commerce** : des produits végétaux transformés classés « plats composés » par Ciqual sont utilisés comme ingrédients des versions « du commerce » (galette blé-soja 25593, nuggets 25227_1, boulettes 25589_1, bâtonnets panés 25229 ; déjà présents : haché végétal 30181, pavé de soja 20914). Interprétation retenue : la règle vise les ingrédients qui rendraient les impacts animaux incalculables (aliments `mixte`, plats contenant des produits animaux) ; un produit végétal transformé est admis. À valider, sinon ces versions doivent être réécrites. **Décision de Matt (2026-11-01) : exception acceptée**, vérification notée dans `pairs.csv` (colonne `rule9_check`) et règle ajoutée à `CLAUDE.md`.
 - [ ] **Objectif 100+ non atteint** : 40 paires. Prochaine série (60+) à prévoir, idéalement après relecture de celles-ci.
 
 Chiffres clés par portion (nouvelles paires) :
@@ -264,3 +264,46 @@ Chiffres clés par portion (nouvelles paires) :
 - [ ] **Correspondance** 6254 (steak haché 15 % cru) → 6255 (cuit) avec la ligne USDA NDB 23574 « Beef, ground, medium fat (12%-22%), patty », Pan-broiled, 73 % (70,78-75,97 %, n = 4) : la poêle correspond-elle bien à la cuisson de Ciqual ? Prix dérivé : 17,53 ÷ 0,73 = 24,01 €/kg (fourchette 22,09-25,08).
 - [ ] **Effet** : la couverture des prix des plats au bœuf haché monte (burger 33 %, lasagnes 30 %, hachis 25 %, boulettes 24 %, chili 21 %) mais reste sous 95 % : aucun prix total n'est encore affiché.
 - [ ] **Suite** : ajouter des prix crus au détail pour d'autres viandes (sans os) et des rendements pour pâtes, riz, légumineuses (pas de source exploitable trouvée : l'Agriculture Handbook 102 n'existe qu'en images scannées).
+
+## Lot C — S18 Scores et vainqueurs
+
+- [ ] **Validation des sens par un·e diététicien·ne** (`data/score_rules.json`, catégorie Nutrition) : protéines, fibres ↑ ; sel, acides gras saturés, sucres ↓ (composantes du Nutri-Score, page Santé publique France mise à jour le 19 mars 2026) ; fer, calcium, zinc, B12, iode, vitamine D, B2 ↑ (références ANSES 2025) ; oméga-3 ALA, EPA, DHA ↑ (ANSES, « Les lipides », 2021). « Plus = mieux » ignore la limite supérieure de sécurité (LSS) : simplification à valider.
+- [ ] **Validation des sens par une personne experte en ACV** : les 16 indicateurs Agribalyse « moins = mieux » ; score unique EF et sous-parties du changement climatique (fossile, biogénique, affectation des sols) affichés, non comptés (pour ne pas compter deux fois). Les valeurs négatives (ex. utilisation des sols) sont comparées telles que publiées.
+- [ ] **Sucres** : comptés « moins = mieux » (sucres totaux, comme le Nutri-Score), conformément à DESIGN.md § 5. Cela remplace la décision de l'étape C (« sucres totaux affichés sans verdict »). Alternative : ne pas les compter (les repères visent les sucres ajoutés).
+- [ ] **Vitamine B2** : ajoutée aux indicateurs comptés (absente de la liste de DESIGN.md § 5) pour ne pas retirer du score un point où le plat animal fait souvent mieux (règle 3). Alternative : l'afficher sans la compter.
+- [ ] **Oméga-3** : trois indicateurs (ALA, EPA, DHA), car l'ANSES donne trois références. Alternative : un seul indicateur « oméga-3 » (pèserait moins dans la catégorie).
+- [ ] **Données partielles non comptées** : un indicateur dont les données couvrent moins de 95 % de la masse d'un plat n'est pas compté (même règle que les verdicts existants). Pour les animaux, une valeur partielle est une borne basse (> 0 contre 0 pour le végétal) qui suffirait à départager ; alternative : compter ces cas.
+- [ ] **Santé** : grammes de viande transformée (CIRC groupe 1) et de viande rouge (groupe 2A) par portion, « moins = mieux ». Les repères PNNS, fondés sur les mêmes grammes, ne sont pas comptés (double compte) ; EAT-Lancet (source provisoire) non compté.
+- [ ] **Économie** : le coût climat est proportionnel au CO₂e déjà compté en environnement (double compte voulu par DESIGN.md § 5). Alternative : ne compter que le prix.
+- [ ] **Bases** : le verdict global et les cartes sont calculés par portion ; seul l'onglet Nutrition suit l'unité choisie (portion, 100 kcal, 10 g de protéines).
+
+## Lot C — S19 Système de design
+
+- [ ] **Contrastes** : 27 couples texte/fond ≥ 4,5:1 et 9 couples marque/fond (séries, anneau de focus) ≥ 3:1, vérifiés par `tests/contrast.test.ts` (formule WCAG 2). Les fonds translucides du bandeau (`rgba(255,255,255,0.08)` sur `ink`) sont calculés par mélange.
+- [ ] **Anneau de focus sur le bandeau sombre** : `#0B6E5D` sur `#0F2724` serait trop peu visible ; le bandeau utilise `plant-on-dark` (`#3FC1A3`). Alternative : anneau blanc.
+- [ ] **Tutoiement** : les nouveaux textes suivent les maquettes (« Ton plat… », « Et si je change ? », « Analyser ma recette »). Les anciennes pages au vouvoiement sont passées au tutoiement là où elles sont refaites. Alternative : vouvoiement partout.
+- [ ] **Favicon** : `app/icon.svg` (logo) remplace le `favicon.ico` par défaut de Next.js ; vieux navigateurs sans SVG : pas d'icône. Alternative : ajouter un `favicon.ico` généré depuis le logo.
+- [ ] **Images de partage** : rendu de `/opengraph-image` et `/compare/<plat>/opengraph-image` (titres longs, accents) à regarder.
+
+## Lot C — S20 Refonte des pages
+
+- [ ] **Nutrition du bœuf bourguignon : « Plat animal, provisoire, 1–0 »**. Seules les protéines sont comparables : fibres, sel, AGS, sucres, fer… ne sont connus que pour 83 à 87 % de la masse (un ingrédient sans valeur Ciqual pour ces constituants, a priori le vin rouge, 250 g sur 1 620 g) et la règle des 95 % les écarte. C'est le résultat strict de la méthode (et celui de la maquette) ; à rediscuter avec la personne diététicienne (ex. seuil de couverture, ou valeurs « traces » de Ciqual). Même effet attendu sur d'autres paires.
+- [ ] **Coût climat : 2025 seulement** dans l'onglet Économie, alors que DESIGN.md § 4 cite 2025 / 2030 / 2050. La règle S14 (une seule année de référence partout) a été gardée. Alternative : afficher 2030 et 2050 comme projections, sans les compter.
+- [ ] **Paire mise en avant sur l'accueil** : bœuf bourguignon (celle des maquettes), choix éditorial. Alternative : paire au hasard ou la plus récente.
+- [ ] **Liste des paires de l'accueil** : triée par CO₂e du plat animal (décroissant), barres à la même échelle, version maison.
+- [ ] **Onglets** : seul l'onglet actif est rendu dans le HTML (les autres sont vides tant qu'on ne les ouvre pas). `?onglet=` est lu dans le navigateur : la page reste statique, l'URL partagée ouvre le bon onglet après chargement (bref affichage de la vue d'ensemble).
+- [ ] **`/aliment/[code]`** : pas de score ni de vainqueur (comparaison simplifiée, sans recette : santé et économie non calculables). Mêmes tableaux et encadrés que `/compare`.
+- [ ] **« Télécharger les données »** : `/compare/<plat>/donnees` renvoie un JSON (valeurs par portion, sources, licences, mention ODbL pour les prix Open Prices). Vérifier que ce format convient.
+- [ ] **Accessibilité** : axe (WCAG 2.1 AA) sans erreur sur toutes les pages et tous les onglets en 375 et 1 280 px (`npm run test:e2e`, serveur lancé) ; navigation clavier des onglets testée.
+
+## Lot D — S21 Finitions techniques et légales
+
+- [ ] **Mentions légales et confidentialité : à compléter par Matt** (`app/mentions-legales/page.tsx`, `app/confidentialite/page.tsx`, marqués « [à compléter par Matt] ») : éditeur, adresse, contact, directeur de la publication, responsable du traitement et adresse pour exercer les droits, durée de conservation des signalements.
+- [ ] **Hébergeurs** : Vercel Inc., 440 N Barranca Avenue #4133, Covina, CA 91723 (page « Privacy Policy » de Vercel, mise à jour le 1er juin 2026) ; Supabase Pte. Ltd., contact privacy@supabase.com (page « Privacy » de Supabase, aucune adresse postale publiée), serveurs à Francfort. À relire.
+- [ ] **Confidentialité** : le formulaire de signalement n'enregistre que la page, le message et la date (`error_reports`, `created_by` reste vide sans compte). Les hébergeurs « peuvent » garder des journaux techniques : formulation prudente, à confirmer.
+- [ ] **Bandeau cookies : aucun.** Vérifié sur le build de production : aucun en-tête `Set-Cookie`, aucun cookie après navigation (accueil, comparaison, recette, aliment), aucune requête vers un autre domaine (police servie par le site).
+- [ ] **Lighthouse mobile** (build de production local, Lighthouse 12) : accueil 94, `/compare/boeuf-bourguignon` 97, `/aliment/6255` 96, `/recette` 99 (après correction d'un décalage de mise en page), `/methodologie` 98 ; accessibilité, bonnes pratiques et SEO à 100 partout. À refaire sur la prévisualisation Vercel (réseau réel).
+- [ ] **axe** : 0 erreur WCAG 2.1 AA sur 15 pages et onglets × 2 largeurs, navigation clavier des onglets (`npm run test:e2e`, 31 tests). Pas encore lancé en CI (il faut un serveur et la clé publique).
+- [ ] **Référencement** : `sitemap.xml` (pages fixes + 40 paires), `robots.txt` (exclut `/api/`, `/etat`, `/introuvable`), titres et descriptions, `canonical`, données structurées (`WebSite` sur l'accueil, `WebPage` + sources `Dataset` sur `/compare`), images de partage. Les 3 684 pages `/aliment` ne sont pas dans le plan du site (comparaisons simplifiées) : à décider.
+- [ ] **Base Supabase** : 97 Mo, soit 19 % des 500 Mo du plan Free (sous le seuil d'alerte de 60 %). Plus grosses tables : `food_nutrients` 35 Mo, `food_impact_ingredients` 32 Mo, `food_impacts` 13 Mo.
+- [x] **Captures** (42 JPEG) : relues par Matt et retirées du dépôt (2026-11-01) ; elles restent consultables par les liens de la PR #15 et se régénèrent avec `npm run captures`.

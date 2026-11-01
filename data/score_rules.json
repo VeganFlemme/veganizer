@@ -1,0 +1,658 @@
+{
+  "version": "1.0",
+  "date": "2026-11-01",
+  "status": "Provisoire : sens à valider par un·e diététicien·ne et une personne experte en ACV (docs/A_VERIFIER.md).",
+  "method": {
+    "point": "Un point pour le plat qui fait strictement mieux, à l'unité affichée (par portion par défaut), après arrondi d'affichage (3 chiffres significatifs). Égalité après arrondi : aucun point.",
+    "missing": "Valeur manquante d'un côté ou de l'autre, ou données couvrant moins de 95 % de la masse d'un des plats : indicateur non compté (« x indicateurs comparés sur y »).",
+    "winner": "Plus de points = vainqueur de la catégorie ; autant de points = « Égalité » ; aucun indicateur comparé = « Données insuffisantes ».",
+    "provisional": "« provisoire » quand moins de la moitié des indicateurs de la catégorie sont comparés.",
+    "verdict": "Verdict global = nombre de catégories gagnées par chaque plat (« 4 sur 5 »). Pas de note pondérée en V1."
+  },
+  "significantDigits": 3,
+  "provisionalBelowShare": 0.5,
+  "categories": [
+    {
+      "id": "nutrition",
+      "label": "Nutrition",
+      "short": "Nutrition",
+      "indicators": [
+        {
+          "id": "protein_g",
+          "label": "Protéines",
+          "group": "nutrients",
+          "direction": "higher_is_better",
+          "justification": "Composante « à favoriser » du Nutri-Score.",
+          "source": {
+            "publisher": "Santé publique France",
+            "title": "Nutri-Score",
+            "url": "https://www.santepubliquefrance.fr/nutrition-et-activite-physique/nutri-score",
+            "date": "mise à jour du 19 mars 2026",
+            "accessedOn": "2026-11-01",
+            "quote": "nutriments et aliments à favoriser (fibres, protéines, fruits, légumes, légumes secs) ; […] nutriments à limiter (énergie, acides gras saturés, sucres, sel et édulcorants pour les boissons)"
+          }
+        },
+        {
+          "id": "fiber_g",
+          "label": "Fibres",
+          "group": "nutrients",
+          "direction": "higher_is_better",
+          "justification": "Composante « à favoriser » du Nutri-Score.",
+          "source": {
+            "publisher": "Santé publique France",
+            "title": "Nutri-Score",
+            "url": "https://www.santepubliquefrance.fr/nutrition-et-activite-physique/nutri-score",
+            "date": "mise à jour du 19 mars 2026",
+            "accessedOn": "2026-11-01",
+            "quote": "nutriments et aliments à favoriser (fibres, protéines, fruits, légumes, légumes secs) ; […] nutriments à limiter (énergie, acides gras saturés, sucres, sel et édulcorants pour les boissons)"
+          }
+        },
+        {
+          "id": "salt_g",
+          "label": "Sel",
+          "group": "nutrients",
+          "direction": "lower_is_better",
+          "justification": "Composante « à limiter » du Nutri-Score.",
+          "source": {
+            "publisher": "Santé publique France",
+            "title": "Nutri-Score",
+            "url": "https://www.santepubliquefrance.fr/nutrition-et-activite-physique/nutri-score",
+            "date": "mise à jour du 19 mars 2026",
+            "accessedOn": "2026-11-01",
+            "quote": "nutriments et aliments à favoriser (fibres, protéines, fruits, légumes, légumes secs) ; […] nutriments à limiter (énergie, acides gras saturés, sucres, sel et édulcorants pour les boissons)"
+          }
+        },
+        {
+          "id": "fa_sat_g",
+          "label": "Acides gras saturés",
+          "group": "nutrients",
+          "direction": "lower_is_better",
+          "justification": "Composante « à limiter » du Nutri-Score.",
+          "source": {
+            "publisher": "Santé publique France",
+            "title": "Nutri-Score",
+            "url": "https://www.santepubliquefrance.fr/nutrition-et-activite-physique/nutri-score",
+            "date": "mise à jour du 19 mars 2026",
+            "accessedOn": "2026-11-01",
+            "quote": "nutriments et aliments à favoriser (fibres, protéines, fruits, légumes, légumes secs) ; […] nutriments à limiter (énergie, acides gras saturés, sucres, sel et édulcorants pour les boissons)"
+          }
+        },
+        {
+          "id": "sugars_g",
+          "label": "Sucres",
+          "group": "nutrients",
+          "direction": "lower_is_better",
+          "justification": "Composante « à limiter » du Nutri-Score, qui compte les sucres totaux (Ciqual donne aussi les sucres totaux).",
+          "source": {
+            "publisher": "Santé publique France",
+            "title": "Nutri-Score",
+            "url": "https://www.santepubliquefrance.fr/nutrition-et-activite-physique/nutri-score",
+            "date": "mise à jour du 19 mars 2026",
+            "accessedOn": "2026-11-01",
+            "quote": "nutriments et aliments à favoriser (fibres, protéines, fruits, légumes, légumes secs) ; […] nutriments à limiter (énergie, acides gras saturés, sucres, sel et édulcorants pour les boissons)"
+          }
+        },
+        {
+          "id": "fe_mg",
+          "label": "Fer",
+          "group": "nutrients",
+          "direction": "higher_is_better",
+          "justification": "Apport de référence ANSES (RNP ou AS) : sur un repas, plus d'apport aide à atteindre la référence. Simplification à valider : la limite supérieure de sécurité (LSS) n'est pas prise en compte, aucun repas étudié n'en approche.",
+          "source": {
+            "publisher": "ANSES",
+            "title": "Les références nutritionnelles en vitamines et minéraux",
+            "url": "https://www.anses.fr/fr/content/les-r%C3%A9f%C3%A9rences-nutritionnelles-en-vitamines-et-min%C3%A9raux",
+            "date": "21/02/2025",
+            "accessedOn": "2026-11-01",
+            "quote": "La RNP est l’apport qui couvre en théorie le besoin de presque toute la population considérée"
+          }
+        },
+        {
+          "id": "ca_mg",
+          "label": "Calcium",
+          "group": "nutrients",
+          "direction": "higher_is_better",
+          "justification": "Apport de référence ANSES (RNP ou AS) : sur un repas, plus d'apport aide à atteindre la référence. Simplification à valider : la limite supérieure de sécurité (LSS) n'est pas prise en compte, aucun repas étudié n'en approche.",
+          "source": {
+            "publisher": "ANSES",
+            "title": "Les références nutritionnelles en vitamines et minéraux",
+            "url": "https://www.anses.fr/fr/content/les-r%C3%A9f%C3%A9rences-nutritionnelles-en-vitamines-et-min%C3%A9raux",
+            "date": "21/02/2025",
+            "accessedOn": "2026-11-01",
+            "quote": "La RNP est l’apport qui couvre en théorie le besoin de presque toute la population considérée"
+          }
+        },
+        {
+          "id": "zn_mg",
+          "label": "Zinc",
+          "group": "nutrients",
+          "direction": "higher_is_better",
+          "justification": "Apport de référence ANSES (RNP ou AS) : sur un repas, plus d'apport aide à atteindre la référence. Simplification à valider : la limite supérieure de sécurité (LSS) n'est pas prise en compte, aucun repas étudié n'en approche.",
+          "source": {
+            "publisher": "ANSES",
+            "title": "Les références nutritionnelles en vitamines et minéraux",
+            "url": "https://www.anses.fr/fr/content/les-r%C3%A9f%C3%A9rences-nutritionnelles-en-vitamines-et-min%C3%A9raux",
+            "date": "21/02/2025",
+            "accessedOn": "2026-11-01",
+            "quote": "La RNP est l’apport qui couvre en théorie le besoin de presque toute la population considérée"
+          }
+        },
+        {
+          "id": "vit_b12_ug",
+          "label": "Vitamine B12",
+          "group": "nutrients",
+          "direction": "higher_is_better",
+          "justification": "Apport de référence ANSES (RNP ou AS) : sur un repas, plus d'apport aide à atteindre la référence. Simplification à valider : la limite supérieure de sécurité (LSS) n'est pas prise en compte, aucun repas étudié n'en approche.",
+          "source": {
+            "publisher": "ANSES",
+            "title": "Les références nutritionnelles en vitamines et minéraux",
+            "url": "https://www.anses.fr/fr/content/les-r%C3%A9f%C3%A9rences-nutritionnelles-en-vitamines-et-min%C3%A9raux",
+            "date": "21/02/2025",
+            "accessedOn": "2026-11-01",
+            "quote": "La RNP est l’apport qui couvre en théorie le besoin de presque toute la population considérée"
+          }
+        },
+        {
+          "id": "i_ug",
+          "label": "Iode",
+          "group": "nutrients",
+          "direction": "higher_is_better",
+          "justification": "Apport de référence ANSES (RNP ou AS) : sur un repas, plus d'apport aide à atteindre la référence. Simplification à valider : la limite supérieure de sécurité (LSS) n'est pas prise en compte, aucun repas étudié n'en approche.",
+          "source": {
+            "publisher": "ANSES",
+            "title": "Les références nutritionnelles en vitamines et minéraux",
+            "url": "https://www.anses.fr/fr/content/les-r%C3%A9f%C3%A9rences-nutritionnelles-en-vitamines-et-min%C3%A9raux",
+            "date": "21/02/2025",
+            "accessedOn": "2026-11-01",
+            "quote": "La RNP est l’apport qui couvre en théorie le besoin de presque toute la population considérée"
+          }
+        },
+        {
+          "id": "vit_d_ug",
+          "label": "Vitamine D",
+          "group": "nutrients",
+          "direction": "higher_is_better",
+          "justification": "Apport de référence ANSES (RNP ou AS) : sur un repas, plus d'apport aide à atteindre la référence. Simplification à valider : la limite supérieure de sécurité (LSS) n'est pas prise en compte, aucun repas étudié n'en approche.",
+          "source": {
+            "publisher": "ANSES",
+            "title": "Les références nutritionnelles en vitamines et minéraux",
+            "url": "https://www.anses.fr/fr/content/les-r%C3%A9f%C3%A9rences-nutritionnelles-en-vitamines-et-min%C3%A9raux",
+            "date": "21/02/2025",
+            "accessedOn": "2026-11-01",
+            "quote": "La RNP est l’apport qui couvre en théorie le besoin de presque toute la population considérée"
+          }
+        },
+        {
+          "id": "vit_b2_mg",
+          "label": "Vitamine B2",
+          "group": "nutrients",
+          "direction": "higher_is_better",
+          "justification": "Apport de référence ANSES (RNP ou AS) : sur un repas, plus d'apport aide à atteindre la référence. Simplification à valider : la limite supérieure de sécurité (LSS) n'est pas prise en compte, aucun repas étudié n'en approche. Ajoutée à la liste de DESIGN.md : point où le plat animal fait souvent mieux (règle 3), à ne pas exclure du score.",
+          "source": {
+            "publisher": "ANSES",
+            "title": "Les références nutritionnelles en vitamines et minéraux",
+            "url": "https://www.anses.fr/fr/content/les-r%C3%A9f%C3%A9rences-nutritionnelles-en-vitamines-et-min%C3%A9raux",
+            "date": "21/02/2025",
+            "accessedOn": "2026-11-01",
+            "quote": "La RNP est l’apport qui couvre en théorie le besoin de presque toute la population considérée"
+          }
+        },
+        {
+          "id": "fa_c18_3_n3_ala_g",
+          "label": "Oméga-3 ALA",
+          "group": "nutrients",
+          "direction": "higher_is_better",
+          "justification": "Référence nutritionnelle ANSES (1 % de l'apport énergétique).",
+          "source": {
+            "publisher": "ANSES",
+            "title": "Les lipides",
+            "url": "https://www.anses.fr/fr/content/les-lipides",
+            "date": "15/03/2021",
+            "accessedOn": "2026-11-01",
+            "quote": "Références nutritionnelles en acides gras pour l'adulte consommant 2000 kcal par jour : acide α-linolénique 1 % AE ; DHA 250 mg ; EPA 250 mg"
+          }
+        },
+        {
+          "id": "fa_c20_5_n3_epa_g",
+          "label": "Oméga-3 EPA",
+          "group": "nutrients",
+          "direction": "higher_is_better",
+          "justification": "Référence nutritionnelle ANSES (250 mg par jour).",
+          "source": {
+            "publisher": "ANSES",
+            "title": "Les lipides",
+            "url": "https://www.anses.fr/fr/content/les-lipides",
+            "date": "15/03/2021",
+            "accessedOn": "2026-11-01",
+            "quote": "Références nutritionnelles en acides gras pour l'adulte consommant 2000 kcal par jour : acide α-linolénique 1 % AE ; DHA 250 mg ; EPA 250 mg"
+          }
+        },
+        {
+          "id": "fa_c22_6_n3_dha_g",
+          "label": "Oméga-3 DHA",
+          "group": "nutrients",
+          "direction": "higher_is_better",
+          "justification": "Référence nutritionnelle ANSES (250 mg par jour).",
+          "source": {
+            "publisher": "ANSES",
+            "title": "Les lipides",
+            "url": "https://www.anses.fr/fr/content/les-lipides",
+            "date": "15/03/2021",
+            "accessedOn": "2026-11-01",
+            "quote": "Références nutritionnelles en acides gras pour l'adulte consommant 2000 kcal par jour : acide α-linolénique 1 % AE ; DHA 250 mg ; EPA 250 mg"
+          }
+        }
+      ],
+      "displayedNotCounted": [
+        {
+          "id": "energy_eu_kcal",
+          "reason": "Le besoin en énergie dépend de la personne : affichée, non comptée."
+        },
+        {
+          "id": "*",
+          "reason": "Les autres constituants Ciqual sont affichés dans l'onglet Nutrition sans être comptés (pas de sens validé)."
+        }
+      ]
+    },
+    {
+      "id": "sante",
+      "label": "Santé",
+      "short": "Santé",
+      "indicators": [
+        {
+          "id": "iarc_1_g",
+          "label": "Viande transformée (CIRC groupe 1), g par portion",
+          "group": "iarc",
+          "iarcId": "transformée",
+          "direction": "lower_is_better",
+          "justification": "Classée cancérogène pour l'humain (groupe 1).",
+          "source": {
+            "publisher": "CIRC (OMS)",
+            "title": "IARC Monographs volume 114 — Red Meat and Processed Meat",
+            "url": "https://publications.iarc.who.int/564",
+            "pages": "p. 37 (§ 1.1.1, § 1.1.3) et p. 501 (§ 6.3)",
+            "accessedOn": "2026-11-01"
+          }
+        },
+        {
+          "id": "iarc_2a_g",
+          "label": "Viande rouge (CIRC groupe 2A), g par portion",
+          "group": "iarc",
+          "iarcId": "rouge",
+          "direction": "lower_is_better",
+          "justification": "Classée probablement cancérogène pour l'humain (groupe 2A).",
+          "source": {
+            "publisher": "CIRC (OMS)",
+            "title": "IARC Monographs volume 114 — Red Meat and Processed Meat",
+            "url": "https://publications.iarc.who.int/564",
+            "pages": "p. 37 (§ 1.1.1, § 1.1.3) et p. 501 (§ 6.3)",
+            "accessedOn": "2026-11-01"
+          }
+        }
+      ],
+      "displayedNotCounted": [
+        {
+          "id": "pnns",
+          "reason": "Repères PNNS : mêmes grammes de viande que le CIRC, non comptés pour ne pas compter deux fois."
+        },
+        {
+          "id": "eat-lancet",
+          "reason": "Source provisoire (résumé EAT Forum)."
+        },
+        {
+          "id": "heni_minutes",
+          "reason": "Non intégré (licence)."
+        }
+      ]
+    },
+    {
+      "id": "environnement",
+      "label": "Environnement",
+      "short": "Environ­nement",
+      "indicators": [
+        {
+          "id": "ghg_100y_kgco2e",
+          "label": "Changement climatique",
+          "group": "impacts",
+          "direction": "lower_is_better",
+          "justification": "Indicateur d'impact de la méthode Environmental Footprint utilisée par Agribalyse : moins = mieux.",
+          "source": {
+            "publisher": "ADEME",
+            "title": "Agribalyse 3.2",
+            "sourceId": "agribalyse-3.2",
+            "note": "indicateurs d'impact : une valeur plus faible = moins d'impact (indicators.higher_is_better = false)"
+          }
+        },
+        {
+          "id": "ozone_depletion_kgcfc11",
+          "label": "Appauvrissement de la couche d'ozone",
+          "group": "impacts",
+          "direction": "lower_is_better",
+          "justification": "Indicateur d'impact de la méthode Environmental Footprint utilisée par Agribalyse : moins = mieux.",
+          "source": {
+            "publisher": "ADEME",
+            "title": "Agribalyse 3.2",
+            "sourceId": "agribalyse-3.2",
+            "note": "indicateurs d'impact : une valeur plus faible = moins d'impact (indicators.higher_is_better = false)"
+          }
+        },
+        {
+          "id": "ionising_radiation_kbq",
+          "label": "Rayonnements ionisants",
+          "group": "impacts",
+          "direction": "lower_is_better",
+          "justification": "Indicateur d'impact de la méthode Environmental Footprint utilisée par Agribalyse : moins = mieux.",
+          "source": {
+            "publisher": "ADEME",
+            "title": "Agribalyse 3.2",
+            "sourceId": "agribalyse-3.2",
+            "note": "indicateurs d'impact : une valeur plus faible = moins d'impact (indicators.higher_is_better = false)"
+          }
+        },
+        {
+          "id": "photochem_ozone_kgnmvoc",
+          "label": "Formation photochimique d'ozone",
+          "group": "impacts",
+          "direction": "lower_is_better",
+          "justification": "Indicateur d'impact de la méthode Environmental Footprint utilisée par Agribalyse : moins = mieux.",
+          "source": {
+            "publisher": "ADEME",
+            "title": "Agribalyse 3.2",
+            "sourceId": "agribalyse-3.2",
+            "note": "indicateurs d'impact : une valeur plus faible = moins d'impact (indicators.higher_is_better = false)"
+          }
+        },
+        {
+          "id": "particulates",
+          "label": "Particules fines",
+          "group": "impacts",
+          "direction": "lower_is_better",
+          "justification": "Indicateur d'impact de la méthode Environmental Footprint utilisée par Agribalyse : moins = mieux.",
+          "source": {
+            "publisher": "ADEME",
+            "title": "Agribalyse 3.2",
+            "sourceId": "agribalyse-3.2",
+            "note": "indicateurs d'impact : une valeur plus faible = moins d'impact (indicators.higher_is_better = false)"
+          }
+        },
+        {
+          "id": "human_tox_noncancer_ctuh",
+          "label": "Toxicité humaine, effets non cancérogènes",
+          "group": "impacts",
+          "direction": "lower_is_better",
+          "justification": "Indicateur d'impact de la méthode Environmental Footprint utilisée par Agribalyse : moins = mieux.",
+          "source": {
+            "publisher": "ADEME",
+            "title": "Agribalyse 3.2",
+            "sourceId": "agribalyse-3.2",
+            "note": "indicateurs d'impact : une valeur plus faible = moins d'impact (indicators.higher_is_better = false)"
+          }
+        },
+        {
+          "id": "human_tox_cancer_ctuh",
+          "label": "Toxicité humaine, effets cancérogènes",
+          "group": "impacts",
+          "direction": "lower_is_better",
+          "justification": "Indicateur d'impact de la méthode Environmental Footprint utilisée par Agribalyse : moins = mieux.",
+          "source": {
+            "publisher": "ADEME",
+            "title": "Agribalyse 3.2",
+            "sourceId": "agribalyse-3.2",
+            "note": "indicateurs d'impact : une valeur plus faible = moins d'impact (indicators.higher_is_better = false)"
+          }
+        },
+        {
+          "id": "acidification_molh",
+          "label": "Acidification",
+          "group": "impacts",
+          "direction": "lower_is_better",
+          "justification": "Indicateur d'impact de la méthode Environmental Footprint utilisée par Agribalyse : moins = mieux.",
+          "source": {
+            "publisher": "ADEME",
+            "title": "Agribalyse 3.2",
+            "sourceId": "agribalyse-3.2",
+            "note": "indicateurs d'impact : une valeur plus faible = moins d'impact (indicators.higher_is_better = false)"
+          }
+        },
+        {
+          "id": "eutro_fw_kgp",
+          "label": "Eutrophisation eau douce",
+          "group": "impacts",
+          "direction": "lower_is_better",
+          "justification": "Indicateur d'impact de la méthode Environmental Footprint utilisée par Agribalyse : moins = mieux.",
+          "source": {
+            "publisher": "ADEME",
+            "title": "Agribalyse 3.2",
+            "sourceId": "agribalyse-3.2",
+            "note": "indicateurs d'impact : une valeur plus faible = moins d'impact (indicators.higher_is_better = false)"
+          }
+        },
+        {
+          "id": "eutro_marine_kgn",
+          "label": "Eutrophisation marine",
+          "group": "impacts",
+          "direction": "lower_is_better",
+          "justification": "Indicateur d'impact de la méthode Environmental Footprint utilisée par Agribalyse : moins = mieux.",
+          "source": {
+            "publisher": "ADEME",
+            "title": "Agribalyse 3.2",
+            "sourceId": "agribalyse-3.2",
+            "note": "indicateurs d'impact : une valeur plus faible = moins d'impact (indicators.higher_is_better = false)"
+          }
+        },
+        {
+          "id": "eutro_terrestrial_moln",
+          "label": "Eutrophisation terrestre",
+          "group": "impacts",
+          "direction": "lower_is_better",
+          "justification": "Indicateur d'impact de la méthode Environmental Footprint utilisée par Agribalyse : moins = mieux.",
+          "source": {
+            "publisher": "ADEME",
+            "title": "Agribalyse 3.2",
+            "sourceId": "agribalyse-3.2",
+            "note": "indicateurs d'impact : une valeur plus faible = moins d'impact (indicators.higher_is_better = false)"
+          }
+        },
+        {
+          "id": "ecotox_ctue",
+          "label": "Écotoxicité eau douce",
+          "group": "impacts",
+          "direction": "lower_is_better",
+          "justification": "Indicateur d'impact de la méthode Environmental Footprint utilisée par Agribalyse : moins = mieux.",
+          "source": {
+            "publisher": "ADEME",
+            "title": "Agribalyse 3.2",
+            "sourceId": "agribalyse-3.2",
+            "note": "indicateurs d'impact : une valeur plus faible = moins d'impact (indicators.higher_is_better = false)"
+          }
+        },
+        {
+          "id": "land_use_pt",
+          "label": "Utilisation des sols",
+          "group": "impacts",
+          "direction": "lower_is_better",
+          "justification": "Indicateur d'impact de la méthode Environmental Footprint utilisée par Agribalyse : moins = mieux.",
+          "source": {
+            "publisher": "ADEME",
+            "title": "Agribalyse 3.2",
+            "sourceId": "agribalyse-3.2",
+            "note": "indicateurs d'impact : une valeur plus faible = moins d'impact (indicators.higher_is_better = false)"
+          }
+        },
+        {
+          "id": "water_scarcity_m3",
+          "label": "Eau (raréfaction)",
+          "group": "impacts",
+          "direction": "lower_is_better",
+          "justification": "Indicateur d'impact de la méthode Environmental Footprint utilisée par Agribalyse : moins = mieux.",
+          "source": {
+            "publisher": "ADEME",
+            "title": "Agribalyse 3.2",
+            "sourceId": "agribalyse-3.2",
+            "note": "indicateurs d'impact : une valeur plus faible = moins d'impact (indicators.higher_is_better = false)"
+          }
+        },
+        {
+          "id": "resource_energy_mj",
+          "label": "Ressources énergétiques",
+          "group": "impacts",
+          "direction": "lower_is_better",
+          "justification": "Indicateur d'impact de la méthode Environmental Footprint utilisée par Agribalyse : moins = mieux.",
+          "source": {
+            "publisher": "ADEME",
+            "title": "Agribalyse 3.2",
+            "sourceId": "agribalyse-3.2",
+            "note": "indicateurs d'impact : une valeur plus faible = moins d'impact (indicators.higher_is_better = false)"
+          }
+        },
+        {
+          "id": "resource_minerals_kgsb",
+          "label": "Ressources minérales",
+          "group": "impacts",
+          "direction": "lower_is_better",
+          "justification": "Indicateur d'impact de la méthode Environmental Footprint utilisée par Agribalyse : moins = mieux.",
+          "source": {
+            "publisher": "ADEME",
+            "title": "Agribalyse 3.2",
+            "sourceId": "agribalyse-3.2",
+            "note": "indicateurs d'impact : une valeur plus faible = moins d'impact (indicators.higher_is_better = false)"
+          }
+        }
+      ],
+      "displayedNotCounted": [
+        {
+          "id": "ef_single_score",
+          "reason": "Score unique EF : agrège les 16 indicateurs, non compté pour ne pas compter deux fois."
+        },
+        {
+          "id": "ghg_biogenic_kgco2e",
+          "reason": "Sous-partie du changement climatique."
+        },
+        {
+          "id": "ghg_fossil_kgco2e",
+          "reason": "Sous-partie du changement climatique."
+        },
+        {
+          "id": "ghg_luc_kgco2e",
+          "reason": "Sous-partie du changement climatique."
+        }
+      ]
+    },
+    {
+      "id": "animaux",
+      "label": "Protection animale",
+      "short": "Animaux",
+      "indicators": [
+        {
+          "id": "animals_killed_land",
+          "label": "Animaux terrestres tués",
+          "group": "animalImpacts",
+          "direction": "lower_is_better",
+          "justification": "Moins d'animaux tués, de jours en élevage ou d'heures de douleur = mieux (mission du site, CLAUDE.md).",
+          "source": {
+            "publisher": "FAOSTAT, Agreste, Welfare Footprint, Fishcount",
+            "note": "sources des valeurs, citées à chaque ligne"
+          }
+        },
+        {
+          "id": "life_days_farmed",
+          "label": "Jours de vie en élevage",
+          "group": "animalImpacts",
+          "direction": "lower_is_better",
+          "justification": "Moins d'animaux tués, de jours en élevage ou d'heures de douleur = mieux (mission du site, CLAUDE.md).",
+          "source": {
+            "publisher": "FAOSTAT, Agreste, Welfare Footprint, Fishcount",
+            "note": "sources des valeurs, citées à chaque ligne"
+          }
+        },
+        {
+          "id": "pain_hours_annoying",
+          "label": "Douleur gênante",
+          "group": "animalImpacts",
+          "direction": "lower_is_better",
+          "justification": "Moins d'animaux tués, de jours en élevage ou d'heures de douleur = mieux (mission du site, CLAUDE.md).",
+          "source": {
+            "publisher": "FAOSTAT, Agreste, Welfare Footprint, Fishcount",
+            "note": "sources des valeurs, citées à chaque ligne"
+          }
+        },
+        {
+          "id": "pain_hours_hurtful",
+          "label": "Douleur pénible",
+          "group": "animalImpacts",
+          "direction": "lower_is_better",
+          "justification": "Moins d'animaux tués, de jours en élevage ou d'heures de douleur = mieux (mission du site, CLAUDE.md).",
+          "source": {
+            "publisher": "FAOSTAT, Agreste, Welfare Footprint, Fishcount",
+            "note": "sources des valeurs, citées à chaque ligne"
+          }
+        },
+        {
+          "id": "pain_hours_disabling",
+          "label": "Douleur invalidante",
+          "group": "animalImpacts",
+          "direction": "lower_is_better",
+          "justification": "Moins d'animaux tués, de jours en élevage ou d'heures de douleur = mieux (mission du site, CLAUDE.md).",
+          "source": {
+            "publisher": "FAOSTAT, Agreste, Welfare Footprint, Fishcount",
+            "note": "sources des valeurs, citées à chaque ligne"
+          }
+        },
+        {
+          "id": "pain_hours_excruciating",
+          "label": "Douleur atroce",
+          "group": "animalImpacts",
+          "direction": "lower_is_better",
+          "justification": "Moins d'animaux tués, de jours en élevage ou d'heures de douleur = mieux (mission du site, CLAUDE.md).",
+          "source": {
+            "publisher": "FAOSTAT, Agreste, Welfare Footprint, Fishcount",
+            "note": "sources des valeurs, citées à chaque ligne"
+          }
+        },
+        {
+          "id": "fish_killed",
+          "label": "Poissons tués",
+          "group": "animalImpacts",
+          "direction": "lower_is_better",
+          "justification": "Moins d'animaux tués, de jours en élevage ou d'heures de douleur = mieux (mission du site, CLAUDE.md).",
+          "source": {
+            "publisher": "FAOSTAT, Agreste, Welfare Footprint, Fishcount",
+            "note": "sources des valeurs, citées à chaque ligne"
+          }
+        }
+      ],
+      "displayedNotCounted": []
+    },
+    {
+      "id": "economie",
+      "label": "Économie",
+      "short": "Économie",
+      "indicators": [
+        {
+          "id": "price_eur",
+          "label": "Prix en magasin, par portion",
+          "group": "price",
+          "direction": "lower_is_better",
+          "justification": "Moins cher pour la personne qui cuisine.",
+          "source": {
+            "publisher": "RNM (FranceAgriMer), Open Prices",
+            "note": "prix affiché seulement si les relevés couvrent au moins 95 % de la masse"
+          }
+        },
+        {
+          "id": "climate_cost_eur",
+          "label": "Coût climat pour la société, par portion",
+          "group": "climateCost",
+          "direction": "lower_is_better",
+          "justification": "Dommage climatique évalué à la valeur de l'action pour le climat de l'année de référence.",
+          "source": {
+            "publisher": "France Stratégie",
+            "title": "Valeur de l'action pour le climat (rapport de mars 2025)",
+            "sourceId": "vac-2025"
+          }
+        }
+      ],
+      "displayedNotCounted": []
+    }
+  ]
+}

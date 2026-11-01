@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { formatEur, formatValue, gapSentence, MISSING } from "@/lib/format";
+import { formatEur, formatValue, gapSentence, MISSING, signedGap, withUnit } from "@/lib/format";
 
 // Intl uses narrow no-break spaces in fr-FR; normalise them for readable assertions.
 const n = (s: string) => s.replace(/[  ]/g, " ");
@@ -20,9 +20,21 @@ describe("format", () => {
     expect(n(formatEur(1.2876))).toBe("1,29 €");
   });
   it("words the gap from the plant dish point of view", () => {
-    expect(gapSentence(87.4)).toBe("87 % de moins");
-    expect(gapSentence(-20)).toBe("20 % de plus");
+    expect(gapSentence(87.4)).toBe("87\u00a0% de moins");
+    expect(gapSentence(-20)).toBe("20\u00a0% de plus");
     expect(gapSentence(0.2)).toBe("à peu près pareil");
     expect(gapSentence(null)).toBe("écart non calculable");
+  });
+});
+
+describe("signedGap and withUnit", () => {
+  it("writes the gap with a sign and a no-break space", () => {
+    expect(signedGap(87.4)).toBe("−87\u00a0%");
+    expect(signedGap(-12)).toBe("+12\u00a0%");
+    expect(signedGap(null)).toBe("donnée manquante");
+  });
+  it("joins value and unit with a no-break space, never for missing data", () => {
+    expect(withUnit(5.034, "kg")).toBe("5,03\u00a0kg");
+    expect(withUnit(null, "kg")).toBe("donnée manquante");
   });
 });

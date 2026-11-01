@@ -5,5 +5,10 @@ import dynamic from "next/dynamic";
 // The recipe builder reads the draft saved in this browser: no server rendering.
 export const RecipeBuilderClient = dynamic(() => import("./RecipeBuilder").then((m) => m.RecipeBuilder), {
   ssr: false,
-  loading: () => <p className="text-zinc-700">Chargement de l’outil…</p>,
+  // Same footprint as the empty builder, so that nothing moves when it appears (CLS).
+  loading: () => (
+    <div className="mx-auto w-full max-w-[1200px] px-5 md:px-8">
+      <div className="flex min-h-[505px] items-start rounded-panel bg-surface p-5 text-ink-2 shadow-card md:min-h-[400px] md:p-6">Chargement de l’outil…</div>
+    </div>
+  ),
 });

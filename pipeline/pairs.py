@@ -11,7 +11,11 @@ Rules checked before any write (CLAUDE.md rules 9, 10 and 11):
   pipeline/animal_categories.csv; a food listed as mixte is never accepted;
 - a plant dish contains no food of animal_categories.csv;
 - one row per (dish, food): merge quantities instead of repeating a code;
-- every code exists in foods; a variant without ciqual_code is refused (nutrients would be missing).
+- every code exists in foods; a variant without ciqual_code is refused (nutrients would be missing);
+- rule 9 exception (decision of Matt, 2026-11-01): a store-bought plant product classified as a
+  composed dish by Ciqual ("entrées et plats composés") is accepted as an ingredient only in a plant
+  dish, with is_animal = false (no animal ingredient in the Agribalyse detail) and the check written
+  in the rule9_check column of pairs.csv.
 The criteria of each pair (serving mass, protein ratio, mass coverage) are printed after import,
 read back from the dish_nutrients / dish_impacts views.
 
@@ -110,16 +114,34 @@ def validate(dishes: list[dict[str, str]], ingredients: list[dict[str, str]], co
         raise PairError("\n".join(errors))
 
 
+COMPOSED_GROUP = "entrées et plats composés"
+
+
+def composed_dish_error(row: dict[str, str], food: dict) -> str | None:
+    """Rule 9 exception: a Ciqual composed dish is accepted only as a checked plant product."""
+    if food.get("food_group") != COMPOSED_GROUP:
+        return None
+    where = f"{row['dish_slug']}: {food['code']} {food['name_fr']} is a composed dish (rule 9)"
+    if row["kind"] != "vegetal" or food.get("is_animal"):
+        return f"{where}: only a plant product without animal ingredient is accepted"
+    if not (row.get("rule9_check") or "").strip():
+        return f"{where}: write the Agribalyse ingredient check in the rule9_check column"
+    return None
+
+
 def check_against_db(client, ingredients: list[dict[str, str]]) -> None:
     from common import fetch_all
 
-    foods = {f["code"]: f for f in fetch_all(client, "foods", "code,name_fr,is_animal,animal_category,ciqual_code,source_id")}
+    foods = {f["code"]: f for f in fetch_all(client, "foods", "code,name_fr,is_animal,animal_category,ciqual_code,source_id,food_group")}
     errors = []
     for r in ingredients:
         f = foods.get(r["food_code"])
         if f is None:
             errors.append(f"{r['dish_slug']}: {r['food_code']} not in foods")
             continue
+        composed = composed_dish_error(r, f)
+        if composed:
+            errors.append(composed)
         if f["source_id"] == "agribalyse-3.2" and "_" in f["code"] and not f["ciqual_code"]:
             errors.append(f"{r['dish_slug']}: variant {f['code']} has no ciqual_code (rule 11)")
         if r["kind"] == "vegetal" and f["is_animal"]:
