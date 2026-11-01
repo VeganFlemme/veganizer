@@ -9,7 +9,9 @@
     "lint": "eslint",
     "typecheck": "next typegen && tsc --noEmit",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "test:db": "supabase db query --linked -f supabase/tests/variant_nutrients.sql",
+    "test:pipeline": ".venv/bin/python -m unittest discover -s pipeline/tests"
   },
   "dependencies": {
     "@supabase/ssr": "^0.12.7",
