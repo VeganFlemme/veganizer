@@ -74,6 +74,7 @@ Suivi étape par étape : heure, ce qui est fait, lien de la PR, état (en cours
 - 2026-11-01 19:20 — PR #22 déjà fusionnée à l'arrivée du message de Matt : points faits sur la branche `roadmap/s24c-bis`, avant l'étape 4. État : en cours.
 - 5 ter (tests d'abord) : protéine principale doublée au plus, tofu, lentilles et pois chiches cuits dans la liste blanche, note de rôle (fromage, lait, crème, beurre), testé sur emmental, œuf, dorade, steak haché, lait.
 - 5 quater (tests d'abord) : `fixedImpacts` (« Autres étapes ») et `factorCode` dans le moteur, `officialRecipe` (contribution 3.2 par ingrédient) ; impact animal = impact publié, vérifié sur 3 plats ; pipeline relancé (exclusion des plats avec un ingrédient animal sans code : 81 retenus, 6 dépubliés) ; `/methodologie` mis à jour.
+- 2026-11-01 19:25 — fin des points 5 ter et 5 quater : PR https://github.com/VeganFlemme/veganizer/pull/23, CI verte, conditions remplies (317 Vitest, tests pipeline, lint, typecheck, `test:db`, `test:db:scoring`, 120 e2e, 200 sur le build local), fusionnée (squash). État : fusionnée.
 
 ## Bloqué par les permissions
 
