@@ -1,6 +1,6 @@
 {
-  "version": "0.1",
-  "status": "brouillon — à valider avant affichage",
+  "version": "0.2",
+  "status": "validé le 2026-11-01 (7 conseils) ; zinc et B2 ajoutés à la demande",
   "avertissement": "Informations générales, pas un conseil médical. Parlez-en à un professionnel de santé (médecin, diététicien·ne) avant de prendre un complément.",
   "conseils": [
     {
@@ -12,6 +12,7 @@
       "texte": "Selon l'ANSES, même une alimentation végétalienne optimisée ne couvre pas les besoins en vitamine B12. Solution : un complément de B12 ou des aliments enrichis, avec un suivi par un professionnel de santé.",
       "sources": [
         {
+          "sourceId": "anses-2019-sa-0118",
           "publisher": "ANSES",
           "title": "Avis relatif à l'établissement de repères alimentaires destinés aux personnes suivant un régime d'exclusion de tout ou partie des aliments d'origine animale",
           "reference": "Saisine n° 2019-SA-0118",
@@ -31,6 +32,7 @@
       "texte": "L'ANSES observe un statut en iode plus faible chez les végétariens. Le sel iodé fait partie des principales sources d'iode ; les analogues de produits laitiers enrichis y contribuent aussi. Les algues en contiennent beaucoup mais de façon très variable : un excès régulier peut perturber la thyroïde.",
       "sources": [
         {
+          "sourceId": "anses-2019-sa-0118",
           "publisher": "ANSES",
           "title": "Avis relatif à l'établissement de repères alimentaires destinés aux personnes suivant un régime d'exclusion de tout ou partie des aliments d'origine animale",
           "reference": "Saisine n° 2019-SA-0118",
@@ -40,6 +42,7 @@
           "accessedOn": "2026-11-01"
         },
         {
+          "sourceId": "anses-iode",
           "publisher": "ANSES",
           "title": "Iode : pourquoi et comment en consommer ?",
           "url": "https://www.anses.fr/fr/content/iode",
@@ -57,6 +60,7 @@
       "texte": "Les plats végétaux n'apportent pas d'EPA ni de DHA. L'ANSES recommande qu'environ la moitié des huiles soit riche en acide alpha-linolénique (colza, noix, soja, lin), mais note que les besoins en EPA+DHA restent difficiles à couvrir : à l'échelle individuelle, une supplémentation peut être envisagée.",
       "sources": [
         {
+          "sourceId": "anses-2019-sa-0118",
           "publisher": "ANSES",
           "title": "Avis relatif à l'établissement de repères alimentaires destinés aux personnes suivant un régime d'exclusion de tout ou partie des aliments d'origine animale",
           "reference": "Saisine n° 2019-SA-0118",
@@ -76,6 +80,7 @@
       "texte": "L'ANSES conseille de privilégier les analogues de produits laitiers (boissons, desserts, yaourts végétaux) enrichis en calcium et non sucrés. Les fruits et légumes et les oléagineux contribuent aussi aux apports.",
       "sources": [
         {
+          "sourceId": "anses-2019-sa-0118",
           "publisher": "ANSES",
           "title": "Avis relatif à l'établissement de repères alimentaires destinés aux personnes suivant un régime d'exclusion de tout ou partie des aliments d'origine animale",
           "reference": "Saisine n° 2019-SA-0118",
@@ -97,6 +102,7 @@
       "texte": "Les besoins en vitamine D sont difficiles à couvrir par l'alimentation, pour les végétariens comme pour la population générale (ANSES). Les produits enrichis y contribuent ; à l'échelle individuelle, une supplémentation peut être envisagée avec un professionnel de santé.",
       "sources": [
         {
+          "sourceId": "anses-2019-sa-0118",
           "publisher": "ANSES",
           "title": "Avis relatif à l'établissement de repères alimentaires destinés aux personnes suivant un régime d'exclusion de tout ou partie des aliments d'origine animale",
           "reference": "Saisine n° 2019-SA-0118",
@@ -117,12 +123,14 @@
       "texte": "Les céréales sont pauvres en lysine, les légumineuses en acides aminés soufrés : varier les sources de protéines sur la journée suffit, l'ANSES ne recommande pas de les associer systématiquement. Les légumes secs (repère ANSES : environ 120 g/j pour les végétaliens) et les analogues de viande riches en protéines sont de bons contributeurs.",
       "sources": [
         {
+          "sourceId": "anses-proteines",
           "publisher": "ANSES",
           "title": "Protéines : rôle, sources et apports recommandés",
           "url": "https://www.anses.fr/fr/content/les-prot%C3%A9ines",
           "accessedOn": "2026-11-01"
         },
         {
+          "sourceId": "anses-2019-sa-0118",
           "publisher": "ANSES",
           "title": "Avis relatif à l'établissement de repères alimentaires destinés aux personnes suivant un régime d'exclusion de tout ou partie des aliments d'origine animale",
           "reference": "Saisine n° 2019-SA-0118",
@@ -142,6 +150,7 @@
       "texte": "Le fer des végétaux (non héminique) est mieux absorbé en présence de vitamine C, qui compense en grande partie l'effet des phytates (EFSA). Cet effet est plus faible à l'échelle d'une alimentation complète qu'au repas. Les légumes secs sont de forts contributeurs en fer (ANSES).",
       "sources": [
         {
+          "sourceId": "efsa-drv-iron-2015",
           "publisher": "EFSA",
           "title": "Scientific Opinion on Dietary Reference Values for iron",
           "reference": "EFSA Journal 2015;13(10):4254",
@@ -151,10 +160,51 @@
           "accessedOn": "2026-11-01"
         },
         {
+          "sourceId": "anses-2019-sa-0118",
           "publisher": "ANSES",
           "title": "Avis relatif à l'établissement de repères alimentaires destinés aux personnes suivant un régime d'exclusion de tout ou partie des aliments d'origine animale",
           "reference": "Saisine n° 2019-SA-0118",
           "pages": "p. 24",
+          "date": "2025-02-03",
+          "url": "https://www.anses.fr/fr/system/files/NUT2019-SA-0118.pdf",
+          "accessedOn": "2026-11-01"
+        }
+      ]
+    },
+    {
+      "id": "zinc",
+      "criteria": [
+        "zn_mg"
+      ],
+      "titre": "Zinc : légumes secs, céréales complètes, oléagineux",
+      "texte": "Chez les hommes végétaliens, même une alimentation optimisée ne couvre pas les besoins en zinc (ANSES). Les légumes secs, les féculents, les oléagineux et la levure alimentaire en paillettes y contribuent ; à l'échelle individuelle, une supplémentation peut être envisagée avec un professionnel de santé.",
+      "sources": [
+        {
+          "sourceId": "anses-2019-sa-0118",
+          "publisher": "ANSES",
+          "title": "Avis relatif à l'établissement de repères alimentaires destinés aux personnes suivant un régime d'exclusion de tout ou partie des aliments d'origine animale",
+          "reference": "Saisine n° 2019-SA-0118",
+          "pages": "p. 22 (tableau 9), 24, 30 et 31",
+          "date": "2025-02-03",
+          "url": "https://www.anses.fr/fr/system/files/NUT2019-SA-0118.pdf",
+          "accessedOn": "2026-11-01"
+        }
+      ]
+    },
+    {
+      "id": "vitamine-b2",
+      "criteria": [
+        "vit_b2_mg"
+      ],
+      "titre": "Vitamine B2 : légumes et levure alimentaire",
+      "texte": "L'ANSES observe un statut en vitamine B2 plus faible chez les végétariens, et un apport plus faible chez ceux qui limitent les produits laitiers. Les légumes en sont de forts contributeurs, comme le groupe germe de blé, levure alimentaire en paillettes et extrait de levure (repère ANSES : environ 15 g/j pour les végétaliens).",
+      "sources": [
+        {
+          "sourceId": "anses-2019-sa-0118",
+          "publisher": "ANSES",
+          "title": "Avis relatif à l'établissement de repères alimentaires destinés aux personnes suivant un régime d'exclusion de tout ou partie des aliments d'origine animale",
+          "reference": "Saisine n° 2019-SA-0118",
+          "pages": "p. 23, 24 et 30",
           "date": "2025-02-03",
           "url": "https://www.anses.fr/fr/system/files/NUT2019-SA-0118.pdf",
           "accessedOn": "2026-11-01"

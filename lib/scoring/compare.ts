@@ -7,6 +7,8 @@ export type Group = "nutrients" | "impacts" | "animalImpacts";
 export type Directions = Record<string, { higherIsBetter: boolean }>;
 
 export interface ConseilSource {
+  /** public.sources.id */
+  sourceId: string;
   publisher: string;
   title: string;
   url: string;

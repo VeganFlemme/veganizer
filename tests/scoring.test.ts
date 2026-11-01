@@ -10,6 +10,7 @@ import {
   type Directions,
   type FoodData,
   type MonetizationFactor,
+  type MonetizationRule,
   type ScoringData,
 } from "@/lib/scoring";
 
@@ -235,7 +236,7 @@ const conseils: Conseil[] = [
     criteria: ["vit_b12_ug"],
     titre: "Test B12",
     texte: "Conseil fictif",
-    sources: [{ publisher: "Test", title: "Test", url: "https://example.org", accessedOn: "2026-11-01" }],
+    sources: [{ sourceId: "test-src", publisher: "Test", title: "Test", url: "https://example.org", accessedOn: "2026-11-01" }],
   },
 ];
 
@@ -313,7 +314,7 @@ describe("monetize", () => {
 
   it("multiplies the quantity by the factor of the requested year", () => {
     const r = monetize(4, 2030, factors);
-    expect(r).toEqual({ eur: 2, eurPerUnit: 0.5, year: 2030, method: "Test", sourceId: "test-vac" });
+    expect(r).toEqual({ eur: 2, eurPerUnit: 0.5, year: 2030, method: "Test", sourceId: "test-vac", derived: false });
   });
 
   it("returns null (donnée manquante) for a year without a published factor, never an interpolation", () => {
@@ -328,6 +329,56 @@ describe("monetize", () => {
     const two = [...factors, { ...factors[0], method: "Autre", eurPerUnit: 0.7 }];
     expect(() => monetize(1, 2030, two)).toThrow();
     expect(monetize(1, 2030, two, { method: "Autre" })?.eur).toBeCloseTo(0.7);
+  });
+});
+
+describe("monetize with a growth rule", () => {
+  // Values of the VAC 2025 (France Stratégie), as seeded in Supabase. This test
+  // checks that the official rule (start value × 1.032^n, constant after 2060)
+  // reproduces the published 2030 and 2050 values.
+  const base: MonetizationFactor = {
+    indicatorId: "ghg_100y_kgco2e",
+    year: 2025,
+    eurPerUnit: 0.256,
+    method: "VAC France Stratégie 2025",
+    sourceId: "vac-2025",
+  };
+  const rule: MonetizationRule = {
+    indicatorId: "ghg_100y_kgco2e",
+    method: "VAC France Stratégie 2025",
+    growthRate: 0.032,
+    startYear: 2025,
+    capYear: 2060,
+    sourceId: "vac-2025",
+  };
+
+  it("2030 falls within 1 % of 0.300 €/kg and 2050 within 1 % of 0.563 €/kg", () => {
+    const y2030 = monetize(1, 2030, [base], { rules: [rule] });
+    const y2050 = monetize(1, 2050, [base], { rules: [rule] });
+    expect(Math.abs(y2030!.eurPerUnit / 0.3 - 1)).toBeLessThan(0.01);
+    expect(Math.abs(y2050!.eurPerUnit / 0.563 - 1)).toBeLessThan(0.01);
+    expect(y2030!.derived).toBe(true);
+  });
+
+  it("computes intermediate years from the start value", () => {
+    expect(monetize(10, 2026, [base], { rules: [rule] })!.eur).toBeCloseTo(10 * 0.256 * 1.032);
+  });
+
+  it("stays constant after the cap year", () => {
+    const y2060 = monetize(1, 2060, [base], { rules: [rule] })!.eurPerUnit;
+    expect(monetize(1, 2075, [base], { rules: [rule] })!.eurPerUnit).toBeCloseTo(y2060, 12);
+  });
+
+  it("uses the published factor when the year is published", () => {
+    const published = { ...base, year: 2030, eurPerUnit: 0.3 };
+    const r = monetize(1, 2030, [base, published], { rules: [rule] });
+    expect(r!.eurPerUnit).toBe(0.3);
+    expect(r!.derived).toBe(false);
+  });
+
+  it("returns null before the start year or without a start value", () => {
+    expect(monetize(1, 2024, [base], { rules: [rule] })).toBeNull();
+    expect(monetize(1, 2030, [], { rules: [rule] })).toBeNull();
   });
 });
 

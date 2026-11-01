@@ -1,3 +1,4 @@
+import { readFileSync, readdirSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 import file from "@/data/conseils.json";
 import type { Conseil } from "@/lib/scoring";
@@ -19,6 +20,12 @@ describe("data/conseils.json", () => {
         expect(s.accessedOn).toMatch(/^\d{4}-\d{2}-\d{2}$/);
       }
     }
+  });
+
+  it("every source id is inserted into public.sources by a migration", () => {
+    const dir = "supabase/migrations";
+    const sql = readdirSync(dir).map((f) => readFileSync(`${dir}/${f}`, "utf8")).join("\n");
+    for (const c of conseils) for (const s of c.sources) expect(sql).toContain(`('${s.sourceId}',`);
   });
 
   it("carries the medical disclaimer", () => {
