@@ -13,6 +13,8 @@ L'objectif est d'inciter par les faits. La crédibilité est l'actif n° 1 : un 
 6. **Pas de conseil médical.** Mention visible et renvoi vers un professionnel de santé.
 7. **Licences** : respecter `sources.license`. Les sources avec `commercial_use = false` (IHME/GBD) ou `null` ne doivent pas servir dans une version payante sans vérification. ODbL (Open Food Facts, Open Prices) impose de partager les bases dérivées sous la même licence et de citer la source.
 8. Si une source n'est pas téléchargeable ou son format a changé : **s'arrêter et demander**, ne pas improviser de valeurs.
+9. **Recettes des paires ingrédient par ingrédient** : chaque recette (`dish_ingredients`) est décrite avec des aliments « purs » (`pipeline/animal_categories.csv`, `composition = pur`), jamais avec un plat composé ou un aliment `mixte` comme ingrédient. Sinon les impacts animaux (facteurs par catégorie et par kg) ne sont pas calculables.
+10. **Jamais « vegan » par défaut** : `foods.is_animal = false` signifie « aucun ingrédient animal identifié » (d'après le nom Ciqual/Agribalyse et le détail par ingrédient Agribalyse), pas « vegan ». Le site ne doit jamais afficher « vegan » ou « végétalien » sur cette seule base.
 
 ## Stack
 - Next.js (App Router) + TypeScript strict + Tailwind CSS, déployé sur Vercel (plan Hobby : usage non commercial).
@@ -39,6 +41,10 @@ tests/               tests Vitest
 - `food_nutrients` (pour 100 g), `food_impacts` (par kg), `category_factors` (animaux, santé par catégorie), `monetization_factors` (€ par unité), `prices`.
 - `dishes` + `dish_ingredients` (grammes pour la recette entière, état réellement consommé) + `dish_pairs`.
 - Vues de calcul : `dish_impacts`, `dish_nutrients`, `dish_animal_impacts` (par portion, avec fourchettes et couverture).
+- Variantes Agribalyse (`20061_2`…) : une ligne `foods` chacune ; `foods.ciqual_code` pointe vers l'aliment Ciqual dont les nutriments s'appliquent (même aliment, même état — revue dans `pipeline/agribalyse_variants.csv`), sinon null. `dish_nutrients` lit via `coalesce(ciqual_code, code)` ; `dish_impacts` lit les impacts du code lui-même.
+- `food_impact_ingredients` : détail Agribalyse par ingrédient (par kg de produit fini).
+- Catégories animales : `pipeline/animal_categories.csv` (revu à la main, colonne `notes` = hypothèses à reprendre dans `/methodologie` : saumon et crevette sans origine = élevage, foie gras sans espèce = canard, « poule » = pondeuse de réforme, pangas/tilapia = élevage).
+- `food_impacts` Agribalyse : `land_use_pt` est un indice de qualité des sols (Pt), pas une surface ; `land_m2a` reste réservé à une source en m²·an.
 
 ## Formule
 Impact d'un plat par portion = Σ (grammes_i / 1000 × impact_par_kg_i) / nombre_de_portions.
@@ -49,7 +55,9 @@ Impact d'un plat par portion = Σ (grammes_i / 1000 × impact_par_kg_i) / nombre
 - `npm test` — tests Vitest (doivent passer avant chaque commit)
 - `npm run lint` et `npm run typecheck`
 - `supabase db push` — appliquer les migrations au projet distant
-- `python pipeline/<source>.py` — importer une source (lit `NEXT_PUBLIC_SUPABASE_URL` et `SUPABASE_SECRET_KEY` depuis `.env`, jamais commités)
+- `python3 -m venv .venv && .venv/bin/pip install -r pipeline/requirements.txt` — environnement du pipeline
+- `.venv/bin/python pipeline/<source>.py [--download] [--dry-run]` — importer une source (lit `NEXT_PUBLIC_SUPABASE_URL` et `SUPABASE_SECRET_KEY` depuis `.env.local` ou `.env`, jamais commités). Ordre : `ciqual.py`, `agribalyse.py`, `animal_categories.py import`, puis `report.py`
+- `npm run test:pipeline` (règles de parsing) et `npm run test:db` (test SQL sur la base liée, annulé par rollback)
 
 ## Façon de travailler
 - Petites étapes, une fonctionnalité par branche, une pull request par étape.

@@ -297,6 +297,52 @@ export type Database = {
         }
         Relationships: []
       }
+      food_impact_ingredients: {
+        Row: {
+          food_code: string
+          indicator_id: string
+          ingredient: string
+          source_id: string
+          value_per_kg: number
+        }
+        Insert: {
+          food_code: string
+          indicator_id: string
+          ingredient: string
+          source_id: string
+          value_per_kg: number
+        }
+        Update: {
+          food_code?: string
+          indicator_id?: string
+          ingredient?: string
+          source_id?: string
+          value_per_kg?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "food_impact_ingredients_food_code_fkey"
+            columns: ["food_code"]
+            isOneToOne: false
+            referencedRelation: "foods"
+            referencedColumns: ["code"]
+          },
+          {
+            foreignKeyName: "food_impact_ingredients_indicator_id_fkey"
+            columns: ["indicator_id"]
+            isOneToOne: false
+            referencedRelation: "indicators"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "food_impact_ingredients_source_id_fkey"
+            columns: ["source_id"]
+            isOneToOne: false
+            referencedRelation: "sources"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       food_impacts: {
         Row: {
           dqr: number | null
@@ -398,6 +444,7 @@ export type Database = {
       foods: {
         Row: {
           animal_category: string | null
+          ciqual_code: string | null
           code: string
           food_group: string | null
           food_subgroup: string | null
@@ -406,9 +453,11 @@ export type Database = {
           name_fr: string
           source_id: string | null
           state: string | null
+          state_inferred: boolean
         }
         Insert: {
           animal_category?: string | null
+          ciqual_code?: string | null
           code: string
           food_group?: string | null
           food_subgroup?: string | null
@@ -417,9 +466,11 @@ export type Database = {
           name_fr: string
           source_id?: string | null
           state?: string | null
+          state_inferred?: boolean
         }
         Update: {
           animal_category?: string | null
+          ciqual_code?: string | null
           code?: string
           food_group?: string | null
           food_subgroup?: string | null
@@ -428,8 +479,16 @@ export type Database = {
           name_fr?: string
           source_id?: string | null
           state?: string | null
+          state_inferred?: boolean
         }
         Relationships: [
+          {
+            foreignKeyName: "foods_ciqual_code_fkey"
+            columns: ["ciqual_code"]
+            isOneToOne: false
+            referencedRelation: "foods"
+            referencedColumns: ["code"]
+          },
           {
             foreignKeyName: "foods_source_id_fkey"
             columns: ["source_id"]
