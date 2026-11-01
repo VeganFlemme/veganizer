@@ -15,6 +15,8 @@ L'objectif est d'inciter par les faits. La crédibilité est l'actif n° 1 : un 
 8. Si une source n'est pas téléchargeable ou son format a changé : **s'arrêter et demander**, ne pas improviser de valeurs.
 9. **Recettes des paires ingrédient par ingrédient** : chaque recette (`dish_ingredients`) est décrite avec des aliments « purs » (`pipeline/animal_categories.csv`, `composition = pur`), jamais avec un plat composé ou un aliment `mixte` comme ingrédient. Sinon les impacts animaux (facteurs par catégorie et par kg) ne sont pas calculables.
 10. **Jamais « vegan » par défaut** : `foods.is_animal = false` signifie « aucun ingrédient animal identifié » (d'après le nom Ciqual/Agribalyse et le détail par ingrédient Agribalyse), pas « vegan ». Le site ne doit jamais afficher « vegan » ou « végétalien » sur cette seule base.
+11. **Code Ciqual nu sans impact Agribalyse** (fraise, haricot vert, quinoa… — liste dans `pipeline/reports/codes_nus_sans_impact.csv`) : dans une recette, utiliser la variante Agribalyse adaptée au cas réel (de saison, hors saison, importé par bateau, FR…), jamais une moyenne improvisée. Vérifier que la variante a un `ciqual_code` (sinon ses nutriments sont « donnée manquante »).
+12. **Valeurs négatives Agribalyse** (ex. `land_use_pt`, `ghg_luc_kgco2e`) : les afficher telles que publiées, sans les ramener à 0, avec une explication sur `/methodologie`.
 
 ## Stack
 - Next.js (App Router) + TypeScript strict + Tailwind CSS, déployé sur Vercel (plan Hobby : usage non commercial).
@@ -43,7 +45,7 @@ tests/               tests Vitest
 - Vues de calcul : `dish_impacts`, `dish_nutrients`, `dish_animal_impacts` (par portion, avec fourchettes et couverture).
 - Variantes Agribalyse (`20061_2`…) : une ligne `foods` chacune ; `foods.ciqual_code` pointe vers l'aliment Ciqual dont les nutriments s'appliquent (même aliment, même état — revue dans `pipeline/agribalyse_variants.csv`), sinon null. `dish_nutrients` lit via `coalesce(ciqual_code, code)` ; `dish_impacts` lit les impacts du code lui-même.
 - `food_impact_ingredients` : détail Agribalyse par ingrédient (par kg de produit fini).
-- Catégories animales : `pipeline/animal_categories.csv` (revu à la main, colonne `notes` = hypothèses à reprendre dans `/methodologie` : saumon et crevette sans origine = élevage, foie gras sans espèce = canard, « poule » = pondeuse de réforme, pangas/tilapia = élevage).
+- Catégories animales : `pipeline/animal_categories.csv` (revu à la main, colonne `notes` = hypothèses à reprendre dans `/methodologie` : saumon et crevette sans origine = élevage, foie gras sans espèce = canard, « poule » = pondeuse de réforme, pangas/tilapia = élevage ; céphalopodes séparés des autres mollusques).
 - `food_impacts` Agribalyse : `land_use_pt` est un indice de qualité des sols (Pt), pas une surface ; `land_m2a` reste réservé à une source en m²·an.
 
 ## Formule

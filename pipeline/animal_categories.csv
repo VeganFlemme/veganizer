@@ -239,6 +239,12 @@ code,name_fr,is_animal,animal_category,composition,evidence,notes
 8059,"Rillettes de crabe, préemballées",true,crustacés (hors crevettes),pur,nom : « crabe »,
 10030,"Écrevisse, crue",true,crustacés (hors crevettes),pur,nom : « ecrevisse »,
 10031,"Écrevisse, cuite",true,crustacés (hors crevettes),pur,nom : « ecrevisse »,
+10037,"Calmar ou calamar ou encornet, bouilli/cuit à l'eau",true,céphalopodes,pur,nom : « calmar »,
+10001,"Calmar ou calamar ou encornet, cru",true,céphalopodes,pur,nom : « calmar »,
+10084,"Calmar ou calamar ou encornet, frit ou poêlé avec matière grasse",true,céphalopodes,pur,nom : « calmar »,
+10018,"Poulpe, cru",true,céphalopodes,pur,nom : « poulpe »,
+10079,"Poulpe, cuit",true,céphalopodes,pur,nom : « poulpe »,
+10016,"Seiche, crue",true,céphalopodes,pur,nom : « seiche »,
 40055,"Coeur, dinde, cru",true,dinde,pur,nom : « dinde »,
 40057,"Coeur, dinde, cuit",true,dinde,pur,nom : « dinde »,
 36310,"Dinde, aile crue",true,dinde,pur,nom : « dinde »,
@@ -279,9 +285,6 @@ code,name_fr,is_animal,animal_category,composition,evidence,notes
 10000,"Bigorneau, cuit",true,mollusques,pur,nom : « bigorneau »,
 10019,"Bulot ou buccin, cru",true,mollusques,pur,nom : « bulot »,
 10020,"Bulot ou buccin, cuit",true,mollusques,pur,nom : « bulot »,
-10037,"Calmar ou calamar ou encornet, bouilli/cuit à l'eau",true,mollusques,pur,nom : « calmar »,céphalopode
-10001,"Calmar ou calamar ou encornet, cru",true,mollusques,pur,nom : « calmar »,céphalopode
-10084,"Calmar ou calamar ou encornet, frit ou poêlé avec matière grasse",true,mollusques,pur,nom : « calmar »,céphalopode
 10027,"Clam, praire ou palourde, bouilli/cuit à l'eau",true,mollusques,pur,nom : « clam »,
 10017,"Clam, praire ou palourde, cru",true,mollusques,pur,nom : « clam »,
 10034,"Coque, cuite",true,mollusques,pur,nom : « coque »,
@@ -300,10 +303,7 @@ code,name_fr,is_animal,animal_category,composition,evidence,notes
 10028,"Moules, au naturel, appertisées, égouttées",true,mollusques,pur,nom : « moules »,
 10041,"Ormeau, cru",true,mollusques,pur,nom : « ormeau »,
 10048,"Pecten d'Amérique ou peigne du Canada, noix, crue",true,mollusques,pur,revue manuelle,
-10018,"Poulpe, cru",true,mollusques,pur,nom : « poulpe »,céphalopode
-10079,"Poulpe, cuit",true,mollusques,pur,nom : « poulpe »,céphalopode
 10049,"Pétoncle ou peigne du Pérou, noix, crue",true,mollusques,pur,nom : « petoncle »,
-10016,"Seiche, crue",true,mollusques,pur,nom : « seiche »,céphalopode
 40120,"Foie, oie, cru",true,oie,pur,nom : « oie »,
 16560,Graisse d'oie,true,oie,pur,revue manuelle,
 22070,"Oeuf d'oie, cru",true,oie,pur,nom : « oie »,
