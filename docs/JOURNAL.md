@@ -58,6 +58,7 @@ Suivi étape par étape : heure, ce qui est fait, lien de la PR, état (en cours
 - Points 3 et 5 (remplacer les recettes animales des paires, pages des plats Agribalyse) reportés à l'étape 3 ter, qui construit le moteur de remplacement de la décision de 17 h 25 dont ils dépendent.
 - Trouvé en route : la notice du tableur Agribalyse 3.2 signale des impacts d'œufs sous-évalués ; avertissement ajouté (tests d'abord), section `/methodologie`.
 - Contrôles : 282 tests Vitest, lint, typecheck, `test:pipeline`, `test:db` (5 PASS), `test:db:scoring` (3), 111 tests e2e sur le build local ; accueil, `/compare` et `/recette` en 200.
+- 2026-11-01 18:26 — fin de l'étape 3 bis : PR https://github.com/VeganFlemme/veganizer/pull/21, CI verte (après correction d'une erreur de lint : guillemets droits dans une citation), conditions remplies, fusionnée (squash). État : fusionnée.
 
 ## Bloqué par les permissions
 

@@ -247,7 +247,7 @@ function MissingData({ stats }: { stats: MethodologyStats }) {
     <Section id="oeufs-agribalyse" title="Œufs : des impacts sous-évalués selon l’ADEME">
       <p>
         La notice du tableur Agribalyse 3.2 des produits alimentaires (dernière modification le 21 août 2025) signale une erreur « concernant les
-        facteurs d’impacts relatifs aux produits "Oeufs" (et donc à tous les produits contenant des oeufs) » : « les impacts affichés en l’état
+        facteurs d’impacts relatifs aux produits &quot;Oeufs&quot; (et donc à tous les produits contenant des oeufs) » : « les impacts affichés en l’état
         sont considérés comme sous-évalués. Une mise à jour est en cours. » Nous affichons les valeurs telles que publiées et, sur chaque comparaison dont une recette contient un œuf, un avertissement :
         les valeurs de ce plat sont probablement trop basses. Pour une omelette ou une quiche, l’écart réel avec la version végétale est donc
         probablement plus grand que celui affiché.

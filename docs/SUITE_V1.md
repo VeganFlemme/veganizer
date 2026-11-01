@@ -141,6 +141,16 @@ Mets en œuvre la section « Décision de Matt (17 h 25) » en haut de ce fichie
 3. **Affichage** : la liste de choix est dans la barre d'outils de l'étape 3 quater. Elle se déplie, chaque ligne affichant le nom, la raison du classement et les protéines pour 100 g. Tout est recalculé : version de base et version complétée, onglets, scores, vainqueurs, simulateur. Une phrase sous la liste dit pour combien de protéines de la liste le végétal gagne sur le climat (« avec 12 protéines sur 12 »).
 4. **Soja** : dans l'onglet Santé, quand la protéine choisie est à base de soja, une mention sourcée de l'avis de l'Anses du 24 mars 2025 sur les isoflavones, sans chiffre et sans conseil médical (règle 6). Trouve l'avis sur anses.fr et cite-le ; s'il est inaccessible, note-le dans `TODO_SOURCES.md`.
 5. **Même chose sur les pages d'aliments et sur `/recette`.**
+5 bis. **Encadré « Là où le plat animal fait mieux » dans la version complétée (remarque de Matt, 18 h 25)**. Constat en ligne (bourguignon, `?vue=complete&onglet=nutrition`) : seuls les écarts restants sont listés, ce qui est bien (zinc, B12, sucres). Mais :
+   - le zinc et la B12 apparaissent deux fois : dans « À couvrir hors de ce plat » et dans l'encadré ;
+   - le titre « Là où le plat animal fait mieux » contredit « Écarts comblés par construction » ;
+   - « dont sucres » affiche « Pas encore de conseil sourcé pour ce point », un texte provisoire qui fait amateur.
+
+   À faire (tests d'abord) :
+   - Dans la version complétée, un seul encadré, « Ce qui reste à couvrir hors de ce plat ». Il liste les manques non comblés (B12, EPA + DHA, vitamine D, zinc si la liste ne suffit pas) avec le conseil Anses déjà présent, sans dose, et le renvoi vers un professionnel de santé. Supprime le doublon.
+   - Le libellé de la catégorie Nutrition devient « Écarts comblés, sauf : zinc, B12 » quand il en reste.
+   - Les indicateurs où « moins = mieux » (sucres, sel, acides gras saturés…) ne se comblent pas en ajoutant un aliment : affiche-les à part, de façon factuelle, avec les valeurs des deux plats. Ajoute les principaux ingrédients qui y contribuent, calculés à partir de Ciqual (par exemple « surtout carottes et vin »). Plus jamais « Pas encore de conseil sourcé » sur le site : sans conseil sourcé, affiche seulement les faits.
+   - Vérifie la même logique dans la version de base et sur les pages d'aliments.
 6. **Tests** : Vitest pour le classement et le remplacement, e2e pour le changement de protéine, et un test qui échoue si le texte « vérifiée » réapparaît sur le site.
 
 ## Étape 3 quater — S24d : affichage sur ordinateur (ajout de Matt, 16 h 46)
