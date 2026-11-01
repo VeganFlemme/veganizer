@@ -219,6 +219,12 @@ export interface AnimalFactorNote {
   sourceId: string;
 }
 
+/** What the client-side simulator needs (subset of DishTotals, serialisable). */
+export interface SimInput {
+  animal: DishTotals;
+  vegetal: DishTotals;
+}
+
 export interface VariantView {
   variant: Variant;
   dish: DishView;
@@ -239,6 +245,7 @@ export interface VariantView {
   animalWithoutFactor: string[];
   price: PriceView;
   iarc: IarcView[];
+  sim: SimInput;
 }
 
 export interface PairPageModel {
@@ -246,6 +253,8 @@ export interface PairPageModel {
   animal: DishView;
   variants: Partial<Record<Variant, VariantView>>;
   sources: Record<string, SourceRow>;
+  monetizationFactors: MonetizationFactor[];
+  monetizationRules: MonetizationRule[];
 }
 
 // ---------------------------------------------------------------------------
@@ -390,6 +399,13 @@ function rowsFor(animal: DishTotals, vegetal: DishTotals, raw: RawPairData, basi
   return rows;
 }
 
+// Indicators the simulator uses: CO2e and the animal pillar.
+function simTotals(t: DishTotals): DishTotals {
+  const pick = (r: Record<string, Amount>, ids?: string[]) =>
+    Object.fromEntries(Object.entries(r).filter(([id]) => !ids || ids.includes(id)));
+  return { ...t, nutrients: {}, impacts: pick(t.impacts, [CLIMATE_MAIN]), animalImpacts: pick(t.animalImpacts) };
+}
+
 /** Builds the page model; variants without data are simply absent. */
 export function buildPairPage(raw: RawPairData): PairPageModel {
   const data = scoringData(raw);
@@ -513,6 +529,7 @@ export function buildPairPage(raw: RawPairData): PairPageModel {
       animalWithoutFactor,
       price,
       iarc,
+      sim: { animal: simTotals(animalTotals), vegetal: simTotals(vegTotals) },
     };
   }
 
@@ -521,5 +538,7 @@ export function buildPairPage(raw: RawPairData): PairPageModel {
     animal: dishView(raw.animal, raw),
     variants,
     sources: Object.fromEntries(raw.sources.filter((s) => usedSources.has(s.id)).map((s) => [s.id, s])),
+    monetizationFactors: raw.monetizationFactors,
+    monetizationRules: raw.monetizationRules,
   };
 }
