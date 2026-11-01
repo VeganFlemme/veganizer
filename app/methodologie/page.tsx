@@ -392,8 +392,10 @@ export default async function MethodologiePage() {
         <p>
           Le coût climat d’une portion est ses émissions (kg CO₂e, Agribalyse) multipliées par la
           valeur de l’action pour le climat publiée par France Stratégie (rapport Quinet, mars 2025),
-          en euros 2023 par tonne. Pour une année sans valeur publiée, nous appliquons la règle de
-          croissance indiquée par la source ; la page le précise alors.
+          en euros 2023 par tonne. Nous utilisons partout la même année de référence, 2025 (première
+          valeur publiée par le rapport), dans les cartes comme dans le simulateur, et l’année est
+          toujours affichée. La valeur officielle augmente ensuite chaque année : nos montants sont
+          donc prudents pour les années futures.
         </p>
         <p>
           C’est un coût pour la collectivité (dommages climatiques évités ou causés), pas un prix
@@ -411,10 +413,18 @@ export default async function MethodologiePage() {
           est une <strong>estimation basse</strong>.
         </p>
         <p>
-          Les bovins sont une moyenne tous âges (veaux compris), les ovins aussi. Le veau vient de la
-          statistique agricole annuelle (Agreste : veaux de boucherie finis, têtes et tonnes équivalent
-          carcasse). Les poissons et les œufs n’ont pas encore de facteur d’animaux par kg : ils
-          apparaissent comme « donnée manquante ».
+          Les bovins sont une moyenne tous âges (veaux compris), les ovins aussi. Pour le veau, nous
+          utilisons la statistique agricole annuelle (Agreste) des veaux de boucherie « finis
+          produits » dans l’année (têtes et tonnes équivalent carcasse) : ce n’est pas un comptage
+          d’abattage, c’est une approximation acceptée.
+        </p>
+        <p>
+          <strong>Œufs et lait : pas de nombre d’animaux tués.</strong> Une poule pondeuse ou une vache
+          laitière n’est pas abattue pour un kilo d’œufs ou de lait ; les rapporter au kilo
+          demanderait de répartir les poules et vaches de réforme, les poussins mâles et les veaux.
+          Nous avons décidé de ne pas créer ce facteur pour l’instant : le nombre d’animaux tués est
+          « donnée manquante » pour les œufs et les produits laitiers, sans être compté comme 0. Les
+          poissons n’ont pas non plus de facteur sourcé.
         </p>
         <p>
           <strong>Douleur.</strong> Les heures de douleur par animal viennent du Welfare Footprint
@@ -427,13 +437,20 @@ export default async function MethodologiePage() {
           information dans le tableau ci-dessus. Pour les poules, les cages conventionnelles sont
           interdites dans l’Union européenne (directive 1999/74/CE, article 5, paragraphe 2) : nous
           retenons la volière sans cage, avec les cages aménagées comme borne haute ; ces chiffres ne
-          couvrent que la période de ponte et ne sont pas encore rapportés au kg d’œufs.
+          couvrent que la période de ponte. Ils ne sont pas rapportés au kg d’œufs : il faudrait la
+          durée de ponte et le nombre (ou la masse) d’œufs par poule, tous deux sourcés à la page près ;
+          en attendant, la douleur par kg d’œufs est « donnée manquante ». Pour le poulet, seules les
+          secondes de douleur atroce sont publiées dans une unité utilisable ; les douleurs gênante,
+          pénible et invalidante, publiées en jours, sont « donnée manquante ».
         </p>
         <p>
           <strong>Jours de vie en élevage.</strong> Pour la viande : âge d’abattage du produit courant
           (cahiers des charges label rouge, ministère de l’Agriculture) multiplié par le nombre
           d’animaux par kg. Pour le lait : 365 jours divisés par le rendement annuel d’une vache
-          (FAOSTAT) ; seule la lactation est comptée (élevage des génisses et des veaux exclu). Appliqué aux fromages et au beurre au poids du produit, c’est une estimation basse.
+          (FAOSTAT) ; seule la lactation est comptée (élevage des génisses et des veaux exclu). Ce facteur s’applique au lait liquide et aux
+          yaourts seulement. Pour les fromages, le beurre et la crème, il faudrait un coefficient
+          officiel d’équivalent lait (kilos de lait par kilo de produit) : faute de coefficient publié
+          et cité à la page près, la valeur est « donnée manquante ».
         </p>
       </Section>
 

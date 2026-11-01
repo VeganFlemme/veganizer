@@ -87,6 +87,7 @@ export interface CategoryFactorRow {
   unit_basis?: string;
   notes?: string | null;
   per?: string;
+  food_codes?: string[] | null;
 }
 export interface DishPriceRow {
   dish_id: string;
@@ -374,6 +375,7 @@ function scoringData(raw: RawPairData): ScoringData {
       high: num(c.high),
       sourceId: c.source_id,
       per: c.per === "animal" ? "animal" : "kg",
+      foodCodes: c.food_codes ?? null,
     };
   }
   return { foods, categoryFactors };
@@ -633,17 +635,18 @@ export function buildPairPage(raw: RawPairData): PairPageModel {
     }
     // Per indicator: when none of the animal ingredients of the animal dish has a usable factor
     // (per kg, or per animal with animals_killed_land), the animal dish has no figure: never 0.
-    const usable = (category: string | null, id: string) => {
-      const fs = raw.categoryFactors.filter((c) => c.category === category);
+    const applies = (c: CategoryFactorRow, code: string) => !c.food_codes || c.food_codes.includes(code);
+    const usable = (food: FoodRow, id: string) => {
+      const fs = raw.categoryFactors.filter((c) => c.category === food.animal_category);
       const f = fs.find((c) => c.indicator_id === id);
-      if (!f) return false;
+      if (!f || !applies(f, food.code)) return false;
       if (f.per !== "animal") return true;
-      return fs.some((c) => c.indicator_id === "animals_killed_land" && c.per !== "animal");
+      return fs.some((c) => c.indicator_id === "animals_killed_land" && c.per !== "animal" && applies(c, food.code));
     };
     for (const b of BASES) {
       for (const r of rows[b.id]) {
         if (r.group !== "animalImpacts" || animalFoods.length === 0) continue;
-        if (animalFoods.some((f) => usable(f.animal_category, r.id))) continue;
+        if (animalFoods.some((f) => usable(f, r.id))) continue;
         r.animal = null;
         r.reductionPercent = null;
         r.winner = null;

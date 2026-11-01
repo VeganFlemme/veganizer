@@ -74,7 +74,9 @@ function Value({ v, unit, perAnimal }: { v: SideValue | null; unit: string; perA
     <span>
       <span className="font-semibold">{formatValue(v.value)}</span> {unit}
       {perAnimal && v.value > 0 && (
-        <span className="block text-xs text-zinc-700">soit environ 1 animal pour {formatInt(1 / v.value)} portions</span>
+        <span className="block text-xs text-zinc-700">
+          soit 1 animal pour {formatInt(1 / v.value)} portions au plus (le nombre d’animaux est une estimation basse)
+        </span>
       )}
       {v.rangePublished && (
         <span className="block text-xs text-zinc-700">
@@ -440,7 +442,7 @@ function VariantPanel({ model, v, basis }: { model: PairPageModel; v: VariantVie
 
         <Card id={`cout-${v.variant}`} title="Coût">
           <div className="flex flex-col gap-2">
-            <h3 className="font-medium">Coût climat pour la collectivité, par portion</h3>
+            <h3 className="font-medium">Coût climat pour la collectivité, par portion (valeur carbone {v.climateCost[0]?.year})</h3>
             <dl className="grid grid-cols-[max-content_1fr_1fr] gap-x-3 gap-y-1 text-sm">
               <dt className="text-xs text-zinc-700">Année</dt>
               <dd className="text-xs text-zinc-700">{a}</dd>
@@ -454,9 +456,9 @@ function VariantPanel({ model, v, basis }: { model: PairPageModel; v: VariantVie
               ))}
             </dl>
             <p className="text-xs text-zinc-700">
-              Émissions par portion × valeur de l’action pour le climat publiée pour l’année (
+              Émissions par portion × valeur de l’action pour le climat de l’année de référence, la même partout sur le site (
               {v.climateCost.map((c) => `${formatEur(c.eurPerKg)} par kg CO₂e en ${c.year}${c.derived ? " (calculée avec la règle de croissance de la source)" : ""}`).join(" ; ")}
-              ). La valeur augmente avec le temps : chaque tonne évitée compte davantage.
+              ).
             </p>
             <SourceBadges ids={[...new Set(v.climateCost.flatMap((c) => (c.sourceId ? [c.sourceId] : [])))]} sources={model.sources} />
           </div>

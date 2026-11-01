@@ -21,6 +21,7 @@ export {
   type MonetizeOptions,
 } from "./monetize";
 export {
+  avoidedClimateCost,
   climateCostByYear,
   simulate,
   totalClimateCost,

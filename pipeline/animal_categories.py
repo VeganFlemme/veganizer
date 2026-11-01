@@ -345,7 +345,9 @@ def build(force: bool) -> None:
         evidence = []
         if hit:
             evidence.append(f"nom : « {hit[1]} »")
-        if f.code in ingr.index and not vegan:
+        # The Agribalyse ingredient detail is evidence even when the name says "végétal"
+        # (e.g. 23412 "Pâte brisée, matière grasse végétale" lists Beurre).
+        if f.code in ingr.index:
             evidence.append(f"ingrédients Agribalyse : {ingr[f.code]}")
         if not evidence:
             if pure and not vegan:

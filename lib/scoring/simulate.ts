@@ -101,3 +101,20 @@ export function totalClimateCost(rows: YearlyClimateCost[]): number | null {
   }
   return sum;
 }
+
+/**
+ * Climate cost avoided by a simulation, valued with the carbon value of ONE reference year
+ * (published value, or the source's growth rule). null when the emissions or the value are missing.
+ */
+export function avoidedClimateCost(
+  sim: Simulation,
+  referenceYear: number,
+  factors: MonetizationFactor[],
+  options: MonetizeOptions = {},
+): { eur: number; eurPerKg: number; year: number; derived: boolean; sourceId: string } | null {
+  const id = options.indicatorId ?? "ghg_100y_kgco2e";
+  const avoided = sim.impacts[id]?.avoided;
+  if (avoided == null) return null;
+  const m = monetize(avoided, referenceYear, factors, { ...options, indicatorId: id });
+  return m && { eur: m.eur, eurPerKg: m.eurPerUnit, year: referenceYear, derived: m.derived, sourceId: m.sourceId };
+}

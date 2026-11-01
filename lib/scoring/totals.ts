@@ -72,14 +72,17 @@ const ANIMALS_KILLED = "animals_killed_land";
 function perKg(
   byIndicator: Record<string, CategoryFactor | undefined> | undefined,
   id: string,
+  foodCode: string,
 ): { value: number; low: number; high: number; sourceIds: string[] } | null {
   const f = byIndicator?.[id];
   if (!f || !finite(f.value)) return null;
+  if (f.foodCodes && !f.foodCodes.includes(foodCode)) return null;
   const low = finite(f.low) ? f.low : f.value;
   const high = finite(f.high) ? f.high : f.value;
   if ((f.per ?? "kg") === "kg") return { value: f.value, low, high, sourceIds: [f.sourceId] };
   const k = byIndicator?.[ANIMALS_KILLED];
   if (!k || !finite(k.value) || (k.per ?? "kg") !== "kg") return null;
+  if (k.foodCodes && !k.foodCodes.includes(foodCode)) return null;
   const kl = finite(k.low) ? k.low : k.value;
   const kh = finite(k.high) ? k.high : k.value;
   return { value: f.value * k.value, low: low * kl, high: high * kh, sourceIds: [f.sourceId, k.sourceId] };
@@ -144,7 +147,7 @@ export function dishTotals(dish: Dish, data: ScoringData, options: TotalsOptions
         continue;
       }
       const byIndicator = food.animalCategory ? data.categoryFactors[food.animalCategory] : undefined;
-      const f = perKg(byIndicator, id);
+      const f = perKg(byIndicator, id, foodCode);
       if (!f) continue;
       const kg = grams / GRAMS_PER_KG;
       add(animal, id, grams, { value: kg * f.value, low: kg * f.low, high: kg * f.high, dqr: null, sourceId: f.sourceIds[0] });

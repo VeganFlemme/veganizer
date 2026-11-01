@@ -42,6 +42,7 @@ export type Database = {
       category_factors: {
         Row: {
           category: string
+          food_codes: string[] | null
           high: number | null
           id: number
           indicator_id: string
@@ -54,6 +55,7 @@ export type Database = {
         }
         Insert: {
           category: string
+          food_codes?: string[] | null
           high?: number | null
           id?: never
           indicator_id: string
@@ -66,6 +68,7 @@ export type Database = {
         }
         Update: {
           category?: string
+          food_codes?: string[] | null
           high?: number | null
           id?: never
           indicator_id?: string

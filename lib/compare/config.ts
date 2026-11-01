@@ -61,8 +61,13 @@ export const MEDICAL_DISCLAIMER =
 /** Rule 10: the site never displays "vegan" / "végétalien" about a food, even quoted from a source name. */
 export const VEGAN_WORD = /v[eé]gan|v[eé]g[eé]talien/i;
 
-/** Years of the climate cost shown: first published year of the official carbon value and 2050 (also published). */
-export const CLIMATE_COST_YEARS = [2025, 2050];
+/**
+ * Single reference year of the official carbon value (France Stratégie, VAC report of March 2025),
+ * used everywhere on the site (cards and simulator) and always displayed. Editorial choice:
+ * docs/A_VERIFIER.md (alternative: the value of each year).
+ */
+export const CLIMATE_REFERENCE_YEAR = 2025;
+export const CLIMATE_COST_YEARS = [CLIMATE_REFERENCE_YEAR];
 
 /**
  * Which foods count for the PNNS adult guidelines (Santé publique France, p. 32-35 and 49).

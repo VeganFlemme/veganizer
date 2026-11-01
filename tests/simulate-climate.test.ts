@@ -1,6 +1,6 @@
 // Fixture values are invented for the test only.
 import { describe, expect, it } from "vitest";
-import { climateCostByYear, totalClimateCost, type MonetizationFactor, type MonetizationRule } from "@/lib/scoring";
+import { avoidedClimateCost, climateCostByYear, totalClimateCost, type MonetizationFactor, type MonetizationRule, type Simulation } from "@/lib/scoring";
 
 const factors: MonetizationFactor[] = [
   { indicatorId: "ghg_100y_kgco2e", year: 2025, eurPerUnit: 0.1, method: "m", sourceId: "s" },
@@ -27,5 +27,21 @@ describe("climateCostByYear", () => {
 
   it("keeps missing emissions missing", () => {
     expect(climateCostByYear(null, 2025, 1, factors)[0].eur).toBeNull();
+  });
+});
+
+describe("avoidedClimateCost", () => {
+  const sim = (avoided: number | null): Simulation => ({
+    servings: 52,
+    impacts: { ghg_100y_kgco2e: { avoided, avoidedLow: avoided, avoidedHigh: avoided, minCoverage: 1 } },
+    animalImpacts: {},
+  });
+  it("values all avoided kg with the reference year only", () => {
+    const c = avoidedClimateCost(sim(100), 2025, factors, { rules });
+    expect(c?.eur).toBeCloseTo(10); // 100 kg × 0.1 (2025)
+    expect(c?.year).toBe(2025);
+  });
+  it("is missing when emissions are missing", () => {
+    expect(avoidedClimateCost(sim(null), 2025, factors)).toBeNull();
   });
 });
