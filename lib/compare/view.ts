@@ -388,6 +388,11 @@ export interface VariantView {
   animalBetter: AdvantageView[];
   /** Lowest mass coverage of the key criteria (energy, protein, CO2e), both dishes. */
   keyCoverage: number | null;
+  /**
+   * The recipe contains an egg ingredient: ADEME reports that Agribalyse 3.2 underestimates the
+   * impacts of eggs and of every product containing them (notice of the food spreadsheet, 21/08/2025).
+   */
+  eggImpactsUnderestimated: { animal: boolean; vegetal: boolean };
   /** true when at least one criterion shown rests on partial data. */
   anyPartial: boolean;
   climateCost: ClimateCostView[];
@@ -889,6 +894,7 @@ export function buildPairPage(raw: RawPairData, options: BuildOptions = {}): Pai
     const pnns = guideline(raw.pnns);
     const eatLancet = guideline(raw.eatLancet);
 
+    const hasEgg = (d: DishRow) => raw.ingredients.some((i) => i.dish_id === d.id && foodsByCode.get(i.food_code)?.food_subgroup === EGG_SUBGROUP);
     const animalFoods = raw.ingredients
       .filter((i) => i.dish_id === raw.animal.id)
       .map((i) => foodsByCode.get(i.food_code))
@@ -953,6 +959,7 @@ export function buildPairPage(raw: RawPairData, options: BuildOptions = {}): Pai
       rows,
       animalBetter,
       keyCoverage: coverages.length ? Math.min(...coverages) : null,
+      eggImpactsUnderestimated: { animal: hasEgg(raw.animal), vegetal: hasEgg(dish) },
       anyPartial: rows.perServing.some((r) => r.lowCoverage && (r.animal != null || r.vegetal != null)),
       climateCost,
       hasAnimalData: Object.keys(animalTotals.animalImpacts).length > 0,

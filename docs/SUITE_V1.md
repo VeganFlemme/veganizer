@@ -110,6 +110,18 @@ Objectif : remplacer autant que possible les recettes écrites par l'IA par des 
 
 1. **Recherche** : vérifie si l'ADEME (Agribalyse) ou l'ANSES (Ciqual) publient les recettes, c'est-à-dire les masses d'ingrédients, de leurs plats composés (documentation méthodologique, annexes, Dataverse Agribalyse, data.gouv.fr). Cite la page.
 2. **Sinon, faisabilité d'un calcul inverse** : vérifie si le « détail par ingrédient » d'Agribalyse permet de retrouver la masse de chaque ingrédient par kg de plat (contribution de l'ingrédient ÷ impact par kg de cet ingrédient dans Agribalyse, au même périmètre). Teste-le sur 3 plats dont on connaît une recette publiée. Ne l'applique que si l'erreur est faible et documentée ; sinon écris le résultat dans `docs/A_VERIFIER.md` et passe.
+2 bis. **Source trouvée par la relectrice (18 h 15) : les masses des recettes Agribalyse existent en données ouvertes.** Sur data.gouv.fr, le jeu « Agribalyse » (https://www.data.gouv.fr/fr/datasets/agribalyse/, Licence Ouverte 2.0) est une rediffusion de la base Agribalyse **3.0 complète**, exportée depuis openLCA : une archive 7z d'environ 24 Mo (tables CSV) et un xlsx.zip.
+   - La table `TBL_EXCHANGES` donne, pour chaque processus, les quantités de chaque intrant par kg de produit. Exemple cité sur la page : la sauce aïoli consomme 728 g d'huile d'olive et 108 g d'ail pour 1 kg.
+   - **À faire** :
+     - télécharge l'archive dans `pipeline/raw/agribalyse-3.0-openlca/` (si data.gouv.fr bloque, arrête-toi et note-le, sans contournement) ;
+     - vérifie l'exemple de l'aïoli ;
+     - extrais les recettes des plats composés, avec les masses de chaque intrant par kg ;
+     - relie chaque intrant à un code Ciqual par le « LCI Name » d'Agribalyse (et `agribalyse_variants.csv`), et note les intrants non reliés.
+   - **Contrôles avant usage** :
+     - c'est la version 3.0 et nos impacts sont en 3.2 : n'utilise une recette que si sa liste d'ingrédients correspond à celle du détail par ingrédient 3.2 du même plat ; sinon, exclus le plat et note-le ;
+     - teste sur 3 plats : l'impact recalculé à partir des masses 3.0 et des impacts 3.2 doit rester proche de l'impact 3.2 publié du plat (écart documenté) ;
+     - cite la source dans `public.sources` (rediffusion communautaire de la base ADEME, version 3.0, Licence Ouverte 2.0).
+   - Si ces contrôles passent, applique les points 3 et 5 avec ces masses. Le calcul inverse n'est plus nécessaire.
 3. **Si une composition officielle est disponible** pour un plat animal de nos paires : remplace notre recette animale par cette composition (mise à l'échelle de nos portions), puis dérive les versions végétales par les règles de substitution relues (`pipeline/substitutions.csv` et règles de la S22), en ne remplaçant que les ingrédients animaux. Marque ces paires « recette d'après Agribalyse » sur le site.
 4. **Pour les plats sans composition officielle**, garde nos recettes, marquées « recette type rédigée par Veganizer, comparée au plat moyen Agribalyse » (contrôle croisé de l'étape 4).
 5. **Enrichir le catalogue de plats à partir de la base (demande de Matt, 17 h 27)** : `pipeline/raw/agribalyse_3.2_detail_ingredient.csv` donne la liste des ingrédients de 285 plats composés (dont 117 plats, 45 pizzas, tartes et crêpes salées, 40 sandwichs, 26 soupes et 23 plats végétariens).
@@ -129,6 +141,16 @@ Mets en œuvre la section « Décision de Matt (17 h 25) » en haut de ce fichie
 3. **Affichage** : la liste de choix est dans la barre d'outils de l'étape 3 quater. Elle se déplie, chaque ligne affichant le nom, la raison du classement et les protéines pour 100 g. Tout est recalculé : version de base et version complétée, onglets, scores, vainqueurs, simulateur. Une phrase sous la liste dit pour combien de protéines de la liste le végétal gagne sur le climat (« avec 12 protéines sur 12 »).
 4. **Soja** : dans l'onglet Santé, quand la protéine choisie est à base de soja, une mention sourcée de l'avis de l'Anses du 24 mars 2025 sur les isoflavones, sans chiffre et sans conseil médical (règle 6). Trouve l'avis sur anses.fr et cite-le ; s'il est inaccessible, note-le dans `TODO_SOURCES.md`.
 5. **Même chose sur les pages d'aliments et sur `/recette`.**
+5 bis. **Encadré « Là où le plat animal fait mieux » dans la version complétée (remarque de Matt, 18 h 25)**. Constat en ligne (bourguignon, `?vue=complete&onglet=nutrition`) : seuls les écarts restants sont listés, ce qui est bien (zinc, B12, sucres). Mais :
+   - le zinc et la B12 apparaissent deux fois : dans « À couvrir hors de ce plat » et dans l'encadré ;
+   - le titre « Là où le plat animal fait mieux » contredit « Écarts comblés par construction » ;
+   - « dont sucres » affiche « Pas encore de conseil sourcé pour ce point », un texte provisoire qui fait amateur.
+
+   À faire (tests d'abord) :
+   - Dans la version complétée, un seul encadré, « Ce qui reste à couvrir hors de ce plat ». Il liste les manques non comblés (B12, EPA + DHA, vitamine D, zinc si la liste ne suffit pas) avec le conseil Anses déjà présent, sans dose, et le renvoi vers un professionnel de santé. Supprime le doublon.
+   - Le libellé de la catégorie Nutrition devient « Écarts comblés, sauf : zinc, B12 » quand il en reste.
+   - Les indicateurs où « moins = mieux » (sucres, sel, acides gras saturés…) ne se comblent pas en ajoutant un aliment : affiche-les à part, de façon factuelle, avec les valeurs des deux plats. Ajoute les principaux ingrédients qui y contribuent, calculés à partir de Ciqual (par exemple « surtout carottes et vin »). Plus jamais « Pas encore de conseil sourcé » sur le site : sans conseil sourcé, affiche seulement les faits.
+   - Vérifie la même logique dans la version de base et sur les pages d'aliments.
 6. **Tests** : Vitest pour le classement et le remplacement, e2e pour le changement de protéine, et un test qui échoue si le texte « vérifiée » réapparaît sur le site.
 
 ## Étape 3 quater — S24d : affichage sur ordinateur (ajout de Matt, 16 h 46)
@@ -204,6 +226,27 @@ Objectif : sur ordinateur (dès 1 024 px, surtout dès 1 280 px), une mise en pa
    - Chaque remarque doit citer une source ouverte et vérifiée, sinon elle est rejetée.
 4. **Audit des chiffres** : tire au hasard 50 valeurs affichées et compare-les aux fichiers officiels Ciqual et Agribalyse ; recalcule indépendamment 5 plats.
 4 bis. **Contrôle croisé des recettes (ajout de Matt, 16 h 21)** : pour chaque plat de nos paires qui existe aussi comme plat composé dans Ciqual/Agribalyse (bœuf bourguignon, lasagnes, hachis parmentier, blanquette, quiche, paella, couscous, chili, tartiflette…), compare notre recette, ramenée à 1 kg et à 100 g, aux valeurs officielles : kg CO₂e/kg, énergie, protéines, lipides et sel pour 100 g. Fais de même pour les versions végétales quand un équivalent végétarien existe. Un écart supérieur à 25 % signale une recette à revoir ; écris le tableau complet dans `docs/RETOURS.md` et affiche-le sur `/methodologie` (« Nos recettes comparées aux plats moyens d'Agribalyse »).
+4 ter. **Expérience utilisateur (ajout de Matt, 18 h 22)**
+   - **Toutes les combinaisons de choix** (tests e2e et captures, hors git) : pour 5 plats variés et 2 pages d'aliments, avec les 3 premières protéines de la liste, en version de base et complétée, chaque onglet, à 375, 1 440 et 1 920 px. Vérifications automatiques :
+     - jamais « NaN », « undefined », « null » ni carte vide ;
+     - chaque valeur a son unité ;
+     - le score d'une catégorie est le même partout (verdict, colonne de catégories, carte, onglet) ;
+     - changer de protéine ou de version change bien les chiffres concernés, et seulement eux ;
+     - l'état se garde dans l'URL (recharger la page redonne la même vue).
+   - **Tests de compréhension** : les 5 visiteurs simulés reçoivent des tâches et des questions dont la bonne réponse est connue à l'avance, par exemple :
+     - « Avec des lentilles, la version végétale du bourguignon émet-elle moins de CO₂e, et de combien ? »
+     - « Que veut dire Version complétée ? »
+     - « Pourquoi certaines valeurs sont-elles des données manquantes ? »
+     - « Quel plat gagne en nutrition, et sur quels points le plat animal fait-il mieux ? »
+     - « Qu'as-tu compris en 5 secondes sur le premier écran ? »
+     Note le taux de bonnes réponses par question. Chaque erreur de compréhension entraîne une correction du texte ou de l'affichage, puis une nouvelle passe sur les questions ratées.
+   - **Pertinence et lisibilité** : un 6e sous-agent, spécialiste de l'expérience utilisateur et de la visualisation de données, qui ne lit pas le code, relit chaque onglet. Il vérifie :
+     - le jargon expliqué (DQR, eutrophisation, Pt, CO₂e…) ;
+     - les indicateurs les plus parlants en premier ;
+     - des barres face à face à la même échelle, avec le sens « moins = mieux » visible ;
+     - des chiffres arrondis lisiblement ;
+     - aucune information inutile ou répétée.
+   - **Accessibilité** : contrôle automatique (axe-core) au niveau WCAG AA (contrastes, étiquettes, navigation au clavier), plus une simulation des daltonismes sur les captures des barres et pastilles.
 5. Corrige ce qui est justifié. Note chaque remarque dans `docs/RETOURS.md` : corrigée, refusée avec la raison, ou reportée.
 6. Sur `/methodologie` et `/a-propos`, écris honnêtement : « relu par des vérifications automatisées et des agents IA indépendants ; pas encore relu par un professionnel de santé ». Retire la mention « bêta » seulement si l'audit des chiffres ne trouve aucune erreur.
 

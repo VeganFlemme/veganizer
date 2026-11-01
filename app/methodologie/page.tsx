@@ -91,6 +91,7 @@ function Formula({ children }: { children: ReactNode }) {
 const SECTIONS = [
   ["principe", "Le principe : comparer à fonction égale"],
   ["paires", "Les paires de plats : maison et du commerce"],
+  ["recettes-types", "Recettes types et recettes officielles"],
   ["version-complete", "Version de base et version complétée"],
   ["comparaison-simplifiee", "Plats et aliments : une comparaison automatique"],
   ["ta-recette", "« Analyse ta recette »"],
@@ -104,6 +105,7 @@ const SECTIONS = [
   ["hypotheses", "Catégories animales et hypothèses par défaut"],
   ["aucun-ingredient-animal", "« Aucun ingrédient animal identifié »"],
   ["valeurs-negatives", "Pourquoi certaines valeurs sont négatives"],
+  ["oeufs-agribalyse", "Œufs : des impacts sous-évalués selon l’ADEME"],
   ["liste-donnees-manquantes", "Données manquantes : ce qui manque et pourquoi"],
   ["donnees-manquantes", "Pourquoi il manque des données, et pourquoi jamais 0"],
   ["sante", "Santé : pas de conseil médical"],
@@ -242,6 +244,22 @@ function MissingData({ stats }: { stats: MethodologyStats }) {
   const b12 = stats.nutrients.find((n) => n.id === "vit_b12_ug");
   return (
     <>
+    <Section id="oeufs-agribalyse" title="Œufs : des impacts sous-évalués selon l’ADEME">
+      <p>
+        La notice du tableur Agribalyse 3.2 des produits alimentaires (dernière modification le 21 août 2025) signale une erreur « concernant les
+        facteurs d’impacts relatifs aux produits &quot;Oeufs&quot; (et donc à tous les produits contenant des oeufs) » : « les impacts affichés en l’état
+        sont considérés comme sous-évalués. Une mise à jour est en cours. » Nous affichons les valeurs telles que publiées et, sur chaque comparaison dont une recette contient un œuf, un avertissement :
+        les valeurs de ce plat sont probablement trop basses. Pour une omelette ou une quiche, l’écart réel avec la version végétale est donc
+        probablement plus grand que celui affiché.
+      </p>
+      <p>
+        La même notice signale l’inverse pour le quinoa produit en France (impacts sur-évalués) ; aucune de nos recettes n’en contient.
+      </p>
+      <p className="text-sm">
+        Source : ADEME, AGRIBALYSE 3.2, tableur des produits alimentaires, onglet « Notice », 
+        <a href="https://entrepot.recherche.data.gouv.fr/dataset.xhtml?persistentId=doi:10.57745/XTENSJ" rel="noopener noreferrer">entrepôt Recherche Data Gouv</a>.
+      </p>
+    </Section>
     <Section id="liste-donnees-manquantes" title="Données manquantes : ce qui manque et pourquoi">
       <p>Ces données ne sont pas encore affichées. Elles restent « donnée manquante », jamais 0, tant qu’une source officielle ne peut pas être citée à la page près.</p>
       <ul className="list-disc space-y-1 pl-5">
@@ -411,6 +429,33 @@ export default async function MethodologiePage() {
           nous retenons l’option la plus proche disposant de données complètes, de la même façon
           dans les deux plats. Chaque choix est consigné dans le dépôt du projet
           (<a href="https://github.com/VeganFlemme/veganizer/blob/main/docs/DECISIONS.md" className="underline" rel="noopener noreferrer">journal des décisions</a>).
+        </p>
+      </Section>
+
+      <Section id="recettes-types" title="Recettes types et recettes officielles">
+        <p>
+          Les recettes de nos paires sont des <strong>recettes types rédigées par Veganizer</strong>, ingrédient par ingrédient. L’ADEME ne publie pas
+          les recettes de la version 3.2 d’Agribalyse : l’annexe 9 de son rapport méthodologique indique que « le détail des recettes n’est
+          disponible que dans les logiciels d’ACV ».
+        </p>
+        <p>
+          La version précédente, <strong>Agribalyse 3.0</strong>, est en revanche rediffusée en entier sur data.gouv.fr sous Licence Ouverte. Elle
+          donne la masse de chaque ingrédient de chaque plat composé. Nous n’en reprenons une recette que si sa liste d’ingrédients est la même que
+          celle du détail par ingrédient de la version 3.2, et si au moins 95 % de sa masse correspond à un aliment Ciqual. C’est le cas de 102 plats
+          sur 285 ; les autres plats (ajoutés ou renommés depuis la 3.0, ingrédients différents, ingrédients sans données comme le champignon de
+          Paris) sont écartés.
+        </p>
+        <p>
+          Un plat recalculé à partir de sa recette n’a pas exactement l’impact publié pour le plat entier : il manque les étapes propres au plat
+          (cuisson à l’usine, emballage, transport, stockage). Sur ces 102 plats, le recalcul donne en médiane 81 % des émissions publiées
+          (98 % pour le hachis parmentier, 96 % pour le pot-au-feu, 84 % pour les lasagnes à la bolognaise). C’est pourquoi nous comparons
+          toujours une recette à une recette, calculées de la même façon, jamais un plat officiel à une recette recalculée.
+        </p>
+        <p className="text-sm">
+          Sources : ADEME, AGRIBALYSE 3.2, rapport méthodologique « Alimentation » et ses annexes, 
+          <a href="https://entrepot.recherche.data.gouv.fr/dataset.xhtml?persistentId=doi:10.57745/XTENSJ" rel="noopener noreferrer">entrepôt Recherche Data Gouv</a> ; base AGRIBALYSE 3.0 complète, 
+          <a href="https://www.data.gouv.fr/fr/datasets/agribalyse/" rel="noopener noreferrer">rediffusion sur data.gouv.fr</a> (Licence
+          Ouverte 2.0), consultées le 1er novembre 2026.
         </p>
       </Section>
 
