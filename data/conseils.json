@@ -54,7 +54,8 @@
       "id": "omega-3-dha",
       "criteria": [
         "fa_c22_6_n3_dha_g",
-        "fa_c20_5_n3_epa_g"
+        "fa_c20_5_n3_epa_g",
+        "fa_epa_dha_g"
       ],
       "titre": "Oméga-3 (EPA, DHA) : huiles riches en ALA, complément si besoin",
       "texte": "Les plats végétaux n'apportent pas d'EPA ni de DHA. L'ANSES recommande qu'environ la moitié des huiles soit riche en acide alpha-linolénique (colza, noix, soja, lin), mais note que les besoins en EPA+DHA restent difficiles à couvrir : à l'échelle individuelle, une supplémentation peut être envisagée.",

@@ -4,7 +4,10 @@
 
 Each rule: priority (first match wins), match_type (iarc | name_regex | subgroup | category),
 match_value, to_code (a plant food with nutrients and impacts), ratio (grams of the substitute per
-gram of the original; 1 = same mass) and a justification shown to the user. Checks: to_code exists,
+gram of the original; 1 = same mass), ratio_basis (empty = ratio; fat_g = same quantity of fat from
+the Ciqual lipids of both foods; cooking_yield = raw food × USDA cooking yield; the browser computes
+them, lib/compare/recipe.ts, and falls back on ratio when the data is missing) and a justification
+shown to the user. Checks: to_code exists,
 is not an animal food, has protein, energy and CO2e. Idempotent (rules not in the CSV are removed).
 """
 
@@ -20,6 +23,7 @@ from common import fetch_all, get_client, upsert
 
 CSV_PATH = Path(__file__).resolve().parent / "substitutions.csv"
 TYPES = {"iarc", "name_regex", "subgroup", "category"}
+RATIO_BASES = {"", "fat_g", "cooking_yield"}
 
 
 def read_rules(path: Path = CSV_PATH) -> list[dict]:
@@ -39,6 +43,8 @@ def read_rules(path: Path = CSV_PATH) -> list[dict]:
                 errors.append(f"line {i}: ratio must be > 0")
         except ValueError:
             errors.append(f"line {i}: ratio is not a number")
+        if (r.get("ratio_basis") or "") not in RATIO_BASES:
+            errors.append(f"line {i}: ratio_basis {r.get('ratio_basis')!r}")
         if not r["justification"].strip():
             errors.append(f"line {i}: justification required")
     if len({r["priority"] for r in rows}) != len(rows):
@@ -78,7 +84,8 @@ def main() -> None:
     for r in fetch_all(client, "ingredient_substitutions", "priority"):
         if r["priority"] not in keep:
             client.table("ingredient_substitutions").delete().eq("priority", r["priority"]).execute()
-    upsert(client, "ingredient_substitutions", [{**r, "priority": int(r["priority"]), "ratio": float(r["ratio"])} for r in rules], "priority")
+    upsert(client, "ingredient_substitutions", [
+        {**r, "priority": int(r["priority"]), "ratio": float(r["ratio"]), "ratio_basis": r.get("ratio_basis") or None} for r in rules], "priority")
     for r in rules[:5]:
         print(f"  {r['priority']:>4} {r['match_type']:10} {r['match_value'][:30]:30} -> {r['to_code']} {foods[r['to_code']]['name_fr'][:40]}")
 

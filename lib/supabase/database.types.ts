@@ -683,6 +683,7 @@ export type Database = {
           match_value: string
           priority: number
           ratio: number
+          ratio_basis: string | null
           to_code: string
         }
         Insert: {
@@ -691,6 +692,7 @@ export type Database = {
           match_value: string
           priority: number
           ratio: number
+          ratio_basis?: string | null
           to_code: string
         }
         Update: {
@@ -699,6 +701,7 @@ export type Database = {
           match_value?: string
           priority?: number
           ratio?: number
+          ratio_basis?: string | null
           to_code?: string
         }
         Relationships: [
@@ -1066,7 +1069,10 @@ export type Database = {
       }
       dish_nutrients: {
         Row: {
+          censored: boolean | null
           dish_id: string | null
+          high_per_serving: number | null
+          low_per_serving: number | null
           mass_coverage: number | null
           nutrient_id: string | null
           per_serving: number | null

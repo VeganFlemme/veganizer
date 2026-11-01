@@ -114,24 +114,51 @@ function values(category: RuleCategory, input: ScoreInput, basis: Basis): Record
   for (const i of category.indicators) {
     if (i.group === "nutrients" || i.group === "impacts" || i.group === "animalImpacts") {
       const r = rows.get(i.id);
-      out[i.id] = r ? { animal: r.animal?.value, vegetal: r.vegetal?.value, partial: r.lowCoverage } : undefined;
+      out[i.id] = r
+        ? { animal: r.animal?.value, vegetal: r.vegetal?.value, animalRange: r.verdictRanges.animal, vegetalRange: r.verdictRanges.vegetal, unit: r.unit, partial: r.verdictPartial }
+        : undefined;
     } else if (i.group === "iarc") {
       const x = input.iarc.find((e) => e.entry.id === i.iarcId);
       out[i.id] = x ? { animal: x.animalGrams, vegetal: x.vegetalGrams } : undefined;
     } else if (i.group === "price") {
       const { animal, vegetal } = input.price;
+      const range = (p: PriceView["animal"]) => (p && p.low != null && p.high != null ? { low: p.low, high: p.high } : null);
       out[i.id] = {
         animal: animal?.value,
         vegetal: vegetal?.value,
+        animalRange: range(animal),
+        vegetalRange: range(vegetal),
+        unit: "€",
         partial: !animal || !vegetal || animal.coverage < COVERAGE_WARNING || vegetal.coverage < COVERAGE_WARNING,
       };
     } else if (i.group === "climateCost") {
       const c = input.climateCost[0];
       const co2 = input.rows.perServing.find((r) => r.id === CLIMATE_MAIN);
-      out[i.id] = c ? { animal: c.animalEur, vegetal: c.vegetalEur, partial: !co2 || co2.lowCoverage } : undefined;
+      out[i.id] = c ? { animal: c.animalEur, vegetal: c.vegetalEur, unit: "€", partial: !co2 || co2.verdictPartial } : undefined;
     }
   }
   return out;
+}
+
+const gramsFr = new Intl.NumberFormat("fr-FR", { maximumFractionDigits: 0 });
+
+/**
+ * Summary of the Santé card with the real values: « 20 g de lardon fumé (viande transformée,
+ * groupe 1) et 125 g de bœuf (viande rouge, groupe 2A) par portion », food names (not recipe notes).
+ */
+export function healthSummary(iarc: IarcView[]): string {
+  const part = (side: "animal" | "vegetal") =>
+    iarc.flatMap((x) =>
+      (side === "animal" ? x.animalItems : x.vegetalItems).map(
+        (i) => `${gramsFr.format(i.grams)}\u00a0g de ${i.name} (${x.entry.libelle.toLowerCase()}, groupe ${x.entry.groupe})`,
+      ),
+    );
+  const join = (xs: string[]) => (xs.length <= 1 ? xs.join("") : `${xs.slice(0, -1).join(", ")} et ${xs[xs.length - 1]}`);
+  const a = part("animal");
+  const v = part("vegetal");
+  const animal = a.length ? `Plat animal : ${join(a)} par portion.` : "Plat animal : aucun ingrédient classé par le CIRC (viande rouge ou transformée).";
+  const vegetal = v.length ? ` Version végétale : ${join(v)} par portion.` : " Version végétale : aucun ingrédient classé.";
+  return animal + vegetal;
 }
 
 function scoreOf(category: RuleCategory, input: ScoreInput, basis: Basis): CategoryScoreView {
@@ -141,7 +168,8 @@ function scoreOf(category: RuleCategory, input: ScoreInput, basis: Basis): Categ
   };
   const score = scoreCategory(rule, values(category, input, basis), SCORE_OPTIONS);
   const labels = Object.fromEntries(category.indicators.map((i) => [i.id, i.label]));
-  return { ...score, id: category.id as CategoryId, label: category.label, short: category.short, sentence: categorySentence(score, labels), summary: categorySummary(score, labels) };
+  const summary = category.id === "sante" ? healthSummary(input.iarc) : categorySummary(score, labels);
+  return { ...score, id: category.id as CategoryId, label: category.label, short: category.short, sentence: categorySentence(score, labels), summary };
 }
 
 export function scorePair(input: ScoreInput): PairScores {

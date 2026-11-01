@@ -56,3 +56,33 @@ describe("dishPriceFromFoods", () => {
     expect(dishPriceFromFoods("D", 1, [{ code: "b", grams: 100 }], [])).toBeNull();
   });
 });
+
+describe("applySubstitutions: ratio computed from the data (review of the substitutions)", () => {
+  const f: Record<string, RecipeFood> = {
+    butter: { code: "butter", name_fr: "Beurre doux", is_animal: true, animal_category: "vache laitière", food_subgroup: "beurres", iarc_meat: null },
+    raw: { code: "raw", name_fr: "Boeuf, steak haché 15% MG, cru", is_animal: true, animal_category: "bovin", food_subgroup: "viandes crues", iarc_meat: "rouge" },
+    rawNoYield: { code: "rawNoYield", name_fr: "Porc, filet, cru", is_animal: true, animal_category: "porc", food_subgroup: "viandes crues", iarc_meat: "rouge" },
+  };
+  const r: SubstitutionRule[] = [
+    { priority: 31, match_type: "subgroup", match_value: "viandes crues", to_code: "seitan", ratio: 1, ratio_basis: "cooking_yield", justification: "viande crue" },
+    { priority: 80, match_type: "subgroup", match_value: "beurres", to_code: "oil", ratio: 1, ratio_basis: "fat_g", justification: "beurre" },
+  ];
+  const context = { fatPer100g: { butter: 82, oil: 100 }, cookingYieldPct: { raw: 73 } };
+
+  it("butter → oil: same quantity of fat (Ciqual lipids of both foods)", () => {
+    const x = applySubstitutions([{ code: "butter", grams: 50 }], f, r, context);
+    expect(x.ingredients[0].grams).toBeCloseTo(41); // 50 × 82 / 100
+    expect(x.changes[0].basis).toBe("fat_g");
+  });
+  it("falls back on the ratio when a lipid value is missing, and says so", () => {
+    const x = applySubstitutions([{ code: "butter", grams: 50 }], f, r, { fatPer100g: { oil: 100 }, cookingYieldPct: {} });
+    expect(x.ingredients[0].grams).toBe(50);
+    expect(x.changes[0].basis).toBeNull();
+  });
+  it("raw meat → seitan: cooking yield of the raw food when published, else the ratio", () => {
+    const x = applySubstitutions([{ code: "raw", grams: 100 }, { code: "rawNoYield", grams: 100 }], f, r, context);
+    expect(x.changes.find((c) => c.from === "raw")?.newGrams).toBeCloseTo(73);
+    expect(x.changes.find((c) => c.from === "rawNoYield")?.newGrams).toBe(100);
+    expect(x.changes.find((c) => c.from === "rawNoYield")?.basis).toBeNull();
+  });
+});

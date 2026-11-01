@@ -23,6 +23,8 @@ export interface SubstitutionRule {
   match_value: string;
   to_code: string;
   ratio: number;
+  /** How newGrams is computed (migration 20261103000000): null = grams × ratio. */
+  ratio_basis?: "fat_g" | "cooking_yield" | null;
   justification: string;
 }
 
@@ -31,7 +33,32 @@ export interface SubstitutionChange {
   to: string;
   grams: number;
   newGrams: number;
+  /** Data the quantity rests on; null = the fixed ratio of the rule (data missing or none asked). */
+  basis: "fat_g" | "cooking_yield" | null;
   justification: string;
+}
+
+/** Data for the computed ratios: Ciqual lipids per 100 g, USDA cooking yields (%) by raw food code. */
+export interface SubstitutionContext {
+  fatPer100g: Record<string, number | undefined>;
+  cookingYieldPct: Record<string, number | undefined>;
+}
+
+// Unit conversion only: a yield is published in percent.
+const PERCENT = 100;
+
+/** Quantity of the substitute and what it rests on. */
+function substituteGrams(rule: SubstitutionRule, from: string, grams: number, ctx: SubstitutionContext): { grams: number; basis: SubstitutionChange["basis"] } {
+  if (rule.ratio_basis === "fat_g") {
+    const a = ctx.fatPer100g[from];
+    const b = ctx.fatPer100g[rule.to_code];
+    if (a != null && b != null && b > 0) return { grams: (grams * a) / b, basis: "fat_g" };
+  }
+  if (rule.ratio_basis === "cooking_yield") {
+    const y = ctx.cookingYieldPct[from];
+    if (y != null && y > 0) return { grams: (grams * y) / PERCENT, basis: "cooking_yield" };
+  }
+  return { grams: grams * rule.ratio, basis: null };
 }
 
 function matches(rule: SubstitutionRule, f: RecipeFood): boolean {
@@ -52,6 +79,7 @@ export function applySubstitutions(
   ingredients: RecipeIngredient[],
   foods: Record<string, RecipeFood | undefined>,
   rules: SubstitutionRule[],
+  context: SubstitutionContext = { fatPer100g: {}, cookingYieldPct: {} },
 ): { ingredients: RecipeIngredient[]; changes: SubstitutionChange[]; unmatched: string[] } {
   const sorted = [...rules].sort((a, b) => a.priority - b.priority);
   const out = new Map<string, number>();
@@ -62,11 +90,24 @@ export function applySubstitutions(
     const rule = f?.is_animal ? sorted.find((r) => matches(r, f)) : undefined;
     if (f?.is_animal && !rule) unmatched.push(i.code);
     const code = rule ? rule.to_code : i.code;
-    const grams = rule ? i.grams * rule.ratio : i.grams;
-    if (rule) changes.push({ from: i.code, to: rule.to_code, grams: i.grams, newGrams: grams, justification: rule.justification });
+    const sub = rule ? substituteGrams(rule, i.code, i.grams, context) : { grams: i.grams, basis: null };
+    const grams = sub.grams;
+    if (rule) changes.push({ from: i.code, to: rule.to_code, grams: i.grams, newGrams: grams, basis: sub.basis, justification: rule.justification });
     out.set(code, (out.get(code) ?? 0) + grams);
   }
   return { ingredients: [...out].map(([code, grams]) => ({ code, grams })), changes, unmatched };
+}
+
+/** Context of the computed ratios from the loaded rows (nutrients read through ciqual_code, as dish_nutrients). */
+export function substitutionContext(data: Pick<RecipeData, "foods" | "nutrientValues"> & { cookingYields?: { raw_code: string; yield_pct: number }[] }): SubstitutionContext {
+  const fatPer100g: SubstitutionContext["fatPer100g"] = {};
+  for (const f of data.foods) {
+    const n = data.nutrientValues.find((x) => x.food_code === (f.ciqual_code ?? f.code) && x.nutrient_id === "fat_g");
+    if (n?.value_per_100g != null) fatPer100g[f.code] = Number(n.value_per_100g);
+  }
+  const cookingYieldPct: SubstitutionContext["cookingYieldPct"] = {};
+  for (const y of data.cookingYields ?? []) cookingYieldPct[y.raw_code] = Number(y.yield_pct);
+  return { fatPer100g, cookingYieldPct };
 }
 
 /** Same rule as the dish_prices_best view: covered grams × median price, coverage reported. */

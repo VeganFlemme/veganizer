@@ -1,8 +1,12 @@
 // French number formatting shared by pages and components. Pure.
 
+import { roundForUnit } from "@/lib/scoring/ranges";
+
 const sig3 = new Intl.NumberFormat("fr-FR", { maximumSignificantDigits: 3 });
 const sci = new Intl.NumberFormat("fr-FR", { notation: "scientific", maximumSignificantDigits: 3 });
 const int = new Intl.NumberFormat("fr-FR", { maximumFractionDigits: 0 });
+const fixed2 = new Intl.NumberFormat("fr-FR", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+const floor2sig = new Intl.NumberFormat("fr-FR", { maximumSignificantDigits: 2, roundingMode: "floor" });
 const eur = new Intl.NumberFormat("fr-FR", { style: "currency", currency: "EUR", minimumFractionDigits: 2, maximumFractionDigits: 2 });
 
 export const MISSING = "donnée manquante";
@@ -51,4 +55,51 @@ export function signedGap(reduction: number | null): string {
 export function withUnit(x: number | null | undefined, unit: string): string {
   const v = formatValue(x);
   return v === MISSING || !unit ? v : `${v}${NBSP}${unit}`;
+}
+
+/** Units written with exactly 2 decimals (the same rule as roundForUnit). */
+const TWO_DECIMALS = new Set(["kg CO2e"]);
+const SMALLEST_2_DECIMALS = 0.005;
+
+/**
+ * One rounding rule per unit, everywhere (review of PR #15): kg CO2e with 2 decimals (« 0,65 »,
+ * « 1,20 », « 1,00 »), euros with formatEur, every other unit with 3 significant digits. A non-zero
+ * value too small for 2 decimals is written « < 0,01 » (never « 0,00 »).
+ */
+export function formatForUnit(x: number | null | undefined, unit: string): string {
+  if (x == null || !Number.isFinite(x)) return MISSING;
+  if (unit === "€") return formatEur(x);
+  if (!TWO_DECIMALS.has(unit)) return formatValue(x);
+  if (x !== 0 && Math.abs(x) < SMALLEST_2_DECIMALS) return x > 0 ? "< 0,01" : "> −0,01";
+  return fixed2.format(roundForUnit(x, unit)).replace("-", "−");
+}
+
+/** Value and unit, with the rounding rule of the unit. */
+export function withUnitRule(x: number | null | undefined, unit: string): string {
+  const v = formatForUnit(x, unit);
+  return v === MISSING || !unit || unit === "€" ? v : `${v}${NBSP}${unit.replace("CO2e", "CO₂e")}`;
+}
+
+/**
+ * Animals spared by the simulator: a low estimate (slaughter per kg of carcass), so the number is
+ * rounded DOWN to 2 significant digits and never shown above what was computed.
+ */
+export function animalsSpared(x: number | null | undefined): string {
+  const p = animalsSparedParts(x);
+  return p ? `au moins ${p.number} ${p.noun}` : MISSING;
+}
+
+/** Same as animalsSpared, in two parts (« 0,03 », « animal épargné ») for the simulator. */
+export function animalsSparedParts(x: number | null | undefined): { number: string; noun: string } | null {
+  if (x == null || !Number.isFinite(x)) return null;
+  const number = floor2sig.format(x);
+  const n = Number(number.replace(/\s/g, "").replace(",", "."));
+  return { number, noun: n >= 2 ? "animaux épargnés" : "animal épargné" };
+}
+
+/** Licence shown publicly: the licence when known, nothing for internal follow-up notes (« À vérifier… »). */
+export function publicLicense(license: string | null | undefined): string | null {
+  const s = (license ?? "").trim();
+  if (!s || /^à vérifier/i.test(s)) return null;
+  return s;
 }

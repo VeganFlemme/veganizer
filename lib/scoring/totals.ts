@@ -9,6 +9,11 @@ export interface TotalsOptions {
   energyNutrientId?: string;
   /** Nutrient id used for "per 10 g of protein". */
   proteinNutrientId?: string;
+  /**
+   * Derived nutrients: id -> components summed ingredient by ingredient (e.g. EPA + DHA). An
+   * ingredient counts only when every component is known (a number or « < x »).
+   */
+  nutrientSums?: Record<string, string[]>;
 }
 
 /** Sum of contributions for one indicator, before division by servings. */
@@ -19,6 +24,7 @@ interface Accumulator {
   coveredGrams: number;
   worstDqr: number | null;
   sourceIds: Set<string>;
+  censored: boolean;
 }
 
 interface Contribution {
@@ -27,18 +33,20 @@ interface Contribution {
   high: number;
   dqr: number | null;
   sourceId: string | null;
+  censored?: boolean;
 }
 
 function add(acc: Map<string, Accumulator>, id: string, grams: number, c: Contribution): void {
   let a = acc.get(id);
   if (!a) {
-    a = { value: 0, low: 0, high: 0, coveredGrams: 0, worstDqr: null, sourceIds: new Set() };
+    a = { value: 0, low: 0, high: 0, coveredGrams: 0, worstDqr: null, sourceIds: new Set(), censored: false };
     acc.set(id, a);
   }
   a.value += c.value;
   a.low += c.low;
   a.high += c.high;
   a.coveredGrams += grams;
+  if (c.censored) a.censored = true;
   if (c.dqr != null) a.worstDqr = a.worstDqr == null ? c.dqr : Math.max(a.worstDqr, c.dqr);
   if (c.sourceId) a.sourceIds.add(c.sourceId);
 }
@@ -96,7 +104,9 @@ function perKg(
  * - a missing value is never counted as 0: it lowers massCoverage instead;
  * - an indicator no ingredient has is absent from the result (donnée manquante);
  * - published negative values are kept as they are;
- * - a missing low/high bound falls back on the central value.
+ * - a missing low/high bound falls back on the central value;
+ * - a nutrient published as « < x » (FoodData.nutrientMax) is covered, adds 0 to the low bound and
+ *   x to the high bound; the dish then has a range and no central value (Amount.censored).
  *
  * Animal impacts: an ingredient with isAnimal = false contributes a real 0 (no
  * animal ingredient identified) and counts as covered; an animal ingredient
@@ -123,10 +133,29 @@ export function dishTotals(dish: Dish, data: ScoringData, options: TotalsOptions
     const food: FoodData | undefined = data.foods[foodCode];
     if (!food) continue; // unknown food: missing for every indicator
 
-    for (const [id, per100g] of Object.entries(food.nutrients)) {
-      if (!finite(per100g)) continue;
-      const v = (grams / GRAMS_PER_100G) * per100g;
-      add(nutrients, id, grams, { value: v, low: v, high: v, dqr: null, sourceId: food.nutrientSourceId ?? null });
+    // Per 100 g of this food: exact value, or [0, x] for a value published as « < x ».
+    const per100 = (id: string): { low: number; high: number; censored: boolean } | null => {
+      const v = food.nutrients[id];
+      if (finite(v)) return { low: v, high: v, censored: false };
+      const max = food.nutrientMax?.[id];
+      return finite(max) ? { low: 0, high: max, censored: true } : null;
+    };
+    const ids = new Set([...Object.keys(food.nutrients), ...Object.keys(food.nutrientMax ?? {})]);
+    const sourceId = food.nutrientSourceId ?? null;
+    for (const id of ids) {
+      const n = per100(id);
+      if (!n) continue;
+      const k = grams / GRAMS_PER_100G;
+      add(nutrients, id, grams, { value: n.censored ? 0 : k * n.low, low: k * n.low, high: k * n.high, dqr: null, sourceId, censored: n.censored });
+    }
+    for (const [id, parts] of Object.entries(options.nutrientSums ?? {})) {
+      const ns = parts.map(per100);
+      if (ns.some((n) => n == null)) continue;
+      const k = grams / GRAMS_PER_100G;
+      const low = ns.reduce((s, n) => s + n!.low, 0) * k;
+      const high = ns.reduce((s, n) => s + n!.high, 0) * k;
+      const censored = ns.some((n) => n!.censored);
+      add(nutrients, id, grams, { value: censored ? 0 : low, low, high, dqr: null, sourceId, censored });
     }
 
     for (const [id, imp] of Object.entries(food.impacts)) {
@@ -157,7 +186,7 @@ export function dishTotals(dish: Dish, data: ScoringData, options: TotalsOptions
 
   const fullyKnown = (id: string): number | null => {
     const a = nutrients.get(id);
-    return a && a.coveredGrams === totalGrams ? a.value / dish.servings : null;
+    return a && a.coveredGrams === totalGrams && !a.censored ? a.value / dish.servings : null;
   };
   const kcalPerServing = fullyKnown(energyId);
   const proteinPerServing = fullyKnown(proteinId);
@@ -165,16 +194,18 @@ export function dishTotals(dish: Dish, data: ScoringData, options: TotalsOptions
   const toAmounts = (acc: Map<string, Accumulator>): Record<string, Amount> => {
     const out: Record<string, Amount> = {};
     for (const [id, a] of acc) {
-      const perServing = a.value / dish.servings;
+      // Only a range is known when an ingredient is « < x »: no central value (never x/2).
+      const perServing = a.censored ? null : a.value / dish.servings;
       out[id] = {
         perServing,
         lowPerServing: a.low / dish.servings,
         highPerServing: a.high / dish.servings,
-        per100kcal: kcalPerServing ? (perServing / kcalPerServing) * 100 : null,
-        per10gProtein: proteinPerServing ? (perServing / proteinPerServing) * 10 : null,
+        per100kcal: kcalPerServing && perServing != null ? (perServing / kcalPerServing) * 100 : null,
+        per10gProtein: proteinPerServing && perServing != null ? (perServing / proteinPerServing) * 10 : null,
         massCoverage: a.coveredGrams / totalGrams,
         worstDqr: a.worstDqr,
         sourceIds: [...a.sourceIds].sort(),
+        ...(a.censored ? { censored: true } : {}),
       };
     }
     return out;

@@ -4,7 +4,7 @@
 
 import { dishTotals, type Basis, type Conseil } from "@/lib/scoring";
 import { BASES, VEGAN_WORD } from "./config";
-import { rowsFor, scoringData, type AdvantageView, type CriterionRow, type RawPairData, type SourceRow } from "./view";
+import { rowsFor, scoringData, TOTALS_OPTIONS, type AdvantageView, type CriterionRow, type RawPairData, type SourceRow } from "./view";
 
 export interface AlternativeRow {
   plant_code: string;
@@ -61,7 +61,7 @@ export function buildFoodPage(raw: FoodRawData): FoodPageModel | null {
   if (!food) return null;
   const rawLike = { ...raw, animal: null, vegetal: [], pairs: [], ingredients: [] } as unknown as RawPairData;
   const data = scoringData(rawLike);
-  const totals = (code: string) => dishTotals({ servings: 1, ingredients: [{ foodCode: code, grams: GRAMS }] }, data);
+  const totals = (code: string) => dishTotals({ servings: 1, ingredients: [{ foodCode: code, grams: GRAMS }] }, data, TOTALS_OPTIONS);
   const own = totals(food.code);
   const usedSources = new Set<string>();
   const byBasis = (a: ReturnType<typeof totals>, v: ReturnType<typeof totals>) =>

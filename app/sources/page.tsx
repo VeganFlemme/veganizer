@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { PageHero } from "@/components/ui/PageHero";
 import { listSources } from "@/lib/compare/data";
+import { publicLicense } from "@/lib/format";
 
 export const metadata: Metadata = {
   title: "Sources et licences",
@@ -11,10 +12,9 @@ export const metadata: Metadata = {
 
 const dateFr = new Intl.DateTimeFormat("fr-FR", { dateStyle: "long" });
 
-function Commercial({ value }: { value: boolean | null }) {
-  if (value === true) return <>autorisé</>;
-  if (value === false) return <strong>non autorisé (usage non commercial)</strong>;
-  return <>à vérifier</>;
+// Unknown licence or commercial use: nothing is shown (follow-up in docs/A_VERIFIER.md and public.sources).
+function Commercial({ value }: { value: boolean }) {
+  return value ? <>autorisé</> : <strong>non autorisé (usage non commercial)</strong>;
 }
 
 export default async function SourcesPage() {
@@ -23,8 +23,8 @@ export default async function SourcesPage() {
     <main className="flex flex-1 flex-col">
       <PageHero title="Sources et licences">
         <p className="m-0">
-          Chaque chiffre affiché sur Veganizer est rattaché à l’une de ces sources. Nous indiquons la version utilisée, la licence et si un usage commercial est
-          permis. Les bases sous licence ODbL (Open Food Facts, Open Prices) imposent de citer la source et de partager les bases dérivées sous la même licence.
+          Chaque chiffre affiché sur Veganizer est rattaché à l’une de ces sources. Nous indiquons la version utilisée et, quand elles sont connues, la licence et les
+          conditions d’usage commercial. Les bases sous licence ODbL (Open Food Facts, Open Prices) imposent de citer la source et de partager les bases dérivées sous la même licence.
         </p>
         <p className="m-0 text-[14px] text-on-dark-3">
           Toutes les sources ne sont pas encore utilisées dans les comparaisons : voir la <Link href="/methodologie">méthodologie</Link>.
@@ -55,12 +55,20 @@ export default async function SourcesPage() {
                 )}
                 <dt className="text-ink-2">Version</dt>
                 <dd>{s.version ?? "non précisée"}</dd>
-                <dt className="text-ink-2">Licence</dt>
-                <dd>{s.license}</dd>
-                <dt className="text-ink-2">Usage commercial</dt>
-                <dd>
-                  <Commercial value={s.commercial_use} />
-                </dd>
+                {publicLicense(s.license) && (
+                  <>
+                    <dt className="text-ink-2">Licence</dt>
+                    <dd>{publicLicense(s.license)}</dd>
+                  </>
+                )}
+                {s.commercial_use != null && (
+                  <>
+                    <dt className="text-ink-2">Usage commercial</dt>
+                    <dd>
+                      <Commercial value={s.commercial_use} />
+                    </dd>
+                  </>
+                )}
                 {s.share_alike && (
                   <>
                     <dt className="text-ink-2">Partage à l’identique</dt>

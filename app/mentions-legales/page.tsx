@@ -8,8 +8,11 @@ export const metadata: Metadata = {
   alternates: { canonical: "/mentions-legales" },
 };
 
-// Publisher identity: to be completed by Matt (docs/A_VERIFIER.md). Nothing is invented here.
+// Publisher and contact given by Matt (2026-11-01). Address and director of publication not given:
+// left to complete (docs/A_VERIFIER.md). Nothing is invented here.
 const TODO = "[à compléter par Matt]";
+const PUBLISHER = "VeganFlemme";
+const CONTACT = "veganflemme@gmail.com";
 
 export default function LegalPage() {
   return (
@@ -19,11 +22,13 @@ export default function LegalPage() {
         <ProseSection id="editeur" title="Éditeur du site">
           <dl className="m-0 grid grid-cols-1 gap-x-4 gap-y-1 sm:grid-cols-[max-content_1fr]">
             <dt className="font-semibold">Éditeur</dt>
-            <dd className="m-0">{TODO}</dd>
+            <dd className="m-0">{PUBLISHER}</dd>
             <dt className="font-semibold">Adresse</dt>
             <dd className="m-0">{TODO}</dd>
             <dt className="font-semibold">Contact</dt>
-            <dd className="m-0">{TODO}</dd>
+            <dd className="m-0">
+              <a href={`mailto:${CONTACT}`}>{CONTACT}</a>
+            </dd>
             <dt className="font-semibold">Directeur de la publication</dt>
             <dd className="m-0">{TODO}</dd>
           </dl>

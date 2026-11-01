@@ -1,17 +1,17 @@
-priority,match_type,match_value,to_code,ratio,justification
-10,iarc,transformée,20912,1,"Charcuterie (lardons, jambon…) → tofu fumé : même rôle de garniture fumée, source de protéines (valeurs Ciqual affichées)."
-20,name_regex,\bhach,20587,1,"Viande hachée → lentilles vertes cuites : même usage (sauce bolognaise, hachis), protéines et fibres (valeurs Ciqual affichées)."
-30,subgroup,viandes cuites,25598,1,"Viande cuite → seitan : même rôle de pièce protéinée (valeurs Ciqual affichées)."
-31,subgroup,viandes crues,25598,1,"Viande crue → seitan : même rôle de pièce protéinée (valeurs Ciqual affichées)."
-40,subgroup,poissons cuits,20904,1,"Poisson cuit → tofu ferme : même rôle protéiné ; le tofu n'apporte pas d'EPA ni de DHA (voir l'encadré « le plat animal fait mieux »)."
-41,subgroup,poissons crus,20904,1,"Poisson cru → tofu ferme : même rôle protéiné ; pas d'EPA ni de DHA."
-42,subgroup,produits à base de poissons et produits de la mer,20904,1,"Produit de la mer → tofu ferme : même rôle protéiné ; pas d'EPA ni de DHA."
-43,subgroup,mollusques et crustacés cuits,20904,1,"Fruits de mer → tofu ferme : même rôle protéiné ; pas d'EPA ni de DHA."
-50,subgroup,oeufs,20904,1,"Œuf → tofu ferme (brouillé, appareil de quiche) : même rôle protéiné (valeurs Ciqual affichées)."
-60,subgroup,laits,18901,1,"Lait de vache → boisson au soja enrichie en calcium : même usage ; l'ANSES conseille les versions enrichies en calcium."
-70,subgroup,crèmes et spécialités à base de crème,11214,1,"Crème → préparation culinaire à base de soja type crème de soja : même usage en cuisine."
-80,subgroup,beurres,17130,1,"Beurre → huile de colza (même masse) : matière grasse de cuisson, riche en acide alpha-linolénique ; la masse grasse n'est pas identique (voir les valeurs)."
-90,name_regex,r[âa]p[ée],1029_2,1,"Fromage râpé → spécialité végétale type fromage râpé : même usage ; beaucoup moins de protéines et de calcium (valeurs affichées)."
-91,subgroup,fromages et alternatives végétales,1029_1,1,"Fromage → spécialité végétale type fromage en tranche : même usage ; beaucoup moins de protéines et de calcium (valeurs affichées)."
-92,subgroup,fromages,1029_1,1,"Fromage → spécialité végétale type fromage en tranche : même usage ; beaucoup moins de protéines et de calcium (valeurs affichées)."
-100,subgroup,produits laitiers frais et alternatives végétales,19693,1,"Yaourt ou produit laitier frais → dessert au soja nature fermenté : même usage."
+priority,match_type,match_value,to_code,ratio,ratio_basis,justification
+10,iarc,transformée,20912,1,,"Charcuterie (lardons, jambon…) → tofu fumé : même rôle de garniture fumée, source de protéines (valeurs Ciqual affichées)."
+20,name_regex,\bhach,20587,1,,"Viande hachée → lentilles vertes cuites : même usage (sauce bolognaise, hachis), protéines et fibres (valeurs Ciqual affichées)."
+30,subgroup,viandes cuites,25598,1,,Viande cuite → seitan : même rôle de pièce protéinée (valeurs Ciqual affichées).
+31,subgroup,viandes crues,25598,1,cooking_yield,"Viande crue → seitan : même rôle de pièce protéinée. La viande perd du poids à la cuisson et le seitan se mange tel quel : grammes de seitan = grammes de viande crue × rendement de cuisson USDA quand il est publié (table cooking_yields) ; sinon même masse (rendement non publié), ce qui surestime la portion de seitan."
+40,subgroup,poissons cuits,20904,1,,Poisson cuit → tofu ferme : même rôle protéiné ; le tofu n'apporte pas d'EPA ni de DHA (voir l'encadré « le plat animal fait mieux »).
+41,subgroup,poissons crus,20904,1,,Poisson cru → tofu ferme : même rôle protéiné ; pas d'EPA ni de DHA.
+42,subgroup,produits à base de poissons et produits de la mer,20904,1,,Produit de la mer → tofu ferme : même rôle protéiné ; pas d'EPA ni de DHA.
+43,subgroup,mollusques et crustacés cuits,20904,1,,Fruits de mer → tofu ferme : même rôle protéiné ; pas d'EPA ni de DHA.
+50,subgroup,oeufs,20904,1,,"Œuf → tofu ferme (brouillé, appareil de quiche) : même rôle protéiné (valeurs Ciqual affichées)."
+60,subgroup,laits,18901,1,,Lait de vache → boisson au soja enrichie en calcium : même usage ; l'ANSES conseille les versions enrichies en calcium.
+70,subgroup,crèmes et spécialités à base de crème,11214,1,,Crème → préparation culinaire à base de soja type crème de soja : même usage en cuisine.
+80,subgroup,beurres,17130,1,fat_g,"Beurre → huile de colza, même quantité de matière grasse : grammes d'huile = grammes de beurre × lipides du beurre ÷ lipides de l'huile (valeurs Ciqual des deux aliments ; même masse si une valeur manque). Huile riche en acide alpha-linolénique."
+90,name_regex,r[âa]p[ée],1029_2,1,,Fromage râpé → spécialité végétale type fromage râpé : même usage ; beaucoup moins de protéines et de calcium (valeurs affichées).
+91,subgroup,fromages et alternatives végétales,1029_1,1,,Fromage → spécialité végétale type fromage en tranche : même usage ; beaucoup moins de protéines et de calcium (valeurs affichées).
+92,subgroup,fromages,1029_1,1,,Fromage → spécialité végétale type fromage en tranche : même usage ; beaucoup moins de protéines et de calcium (valeurs affichées).
+100,subgroup,produits laitiers frais et alternatives végétales,19693,1,,Yaourt ou produit laitier frais → dessert au soja nature fermenté : même usage.

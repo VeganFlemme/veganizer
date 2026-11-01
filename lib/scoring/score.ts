@@ -1,6 +1,8 @@
 // Scores and winners per category (docs/DESIGN.md § 5). Pure: no network, no Supabase.
 // Rules (indicators and directions) come from data/score_rules.json; values from the database.
 
+import { judgeRanges, type Range } from "./ranges";
+
 export type Direction = "lower_is_better" | "higher_is_better";
 
 export interface ScoreIndicatorRule {
@@ -23,6 +25,11 @@ export interface ScoreOptions {
 export interface IndicatorValues {
   animal: number | null | undefined;
   vegetal: number | null | undefined;
+  /** Range the verdict rests on; default [value, value]. A side with a range and no value is compared. */
+  animalRange?: Range | null;
+  vegetalRange?: Range | null;
+  /** Unit, for the display rounding of ties (roundForUnit); default 3 significant digits. */
+  unit?: string;
   /** true when the data covers too little of the mass of one dish: not counted. */
   partial?: boolean;
 }
@@ -67,17 +74,26 @@ export function roundSignificant(x: number, digits: number): number {
   return Number(x.toPrecision(digits));
 }
 
+const rangeOf = (value: number | null, range: Range | null | undefined): Range | null =>
+  range && finite(range.low) && finite(range.high) ? range : value == null ? null : { low: value, high: value };
+
+/**
+ * One point for the dish that does better when the two ranges, rounded as displayed, do not
+ * overlap; overlapping ranges or equal values are a tie (decision of Matt, 2026-11-01).
+ * `options.significantDigits` is kept for the units without a rule of their own.
+ */
 export function scoreIndicator(rule: ScoreIndicatorRule, values: IndicatorValues | undefined, options: ScoreOptions): IndicatorScore {
   const animal = finite(values?.animal) ? values.animal : null;
   const vegetal = finite(values?.vegetal) ? values.vegetal : null;
   const base = { id: rule.id, direction: rule.direction, animal, vegetal };
-  if (animal == null || vegetal == null) return { ...base, outcome: "manquant" };
+  const ra = rangeOf(animal, values?.animalRange);
+  const rv = rangeOf(vegetal, values?.vegetalRange);
+  if (!ra || !rv) return { ...base, outcome: "manquant" };
   if (values?.partial) return { ...base, outcome: "partiel" };
-  const a = roundSignificant(animal, options.significantDigits);
-  const v = roundSignificant(vegetal, options.significantDigits);
-  if (a === v) return { ...base, outcome: "egal" };
-  const plantBetter = rule.direction === "lower_is_better" ? v < a : v > a;
-  return { ...base, outcome: plantBetter ? "vegetal" : "animal" };
+  const unit = values?.unit;
+  const round = (r: Range): Range =>
+    unit ? r : { low: roundSignificant(r.low, options.significantDigits), high: roundSignificant(r.high, options.significantDigits) };
+  return { ...base, outcome: judgeRanges(round(ra), round(rv), rule.direction === "higher_is_better", unit) };
 }
 
 export function scoreCategory(
