@@ -77,20 +77,24 @@ const ANIMALS_KILLED = "animals_killed_land";
  * multiplied by animals killed per kg of the same category (bounds × bounds);
  * without that factor it is missing data (null), never 0.
  */
+/** The factor of an indicator that applies to this food: limited to it first, then general. */
+export function factorFor(entry: CategoryFactor | CategoryFactor[] | undefined, foodCode: string): CategoryFactor | undefined {
+  const list = entry == null ? [] : Array.isArray(entry) ? entry : [entry];
+  return list.find((f) => f.foodCodes?.includes(foodCode)) ?? list.find((f) => !f.foodCodes);
+}
+
 function perKg(
-  byIndicator: Record<string, CategoryFactor | undefined> | undefined,
+  byIndicator: Record<string, CategoryFactor | CategoryFactor[] | undefined> | undefined,
   id: string,
   foodCode: string,
 ): { value: number; low: number; high: number; sourceIds: string[] } | null {
-  const f = byIndicator?.[id];
+  const f = factorFor(byIndicator?.[id], foodCode);
   if (!f || !finite(f.value)) return null;
-  if (f.foodCodes && !f.foodCodes.includes(foodCode)) return null;
   const low = finite(f.low) ? f.low : f.value;
   const high = finite(f.high) ? f.high : f.value;
   if ((f.per ?? "kg") === "kg") return { value: f.value, low, high, sourceIds: [f.sourceId] };
-  const k = byIndicator?.[ANIMALS_KILLED];
+  const k = factorFor(byIndicator?.[ANIMALS_KILLED], foodCode);
   if (!k || !finite(k.value) || (k.per ?? "kg") !== "kg") return null;
-  if (k.foodCodes && !k.foodCodes.includes(foodCode)) return null;
   const kl = finite(k.low) ? k.low : k.value;
   const kh = finite(k.high) ? k.high : k.value;
   return { value: f.value * k.value, low: low * kl, high: high * kh, sourceIds: [f.sourceId, k.sourceId] };

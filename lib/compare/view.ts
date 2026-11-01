@@ -443,8 +443,8 @@ export function scoringData(raw: RawPairData): ScoringData {
   }
   const categoryFactors: ScoringData["categoryFactors"] = {};
   for (const c of raw.categoryFactors) {
-    const byIndicator: Record<string, CategoryFactor> = (categoryFactors[c.category] ??= {}) as Record<string, CategoryFactor>;
-    byIndicator[c.indicator_id] = {
+    const byIndicator = (categoryFactors[c.category] ??= {}) as Record<string, CategoryFactor | CategoryFactor[]>;
+    const f: CategoryFactor = {
       value: Number(c.value),
       low: num(c.low),
       high: num(c.high),
@@ -452,6 +452,9 @@ export function scoringData(raw: RawPairData): ScoringData {
       per: c.per === "animal" ? "animal" : "kg",
       foodCodes: c.food_codes ?? null,
     };
+    // Several rows for one indicator (disjoint food_codes, e.g. milk and cheese): kept together.
+    const prev = byIndicator[c.indicator_id];
+    byIndicator[c.indicator_id] = prev == null ? f : [...(Array.isArray(prev) ? prev : [prev]), f];
   }
   return { foods, categoryFactors };
 }
@@ -796,7 +799,8 @@ export function buildPairPage(raw: RawPairData, options: BuildOptions = {}): Pai
       const factors = raw.categoryFactors.filter((c) => c.category === f.animal_category);
       if (factors.length === 0) animalWithoutFactor.push(f.name_fr);
       for (const c of factors) {
-        if (!animalFactorNotes.some((n) => n.category === c.category && n.indicatorId === c.indicator_id)) {
+        if (c.food_codes && !c.food_codes.includes(f.code)) continue;
+        if (!animalFactorNotes.some((n) => n.category === c.category && n.indicatorId === c.indicator_id && n.sourceId === c.source_id)) {
           animalFactorNotes.push({ category: c.category, indicatorId: c.indicator_id, per: c.per === "animal" ? "animal" : "kg", unitBasis: c.unit_basis ?? null, notes: c.notes ?? null, sourceId: c.source_id });
         }
       }
@@ -806,8 +810,8 @@ export function buildPairPage(raw: RawPairData, options: BuildOptions = {}): Pai
     const applies = (c: CategoryFactorRow, code: string) => !c.food_codes || c.food_codes.includes(code);
     const usable = (food: FoodRow, id: string) => {
       const fs = raw.categoryFactors.filter((c) => c.category === food.animal_category);
-      const f = fs.find((c) => c.indicator_id === id);
-      if (!f || !applies(f, food.code)) return false;
+      const f = fs.find((c) => c.indicator_id === id && applies(c, food.code));
+      if (!f) return false;
       if (f.per !== "animal") return true;
       return fs.some((c) => c.indicator_id === "animals_killed_land" && c.per !== "animal" && applies(c, food.code));
     };

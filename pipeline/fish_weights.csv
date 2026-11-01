@@ -1,0 +1,4 @@
+category,scope,name_regex,emw_low_g,emw_high_g,source_id,page,quote,accessed_on
+saumon d'élevage,,,4719,6364,mood-2023-farmed,"Supplementary material S4, « Estimated global numbers of farmed finfishes killed for food (2019) », Section 2 « Single-species categories with an EMW », p. 1","Atlantic salmon (Salmo salar) 2,615,962 4,719 6,364 411 554 483",2026-11-01
+poisson sauvage,Gadus morhua,^(Cabillaud|Morue),800,4000,mood-2024-wild,"Supplementary material S3, « Estimated average annual wild-caught finfish numbers (2000-2019) », rang 94, p. 1","Atlantic cod Gadus morhua 1,039,422 260,000,000 1,300,000,000 780,000,000 800 4,000",2026-11-01
+poisson sauvage,Pollachius virens,^Lieu noir,2200,4500,mood-2024-wild,"Supplementary material S3, « Estimated average annual wild-caught finfish numbers (2000-2019) », rang 207, p. 3","Saithe(=Pollock) Pollachius virens 370,537 82,000,000 170,000,000 130,000,000 2,200 4,500",2026-11-01

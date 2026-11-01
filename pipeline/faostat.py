@@ -196,7 +196,7 @@ def main() -> None:
     version = f"QCL{', mise à jour ' + update if update else ''}, données France {years[0]}" + (f"-{years[-1]}" if len(years) > 1 else "")
     require_source(client, SOURCE_ID, version)
     upsert(client, "category_factors", [{k: v for k, v in f.items() if not k.startswith("_")} for f in factors],
-           "category,indicator_id,source_id")
+           "category,indicator_id,source_id,scope")
     res = client.table("category_factors").select("category,value").eq("source_id", SOURCE_ID).eq("indicator_id", INDICATOR).execute().data
     print(f"In database: {len(res)} FAOSTAT factors")
     # Hand check: cattle 2024 = 3 986 140 heads / 1 298 540 t → about 3.07 animals per tonne.
