@@ -23,7 +23,7 @@ export function FoodAlone({ model, badge }: { model: FoodPageModel; badge: React
             {model.isAnimal
               ? "Pas encore d’alternative végétale proposée pour cet aliment."
               : "Aliment sans ingrédient animal identifié dans les bases Ciqual et Agribalyse (ce n’est pas une garantie : vérifie la liste des ingrédients)."}{" "}
-            <Link href="/methodologie#comparaison-simplifiee" className="text-on-dark-1 underline hover:text-white">
+            <Link href="/methodologie#choix-proteine" className="text-on-dark-1 underline hover:text-white">
               Méthode
             </Link>
           </p>

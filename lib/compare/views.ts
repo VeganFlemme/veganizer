@@ -14,9 +14,9 @@ export function isVersionId(x: string | null | undefined): x is VersionId {
 }
 
 /** « CO₂e : −87 % par portion, −82 % une fois complétée » (reduction = (animal − plant) / animal × 100). */
-export function co2Summary(base: number | null, completed: number | null): string | null {
+export function co2Summary(base: number | null, completed: number | null, per = "par portion"): string | null {
   if (base == null) return null;
-  const parts = [`${signedGap(base)} par portion`];
+  const parts = [`${signedGap(base)} ${per}`];
   if (completed != null) parts.push(`${signedGap(completed)} une fois complétée`);
   return `CO₂e${NBSP}: ${parts.join(", ")}`;
 }

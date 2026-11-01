@@ -1,0 +1,15 @@
+{
+  "version": "1.0",
+  "date": "2026-11-01",
+  "status": "Choix de la protéine par le visiteur (suite V1, décision de Matt, 17 h 25). Seuils d'allégations nutritionnelles, utilisés seulement pour classer des aliments, jamais affichés comme valeur.",
+  "mainIngredientMinProteinEnergyShare": 0.12,
+  "mainIngredientRule": "L'ingrédient animal principal est une « source de protéines » : au moins 12 % de l'énergie apportée par les protéines (beurre, crème : jamais).",
+  "candidateMinProteinEnergyShare": 0.2,
+  "candidateRule": "Une protéine végétale proposée est « riche en protéines » : au moins 20 % de l'énergie apportée par les protéines (vue protein_candidates).",
+  "source": {
+    "publisher": "Union européenne",
+    "title": "Règlement (CE) n° 1924/2006 concernant les allégations nutritionnelles et de santé portant sur les denrées alimentaires, annexe (« source de protéines », « riche en protéines »)",
+    "url": "https://eur-lex.europa.eu/legal-content/FR/TXT/?uri=CELEX:02006R1924-20141213",
+    "accessedOn": "2026-11-01"
+  }
+}

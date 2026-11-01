@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { HomeExplorer } from "@/components/HomeExplorer";
 import { Dot } from "@/components/ui/Dot";
-import { getPairPage, listPairs } from "@/lib/compare/data";
+import { buildAutoPage } from "@/lib/compare/auto";
+import { getAutoPair, listAutoCards } from "@/lib/compare/auto-data";
 
 export const metadata: Metadata = { alternates: { canonical: "/" } };
 
@@ -11,8 +12,9 @@ const FEATURED = "boeuf-bourguignon";
 const SEGMENT: Record<string, string> = { vegetal: "bg-plant", animal: "bg-animal", egal: "bg-line", insuffisant: "bg-line" };
 
 async function Featured({ slug }: { slug: string }) {
-  const model = await getPairPage(slug);
-  const v = model?.variants.maison ?? model?.variants.commerce;
+  const pair = await getAutoPair(slug);
+  const model = pair ? buildAutoPage(pair.input, pair.defaultCode)?.model : null;
+  const v = pair && model ? model.variants[pair.defaultCode] : null;
   if (!model || !v) return null;
   const verdict = v.scores.verdict;
   return (
@@ -48,8 +50,8 @@ async function Featured({ slug }: { slug: string }) {
 }
 
 export default async function Home() {
-  const pairs = await listPairs();
-  const featured = pairs.find((p) => p.slug === FEATURED)?.slug ?? pairs[0]?.slug;
+  const cards = await listAutoCards();
+  const featured = cards.some((c) => c.href === `/compare/${FEATURED}`) ? FEATURED : null;
   return (
     <main className="flex flex-1 flex-col pb-8">
       <script
@@ -64,7 +66,7 @@ export default async function Home() {
           }),
         }}
       />
-      <HomeExplorer pairs={pairs} featured={featured ? <Featured slug={featured} /> : null} />
+      <HomeExplorer cards={cards} featured={featured ? <Featured slug={featured} /> : null} />
       <section className="mx-auto w-full max-w-[1440px] min-[1440px]:px-12 px-5 pt-[22px] md:px-8">
         <div className="flex flex-col gap-[10px] rounded-panel bg-surface p-5 md:max-w-[640px]">
           <h2 className="m-0 text-[19px] font-extrabold">Ton plat n’est pas dans la liste ?</h2>

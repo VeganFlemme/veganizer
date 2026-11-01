@@ -13,7 +13,10 @@ Checks (nothing is imported unless every check passes for a dish):
      impacts are 3.2, the recipes 3.0): every 3.0 input maps to a 3.2 ingredient name of the dish
      and every 3.2 ingredient is covered (pipeline/agribalyse_recipe_ingredients.csv, reviewed);
   2. mass coverage: share of the recipe mass with a Ciqual code (nutrients and impacts) >= 95 %;
-  3. impact recalculated as the site does (sum of kg x 3.2 impact per kg of each ingredient) vs the
+  3. not approached by another recipe: dishes listed in annex 10 of the AGRIBALYSE 3.2
+     methodology ("CIQUAL products approached by other CIQUAL recipes / products") are excluded,
+     their recipe is another dish's (carbonara modelled with the bolognese recipe…);
+  4. impact recalculated as the site does (sum of kg x 3.2 impact per kg of each ingredient) vs the
      published 3.2 impact of the dish, per indicator: written to the report, never used to adjust.
 
 Outputs:
@@ -40,6 +43,9 @@ ARCHIVE_URL = "https://static.data.gouv.fr/resources/agribalyse/20200620-092639/
 ARCHIVE_SHA1 = "27999bc5e2d8d58cea54d845565e25a7ac151574"  # published by data.gouv.fr
 TABLES = ["TBL_EXCHANGES.csv", "TBL_FLOWS.csv", "TBL_PROCESSES.csv", "TBL_UNITS.csv"]
 MAPPING = HERE / "agribalyse_recipe_ingredients.csv"
+ANNEXES = RAW / "agribalyse_dataverse" / "methodologie_annexes.xlsx"
+ANNEXES_URL = "https://entrepot.recherche.data.gouv.fr/api/access/datafile/575431?format=original"
+PROXY_SHEET = "10. CIQUAL proxy"
 DETAIL = RAW / "agribalyse_3.2_detail_ingredient.csv"
 SYNTH = RAW / "agribalyse_3.2_synthese.csv"
 REPORT = HERE / "reports" / "agribalyse_recipes_check.csv"
@@ -71,6 +77,25 @@ def download() -> None:
     with py7zr.SevenZipFile(ARCHIVE) as z:
         z.extract(path=OLCA / "csv", targets=TABLES)
     print(f"  downloaded {ARCHIVE.name} ({len(r.content)} bytes, sha1 OK), extracted {len(TABLES)} tables")
+    a = requests.get(ANNEXES_URL, timeout=120)
+    a.raise_for_status()
+    ANNEXES.parent.mkdir(parents=True, exist_ok=True)
+    ANNEXES.write_bytes(a.content)
+    print(f"  downloaded {ANNEXES.name} ({len(a.content)} bytes)")
+
+
+def proxied_codes() -> dict[str, str]:
+    """Annex 10: Ciqual code -> recipe or product used as proxy."""
+    import openpyxl  # noqa: PLC0415
+
+    wb = openpyxl.load_workbook(ANNEXES, read_only=True)
+    if PROXY_SHEET not in wb.sheetnames:
+        sys.exit(f"{ANNEXES.name}: sheet '{PROXY_SHEET}' missing. Format changed: stop and ask.")
+    out = {}
+    for r in wb[PROXY_SHEET].iter_rows(values_only=True):
+        if r and r[0] is not None and str(r[0]).strip().isdigit():
+            out[str(r[0]).strip()] = norm(r[4] or r[3] or "")
+    return out
 
 
 def norm(s: object) -> str:
@@ -113,6 +138,7 @@ def main() -> None:
     impact = {col: dict(zip(synth.code, pd.to_numeric(synth[col], errors="coerce"))) for col in IMPACT_COLUMNS}
 
     recipes, plant_names = load_recipes()
+    proxies = proxied_codes()
     dishes = detail[detail["Groupe d'aliment"] == COMPOSITE_GROUP].drop_duplicates("code")
     report, out = [], []
     for d in dishes.itertuples(index=False):
@@ -123,6 +149,9 @@ def main() -> None:
             report.append({**row, "status": "exclu", "reason": "pas de recette 3.0 sous le même nom (plat ajouté ou renommé après la 3.0)"})
             continue
         row["process_30"] = process
+        if code.split("_")[0] in proxies:
+            report.append({**row, "status": "exclu", "reason": f"plat approché par une autre recette (annexe 10 du rapport Agribalyse) : {proxies[code.split('_')[0]]}"})
+            continue
         rec = recipes[(recipes.process == process) & ~recipes.flow.isin(NOT_INGREDIENTS)]
         if (rec.unit != "kg").any():
             report.append({**row, "status": "exclu", "reason": "intrant hors kg"})
@@ -162,7 +191,7 @@ def main() -> None:
             continue
         report.append({**row, "status": "retenu", "reason": ""})
         for f, k in zip(rec.flow, rec.kg):
-            out.append({"dish_code": code, "dish_name": name, "flow": f, "food_code": by_flow[f].code, "kg_per_kg_dish": round(k, 6), "note": by_flow[f].note})
+            out.append({"dish_code": code, "dish_name": name, "flow": f, "food_code": by_flow[f].code, "ingredient_fr": by_flow[f].ingredient_32.strip(), "kg_per_kg_dish": round(k, 6), "note": by_flow[f].note})
 
     REPORT.parent.mkdir(exist_ok=True)
     rep = pd.DataFrame(report)
@@ -184,7 +213,7 @@ def main() -> None:
     require_source(client, SOURCE_ID, "3.0")
     known = {r["code"] for r in fetch_all(client, "foods", "code")}
     rows = [
-        {"dish_code": r["dish_code"], "flow": r["flow"], "food_code": r["food_code"] or None, "kg_per_kg_dish": r["kg_per_kg_dish"], "note": r["note"] or None, "source_id": SOURCE_ID}
+        {"dish_code": r["dish_code"], "flow": r["flow"], "food_code": r["food_code"] or None, "ingredient_fr": r["ingredient_fr"] or None, "kg_per_kg_dish": r["kg_per_kg_dish"], "note": r["note"] or None, "source_id": SOURCE_ID, "is_published": True}
         for r in out
         if r["dish_code"] in known
     ]
@@ -195,6 +224,12 @@ def main() -> None:
     if bad:
         sys.exit(f"ingredient codes absent from foods: {', '.join(bad)}")
     upsert(client, "official_recipes", rows, "dish_code,flow,source_id")
+    kept_codes = {r["dish_code"] for r in rows}
+    stale = sorted({r["dish_code"] for r in fetch_all(client, "official_recipes", "dish_code", is_published=True)} - kept_codes)
+    for code in stale:  # unpublished, never deleted
+        client.table("official_recipes").update({"is_published": False}).eq("dish_code", code).execute()
+    if stale:
+        print(f"  unpublished (no longer pass the checks): {', '.join(stale)}")
     # Summary (CLAUDE.md): rows, missing values, 5 examples, one known dish checked by hand.
     print(f"  {len(rows)} rows, {sum(1 for r in rows if not r['food_code'])} without code, {len({r['dish_code'] for r in rows})} dishes")
     for r in rows[:5]:

@@ -1,632 +1,519 @@
-dish_code,dish_name,flow,food_code,kg_per_kg_dish,note
-25418,Croissant au jambon,"Cooked ham, case ready, at plant/FR U",28910,0.293,jambon cuit choix
-25418,Croissant au jambon,"Gruyere cheese, from cow's milk, at plant/FR U",12114,0.129,
-25418,Croissant au jambon,"Semi-skimmed milk, at plant/FR U",19041,0.4242,
-25418,Croissant au jambon,"Vegetable fat (margarine type), 70% fat, unsalted, at plant/FR U",16080,0.0638,
-25418,Croissant au jambon,"Wheat flour, at industrial mill/FR U",9435,0.1511,
-26266,Croissant au jambon fromage,"Cooked ham, case ready, at plant/FR U",28910,0.293,jambon cuit choix
-26266,Croissant au jambon fromage,"Gruyere cheese, from cow's milk, at plant/FR U",12114,0.129,
-26266,Croissant au jambon fromage,"Semi-skimmed milk, at plant/FR U",19041,0.4242,
-26266,Croissant au jambon fromage,"Vegetable fat (margarine type), 70% fat, unsalted, at plant/FR U",16080,0.0638,
-26266,Croissant au jambon fromage,"Wheat flour, at industrial mill/FR U",9435,0.1511,
-25402,Feuilleté ou Friand à la viande,"Butter, unsalted, at dairy/FR U",16400,0.171,
-25402,Feuilleté ou Friand à la viande,"Egg yolk, raw, at plant/FR U",22002,0.0227,
-25402,Feuilleté ou Friand à la viande,"Ground beef, fresh, for processing/FR U",6254,0.305,hypothèse : 15 % de matières grasses
-25402,Feuilleté ou Friand à la viande,"Hard cheese, emmental-type cheese, reduced fat, at plant/FR U",12116,0.162,
-25402,Feuilleté ou Friand à la viande,"Onions, peeled, at processing/FR U",20034,0.0794,
-25402,Feuilleté ou Friand à la viande,"Water, municipal/FR U",18066,0.12,eau ajoutée (hors détail 3.2)
-25402,Feuilleté ou Friand à la viande,"Wheat flour, at industrial mill/FR U",9435,0.215,
-25401,Feuilleté ou Friand au fromage,"Butter, unsalted, at dairy/FR U",16400,0.198,
-25401,Feuilleté ou Friand au fromage,"Egg white, raw, at plant/FR U",22001,0.0903,
-25401,Feuilleté ou Friand au fromage,"Egg yolk, raw, at plant/FR U",22002,0.0465,
-25401,Feuilleté ou Friand au fromage,"Processed cheese, in slices, at plant/FR U",12300,0.281,
-25401,Feuilleté ou Friand au fromage,"Water, municipal/FR U",18066,0.139,eau ajoutée (hors détail 3.2)
-25401,Feuilleté ou Friand au fromage,"Wheat flour, at industrial mill/FR U",9435,0.248,
-25508,Feuilleté ou Friand jambon fromage,"Butter, unsalted, at dairy/FR U",16400,0.199,
-25508,Feuilleté ou Friand jambon fromage,"Cooked ham, case ready, at plant/FR U",28910,0.277,jambon cuit choix
-25508,Feuilleté ou Friand jambon fromage,"Gruyere cheese, from cow's milk, at plant/FR U",12114,0.193,
-25508,Feuilleté ou Friand jambon fromage,"Water, municipal/FR U",18066,0.14,eau ajoutée (hors détail 3.2)
-25508,Feuilleté ou Friand jambon fromage,"Wheat flour, at industrial mill/FR U",9435,0.25,
-25419,Rouleau de printemps,"Carrot, peeled, at processing/FR U",20009,0.201,
-25419,Rouleau de printemps,"Cassava, peeled, at processing/FR U",54031,0.0881,
-25419,Rouleau de printemps,"Lemon juice, pure juice, at plant/FR U",2028,0.054,
-25419,Rouleau de printemps,"Lettuce, peeled, at processing/FR U",20031,0.106,
-25419,Rouleau de printemps,"Mung bean, consumption mix/FR U",20530,0.264,légumineuse sèche
-25419,Rouleau de printemps,"Rice flour, at industrial mill/FR U",9520,0.119,
-25419,Rouleau de printemps,"Shrimp, fillet, raw, frozen at processing/FR U",10038,0.0743,
-25419,Rouleau de printemps,"Water, municipal/FR U",18066,0.273,eau ajoutée (hors détail 3.2)
-25108,Samossas ou Samoussas,"Coriander, consumption mix/FR U",11026,0.016,graine
-25108,Samossas ou Samoussas,"Durum wheat, semolina, at plant/FR U",9610,0.00795,
-25108,Samossas ou Samoussas,"Ground beef, fresh, for processing/FR U",6254,0.674,hypothèse : 15 % de matières grasses
-25108,Samossas ou Samoussas,"Olive oil, at plant/FR U",17270,0.0418,
-25108,Samossas ou Samoussas,"Onions, peeled, at processing/FR U",20034,0.164,
-25108,Samossas ou Samoussas,"Water, municipal/FR U",18066,0.159,eau ajoutée (hors détail 3.2)
-25108,Samossas ou Samoussas,"Wheat flour, at industrial mill/FR U",9435,0.0922,
-25169,"Spécialité chinoise ou bouchées à la vapeur, cuite","Ginger, consumption mix/FR U",11074,0.0459,
-25169,"Spécialité chinoise ou bouchées à la vapeur, cuite","Potato starch, at farm gate/FR U",,0.043,pas de code fécule de pomme de terre avec impact
-25169,"Spécialité chinoise ou bouchées à la vapeur, cuite","Shrimp, fillet, raw, frozen at processing/FR U",10038,0.525,
-25169,"Spécialité chinoise ou bouchées à la vapeur, cuite","Water, municipal/FR U",18066,0.304,eau ajoutée (hors détail 3.2)
-25169,"Spécialité chinoise ou bouchées à la vapeur, cuite","Wheat flour, at industrial mill/FR U",9435,0.177,
-25459,Burritos,"Combined oil (mix of olive oil and seeds oil), at plant/FR U",17701,0.0409,
-25459,Burritos,"Emmental cheese, from cow's milk, at plant/FR U",12115,0.0835,
-25459,Burritos,"Ground beef, fresh, for processing/FR U",6254,0.198,hypothèse : 15 % de matières grasses
-25459,Burritos,"Onions, peeled, at processing/FR U",20034,0.0975,
-25459,Burritos,"Pepper, green, peeled, at processing/FR U",20085,0.122,poivron vert (nommé « Poivre » dans le détail 3.2)
-25459,Burritos,"Tomato, for processing, peeled, at plant/FR U",20169,0.183,tomate pelée = tomate chair appertisée
-25459,Burritos,"Water, municipal/FR U",18066,0.122,eau ajoutée (hors détail 3.2)
-25459,Burritos,"Wheat flour, at industrial mill/FR U",9435,0.252,
-25572,Crêpe ou Galette aux noix de St Jacques,"Buckwheat flour, at industrial mill/FR U",9540,0.152,
-25572,Crêpe ou Galette aux noix de St Jacques,"Butter, unsalted, at dairy/FR U",16400,0.105,
-25572,Crêpe ou Galette aux noix de St Jacques,"Chicken egg, raw, without shell, at plant/FR U",22000,0.0594,
-25572,Crêpe ou Galette aux noix de St Jacques,"Emmental cheese, from cow's milk, at plant/FR U",12115,0.0315,
-25572,Crêpe ou Galette aux noix de St Jacques,"Parsley, peeled, at processing/FR U",11014,0.0307,
-25572,Crêpe ou Galette aux noix de St Jacques,"Scallop, consumption mix/FR U",10045,0.345,noix crue
-25572,Crêpe ou Galette aux noix de St Jacques,"Water, municipal/FR U",18066,0.345,eau ajoutée (hors détail 3.2)
-25562,"Crêpe ou Galette complète (œuf, jambon, fromage)","Buckwheat flour, at industrial mill/FR U",9540,0.144,
-25562,"Crêpe ou Galette complète (œuf, jambon, fromage)","Butter, unsalted, at dairy/FR U",16400,0.036,
-25562,"Crêpe ou Galette complète (œuf, jambon, fromage)","Chicken egg, raw, without shell, at plant/FR U",22000,0.19,
-25562,"Crêpe ou Galette complète (œuf, jambon, fromage)","Cooked ham, case ready, at plant/FR U",28910,0.208,jambon cuit choix
-25562,"Crêpe ou Galette complète (œuf, jambon, fromage)","Emmental cheese, from cow's milk, at plant/FR U",12115,0.144,
-25562,"Crêpe ou Galette complète (œuf, jambon, fromage)","Water, municipal/FR U",18066,0.326,eau ajoutée (hors détail 3.2)
-25625,Crêpe ou Galette fourrée au poisson et / ou fruits de mer,"Buckwheat flour, at industrial mill/FR U",9540,0.147,
-25625,Crêpe ou Galette fourrée au poisson et / ou fruits de mer,"Butter, unsalted, at dairy/FR U",16400,0.0416,
-25625,Crêpe ou Galette fourrée au poisson et / ou fruits de mer,"Emmental cheese, from cow's milk, at plant/FR U",12115,0.078,
-25625,Crêpe ou Galette fourrée au poisson et / ou fruits de mer,"Fresh cream cheese, at plant/FR U",,0.0468,aucun code Ciqual de fromage frais crémeux avec impact (petit-suisse écarté)
-25625,Crêpe ou Galette fourrée au poisson et / ou fruits de mer,"Salmon, fillet, raw, at processing/FR U",26036,0.241,saumon sans origine = élevage
-25625,Crêpe ou Galette fourrée au poisson et / ou fruits de mer,"Spinach, peeled, at processing/FR U",20059,0.182,
-25625,Crêpe ou Galette fourrée au poisson et / ou fruits de mer,"Water, municipal/FR U",18066,0.333,eau ajoutée (hors détail 3.2)
-25549,Crêpe ou Galette fourrée béchamel fromage,"Buckwheat flour, at industrial mill/FR U",9540,0.176,
-25549,Crêpe ou Galette fourrée béchamel fromage,"Emmental cheese, from cow's milk, at plant/FR U",12115,0.249,
-25549,Crêpe ou Galette fourrée béchamel fromage,"Semi-skimmed milk, at plant/FR U",19041,0.175,
-25549,Crêpe ou Galette fourrée béchamel fromage,"Water, municipal/FR U",18066,0.401,eau ajoutée (hors détail 3.2)
-25409,Crêpe ou Galette fourrée béchamel jambon,"Buckwheat flour, at industrial mill/FR U",9540,0.134,
-25409,Crêpe ou Galette fourrée béchamel jambon,"Cooked ham, case ready, at plant/FR U",28910,0.305,jambon cuit choix
-25409,Crêpe ou Galette fourrée béchamel jambon,"Emmental cheese, from cow's milk, at plant/FR U",12115,0.189,
-25409,Crêpe ou Galette fourrée béchamel jambon,"Semi-skimmed milk, at plant/FR U",19041,0.133,
-25409,Crêpe ou Galette fourrée béchamel jambon,"Water, municipal/FR U",18066,0.304,eau ajoutée (hors détail 3.2)
-25410,Crêpe ou Galette fourrée béchamel jambon fromage,"Buckwheat flour, at industrial mill/FR U",9540,0.134,
-25410,Crêpe ou Galette fourrée béchamel jambon fromage,"Cooked ham, case ready, at plant/FR U",28910,0.305,jambon cuit choix
-25410,Crêpe ou Galette fourrée béchamel jambon fromage,"Emmental cheese, from cow's milk, at plant/FR U",12115,0.189,
-25410,Crêpe ou Galette fourrée béchamel jambon fromage,"Semi-skimmed milk, at plant/FR U",19041,0.133,
-25410,Crêpe ou Galette fourrée béchamel jambon fromage,"Water, municipal/FR U",18066,0.304,eau ajoutée (hors détail 3.2)
-25460,Fajitas,"Combined oil (mix of olive oil and seeds oil), at plant/FR U",17701,0.0807,
-25460,Fajitas,"Meat without bone, chicken, for processing/FR U",36003,0.214,
-25460,Fajitas,"Onions, peeled, at processing/FR U",20034,0.112,
-25460,Fajitas,"Pepper, green, peeled, at processing/FR U",20085,0.136,poivron vert (nommé « Poivre » dans le détail 3.2)
-25460,Fajitas,"Tomato, for processing, peeled, at plant/FR U",20169,0.2069,tomate pelée = tomate chair appertisée
-25460,Fajitas,"Water, municipal/FR U",18066,0.12,eau ajoutée (hors détail 3.2)
-25460,Fajitas,"Wheat flour, at industrial mill/FR U",9435,0.248,
-25568,Pastilla au poulet,"Almond, unshelled, at processing/FR U",15000,0.109,
-25568,Pastilla au poulet,"Chicken egg, raw, without shell, at plant/FR U",22000,0.118,
-25568,Pastilla au poulet,"Honey, at plant/FR U",31008,0.0228,
-25568,Pastilla au poulet,"Meat without bone, chicken, for processing/FR U",36003,0.4,
-25568,Pastilla au poulet,"Onions, peeled, at processing/FR U",20034,0.102,
-25568,Pastilla au poulet,"Parsley, dried, consumption mix/FR U",11024,0.026,
-25568,Pastilla au poulet,"Water, municipal/FR U",18066,0.2587,eau ajoutée (hors détail 3.2)
-25568,Pastilla au poulet,"Wheat flour, at industrial mill/FR U",9435,0.0324,
-25568,Pastilla au poulet,"White sugar, production, at plant/FR U",31016,0.0471,
-25478,Pizza 4 fromages,"Cheese, buche, from goat's milk, at plant/FR U",12812,0.185,
-25478,Pizza 4 fromages,"Mozzarella cheese, from cow's milk, at plant/FR U",19590,0.139,
-25478,Pizza 4 fromages,"Roquefort cheese, from ewe's milk, at plant/FR U",12500,0.158,
-25478,Pizza 4 fromages,"Tomato, for processing, peeled, at plant/FR U",20169,0.207,tomate pelée = tomate chair appertisée
-25478,Pizza 4 fromages,"Water, municipal/FR U",18066,0.127,eau ajoutée (hors détail 3.2)
-25478,Pizza 4 fromages,"Wheat flour, at industrial mill/FR U",9435,0.214,
-25457,"Pizza à la viande, type bolognaise","Ground beef, fresh, for processing/FR U",6254,0.178,hypothèse : 15 % de matières grasses
-25457,"Pizza à la viande, type bolognaise","Gruyere cheese, from cow's milk, at plant/FR U",12114,0.102,
-25457,"Pizza à la viande, type bolognaise","Tomato, for processing, peeled, at plant/FR U",20169,0.432,tomate pelée = tomate chair appertisée
-25457,"Pizza à la viande, type bolognaise","Water, municipal/FR U",18066,0.13,eau ajoutée (hors détail 3.2)
-25457,"Pizza à la viande, type bolognaise","Wheat flour, at industrial mill/FR U",9435,0.22,
-25468,Pizza au chèvre et lardons,"Cheese, buche, from goat's milk, at plant/FR U",12812,0.219,
-25468,Pizza au chèvre et lardons,"Chive or spring onion, peeled, at processing/FR U",11003,0.0293,
-25468,Pizza au chèvre et lardons,"Lean pork, raw, at plant/FR U",28204,0.275,hypothèse : filet mignon cru (porc maigre)
-25468,Pizza au chèvre et lardons,"Tomato, for processing, peeled, at plant/FR U",20169,0.263,tomate pelée = tomate chair appertisée
-25468,Pizza au chèvre et lardons,"Water, municipal/FR U",18066,0.116,eau ajoutée (hors détail 3.2)
-25468,Pizza au chèvre et lardons,"Wheat flour, at industrial mill/FR U",9435,0.196,
-25462,Pizza au chorizo ou salami,"Dry sausages, case ready, at plant/FR U",30300,0.178,saucisson sec
-25462,Pizza au chorizo ou salami,"Gruyere cheese, from cow's milk, at plant/FR U",12114,0.102,
-25462,Pizza au chorizo ou salami,"Tomato, for processing, peeled, at plant/FR U",20169,0.432,tomate pelée = tomate chair appertisée
-25462,Pizza au chorizo ou salami,"Water, municipal/FR U",18066,0.13,eau ajoutée (hors détail 3.2)
-25462,Pizza au chorizo ou salami,"Wheat flour, at industrial mill/FR U",9435,0.22,
-25404,Pizza au fromage ou Pizza margherita,"Mozzarella cheese, from cow's milk, at plant/FR U",19590,0.18,
-25404,Pizza au fromage ou Pizza margherita,"Olive oil, at plant/FR U",17270,0.032,
-25404,Pizza au fromage ou Pizza margherita,"Tomato, for processing, peeled, at plant/FR U",20169,0.553,tomate pelée = tomate chair appertisée
-25404,Pizza au fromage ou Pizza margherita,"Water, municipal/FR U",18066,0.117,eau ajoutée (hors détail 3.2)
-25404,Pizza au fromage ou Pizza margherita,"Wheat flour, at industrial mill/FR U",9435,0.198,
-26270,Pizza au thon,"Mozzarella cheese, from cow's milk, at plant/FR U",19590,0.255,
-26270,Pizza au thon,"Olive oil, at plant/FR U",17270,0.0283,
-26270,Pizza au thon,"Tomato, for processing, peeled, at plant/FR U",20169,0.404,tomate pelée = tomate chair appertisée
-26270,Pizza au thon,"Tuna, fillet, raw, at processing/FR U",26053,0.142,
-26270,Pizza au thon,"Water, municipal/FR U",18066,0.0948,eau ajoutée (hors détail 3.2)
-26270,Pizza au thon,"Wheat flour, at industrial mill/FR U",9435,0.16,
-25435,Pizza jambon fromage,"Cooked ham, case ready, at plant/FR U",28910,0.211,jambon cuit choix
-25435,Pizza jambon fromage,"Gruyere cheese, from cow's milk, at plant/FR U",12114,0.131,
-25435,Pizza jambon fromage,"Olive oil, at plant/FR U",17270,0.043,
-25435,Pizza jambon fromage,"Tomato, for processing, peeled, at plant/FR U",20169,0.357,tomate pelée = tomate chair appertisée
-25435,Pizza jambon fromage,"Water, municipal/FR U",18066,0.131,eau ajoutée (hors détail 3.2)
-25435,Pizza jambon fromage,"Wheat flour, at industrial mill/FR U",9435,0.222,
-25561,Tarte à la tomate,"Butter, unsalted, at dairy/FR U",16400,0.0741,
-25561,Tarte à la tomate,"Gruyere cheese, from cow's milk, at plant/FR U",12114,0.12,
-25561,Tarte à la tomate,"Tomato, for processing, peeled, at plant/FR U",20169,0.772,tomate pelée = tomate chair appertisée
-25561,Tarte à la tomate,"Water, municipal/FR U",18066,0.0521,eau ajoutée (hors détail 3.2)
-25561,Tarte à la tomate,"Wheat flour, at industrial mill/FR U",9435,0.0931,
-26268,Tielle sétoise,"Combined oil (mix of olive oil and seeds oil), at plant/FR U",17701,0.0467,
-26268,Tielle sétoise,"Olive oil, at plant/FR U",17270,0.0629,
-26268,Tielle sétoise,"Onions, peeled, at processing/FR U",20034,0.0855,
-26268,Tielle sétoise,"Squid, fillet, raw, at processing/FR U",10001,0.319,
-26268,Tielle sétoise,"Tomato, for processing, peeled, at plant/FR U",20169,0.281,tomate pelée = tomate chair appertisée
-26268,Tielle sétoise,"Wheat flour, at industrial mill/FR U",9435,0.316,
-25560,Tourte au riesling,"Butter, unsalted, at dairy/FR U",16400,0.117,
-25560,Tourte au riesling,"Egg yolk, raw, at plant/FR U",22002,0.0249,
-25560,Tourte au riesling,"Meat without bone, lamb/FR U",21504,0.21,hypothèse : épaule crue
-25560,Tourte au riesling,"Meat, pork, without bone/FR U",28001,0.181,hypothèse : épaule crue
-25560,Tourte au riesling,"Mushroom, peeled, at processing/FR U",,0.0349,champignon de Paris cru sans impact Agribalyse et sans variante (règle 11)
-25560,Tourte au riesling,"Onions, peeled, at processing/FR U",20034,0.107,
-25560,Tourte au riesling,"Water, municipal/FR U",18066,0.0727,eau ajoutée (hors détail 3.2)
-25560,Tourte au riesling,"Wheat flour, at industrial mill/FR U",9435,0.186,
-25560,Tourte au riesling,"White wine, consumption mix/FR U",5215,0.169,
-25556,Beignet de légumes,"Chicken egg, raw, without shell, at plant/FR U",22000,0.084,
-25556,Beignet de légumes,"Chive or spring onion, peeled, at processing/FR U",11003,0.0341,
-25556,Beignet de légumes,"Olive oil, at plant/FR U",17270,0.147,
-25556,Beignet de légumes,"Semi-skimmed milk, at plant/FR U",19041,0.237,
-25556,Beignet de légumes,"Wheat flour, at industrial mill/FR U",9435,0.119,
-25556,Beignet de légumes,"Zucchini, peeled, at processing/FR U",20020,0.451,
-25002,"Cassoulet, appertisé","Haricot bean, consumption mix/FR U",20501,0.174,légumineuse sèche
-25002,"Cassoulet, appertisé","Potato starch, at farm gate/FR U",,0.0104,pas de code fécule de pomme de terre avec impact
-25002,"Cassoulet, appertisé",Salt/FR U,11017,0.00521,non iodé
-25002,"Cassoulet, appertisé","Tomato paste 30° Brix, production, at plant/FR U",20268,0.00608,
-25002,"Cassoulet, appertisé","Water, municipal/FR U",18066,0.594,eau ajoutée (hors détail 3.2)
-25002,"Cassoulet, appertisé","Wheat flour, at industrial mill/FR U",9435,0.0104,
-25043,"Couscous à la viande ou au poulet, allégé","Carrot, peeled, at processing/FR U",20009,0.0638,
-25043,"Couscous à la viande ou au poulet, allégé","Chick peas, consumption mix/FR U",20516,0.0268,légumineuse sèche (masse crue d'après le rapport Agribalyse § 3.3.2)
-25043,"Couscous à la viande ou au poulet, allégé","Durum wheat, semolina, at plant/FR U",9610,0.0812,
-25043,"Couscous à la viande ou au poulet, allégé","Meat without bone, chicken, for processing/FR U",36003,0.337,
-25043,"Couscous à la viande ou au poulet, allégé","Onions, peeled, at processing/FR U",20034,0.0168,
-25043,"Couscous à la viande ou au poulet, allégé","Pepper, green, peeled, at processing/FR U",20085,0.033,poivron vert (nommé « Poivre » dans le détail 3.2)
-25043,"Couscous à la viande ou au poulet, allégé","Tomato paste 30° Brix, production, at plant/FR U",20268,0.0248,
-25043,"Couscous à la viande ou au poulet, allégé","Turnip, peeled, at processing/FR U",20064,0.0449,
-25043,"Couscous à la viande ou au poulet, allégé","Water, municipal/FR U",18066,0.288,eau ajoutée (hors détail 3.2)
-25043,"Couscous à la viande ou au poulet, allégé","Zucchini, peeled, at processing/FR U",20020,0.0638,
-25029,Couscous au mouton,"Carrot, peeled, at processing/FR U",20009,0.0638,
-25029,Couscous au mouton,"Chick peas, consumption mix/FR U",20516,0.0268,légumineuse sèche (masse crue d'après le rapport Agribalyse § 3.3.2)
-25029,Couscous au mouton,"Durum wheat, semolina, at plant/FR U",9610,0.0812,
-25029,Couscous au mouton,"Meat without bone, mutton/FR U",21001,0.322,
-25029,Couscous au mouton,"Onions, peeled, at processing/FR U",20034,0.0168,
-25029,Couscous au mouton,"Pepper, green, peeled, at processing/FR U",20085,0.033,poivron vert (nommé « Poivre » dans le détail 3.2)
-25029,Couscous au mouton,"Tomato paste 30° Brix, production, at plant/FR U",20268,0.0248,
-25029,Couscous au mouton,"Turnip, peeled, at processing/FR U",20064,0.0449,
-25029,Couscous au mouton,"Water, municipal/FR U",18066,0.288,eau ajoutée (hors détail 3.2)
-25029,Couscous au mouton,"Zucchini, peeled, at processing/FR U",20020,0.0638,
-25107,Couscous au poisson,"Carrot, peeled, at processing/FR U",20009,0.0638,
-25107,Couscous au poisson,"Chick peas, consumption mix/FR U",20516,0.0268,légumineuse sèche (masse crue d'après le rapport Agribalyse § 3.3.2)
-25107,Couscous au poisson,"Cod, fillet, raw, at processing/FR U",26043,0.311,cabillaud cru (morue = cabillaud)
-25107,Couscous au poisson,"Durum wheat, semolina, at plant/FR U",9610,0.0812,
-25107,Couscous au poisson,"Onions, peeled, at processing/FR U",20034,0.0168,
-25107,Couscous au poisson,"Pepper, green, peeled, at processing/FR U",20085,0.033,poivron vert (nommé « Poivre » dans le détail 3.2)
-25107,Couscous au poisson,"Tomato paste 30° Brix, production, at plant/FR U",20268,0.0248,
-25107,Couscous au poisson,"Turnip, peeled, at processing/FR U",20064,0.0449,
-25107,Couscous au poisson,"Water, municipal/FR U",18066,0.288,eau ajoutée (hors détail 3.2)
-25107,Couscous au poisson,"Zucchini, peeled, at processing/FR U",20020,0.0638,
-25138,Couscous au poulet,"Carrot, peeled, at processing/FR U",20009,0.0665,
-25138,Couscous au poulet,"Chick peas, consumption mix/FR U",20516,0.0279,légumineuse sèche (masse crue d'après le rapport Agribalyse § 3.3.2)
-25138,Couscous au poulet,"Durum wheat, semolina, at plant/FR U",9610,0.0846,
-25138,Couscous au poulet,"Meat without bone, chicken, for processing/FR U",36003,0.295,
-25138,Couscous au poulet,"Onions, peeled, at processing/FR U",20034,0.0175,
-25138,Couscous au poulet,"Pepper, green, peeled, at processing/FR U",20085,0.0344,poivron vert (nommé « Poivre » dans le détail 3.2)
-25138,Couscous au poulet,"Tomato paste 30° Brix, production, at plant/FR U",20268,0.0259,
-25138,Couscous au poulet,"Turnip, peeled, at processing/FR U",20064,0.0468,
-25138,Couscous au poulet,"Water, municipal/FR U",18066,0.3,eau ajoutée (hors détail 3.2)
-25138,Couscous au poulet,"Zucchini, peeled, at processing/FR U",20020,0.0665,
-25150,Couscous de légumes,"Carrot, peeled, at processing/FR U",20009,0.0856,
-25150,Couscous de légumes,"Chick peas, consumption mix/FR U",20516,0.0359,légumineuse sèche (masse crue d'après le rapport Agribalyse § 3.3.2)
-25150,Couscous de légumes,"Durum wheat, semolina, at plant/FR U",9610,0.109,
-25150,Couscous de légumes,"Onions, peeled, at processing/FR U",20034,0.0225,
-25150,Couscous de légumes,"Pepper, green, peeled, at processing/FR U",20085,0.0443,poivron vert (nommé « Poivre » dans le détail 3.2)
-25150,Couscous de légumes,"Tomato paste 30° Brix, production, at plant/FR U",20268,0.0333,
-25150,Couscous de légumes,"Turnip, peeled, at processing/FR U",20064,0.0602,
-25150,Couscous de légumes,"Water, municipal/FR U",18066,0.386,eau ajoutée (hors détail 3.2)
-25150,Couscous de légumes,"Zucchini, peeled, at processing/FR U",20020,0.0856,
-25073,Endive au jambon,"Chicory, peeled, at processing/FR U",20163,0.584,
-25073,Endive au jambon,"Cooked ham, case ready, at plant/FR U",28910,0.265,jambon cuit choix
-25073,Endive au jambon,"Emmental cheese, from cow's milk, at plant/FR U",12115,0.124,
-25073,Endive au jambon,"Semi-skimmed milk, at plant/FR U",19041,0.166,
-25509,"Fondue savoyarde (fromages, vin, pain)","Comté cheese, from cow's milk, at plant/FR U",12110,0.051,
-25509,"Fondue savoyarde (fromages, vin, pain)","Emmental cheese, from cow's milk, at plant/FR U",12115,0.418,
-25509,"Fondue savoyarde (fromages, vin, pain)","Maize starch, at farm gate/FR U",9510,0.0306,
-25509,"Fondue savoyarde (fromages, vin, pain)","Tomme cheese, from cow's milk, at plant/FR U",12758,0.0612,
-25509,"Fondue savoyarde (fromages, vin, pain)","Water, municipal/FR U",18066,0.296,eau ajoutée (hors détail 3.2)
-25509,"Fondue savoyarde (fromages, vin, pain)","White wine, consumption mix/FR U",5215,0.143,
-25546,Fromage pané au jambon,"Egg white, raw, at plant/FR U",22001,0.0857,
-25546,Fromage pané au jambon,"Hard cheese, emmental-type cheese, reduced fat, at plant/FR U",12116,0.727,
-25546,Fromage pané au jambon,"Wheat flour, at industrial mill/FR U",9435,0.19,
-25437,Gougère,"Butter, unsalted, at dairy/FR U",16400,0.116,
-25437,Gougère,"Egg white, raw, at plant/FR U",22001,0.159,
-25437,Gougère,"Egg yolk, raw, at plant/FR U",22002,0.0837,
-25437,Gougère,"Gruyere cheese, from cow's milk, at plant/FR U",12114,0.163,
-25437,Gougère,"Water, municipal/FR U",18066,0.295,eau ajoutée (hors détail 3.2)
-25437,Gougère,"Wheat flour, at industrial mill/FR U",9435,0.19,
-25101,Gratin de chou-fleur,"Cauliflower, peeled, at processing/FR U",20016,0.817,
-25101,Gratin de chou-fleur,"Emmental cheese, from cow's milk, at plant/FR U",12115,0.078,
-25101,Gratin de chou-fleur,"Semi-skimmed milk, at plant/FR U",19041,0.222,
-25162,Gratin de légumes,"Eggplant, peeled, at processing/FR U",20053,0.278,
-25162,Gratin de légumes,"Emmental cheese, from cow's milk, at plant/FR U",12115,0.109,
-25162,Gratin de légumes,"Semi-skimmed milk, at plant/FR U",19041,0.18,
-25162,Gratin de légumes,"Tomato, for processing, peeled, at plant/FR U",20169,0.276,tomate pelée = tomate chair appertisée
-25162,Gratin de légumes,"Zucchini, peeled, at processing/FR U",20020,0.276,
-25122,Gratin de pâtes,"Emmental cheese, from cow's milk, at plant/FR U",12115,0.188,
-25122,Gratin de pâtes,"Pasta, dried, from durum wheat, at plant/FR U",9810,0.557,
-25122,Gratin de pâtes,"Semi-skimmed milk, at plant/FR U",19041,0.255,
-25122,Gratin de pâtes,"Water, municipal/FR U",18066,0.318,eau ajoutée (hors détail 3.2)
-25154,Gratin de poisson et purée ou brandade aux pommes de terre ou parmentier de poisson,"Cod, fillet, raw, at processing/FR U",26043,0.697,cabillaud cru (morue = cabillaud)
-25154,Gratin de poisson et purée ou brandade aux pommes de terre ou parmentier de poisson,"Combined oil (mix of olive oil and seeds oil), at plant/FR U",17701,0.0676,
-25154,Gratin de poisson et purée ou brandade aux pommes de terre ou parmentier de poisson,"Emmental cheese, from cow's milk, at plant/FR U",12115,0.0624,
-25154,Gratin de poisson et purée ou brandade aux pommes de terre ou parmentier de poisson,"Fresh cream cheese, at plant/FR U",,0.026,aucun code Ciqual de fromage frais crémeux avec impact (petit-suisse écarté)
-25154,Gratin de poisson et purée ou brandade aux pommes de terre ou parmentier de poisson,"Potato, consumption mix/FR U",4008,0.282,
-25154,Gratin de poisson et purée ou brandade aux pommes de terre ou parmentier de poisson,"Semi-skimmed milk, at plant/FR U",19041,0.0755,
-25009,Hachis Parmentier à la viande,"Butter, unsalted, at dairy/FR U",16400,0.0376,
-25009,Hachis Parmentier à la viande,"Emmental cheese, from cow's milk, at plant/FR U",12115,0.0624,
-25009,Hachis Parmentier à la viande,"Ground beef, fresh, for processing/FR U",6254,0.289,hypothèse : 15 % de matières grasses
-25009,Hachis Parmentier à la viande,"Onions, peeled, at processing/FR U",20034,0.0607,
-25009,Hachis Parmentier à la viande,"Potato, consumption mix/FR U",4008,0.627,
-25009,Hachis Parmentier à la viande,"Semi-skimmed milk, at plant/FR U",19041,0.122,
-25009,Hachis Parmentier à la viande,"Tomato, for processing, peeled, at plant/FR U",20169,0.0668,tomate pelée = tomate chair appertisée
-25081,Lasagnes ou cannelloni à la viande (bolognaise),"Broth, stock or bouillon, meat and vegetables, at plant/FR U",,0.0536,plat composé avec viande (règle 9) : pas de code pur
-25081,Lasagnes ou cannelloni à la viande (bolognaise),"Butter, unsalted, at dairy/FR U",16400,0.0262,
-25081,Lasagnes ou cannelloni à la viande (bolognaise),"Carrot, peeled, at processing/FR U",20009,0.0237,
-25081,Lasagnes ou cannelloni à la viande (bolognaise),"Emmental cheese, from cow's milk, at plant/FR U",12115,0.0786,
-25081,Lasagnes ou cannelloni à la viande (bolognaise),"Ground beef, fresh, for processing/FR U",6254,0.087,hypothèse : 15 % de matières grasses
-25081,Lasagnes ou cannelloni à la viande (bolognaise),"Olive oil, at plant/FR U",17270,0.0101,
-25081,Lasagnes ou cannelloni à la viande (bolognaise),"Onions, peeled, at processing/FR U",20034,0.0223,
-25081,Lasagnes ou cannelloni à la viande (bolognaise),"Pasta, dried, from durum wheat, at plant/FR U",9810,0.472,
-25081,Lasagnes ou cannelloni à la viande (bolognaise),"Semi-skimmed milk, at plant/FR U",19041,0.137,
-25081,Lasagnes ou cannelloni à la viande (bolognaise),"Tomato, for processing, peeled, at plant/FR U",20169,0.134,tomate pelée = tomate chair appertisée
-25081,Lasagnes ou cannelloni à la viande (bolognaise),"Water, municipal/FR U",18066,0.243,eau ajoutée (hors détail 3.2)
-25635,Lasagnes ou cannelloni au fromage et aux épinards,"Cheese, buche, from goat's milk, at plant/FR U",12812,0.24,
-25635,Lasagnes ou cannelloni au fromage et aux épinards,"Emmental cheese, from cow's milk, at plant/FR U",12115,0.0737,
-25635,Lasagnes ou cannelloni au fromage et aux épinards,"Pasta, dried, from durum wheat, at plant/FR U",9810,0.326,
-25635,Lasagnes ou cannelloni au fromage et aux épinards,"Semi-skimmed milk, at plant/FR U",19041,0.129,
-25635,Lasagnes ou cannelloni au fromage et aux épinards,"Spinach, peeled, at processing/FR U",20059,0.27,
-25635,Lasagnes ou cannelloni au fromage et aux épinards,"Water, municipal/FR U",18066,0.147,eau ajoutée (hors détail 3.2)
-25139,Lasagnes ou cannelloni au poisson,"Butter, unsalted, at dairy/FR U",16400,0.0719,
-25139,Lasagnes ou cannelloni au poisson,"Emmental cheese, from cow's milk, at plant/FR U",12115,0.0719,
-25139,Lasagnes ou cannelloni au poisson,"Leek, peeled, at processing/FR U",20039,0.138,
-25139,Lasagnes ou cannelloni au poisson,"Pasta, dried, from durum wheat, at plant/FR U",9810,0.462,
-25139,Lasagnes ou cannelloni au poisson,"Salmon, fillet, raw, at processing/FR U",26036,0.175,saumon sans origine = élevage
-25139,Lasagnes ou cannelloni au poisson,"Semi-skimmed milk, at plant/FR U",19041,0.133,
-25139,Lasagnes ou cannelloni au poisson,"Water, municipal/FR U",18066,0.212,eau ajoutée (hors détail 3.2)
-25123,Moussaka,"Eggplant, peeled, at processing/FR U",20053,0.324,
-25123,Moussaka,"Emmental cheese, from cow's milk, at plant/FR U",12115,0.0359,
-25123,Moussaka,"Meat without bone, lamb/FR U",21504,0.543,hypothèse : épaule crue
-25123,Moussaka,"Onions, peeled, at processing/FR U",20034,0.084,
-25123,Moussaka,"Tomato, for processing, peeled, at plant/FR U",20169,0.216,tomate pelée = tomate chair appertisée
-25124,Navarin d'agneau aux légumes,"Carrot, peeled, at processing/FR U",20009,0.11,
-25124,Navarin d'agneau aux légumes,"Combined oil (mix of olive oil and seeds oil), at plant/FR U",17701,0.0262,
-25124,Navarin d'agneau aux légumes,"Garden peas, consumption mix/FR U",20072,0.0673,
-25124,Navarin d'agneau aux légumes,"Meat without bone, lamb/FR U",21504,0.614,hypothèse : épaule crue
-25124,Navarin d'agneau aux légumes,"Onions, peeled, at processing/FR U",20034,0.0673,
-25124,Navarin d'agneau aux légumes,"Potato, consumption mix/FR U",4008,0.134,
-25124,Navarin d'agneau aux légumes,"Tomato, for processing, peeled, at plant/FR U",20169,0.0857,tomate pelée = tomate chair appertisée
-25124,Navarin d'agneau aux légumes,"Turnip, peeled, at processing/FR U",20064,0.11,
-25124,Navarin d'agneau aux légumes,"Wheat flour, at industrial mill/FR U",9435,0.0157,
-25183,Nouilles sautées/poêlées aux crevettes,"Carrot, peeled, at processing/FR U",20009,0.216,
-25183,Nouilles sautées/poêlées aux crevettes,"Curry sauce, prepacked, at plant/FR U",,0.0103,sauce composée (règle 9) : pas de code pur
-25183,Nouilles sautées/poêlées aux crevettes,"Garden peas, consumption mix/FR U",20072,0.1078,
-25183,Nouilles sautées/poêlées aux crevettes,"Honey, at plant/FR U",31008,0.0103,
-25183,Nouilles sautées/poêlées aux crevettes,"Pasta, dried, from durum wheat, at plant/FR U",9810,0.297,
-25183,Nouilles sautées/poêlées aux crevettes,"Pepper, green, peeled, at processing/FR U",20085,0.12,poivron vert (nommé « Poivre » dans le détail 3.2)
-25183,Nouilles sautées/poêlées aux crevettes,"Shrimp, fillet, raw, frozen at processing/FR U",10038,0.15,
-25183,Nouilles sautées/poêlées aux crevettes,"Spinach, peeled, at processing/FR U",20059,0.0839,
-25183,Nouilles sautées/poêlées aux crevettes,"Sunflower oil, at plant/FR U",17440,0.0103,
-25183,Nouilles sautées/poêlées aux crevettes,"Tomato, for processing, peeled, at plant/FR U",20169,0.0599,tomate pelée = tomate chair appertisée
-25183,Nouilles sautées/poêlées aux crevettes,"Water, municipal/FR U",18066,0.172,eau ajoutée (hors détail 3.2)
-25164,Osso buco,"Carrot, peeled, at processing/FR U",20009,0.098,
-25164,Osso buco,"Celery, peeled, at processing/FR U",20023,0.0306,
-25164,Osso buco,"Combined oil (mix of olive oil and seeds oil), at plant/FR U",17701,0.0524,
-25164,Osso buco,"Meat without bone, veal/FR U",6550,0.747,hypothèse : rôti cru
-25164,Osso buco,"Onions, peeled, at processing/FR U",20034,0.0857,
-25164,Osso buco,"Tomato, for processing, peeled, at plant/FR U",20169,0.165,tomate pelée = tomate chair appertisée
-25164,Osso buco,"Wheat flour, at industrial mill/FR U",9435,0.0314,
-25199,"Palet ou galette de légumes, préfrit, surgelé","Carrot, peeled, at processing/FR U",20009,0.266,
-25199,"Palet ou galette de légumes, préfrit, surgelé","Chicken egg, raw, without shell, at plant/FR U",22000,0.0813,
-25199,"Palet ou galette de légumes, préfrit, surgelé","Combined oil (mix of olive oil and seeds oil), at plant/FR U",17701,0.0495,
-25199,"Palet ou galette de légumes, préfrit, surgelé","Garden peas, consumption mix/FR U",20072,0.116,
-25199,"Palet ou galette de légumes, préfrit, surgelé","Onions, peeled, at processing/FR U",20034,0.116,
-25199,"Palet ou galette de légumes, préfrit, surgelé","Potato starch, at farm gate/FR U",,0.0495,pas de code fécule de pomme de terre avec impact
-25199,"Palet ou galette de légumes, préfrit, surgelé","Zucchini, peeled, at processing/FR U",20020,0.463,
-25135,"Pâtes à la carbonara (spaghetti, tagliatelles…)","Broth, stock or bouillon, meat and vegetables, at plant/FR U",,0.0536,plat composé avec viande (règle 9) : pas de code pur
-25135,"Pâtes à la carbonara (spaghetti, tagliatelles…)","Butter, unsalted, at dairy/FR U",16400,0.0262,
-25135,"Pâtes à la carbonara (spaghetti, tagliatelles…)","Carrot, peeled, at processing/FR U",20009,0.0237,
-25135,"Pâtes à la carbonara (spaghetti, tagliatelles…)","Emmental cheese, from cow's milk, at plant/FR U",12115,0.0786,
-25135,"Pâtes à la carbonara (spaghetti, tagliatelles…)","Lean pork, raw, at plant/FR U",28204,0.087,hypothèse : filet mignon cru (porc maigre)
-25135,"Pâtes à la carbonara (spaghetti, tagliatelles…)","Olive oil, at plant/FR U",17270,0.0101,
-25135,"Pâtes à la carbonara (spaghetti, tagliatelles…)","Onions, peeled, at processing/FR U",20034,0.0223,
-25135,"Pâtes à la carbonara (spaghetti, tagliatelles…)","Pasta, dried, from durum wheat, at plant/FR U",9810,0.472,
-25135,"Pâtes à la carbonara (spaghetti, tagliatelles…)","Semi-skimmed milk, at plant/FR U",19041,0.137,
-25135,"Pâtes à la carbonara (spaghetti, tagliatelles…)","Tomato, for processing, peeled, at plant/FR U",20169,0.134,tomate pelée = tomate chair appertisée
-25135,"Pâtes à la carbonara (spaghetti, tagliatelles…)","Water, municipal/FR U",18066,0.243,eau ajoutée (hors détail 3.2)
-25157,"Pâtes fraîches farcies (ex : raviolis), à la viande (ex : bolognaise), crues","Chicken egg, raw, without shell, at plant/FR U",22000,0.26,
-25157,"Pâtes fraîches farcies (ex : raviolis), à la viande (ex : bolognaise), crues","Ground beef, fresh, for processing/FR U",6254,0.367,hypothèse : 15 % de matières grasses
-25157,"Pâtes fraîches farcies (ex : raviolis), à la viande (ex : bolognaise), crues","Parmesan cheese, from cow's milk, at plant/FR U",12120,0.101,
-25157,"Pâtes fraîches farcies (ex : raviolis), à la viande (ex : bolognaise), crues","Shallot, peeled, at processing/FR U",20097,0.0219,
-25157,"Pâtes fraîches farcies (ex : raviolis), à la viande (ex : bolognaise), crues","Wheat flour, at industrial mill/FR U",9435,0.337,
-25158,"Pâtes fraîches farcies (ex : raviolis), à la viande (ex : bolognaise), cuites","Chicken egg, raw, without shell, at plant/FR U",22000,0.26,
-25158,"Pâtes fraîches farcies (ex : raviolis), à la viande (ex : bolognaise), cuites","Ground beef, fresh, for processing/FR U",6254,0.367,hypothèse : 15 % de matières grasses
-25158,"Pâtes fraîches farcies (ex : raviolis), à la viande (ex : bolognaise), cuites","Parmesan cheese, from cow's milk, at plant/FR U",12120,0.101,
-25158,"Pâtes fraîches farcies (ex : raviolis), à la viande (ex : bolognaise), cuites","Shallot, peeled, at processing/FR U",20097,0.0219,
-25158,"Pâtes fraîches farcies (ex : raviolis), à la viande (ex : bolognaise), cuites","Wheat flour, at industrial mill/FR U",9435,0.337,
-25181,"Pâtes fraîches farcies (ex : raviolis, ravioles du Dauphiné), au fromage, crues","Butter, unsalted, at dairy/FR U",16400,0.0467,
-25181,"Pâtes fraîches farcies (ex : raviolis, ravioles du Dauphiné), au fromage, crues","Chicken egg, raw, without shell, at plant/FR U",22000,0.148,
-25181,"Pâtes fraîches farcies (ex : raviolis, ravioles du Dauphiné), au fromage, crues","Hard cheese, emmental-type cheese, reduced fat, at plant/FR U",12116,0.243,
-25181,"Pâtes fraîches farcies (ex : raviolis, ravioles du Dauphiné), au fromage, crues","Parsley, peeled, at processing/FR U",11014,0.0577,
-25181,"Pâtes fraîches farcies (ex : raviolis, ravioles du Dauphiné), au fromage, crues","Water, municipal/FR U",18066,0.137,eau ajoutée (hors détail 3.2)
-25181,"Pâtes fraîches farcies (ex : raviolis, ravioles du Dauphiné), au fromage, crues","Wheat flour, at industrial mill/FR U",9435,0.38,
-25149,"Pâtes fraîches farcies (ex : raviolis, ravioles du Dauphiné), au fromage, cuites","Butter, unsalted, at dairy/FR U",16400,0.0467,
-25149,"Pâtes fraîches farcies (ex : raviolis, ravioles du Dauphiné), au fromage, cuites","Chicken egg, raw, without shell, at plant/FR U",22000,0.148,
-25149,"Pâtes fraîches farcies (ex : raviolis, ravioles du Dauphiné), au fromage, cuites","Hard cheese, emmental-type cheese, reduced fat, at plant/FR U",12116,0.243,
-25149,"Pâtes fraîches farcies (ex : raviolis, ravioles du Dauphiné), au fromage, cuites","Parsley, peeled, at processing/FR U",11014,0.0577,
-25149,"Pâtes fraîches farcies (ex : raviolis, ravioles du Dauphiné), au fromage, cuites","Water, municipal/FR U",18066,0.137,eau ajoutée (hors détail 3.2)
-25149,"Pâtes fraîches farcies (ex : raviolis, ravioles du Dauphiné), au fromage, cuites","Wheat flour, at industrial mill/FR U",9435,0.38,
-20240,Piperade basquaise,"Onions, peeled, at processing/FR U",20034,0.186,
-20240,Piperade basquaise,"Pepper, green, peeled, at processing/FR U",20085,0.382,poivron vert (nommé « Poivre » dans le détail 3.2)
-20240,Piperade basquaise,"Tomato, for processing, peeled, at plant/FR U",20169,0.435,tomate pelée = tomate chair appertisée
-20240,Piperade basquaise,"Vegetable fat (margarine type), 70% fat, unsalted, at plant/FR U",16080,0.141,
-20274,"Poêlée de légumes assaisonnés grillée, méridionale ou méditerranéenne, surgelée, crue","Eggplant, peeled, at processing/FR U",20053,0.262,
-20274,"Poêlée de légumes assaisonnés grillée, méridionale ou méditerranéenne, surgelée, crue","Onions, peeled, at processing/FR U",20034,0.179,
-20274,"Poêlée de légumes assaisonnés grillée, méridionale ou méditerranéenne, surgelée, crue","Pepper, green, peeled, at processing/FR U",20085,0.43,poivron vert (nommé « Poivre » dans le détail 3.2)
-20274,"Poêlée de légumes assaisonnés grillée, méridionale ou méditerranéenne, surgelée, crue","Zucchini, peeled, at processing/FR U",20020,0.298,
-25140,Poisson blanc à la florentine (sauce aux épinards),"Alaska pollock, fillet, raw, at processing/FR U",26006,0.708,
-25140,Poisson blanc à la florentine (sauce aux épinards),"Combined oil (mix of olive oil and seeds oil), at plant/FR U",17701,0.0311,
-25140,Poisson blanc à la florentine (sauce aux épinards),"Emmental cheese, from cow's milk, at plant/FR U",12115,0.0519,
-25140,Poisson blanc à la florentine (sauce aux épinards),"Fresh cream cheese, at plant/FR U",,0.0311,aucun code Ciqual de fromage frais crémeux avec impact (petit-suisse écarté)
-25140,Poisson blanc à la florentine (sauce aux épinards),"Semi-skimmed milk, at plant/FR U",19041,0.145,
-25140,Poisson blanc à la florentine (sauce aux épinards),"Spinach, peeled, at processing/FR U",20059,0.17,
-25140,Poisson blanc à la florentine (sauce aux épinards),"White wine, consumption mix/FR U",5215,0.0156,
-25128,Poisson blanc à la provençale ou niçoise (sauce tomate),"Alaska pollock, fillet, raw, at processing/FR U",26006,0.809,
-25128,Poisson blanc à la provençale ou niçoise (sauce tomate),"Fennel, peeled, at processing/FR U",20028,0.0364,
-25128,Poisson blanc à la provençale ou niçoise (sauce tomate),"Olive oil, at plant/FR U",17270,0.0415,
-25128,Poisson blanc à la provençale ou niçoise (sauce tomate),"Olives, consumption mix/FR U",,0.0311,aucun code olive avec impact Agribalyse
-25128,Poisson blanc à la provençale ou niçoise (sauce tomate),"Onions, peeled, at processing/FR U",20034,0.0364,
-25128,Poisson blanc à la provençale ou niçoise (sauce tomate),"Pepper, green, peeled, at processing/FR U",20085,0.0606,poivron vert (nommé « Poivre » dans le détail 3.2)
-25128,Poisson blanc à la provençale ou niçoise (sauce tomate),"Tomato, for processing, peeled, at plant/FR U",20169,0.109,tomate pelée = tomate chair appertisée
-25128,Poisson blanc à la provençale ou niçoise (sauce tomate),"Zucchini, peeled, at processing/FR U",20020,0.0666,
-25207,Porc au caramel,"Combined oil (mix of olive oil and seeds oil), at plant/FR U",17701,0.0516,
-25207,Porc au caramel,"Meat, pork, without bone/FR U",28001,0.976,hypothèse : épaule crue
-25207,Porc au caramel,"Onions, peeled, at processing/FR U",20034,0.121,
-25207,Porc au caramel,"Soy sauce, prepacked, at plant/FR U",11104,0.031,
-25207,Porc au caramel,"White sugar, production, at plant/FR U",31016,0.0413,
-25013,Pot-au-feu,"Carrot, peeled, at processing/FR U",20009,0.218,
-25013,Pot-au-feu,"Celery, peeled, at processing/FR U",20023,0.0436,
-25013,Pot-au-feu,"Leek, peeled, at processing/FR U",20039,0.0671,
-25013,Pot-au-feu,"Meat without bone, beef, for processing/FR U",6231,0.581,hypothèse : bœuf à bourguignon cru
-25013,Pot-au-feu,"Onions, peeled, at processing/FR U",20034,0.0336,
-25013,Pot-au-feu,"Turnip, peeled, at processing/FR U",20064,0.269,
-25071,Potée auvergnate (chou et porc),"Carrot, peeled, at processing/FR U",20009,0.0954,
-25071,Potée auvergnate (chou et porc),"Haricot bean, consumption mix/FR U",20501,0.0219,légumineuse sèche
-25071,Potée auvergnate (chou et porc),"Meat, pork, without bone/FR U",28001,0.348,hypothèse : épaule crue
-25071,Potée auvergnate (chou et porc),"Offal, pork/FR U",,0.0387,abats sans précision : pas de code
-25071,Potée auvergnate (chou et porc),"Potato, consumption mix/FR U",4008,0.145,
-25071,Potée auvergnate (chou et porc),"Turnip, peeled, at processing/FR U",20064,0.107,
-25071,Potée auvergnate (chou et porc),"Water, municipal/FR U",18066,0.194,eau ajoutée (hors détail 3.2)
-25071,Potée auvergnate (chou et porc),"White cabbage, peeled, at processing/FR U",20116,0.203,
-25174,Poulet au curry et au lait de coco,"Coconut milk or coconut cream, at plant/FR U",18041,0.18,
-25174,Poulet au curry et au lait de coco,"Combined oil (mix of olive oil and seeds oil), at plant/FR U",17701,0.0408,
-25174,Poulet au curry et au lait de coco,"Meat without bone, chicken, for processing/FR U",36003,0.944,
-25174,Poulet au curry et au lait de coco,"Shallot, peeled, at processing/FR U",20097,0.0774,
-25190,Poulet basquaise,"Carrot, peeled, at processing/FR U",20009,0.277,
-25190,Poulet basquaise,"Combined oil (mix of olive oil and seeds oil), at plant/FR U",17701,0.031,
-25190,Poulet basquaise,"Meat without bone, chicken, for processing/FR U",36003,0.689,
-25190,Poulet basquaise,"Onions, peeled, at processing/FR U",20034,0.145,
-25190,Poulet basquaise,"Tomato, for processing, peeled, at plant/FR U",20169,0.102,tomate pelée = tomate chair appertisée
-25018,Ratatouille cuisinée,"Eggplant, peeled, at processing/FR U",20053,0.178,
-25018,Ratatouille cuisinée,"Olive oil, at plant/FR U",17270,0.156,
-25018,Ratatouille cuisinée,"Onions, peeled, at processing/FR U",20034,0.0533,
-25018,Ratatouille cuisinée,"Pepper, green, peeled, at processing/FR U",20085,0.1478,poivron vert (nommé « Poivre » dans le détail 3.2)
-25018,Ratatouille cuisinée,"Tomato, for processing, peeled, at plant/FR U",20169,0.278,tomate pelée = tomate chair appertisée
-25018,Ratatouille cuisinée,"Zucchini, peeled, at processing/FR U",20020,0.329,
-25110,"Ravioli chinois à la vapeur à la crevette, cuit","Ginger, consumption mix/FR U",11074,0.0459,
-25110,"Ravioli chinois à la vapeur à la crevette, cuit","Potato starch, at farm gate/FR U",,0.043,pas de code fécule de pomme de terre avec impact
-25110,"Ravioli chinois à la vapeur à la crevette, cuit","Shrimp, fillet, raw, frozen at processing/FR U",10038,0.525,
-25110,"Ravioli chinois à la vapeur à la crevette, cuit","Water, municipal/FR U",18066,0.304,eau ajoutée (hors détail 3.2)
-25110,"Ravioli chinois à la vapeur à la crevette, cuit","Wheat flour, at industrial mill/FR U",9435,0.177,
-25192,"Raviolis aux légumes, sauce tomate, appertisés","Carrot, peeled, at processing/FR U",20009,0.17,
-25192,"Raviolis aux légumes, sauce tomate, appertisés","Chicken egg, raw, without shell, at plant/FR U",22000,0.26,
-25192,"Raviolis aux légumes, sauce tomate, appertisés","Parmesan cheese, from cow's milk, at plant/FR U",12120,0.101,
-25192,"Raviolis aux légumes, sauce tomate, appertisés","Shallot, peeled, at processing/FR U",20097,0.0219,
-25192,"Raviolis aux légumes, sauce tomate, appertisés","Tomato, for processing, peeled, at plant/FR U",20169,0.17,tomate pelée = tomate chair appertisée
-25192,"Raviolis aux légumes, sauce tomate, appertisés","Wheat flour, at industrial mill/FR U",9435,0.337,
-25020,Soufflé au fromage,"Egg white, raw, at plant/FR U",22001,0.192,
-25020,Soufflé au fromage,"Egg yolk, raw, at plant/FR U",22002,0.088,
-25020,Soufflé au fromage,"Gruyere cheese, from cow's milk, at plant/FR U",12114,0.197,
-25020,Soufflé au fromage,"Semi-skimmed milk, at plant/FR U",19041,0.47,
-25020,Soufflé au fromage,"Wheat flour, at industrial mill/FR U",9435,0.0611,
-25159,Tajine de mouton,"Combined oil (mix of olive oil and seeds oil), at plant/FR U",17701,0.0675,
-25159,Tajine de mouton,"Honey, at plant/FR U",31008,0.0364,
-25159,Tajine de mouton,"Meat without bone, lamb/FR U",21504,0.647,hypothèse : épaule crue
-25159,Tajine de mouton,"Olives, consumption mix/FR U",,0.0416,aucun code olive avec impact Agribalyse
-25159,Tajine de mouton,"Onions, peeled, at processing/FR U",20034,0.121,
-25159,Tajine de mouton,"Tomato, for processing, peeled, at plant/FR U",20169,0.133,tomate pelée = tomate chair appertisée
-25159,Tajine de mouton,"White sugar, production, at plant/FR U",31016,0.0203,
-25159,Tajine de mouton,"Zucchini, peeled, at processing/FR U",20020,0.121,
-20904,"Tofu, nature","Mung bean, consumption mix/FR U",20530,0.165,légumineuse sèche
-20904,"Tofu, nature","Water, municipal/FR U",18066,0.939,eau ajoutée (hors détail 3.2)
-25524,Tomate à la provençale,"Onions, peeled, at processing/FR U",20034,0.0477,
-25524,Tomate à la provençale,"Sunflower oil, at plant/FR U",17440,0.0204,
-25524,Tomate à la provençale,"Tomato paste 30° Brix, production, at plant/FR U",20268,0.0954,
-25524,Tomate à la provençale,"Tomato, for processing, peeled, at plant/FR U",20169,1.0,tomate pelée = tomate chair appertisée
-25600,"Céleri rémoulade, préemballé","Celeriac, peeled, at processing/FR U",20055,0.895,
-25600,"Céleri rémoulade, préemballé","Combined oil (mix of olive oil and seeds oil), at plant/FR U",17701,0.145,
-25600,"Céleri rémoulade, préemballé","Egg yolk, raw, at plant/FR U",22002,0.0242,
-25600,"Céleri rémoulade, préemballé","Mustard, at plant/FR U",11013,0.0155,
-25600,"Céleri rémoulade, préemballé","Red wine, consumption mix/FR U",5214,0.0495,
-25615,"Salade de pâtes, végétarienne","Combined oil (mix of olive oil and seeds oil), at plant/FR U",17701,0.0513,
-25615,"Salade de pâtes, végétarienne","Eggplant, peeled, at processing/FR U",20053,0.144,
-25615,"Salade de pâtes, végétarienne","Pasta, dried, from durum wheat, at plant/FR U",9810,0.425,
-25615,"Salade de pâtes, végétarienne","Pepper, green, peeled, at processing/FR U",20085,0.144,poivron vert (nommé « Poivre » dans le détail 3.2)
-25615,"Salade de pâtes, végétarienne","Red wine, consumption mix/FR U",5214,0.0308,
-25615,"Salade de pâtes, végétarienne","Tomato, for processing, peeled, at plant/FR U",20169,0.144,tomate pelée = tomate chair appertisée
-25615,"Salade de pâtes, végétarienne","Water, municipal/FR U",18066,0.16,eau ajoutée (hors détail 3.2)
-25615,"Salade de pâtes, végétarienne","Zucchini, peeled, at processing/FR U",20020,0.144,
-25606,Salade de pommes de terre maison,"Comté cheese, from cow's milk, at plant/FR U",12110,0.114,
-25606,Salade de pommes de terre maison,"Cooked ham, case ready, at plant/FR U",28910,0.432,jambon cuit choix
-25606,Salade de pommes de terre maison,"Potato, consumption mix/FR U",4008,0.626,
-25606,Salade de pommes de terre maison,"Red wine, consumption mix/FR U",5214,0.0311,
-25606,Salade de pommes de terre maison,"Tomato, for processing, peeled, at plant/FR U",20169,0.0848,tomate pelée = tomate chair appertisée
-26269,"Taboulé ou Salade de couscous au poulet, préemballé","Combined oil (mix of olive oil and seeds oil), at plant/FR U",17701,0.0626,
-26269,"Taboulé ou Salade de couscous au poulet, préemballé","Durum wheat, semolina, at plant/FR U",9610,0.23,
-26269,"Taboulé ou Salade de couscous au poulet, préemballé","Meat without bone, chicken, for processing/FR U",36003,0.179,
-26269,"Taboulé ou Salade de couscous au poulet, préemballé","Onions, peeled, at processing/FR U",20034,0.146,
-26269,"Taboulé ou Salade de couscous au poulet, préemballé","Tomato, for processing, peeled, at plant/FR U",20169,0.183,tomate pelée = tomate chair appertisée
-26269,"Taboulé ou Salade de couscous au poulet, préemballé","Water, municipal/FR U",18066,0.25,eau ajoutée (hors détail 3.2)
-25542,Croque-madame,"Butter, unsalted, at dairy/FR U",16400,0.063,
-25542,Croque-madame,"Chicken egg, raw, consumption mix/FR U",22000,0.11,
-25542,Croque-madame,"Cooked ham, case ready, at plant/FR U",28910,0.223,jambon cuit choix
-25542,Croque-madame,"Emmental cheese, from cow's milk, at plant/FR U",12115,0.167,
-25542,Croque-madame,"Semi-skimmed milk, at plant/FR U",19041,0.1685,
-25542,Croque-madame,"Water, municipal/FR U",18066,0.055,eau ajoutée (hors détail 3.2)
-25542,Croque-madame,"Wheat flour, at industrial mill/FR U",9435,0.263,
-25400,Croque-monsieur,"Butter, unsalted, at dairy/FR U",16400,0.0705,
-25400,Croque-monsieur,"Cooked ham, case ready, at plant/FR U",28910,0.25,jambon cuit choix
-25400,Croque-monsieur,"Emmental cheese, from cow's milk, at plant/FR U",12115,0.187,
-25400,Croque-monsieur,"Semi-skimmed milk, at plant/FR U",19041,0.1892,
-25400,Croque-monsieur,"Water, municipal/FR U",18066,0.0616,eau ajoutée (hors détail 3.2)
-25400,Croque-monsieur,"Wheat flour, at industrial mill/FR U",9435,0.294,
-25547,"Croque-monsieur, rayon frais","Butter, unsalted, at dairy/FR U",16400,0.0705,
-25547,"Croque-monsieur, rayon frais","Cooked ham, case ready, at plant/FR U",28910,0.25,jambon cuit choix
-25547,"Croque-monsieur, rayon frais","Emmental cheese, from cow's milk, at plant/FR U",12115,0.187,
-25547,"Croque-monsieur, rayon frais","Semi-skimmed milk, at plant/FR U",19041,0.1892,
-25547,"Croque-monsieur, rayon frais","Water, municipal/FR U",18066,0.0616,eau ajoutée (hors détail 3.2)
-25547,"Croque-monsieur, rayon frais","Wheat flour, at industrial mill/FR U",9435,0.294,
-7812,"Fougasse, garnie","Olive oil, at plant/FR U",17270,0.0674,
-7812,"Fougasse, garnie","Water, municipal/FR U",18066,0.384,eau ajoutée (hors détail 3.2)
-7812,"Fougasse, garnie","Wheat flour, at industrial mill/FR U",9435,0.549,
-25513,Pan bagnat,"Chicken egg, raw, without shell, at plant/FR U",22000,0.086,
-25513,Pan bagnat,"Common anchovy, marinated, at plant/FR U",26000,0.0471,
-25513,Pan bagnat,"Green salad, peeled, at processing/FR U",20031,0.0428,laitue
-25513,Pan bagnat,"Olive oil, at plant/FR U",17270,0.0681,
-25513,Pan bagnat,"Olives, consumption mix/FR U",,0.0367,aucun code olive avec impact Agribalyse
-25513,Pan bagnat,"Onions, peeled, at processing/FR U",20034,0.0612,
-25513,Pan bagnat,"Pepper, green, peeled, at processing/FR U",20085,0.0551,poivron vert (nommé « Poivre » dans le détail 3.2)
-25513,Pan bagnat,"Tomato, for processing, peeled, at plant/FR U",20169,0.122,tomate pelée = tomate chair appertisée
-25513,Pan bagnat,"Tuna, fillet, raw, at processing/FR U",26053,0.16,
-25513,Pan bagnat,"Water, municipal/FR U",18066,0.137,eau ajoutée (hors détail 3.2)
-25513,Pan bagnat,"Wheat flour, at industrial mill/FR U",9435,0.255,
-25518,"Sandwich baguette, camembert, beurre","Butter, unsalted, at dairy/FR U",16400,0.0618,
-25518,"Sandwich baguette, camembert, beurre","Camembert cheese, from cow's milk, at plant/FR U",12001,0.381,
-25518,"Sandwich baguette, camembert, beurre","Water, municipal/FR U",18066,0.201,eau ajoutée (hors détail 3.2)
-25518,"Sandwich baguette, camembert, beurre","Wheat flour, at industrial mill/FR U",9435,0.356,
-25531,"Sandwich baguette, dinde, crudités (tomate, salade), mayonnaise","Carrot, peeled, at processing/FR U",20009,0.0609,
-25531,"Sandwich baguette, dinde, crudités (tomate, salade), mayonnaise","Chicken egg, raw, without shell, at plant/FR U",22000,0.107,
-25531,"Sandwich baguette, dinde, crudités (tomate, salade), mayonnaise","Combined oil (mix of olive oil and seeds oil), at plant/FR U",17701,0.0332,
-25531,"Sandwich baguette, dinde, crudités (tomate, salade), mayonnaise","Green salad, peeled, at processing/FR U",20031,0.0487,laitue
-25531,"Sandwich baguette, dinde, crudités (tomate, salade), mayonnaise","Meat without bone, chicken, for processing/FR U",36003,0.159,
-25531,"Sandwich baguette, dinde, crudités (tomate, salade), mayonnaise","Tomato, for processing, peeled, at plant/FR U",20169,0.146,tomate pelée = tomate chair appertisée
-25531,"Sandwich baguette, dinde, crudités (tomate, salade), mayonnaise","Water, municipal/FR U",18066,0.189,eau ajoutée (hors détail 3.2)
-25531,"Sandwich baguette, dinde, crudités (tomate, salade), mayonnaise","Wheat flour, at industrial mill/FR U",9435,0.335,
-25485,"Sandwich baguette, jambon emmental","Butter, unsalted, at dairy/FR U",16400,0.0513,
-25485,"Sandwich baguette, jambon emmental","Cooked ham, case ready, at plant/FR U",28910,0.35,jambon cuit choix
-25485,"Sandwich baguette, jambon emmental","Emmental cheese, from cow's milk, at plant/FR U",12115,0.185,
-25485,"Sandwich baguette, jambon emmental","Water, municipal/FR U",18066,0.176,eau ajoutée (hors détail 3.2)
-25485,"Sandwich baguette, jambon emmental","Wheat flour, at industrial mill/FR U",9435,0.311,
-25517,"Sandwich baguette, jambon, beurre","Butter, unsalted, at dairy/FR U",16400,0.0515,
-25517,"Sandwich baguette, jambon, beurre","Cooked ham, case ready, at plant/FR U",28910,0.52,jambon cuit choix
-25517,"Sandwich baguette, jambon, beurre","Water, municipal/FR U",18066,0.194,eau ajoutée (hors détail 3.2)
-25517,"Sandwich baguette, jambon, beurre","Wheat flour, at industrial mill/FR U",9435,0.343,
-25521,"Sandwich baguette, jambon, emmental, beurre","Butter, unsalted, at dairy/FR U",16400,0.0513,
-25521,"Sandwich baguette, jambon, emmental, beurre","Cooked ham, case ready, at plant/FR U",28910,0.35,jambon cuit choix
-25521,"Sandwich baguette, jambon, emmental, beurre","Emmental cheese, from cow's milk, at plant/FR U",12115,0.185,
-25521,"Sandwich baguette, jambon, emmental, beurre","Water, municipal/FR U",18066,0.176,eau ajoutée (hors détail 3.2)
-25521,"Sandwich baguette, jambon, emmental, beurre","Wheat flour, at industrial mill/FR U",9435,0.311,
-25475,"Sandwich baguette, jambon, oeuf dur, crudités (tomate, salade), beurre","Carrot, peeled, at processing/FR U",20009,0.0548,
-25475,"Sandwich baguette, jambon, oeuf dur, crudités (tomate, salade), beurre","Chicken egg, raw, without shell, at plant/FR U",22000,0.123,
-25475,"Sandwich baguette, jambon, oeuf dur, crudités (tomate, salade), beurre","Combined oil (mix of olive oil and seeds oil), at plant/FR U",17701,0.0332,
-25475,"Sandwich baguette, jambon, oeuf dur, crudités (tomate, salade), beurre","Cooked ham, case ready, at plant/FR U",28910,0.197,jambon cuit choix
-25475,"Sandwich baguette, jambon, oeuf dur, crudités (tomate, salade), beurre","Green salad, peeled, at processing/FR U",20031,0.0487,laitue
-25475,"Sandwich baguette, jambon, oeuf dur, crudités (tomate, salade), beurre","Tomato, for processing, peeled, at plant/FR U",20169,0.0913,tomate pelée = tomate chair appertisée
-25475,"Sandwich baguette, jambon, oeuf dur, crudités (tomate, salade), beurre","Water, municipal/FR U",18066,0.189,eau ajoutée (hors détail 3.2)
-25475,"Sandwich baguette, jambon, oeuf dur, crudités (tomate, salade), beurre","Wheat flour, at industrial mill/FR U",9435,0.335,
-25532,"Sandwich baguette, oeuf, crudités (tomate, salade), mayonnaise","Chicken egg, raw, without shell, at plant/FR U",22000,0.281,
-25532,"Sandwich baguette, oeuf, crudités (tomate, salade), mayonnaise","Combined oil (mix of olive oil and seeds oil), at plant/FR U",17701,0.0968,
-25532,"Sandwich baguette, oeuf, crudités (tomate, salade), mayonnaise","Green salad, peeled, at processing/FR U",20031,0.0737,laitue
-25532,"Sandwich baguette, oeuf, crudités (tomate, salade), mayonnaise","Vegetable fat (margarine type), 70% fat, unsalted, at plant/FR U",16080,0.0186,
-25532,"Sandwich baguette, oeuf, crudités (tomate, salade), mayonnaise","Water, municipal/FR U",18066,0.198,eau ajoutée (hors détail 3.2)
-25532,"Sandwich baguette, oeuf, crudités (tomate, salade), mayonnaise","Wheat flour, at industrial mill/FR U",9435,0.35,
-25476,"Sandwich baguette, poulet, crudités (tomate, salade), mayonnaise","Combined oil (mix of olive oil and seeds oil), at plant/FR U",17701,0.0968,
-25476,"Sandwich baguette, poulet, crudités (tomate, salade), mayonnaise","Green salad, peeled, at processing/FR U",20031,0.0737,laitue
-25476,"Sandwich baguette, poulet, crudités (tomate, salade), mayonnaise","Meat without bone, chicken, for processing/FR U",36003,0.362,
-25476,"Sandwich baguette, poulet, crudités (tomate, salade), mayonnaise","Vegetable fat (margarine type), 70% fat, unsalted, at plant/FR U",16080,0.0186,
-25476,"Sandwich baguette, poulet, crudités (tomate, salade), mayonnaise","Water, municipal/FR U",18066,0.198,eau ajoutée (hors détail 3.2)
-25476,"Sandwich baguette, poulet, crudités (tomate, salade), mayonnaise","Wheat flour, at industrial mill/FR U",9435,0.35,
-25431,"Sandwich baguette, thon, crudités (tomate, salade), mayonnaise","Combined oil (mix of olive oil and seeds oil), at plant/FR U",17701,0.0968,
-25431,"Sandwich baguette, thon, crudités (tomate, salade), mayonnaise","Green salad, peeled, at processing/FR U",20031,0.0737,laitue
-25431,"Sandwich baguette, thon, crudités (tomate, salade), mayonnaise","Tuna, fillet, raw, at processing/FR U",26053,0.334,
-25431,"Sandwich baguette, thon, crudités (tomate, salade), mayonnaise","Vegetable fat (margarine type), 70% fat, unsalted, at plant/FR U",16080,0.0186,
-25431,"Sandwich baguette, thon, crudités (tomate, salade), mayonnaise","Water, municipal/FR U",18066,0.198,eau ajoutée (hors détail 3.2)
-25431,"Sandwich baguette, thon, crudités (tomate, salade), mayonnaise","Wheat flour, at industrial mill/FR U",9435,0.35,
-25490,"Sandwich baguette, thon, maïs, crudités","Carrot, peeled, at processing/FR U",20009,0.0548,
-25490,"Sandwich baguette, thon, maïs, crudités","Chicken egg, raw, without shell, at plant/FR U",22000,0.107,
-25490,"Sandwich baguette, thon, maïs, crudités","Combined oil (mix of olive oil and seeds oil), at plant/FR U",17701,0.0332,
-25490,"Sandwich baguette, thon, maïs, crudités","Green salad, peeled, at processing/FR U",20031,0.0487,laitue
-25490,"Sandwich baguette, thon, maïs, crudités","Tomato, for processing, peeled, at plant/FR U",20169,0.152,tomate pelée = tomate chair appertisée
-25490,"Sandwich baguette, thon, maïs, crudités","Tuna, fillet, raw, at processing/FR U",26053,0.153,
-25490,"Sandwich baguette, thon, maïs, crudités","Water, municipal/FR U",18066,0.187,eau ajoutée (hors détail 3.2)
-25490,"Sandwich baguette, thon, maïs, crudités","Wheat flour, at industrial mill/FR U",9435,0.332,
-25434,"Sandwich panini, jambon cru, mozzarella, tomates","Cooked ham, case ready, at plant/FR U",28910,0.342,jambon cuit choix
-25434,"Sandwich panini, jambon cru, mozzarella, tomates","Mozzarella cheese, from cow's milk, at plant/FR U",19590,0.26,
-25434,"Sandwich panini, jambon cru, mozzarella, tomates","Semi-skimmed milk, at plant/FR U",19041,0.0845,
-25434,"Sandwich panini, jambon cru, mozzarella, tomates","Water, municipal/FR U",18066,0.112,eau ajoutée (hors détail 3.2)
-25434,"Sandwich panini, jambon cru, mozzarella, tomates","Wheat flour, at industrial mill/FR U",9435,0.273,
-25913,"Soupe à la carotte, préemballée à réchauffer","Carrot, peeled, at processing/FR U",20009,0.329,
-25913,"Soupe à la carotte, préemballée à réchauffer","Potato, consumption mix/FR U",4008,0.301,
-25913,"Soupe à la carotte, préemballée à réchauffer","Water, municipal/FR U",18066,0.507,eau ajoutée (hors détail 3.2)
-25933,"Soupe à la tomate et aux vermicelles, préemballée à réchauffer","Carrot, peeled, at processing/FR U",20009,0.0265,
-25933,"Soupe à la tomate et aux vermicelles, préemballée à réchauffer","Leek, peeled, at processing/FR U",20039,0.0314,
-25933,"Soupe à la tomate et aux vermicelles, préemballée à réchauffer","Onions, peeled, at processing/FR U",20034,0.1114,
-25933,"Soupe à la tomate et aux vermicelles, préemballée à réchauffer","Pasta, dried, from durum wheat, at plant/FR U",9810,0.0374,
-25933,"Soupe à la tomate et aux vermicelles, préemballée à réchauffer","Tomato, for processing, peeled, at plant/FR U",20169,0.52,tomate pelée = tomate chair appertisée
-25933,"Soupe à la tomate et aux vermicelles, préemballée à réchauffer","Water, municipal/FR U",18066,0.372,eau ajoutée (hors détail 3.2)
-25914,"Soupe à la tomate, préemballée à réchauffer","Tomato, for processing, peeled, at plant/FR U",20169,0.193,tomate pelée = tomate chair appertisée
-25914,"Soupe à la tomate, préemballée à réchauffer","Water, municipal/FR U",18066,0.834,eau ajoutée (hors détail 3.2)
-25908,"Soupe à la volaille et aux vermicelles, préemballée à réchauffer","Carrot, peeled, at processing/FR U",20009,0.0353,
-25908,"Soupe à la volaille et aux vermicelles, préemballée à réchauffer","Leek, peeled, at processing/FR U",20039,0.1225,
-25908,"Soupe à la volaille et aux vermicelles, préemballée à réchauffer","Meat without bone, chicken, for processing/FR U",36003,0.063,
-25908,"Soupe à la volaille et aux vermicelles, préemballée à réchauffer","Onions, peeled, at processing/FR U",20034,0.3351,
-25908,"Soupe à la volaille et aux vermicelles, préemballée à réchauffer","Pasta, dried, from durum wheat, at plant/FR U",9810,0.0302,
-25908,"Soupe à la volaille et aux vermicelles, préemballée à réchauffer","Tomato, for processing, peeled, at plant/FR U",20169,0.3706,tomate pelée = tomate chair appertisée
-25908,"Soupe à la volaille et aux vermicelles, préemballée à réchauffer","Water, municipal/FR U",18066,0.1823,eau ajoutée (hors détail 3.2)
-25953,"Soupe au pistou, préemballée à réchauffer","Carrot, peeled, at processing/FR U",20009,0.0546,
-25953,"Soupe au pistou, préemballée à réchauffer","French bean, peeled, at processing/FR U",20061_1,0.066,
-25953,"Soupe au pistou, préemballée à réchauffer","Haricot bean, consumption mix/FR U",20501,0.0525,légumineuse sèche
-25953,"Soupe au pistou, préemballée à réchauffer","Leek, peeled, at processing/FR U",20039,0.0399,
-25953,"Soupe au pistou, préemballée à réchauffer","Olive oil, at plant/FR U",17270,0.0382,
-25953,"Soupe au pistou, préemballée à réchauffer","Onions, peeled, at processing/FR U",20034,0.0364,
-25953,"Soupe au pistou, préemballée à réchauffer","Potato, consumption mix/FR U",4008,0.131,
-25953,"Soupe au pistou, préemballée à réchauffer","Red kidney bean, consumption mix/FR U",20525,0.0368,légumineuse sèche
-25953,"Soupe au pistou, préemballée à réchauffer","Tomato, for processing, peeled, at plant/FR U",20169,0.101,tomate pelée = tomate chair appertisée
-25953,"Soupe au pistou, préemballée à réchauffer","Water, municipal/FR U",18066,0.378,eau ajoutée (hors détail 3.2)
-25953,"Soupe au pistou, préemballée à réchauffer","Zucchini, peeled, at processing/FR U",20020,0.0657,
-25962,"Soupe aux légumes avec fromage, préemballée à réchauffer","Carrot, peeled, at processing/FR U",20009,0.0976,
-25962,"Soupe aux légumes avec fromage, préemballée à réchauffer","Gruyere cheese, from cow's milk, at plant/FR U",12114,0.13,
-25962,"Soupe aux légumes avec fromage, préemballée à réchauffer","Leek, peeled, at processing/FR U",20039,0.0724,
-25962,"Soupe aux légumes avec fromage, préemballée à réchauffer","Onions, peeled, at processing/FR U",20034,0.0524,
-25962,"Soupe aux légumes avec fromage, préemballée à réchauffer","Potato, consumption mix/FR U",4008,0.288,
-25962,"Soupe aux légumes avec fromage, préemballée à réchauffer","Water, municipal/FR U",18066,0.356,eau ajoutée (hors détail 3.2)
-25962,"Soupe aux légumes avec fromage, préemballée à réchauffer","Zucchini, peeled, at processing/FR U",20020,0.141,
-25903,"Soupe aux légumes variés, préemballée à réchauffer","Carrot, peeled, at processing/FR U",20009,0.112,
-25903,"Soupe aux légumes variés, préemballée à réchauffer","Leek, peeled, at processing/FR U",20039,0.0832,
-25903,"Soupe aux légumes variés, préemballée à réchauffer","Onions, peeled, at processing/FR U",20034,0.0603,
-25903,"Soupe aux légumes variés, préemballée à réchauffer","Potato, consumption mix/FR U",4008,0.331,
-25903,"Soupe aux légumes variés, préemballée à réchauffer","Water, municipal/FR U",18066,0.41,eau ajoutée (hors détail 3.2)
-25903,"Soupe aux légumes variés, préemballée à réchauffer","Zucchini, peeled, at processing/FR U",20020,0.162,
-25900,"Soupe aux lentilles, préemballée à réchauffer","Lentils, consumption mix/FR U",20585,0.103,légumineuse sèche ; hypothèse lentille verte
-25900,"Soupe aux lentilles, préemballée à réchauffer","Onions, peeled, at processing/FR U",20034,0.041,
-25900,"Soupe aux lentilles, préemballée à réchauffer","Tomato, for processing, peeled, at plant/FR U",20169,0.157,tomate pelée = tomate chair appertisée
-25900,"Soupe aux lentilles, préemballée à réchauffer","Water, municipal/FR U",18066,0.699,eau ajoutée (hors détail 3.2)
-25907,"Soupe aux poireaux et pommes de terre, préemballée à réchauffer","Leek, peeled, at processing/FR U",20039,0.12,
-25907,"Soupe aux poireaux et pommes de terre, préemballée à réchauffer","Potato, consumption mix/FR U",4008,0.217,
-25907,"Soupe aux poireaux et pommes de terre, préemballée à réchauffer","Water, municipal/FR U",18066,0.744,eau ajoutée (hors détail 3.2)
-25915,"Soupe chorba frik, à base de viande et de frik","Celery, peeled, at processing/FR U",20023,0.0376,
-25915,"Soupe chorba frik, à base de viande et de frik","Chick peas, consumption mix/FR U",20516,0.0175,légumineuse sèche (masse crue d'après le rapport Agribalyse § 3.3.2)
-25915,"Soupe chorba frik, à base de viande et de frik","Meat without bone, lamb/FR U",21504,0.0872,hypothèse : épaule crue
-25915,"Soupe chorba frik, à base de viande et de frik","Onions, peeled, at processing/FR U",20034,0.0308,
-25915,"Soupe chorba frik, à base de viande et de frik","Pasta, dried, from durum wheat, at plant/FR U",9810,0.113,
-25915,"Soupe chorba frik, à base de viande et de frik","Tomato, for processing, peeled, at plant/FR U",20169,0.144,tomate pelée = tomate chair appertisée
-25915,"Soupe chorba frik, à base de viande et de frik","Water, municipal/FR U",18066,0.652,eau ajoutée (hors détail 3.2)
+dish_code,dish_name,flow,food_code,ingredient_fr,kg_per_kg_dish,note
+25418,Croissant au jambon,"Cooked ham, case ready, at plant/FR U",28910,Jambon cuit,0.293,jambon cuit choix
+25418,Croissant au jambon,"Gruyere cheese, from cow's milk, at plant/FR U",12114,Gruyère,0.129,
+25418,Croissant au jambon,"Semi-skimmed milk, at plant/FR U",19041,Lait demi-écremé,0.4242,
+25418,Croissant au jambon,"Vegetable fat (margarine type), 70% fat, unsalted, at plant/FR U",16080,Graisse végétale (type margarine),0.0638,
+25418,Croissant au jambon,"Wheat flour, at industrial mill/FR U",9435,Farine de blé,0.1511,
+25402,Feuilleté ou Friand à la viande,"Butter, unsalted, at dairy/FR U",16400,Beurre,0.171,
+25402,Feuilleté ou Friand à la viande,"Egg yolk, raw, at plant/FR U",22002,Jaune d'œuf,0.0227,
+25402,Feuilleté ou Friand à la viande,"Ground beef, fresh, for processing/FR U",6254,Bœuf haché,0.305,hypothèse : 15 % de matières grasses
+25402,Feuilleté ou Friand à la viande,"Hard cheese, emmental-type cheese, reduced fat, at plant/FR U",12116,Fromage à pâte dure,0.162,
+25402,Feuilleté ou Friand à la viande,"Onions, peeled, at processing/FR U",20034,Oignons,0.0794,
+25402,Feuilleté ou Friand à la viande,"Water, municipal/FR U",18066,,0.12,eau ajoutée (hors détail 3.2)
+25402,Feuilleté ou Friand à la viande,"Wheat flour, at industrial mill/FR U",9435,Farine de blé,0.215,
+25401,Feuilleté ou Friand au fromage,"Butter, unsalted, at dairy/FR U",16400,Beurre,0.198,
+25401,Feuilleté ou Friand au fromage,"Egg white, raw, at plant/FR U",22001,Blanc d'oeuf,0.0903,
+25401,Feuilleté ou Friand au fromage,"Egg yolk, raw, at plant/FR U",22002,Jaune d'œuf,0.0465,
+25401,Feuilleté ou Friand au fromage,"Processed cheese, in slices, at plant/FR U",12300,Fromage fondu,0.281,
+25401,Feuilleté ou Friand au fromage,"Water, municipal/FR U",18066,,0.139,eau ajoutée (hors détail 3.2)
+25401,Feuilleté ou Friand au fromage,"Wheat flour, at industrial mill/FR U",9435,Farine de blé,0.248,
+25508,Feuilleté ou Friand jambon fromage,"Butter, unsalted, at dairy/FR U",16400,Beurre,0.199,
+25508,Feuilleté ou Friand jambon fromage,"Cooked ham, case ready, at plant/FR U",28910,Jambon cuit,0.277,jambon cuit choix
+25508,Feuilleté ou Friand jambon fromage,"Gruyere cheese, from cow's milk, at plant/FR U",12114,Gruyère,0.193,
+25508,Feuilleté ou Friand jambon fromage,"Water, municipal/FR U",18066,,0.14,eau ajoutée (hors détail 3.2)
+25508,Feuilleté ou Friand jambon fromage,"Wheat flour, at industrial mill/FR U",9435,Farine de blé,0.25,
+25419,Rouleau de printemps,"Carrot, peeled, at processing/FR U",20009,Carotte,0.201,
+25419,Rouleau de printemps,"Cassava, peeled, at processing/FR U",54031,Manioc,0.0881,
+25419,Rouleau de printemps,"Lemon juice, pure juice, at plant/FR U",2028,Jus de citron,0.054,
+25419,Rouleau de printemps,"Lettuce, peeled, at processing/FR U",20031,Salade,0.106,
+25419,Rouleau de printemps,"Mung bean, consumption mix/FR U",20530,Haricot mungo,0.264,légumineuse sèche
+25419,Rouleau de printemps,"Rice flour, at industrial mill/FR U",9520,Farine de riz,0.119,
+25419,Rouleau de printemps,"Shrimp, fillet, raw, frozen at processing/FR U",10038,Crevette,0.0743,
+25419,Rouleau de printemps,"Water, municipal/FR U",18066,,0.273,eau ajoutée (hors détail 3.2)
+25108,Samossas ou Samoussas,"Coriander, consumption mix/FR U",11026,Coriandre,0.016,graine
+25108,Samossas ou Samoussas,"Durum wheat, semolina, at plant/FR U",9610,Blé dur,0.00795,
+25108,Samossas ou Samoussas,"Ground beef, fresh, for processing/FR U",6254,Bœuf haché,0.674,hypothèse : 15 % de matières grasses
+25108,Samossas ou Samoussas,"Olive oil, at plant/FR U",17270,Huile d'olive,0.0418,
+25108,Samossas ou Samoussas,"Onions, peeled, at processing/FR U",20034,Oignons,0.164,
+25108,Samossas ou Samoussas,"Water, municipal/FR U",18066,,0.159,eau ajoutée (hors détail 3.2)
+25108,Samossas ou Samoussas,"Wheat flour, at industrial mill/FR U",9435,Farine de blé,0.0922,
+25169,"Spécialité chinoise ou bouchées à la vapeur, cuite","Ginger, consumption mix/FR U",11074,Gingembre,0.0459,
+25169,"Spécialité chinoise ou bouchées à la vapeur, cuite","Potato starch, at farm gate/FR U",,Amidon de pomme de terre,0.043,pas de code fécule de pomme de terre avec impact
+25169,"Spécialité chinoise ou bouchées à la vapeur, cuite","Shrimp, fillet, raw, frozen at processing/FR U",10038,Crevette,0.525,
+25169,"Spécialité chinoise ou bouchées à la vapeur, cuite","Water, municipal/FR U",18066,,0.304,eau ajoutée (hors détail 3.2)
+25169,"Spécialité chinoise ou bouchées à la vapeur, cuite","Wheat flour, at industrial mill/FR U",9435,Farine de blé,0.177,
+25459,Burritos,"Combined oil (mix of olive oil and seeds oil), at plant/FR U",17701,Huile combinée (mélange d'huile d'olive et d'huile de graines),0.0409,
+25459,Burritos,"Emmental cheese, from cow's milk, at plant/FR U",12115,Emmental,0.0835,
+25459,Burritos,"Ground beef, fresh, for processing/FR U",6254,Bœuf haché,0.198,hypothèse : 15 % de matières grasses
+25459,Burritos,"Onions, peeled, at processing/FR U",20034,Oignons,0.0975,
+25459,Burritos,"Pepper, green, peeled, at processing/FR U",20085,Poivre,0.122,poivron vert (nommé « Poivre » dans le détail 3.2)
+25459,Burritos,"Tomato, for processing, peeled, at plant/FR U",20169,Tomate,0.183,tomate pelée = tomate chair appertisée
+25459,Burritos,"Water, municipal/FR U",18066,,0.122,eau ajoutée (hors détail 3.2)
+25459,Burritos,"Wheat flour, at industrial mill/FR U",9435,Farine de blé,0.252,
+25572,Crêpe ou Galette aux noix de St Jacques,"Buckwheat flour, at industrial mill/FR U",9540,Farine de sarrasin,0.152,
+25572,Crêpe ou Galette aux noix de St Jacques,"Butter, unsalted, at dairy/FR U",16400,Beurre,0.105,
+25572,Crêpe ou Galette aux noix de St Jacques,"Chicken egg, raw, without shell, at plant/FR U",22000,Œuf de poule,0.0594,
+25572,Crêpe ou Galette aux noix de St Jacques,"Emmental cheese, from cow's milk, at plant/FR U",12115,Emmental,0.0315,
+25572,Crêpe ou Galette aux noix de St Jacques,"Parsley, peeled, at processing/FR U",11014,Persil,0.0307,
+25572,Crêpe ou Galette aux noix de St Jacques,"Scallop, consumption mix/FR U",10045,Coquille Saint-Jacques,0.345,noix crue
+25572,Crêpe ou Galette aux noix de St Jacques,"Water, municipal/FR U",18066,,0.345,eau ajoutée (hors détail 3.2)
+25562,"Crêpe ou Galette complète (œuf, jambon, fromage)","Buckwheat flour, at industrial mill/FR U",9540,Farine de sarrasin,0.144,
+25562,"Crêpe ou Galette complète (œuf, jambon, fromage)","Butter, unsalted, at dairy/FR U",16400,Beurre,0.036,
+25562,"Crêpe ou Galette complète (œuf, jambon, fromage)","Chicken egg, raw, without shell, at plant/FR U",22000,Œuf de poule,0.19,
+25562,"Crêpe ou Galette complète (œuf, jambon, fromage)","Cooked ham, case ready, at plant/FR U",28910,Jambon cuit,0.208,jambon cuit choix
+25562,"Crêpe ou Galette complète (œuf, jambon, fromage)","Emmental cheese, from cow's milk, at plant/FR U",12115,Emmental,0.144,
+25562,"Crêpe ou Galette complète (œuf, jambon, fromage)","Water, municipal/FR U",18066,,0.326,eau ajoutée (hors détail 3.2)
+25625,Crêpe ou Galette fourrée au poisson et / ou fruits de mer,"Buckwheat flour, at industrial mill/FR U",9540,Farine de sarrasin,0.147,
+25625,Crêpe ou Galette fourrée au poisson et / ou fruits de mer,"Butter, unsalted, at dairy/FR U",16400,Beurre,0.0416,
+25625,Crêpe ou Galette fourrée au poisson et / ou fruits de mer,"Emmental cheese, from cow's milk, at plant/FR U",12115,Emmental,0.078,
+25625,Crêpe ou Galette fourrée au poisson et / ou fruits de mer,"Fresh cream cheese, at plant/FR U",,Fromage frais crémeux,0.0468,aucun code Ciqual de fromage frais crémeux avec impact (petit-suisse écarté)
+25625,Crêpe ou Galette fourrée au poisson et / ou fruits de mer,"Salmon, fillet, raw, at processing/FR U",26036,Saumon,0.241,saumon sans origine = élevage
+25625,Crêpe ou Galette fourrée au poisson et / ou fruits de mer,"Spinach, peeled, at processing/FR U",20059,Epinard,0.182,
+25625,Crêpe ou Galette fourrée au poisson et / ou fruits de mer,"Water, municipal/FR U",18066,,0.333,eau ajoutée (hors détail 3.2)
+25409,Crêpe ou Galette fourrée béchamel jambon,"Buckwheat flour, at industrial mill/FR U",9540,Farine de sarrasin,0.134,
+25409,Crêpe ou Galette fourrée béchamel jambon,"Cooked ham, case ready, at plant/FR U",28910,Jambon cuit,0.305,jambon cuit choix
+25409,Crêpe ou Galette fourrée béchamel jambon,"Emmental cheese, from cow's milk, at plant/FR U",12115,Emmental,0.189,
+25409,Crêpe ou Galette fourrée béchamel jambon,"Semi-skimmed milk, at plant/FR U",19041,Lait demi-écremé,0.133,
+25409,Crêpe ou Galette fourrée béchamel jambon,"Water, municipal/FR U",18066,,0.304,eau ajoutée (hors détail 3.2)
+25410,Crêpe ou Galette fourrée béchamel jambon fromage,"Buckwheat flour, at industrial mill/FR U",9540,Farine de sarrasin,0.134,
+25410,Crêpe ou Galette fourrée béchamel jambon fromage,"Cooked ham, case ready, at plant/FR U",28910,Jambon cuit,0.305,jambon cuit choix
+25410,Crêpe ou Galette fourrée béchamel jambon fromage,"Emmental cheese, from cow's milk, at plant/FR U",12115,Emmental,0.189,
+25410,Crêpe ou Galette fourrée béchamel jambon fromage,"Semi-skimmed milk, at plant/FR U",19041,Lait demi-écremé,0.133,
+25410,Crêpe ou Galette fourrée béchamel jambon fromage,"Water, municipal/FR U",18066,,0.304,eau ajoutée (hors détail 3.2)
+25460,Fajitas,"Combined oil (mix of olive oil and seeds oil), at plant/FR U",17701,Huile combinée (mélange d'huile d'olive et d'huile de graines),0.0807,
+25460,Fajitas,"Meat without bone, chicken, for processing/FR U",36003,Viande de poulet sans os,0.214,
+25460,Fajitas,"Onions, peeled, at processing/FR U",20034,Oignons,0.112,
+25460,Fajitas,"Pepper, green, peeled, at processing/FR U",20085,Poivre,0.136,poivron vert (nommé « Poivre » dans le détail 3.2)
+25460,Fajitas,"Tomato, for processing, peeled, at plant/FR U",20169,Tomate,0.2069,tomate pelée = tomate chair appertisée
+25460,Fajitas,"Water, municipal/FR U",18066,,0.12,eau ajoutée (hors détail 3.2)
+25460,Fajitas,"Wheat flour, at industrial mill/FR U",9435,Farine de blé,0.248,
+25568,Pastilla au poulet,"Almond, unshelled, at processing/FR U",15000,Amande,0.109,
+25568,Pastilla au poulet,"Chicken egg, raw, without shell, at plant/FR U",22000,Œuf de poule,0.118,
+25568,Pastilla au poulet,"Honey, at plant/FR U",31008,Miel,0.0228,
+25568,Pastilla au poulet,"Meat without bone, chicken, for processing/FR U",36003,Viande de poulet sans os,0.4,
+25568,Pastilla au poulet,"Onions, peeled, at processing/FR U",20034,Oignons,0.102,
+25568,Pastilla au poulet,"Parsley, dried, consumption mix/FR U",11024,Persil,0.026,
+25568,Pastilla au poulet,"Water, municipal/FR U",18066,,0.2587,eau ajoutée (hors détail 3.2)
+25568,Pastilla au poulet,"Wheat flour, at industrial mill/FR U",9435,Farine de blé,0.0324,
+25568,Pastilla au poulet,"White sugar, production, at plant/FR U",31016,Sucre blanc,0.0471,
+25478,Pizza 4 fromages,"Cheese, buche, from goat's milk, at plant/FR U",12812,Fromage,0.185,
+25478,Pizza 4 fromages,"Mozzarella cheese, from cow's milk, at plant/FR U",19590,Fromage mozzarella,0.139,
+25478,Pizza 4 fromages,"Roquefort cheese, from ewe's milk, at plant/FR U",12500,Roquefort,0.158,
+25478,Pizza 4 fromages,"Tomato, for processing, peeled, at plant/FR U",20169,Tomate,0.207,tomate pelée = tomate chair appertisée
+25478,Pizza 4 fromages,"Water, municipal/FR U",18066,,0.127,eau ajoutée (hors détail 3.2)
+25478,Pizza 4 fromages,"Wheat flour, at industrial mill/FR U",9435,Farine de blé,0.214,
+25468,Pizza au chèvre et lardons,"Cheese, buche, from goat's milk, at plant/FR U",12812,Fromage,0.219,
+25468,Pizza au chèvre et lardons,"Chive or spring onion, peeled, at processing/FR U",11003,Ciboulette ou oignon de printemps,0.0293,
+25468,Pizza au chèvre et lardons,"Lean pork, raw, at plant/FR U",28204,Porc,0.275,hypothèse : filet mignon cru (porc maigre)
+25468,Pizza au chèvre et lardons,"Tomato, for processing, peeled, at plant/FR U",20169,Tomate,0.263,tomate pelée = tomate chair appertisée
+25468,Pizza au chèvre et lardons,"Water, municipal/FR U",18066,,0.116,eau ajoutée (hors détail 3.2)
+25468,Pizza au chèvre et lardons,"Wheat flour, at industrial mill/FR U",9435,Farine de blé,0.196,
+25462,Pizza au chorizo ou salami,"Dry sausages, case ready, at plant/FR U",30300,Saucisses sèches,0.178,saucisson sec
+25462,Pizza au chorizo ou salami,"Gruyere cheese, from cow's milk, at plant/FR U",12114,Gruyère,0.102,
+25462,Pizza au chorizo ou salami,"Tomato, for processing, peeled, at plant/FR U",20169,Tomate,0.432,tomate pelée = tomate chair appertisée
+25462,Pizza au chorizo ou salami,"Water, municipal/FR U",18066,,0.13,eau ajoutée (hors détail 3.2)
+25462,Pizza au chorizo ou salami,"Wheat flour, at industrial mill/FR U",9435,Farine de blé,0.22,
+25404,Pizza au fromage ou Pizza margherita,"Mozzarella cheese, from cow's milk, at plant/FR U",19590,Fromage mozzarella,0.18,
+25404,Pizza au fromage ou Pizza margherita,"Olive oil, at plant/FR U",17270,Huile d'olive,0.032,
+25404,Pizza au fromage ou Pizza margherita,"Tomato, for processing, peeled, at plant/FR U",20169,Tomate,0.553,tomate pelée = tomate chair appertisée
+25404,Pizza au fromage ou Pizza margherita,"Water, municipal/FR U",18066,,0.117,eau ajoutée (hors détail 3.2)
+25404,Pizza au fromage ou Pizza margherita,"Wheat flour, at industrial mill/FR U",9435,Farine de blé,0.198,
+26270,Pizza au thon,"Mozzarella cheese, from cow's milk, at plant/FR U",19590,Fromage mozzarella,0.255,
+26270,Pizza au thon,"Olive oil, at plant/FR U",17270,Huile d'olive,0.0283,
+26270,Pizza au thon,"Tomato, for processing, peeled, at plant/FR U",20169,Tomate,0.404,tomate pelée = tomate chair appertisée
+26270,Pizza au thon,"Tuna, fillet, raw, at processing/FR U",26053,Thon,0.142,
+26270,Pizza au thon,"Water, municipal/FR U",18066,,0.0948,eau ajoutée (hors détail 3.2)
+26270,Pizza au thon,"Wheat flour, at industrial mill/FR U",9435,Farine de blé,0.16,
+25435,Pizza jambon fromage,"Cooked ham, case ready, at plant/FR U",28910,Jambon cuit,0.211,jambon cuit choix
+25435,Pizza jambon fromage,"Gruyere cheese, from cow's milk, at plant/FR U",12114,Gruyère,0.131,
+25435,Pizza jambon fromage,"Olive oil, at plant/FR U",17270,Huile d'olive,0.043,
+25435,Pizza jambon fromage,"Tomato, for processing, peeled, at plant/FR U",20169,Tomate,0.357,tomate pelée = tomate chair appertisée
+25435,Pizza jambon fromage,"Water, municipal/FR U",18066,,0.131,eau ajoutée (hors détail 3.2)
+25435,Pizza jambon fromage,"Wheat flour, at industrial mill/FR U",9435,Farine de blé,0.222,
+25561,Tarte à la tomate,"Butter, unsalted, at dairy/FR U",16400,Beurre,0.0741,
+25561,Tarte à la tomate,"Gruyere cheese, from cow's milk, at plant/FR U",12114,Gruyère,0.12,
+25561,Tarte à la tomate,"Tomato, for processing, peeled, at plant/FR U",20169,Tomate,0.772,tomate pelée = tomate chair appertisée
+25561,Tarte à la tomate,"Water, municipal/FR U",18066,,0.0521,eau ajoutée (hors détail 3.2)
+25561,Tarte à la tomate,"Wheat flour, at industrial mill/FR U",9435,Farine de blé,0.0931,
+26268,Tielle sétoise,"Combined oil (mix of olive oil and seeds oil), at plant/FR U",17701,Huile combinée (mélange d'huile d'olive et d'huile de graines),0.0467,
+26268,Tielle sétoise,"Olive oil, at plant/FR U",17270,Huile d'olive,0.0629,
+26268,Tielle sétoise,"Onions, peeled, at processing/FR U",20034,Oignons,0.0855,
+26268,Tielle sétoise,"Squid, fillet, raw, at processing/FR U",10001,Calamar,0.319,
+26268,Tielle sétoise,"Tomato, for processing, peeled, at plant/FR U",20169,Tomate,0.281,tomate pelée = tomate chair appertisée
+26268,Tielle sétoise,"Wheat flour, at industrial mill/FR U",9435,Farine de blé,0.316,
+25560,Tourte au riesling,"Butter, unsalted, at dairy/FR U",16400,Beurre,0.117,
+25560,Tourte au riesling,"Egg yolk, raw, at plant/FR U",22002,Jaune d'œuf,0.0249,
+25560,Tourte au riesling,"Meat without bone, lamb/FR U",21504,Viande d'agneau sans os,0.21,hypothèse : épaule crue
+25560,Tourte au riesling,"Meat, pork, without bone/FR U",28001,Porc,0.181,hypothèse : épaule crue
+25560,Tourte au riesling,"Mushroom, peeled, at processing/FR U",,Champignon,0.0349,champignon de Paris cru sans impact Agribalyse et sans variante (règle 11)
+25560,Tourte au riesling,"Onions, peeled, at processing/FR U",20034,Oignons,0.107,
+25560,Tourte au riesling,"Water, municipal/FR U",18066,,0.0727,eau ajoutée (hors détail 3.2)
+25560,Tourte au riesling,"Wheat flour, at industrial mill/FR U",9435,Farine de blé,0.186,
+25560,Tourte au riesling,"White wine, consumption mix/FR U",5215,Vin blanc,0.169,
+25556,Beignet de légumes,"Chicken egg, raw, without shell, at plant/FR U",22000,Œuf de poule,0.084,
+25556,Beignet de légumes,"Chive or spring onion, peeled, at processing/FR U",11003,Ciboulette ou oignon de printemps,0.0341,
+25556,Beignet de légumes,"Olive oil, at plant/FR U",17270,Huile d'olive,0.147,
+25556,Beignet de légumes,"Semi-skimmed milk, at plant/FR U",19041,Lait demi-écremé,0.237,
+25556,Beignet de légumes,"Wheat flour, at industrial mill/FR U",9435,Farine de blé,0.119,
+25556,Beignet de légumes,"Zucchini, peeled, at processing/FR U",20020,Courgette,0.451,
+25002,"Cassoulet, appertisé","Haricot bean, consumption mix/FR U",20501,Haricot,0.174,légumineuse sèche
+25002,"Cassoulet, appertisé","Potato starch, at farm gate/FR U",,Amidon de pomme de terre,0.0104,pas de code fécule de pomme de terre avec impact
+25002,"Cassoulet, appertisé",Salt/FR U,11017,Sel,0.00521,non iodé
+25002,"Cassoulet, appertisé","Tomato paste 30° Brix, production, at plant/FR U",20268,Concentré de tomates,0.00608,
+25002,"Cassoulet, appertisé","Water, municipal/FR U",18066,,0.594,eau ajoutée (hors détail 3.2)
+25002,"Cassoulet, appertisé","Wheat flour, at industrial mill/FR U",9435,Farine de blé,0.0104,
+25073,Endive au jambon,"Chicory, peeled, at processing/FR U",20026,Chicorée,0.584,endive (chicorée witloof) : seul plat concerné = endives au jambon
+25073,Endive au jambon,"Cooked ham, case ready, at plant/FR U",28910,Jambon cuit,0.265,jambon cuit choix
+25073,Endive au jambon,"Emmental cheese, from cow's milk, at plant/FR U",12115,Emmental,0.124,
+25073,Endive au jambon,"Semi-skimmed milk, at plant/FR U",19041,Lait demi-écremé,0.166,
+25509,"Fondue savoyarde (fromages, vin, pain)","Comté cheese, from cow's milk, at plant/FR U",12110,Comté,0.051,
+25509,"Fondue savoyarde (fromages, vin, pain)","Emmental cheese, from cow's milk, at plant/FR U",12115,Emmental,0.418,
+25509,"Fondue savoyarde (fromages, vin, pain)","Maize starch, at farm gate/FR U",9510,Amidon de maïs,0.0306,
+25509,"Fondue savoyarde (fromages, vin, pain)","Tomme cheese, from cow's milk, at plant/FR U",12758,Tomme,0.0612,
+25509,"Fondue savoyarde (fromages, vin, pain)","Water, municipal/FR U",18066,,0.296,eau ajoutée (hors détail 3.2)
+25509,"Fondue savoyarde (fromages, vin, pain)","White wine, consumption mix/FR U",5215,Vin blanc,0.143,
+25546,Fromage pané au jambon,"Egg white, raw, at plant/FR U",22001,Blanc d'oeuf,0.0857,
+25546,Fromage pané au jambon,"Hard cheese, emmental-type cheese, reduced fat, at plant/FR U",12116,Fromage à pâte dure,0.727,
+25546,Fromage pané au jambon,"Wheat flour, at industrial mill/FR U",9435,Farine de blé,0.19,
+25437,Gougère,"Butter, unsalted, at dairy/FR U",16400,Beurre,0.116,
+25437,Gougère,"Egg white, raw, at plant/FR U",22001,Blanc d'oeuf,0.159,
+25437,Gougère,"Egg yolk, raw, at plant/FR U",22002,Jaune d'œuf,0.0837,
+25437,Gougère,"Gruyere cheese, from cow's milk, at plant/FR U",12114,Gruyère,0.163,
+25437,Gougère,"Water, municipal/FR U",18066,,0.295,eau ajoutée (hors détail 3.2)
+25437,Gougère,"Wheat flour, at industrial mill/FR U",9435,Farine de blé,0.19,
+25101,Gratin de chou-fleur,"Cauliflower, peeled, at processing/FR U",20016,Choufleur,0.817,
+25101,Gratin de chou-fleur,"Emmental cheese, from cow's milk, at plant/FR U",12115,Emmental,0.078,
+25101,Gratin de chou-fleur,"Semi-skimmed milk, at plant/FR U",19041,Lait demi-écremé,0.222,
+25162,Gratin de légumes,"Eggplant, peeled, at processing/FR U",20053,Aubergine,0.278,
+25162,Gratin de légumes,"Emmental cheese, from cow's milk, at plant/FR U",12115,Emmental,0.109,
+25162,Gratin de légumes,"Semi-skimmed milk, at plant/FR U",19041,Lait demi-écremé,0.18,
+25162,Gratin de légumes,"Tomato, for processing, peeled, at plant/FR U",20169,Tomate,0.276,tomate pelée = tomate chair appertisée
+25162,Gratin de légumes,"Zucchini, peeled, at processing/FR U",20020,Courgette,0.276,
+25122,Gratin de pâtes,"Emmental cheese, from cow's milk, at plant/FR U",12115,Emmental,0.188,
+25122,Gratin de pâtes,"Pasta, dried, from durum wheat, at plant/FR U",9810,Pâtes,0.557,
+25122,Gratin de pâtes,"Semi-skimmed milk, at plant/FR U",19041,Lait demi-écremé,0.255,
+25122,Gratin de pâtes,"Water, municipal/FR U",18066,,0.318,eau ajoutée (hors détail 3.2)
+25154,Gratin de poisson et purée ou brandade aux pommes de terre ou parmentier de poisson,"Cod, fillet, raw, at processing/FR U",26043,Morue,0.697,cabillaud cru (morue = cabillaud)
+25154,Gratin de poisson et purée ou brandade aux pommes de terre ou parmentier de poisson,"Combined oil (mix of olive oil and seeds oil), at plant/FR U",17701,Huile combinée (mélange d'huile d'olive et d'huile de graines),0.0676,
+25154,Gratin de poisson et purée ou brandade aux pommes de terre ou parmentier de poisson,"Emmental cheese, from cow's milk, at plant/FR U",12115,Emmental,0.0624,
+25154,Gratin de poisson et purée ou brandade aux pommes de terre ou parmentier de poisson,"Fresh cream cheese, at plant/FR U",,Fromage frais crémeux,0.026,aucun code Ciqual de fromage frais crémeux avec impact (petit-suisse écarté)
+25154,Gratin de poisson et purée ou brandade aux pommes de terre ou parmentier de poisson,"Potato, consumption mix/FR U",4008,Pommes de terre,0.282,
+25154,Gratin de poisson et purée ou brandade aux pommes de terre ou parmentier de poisson,"Semi-skimmed milk, at plant/FR U",19041,Lait demi-écremé,0.0755,
+25009,Hachis Parmentier à la viande,"Butter, unsalted, at dairy/FR U",16400,Beurre,0.0376,
+25009,Hachis Parmentier à la viande,"Emmental cheese, from cow's milk, at plant/FR U",12115,Emmental,0.0624,
+25009,Hachis Parmentier à la viande,"Ground beef, fresh, for processing/FR U",6254,Bœuf haché,0.289,hypothèse : 15 % de matières grasses
+25009,Hachis Parmentier à la viande,"Onions, peeled, at processing/FR U",20034,Oignons,0.0607,
+25009,Hachis Parmentier à la viande,"Potato, consumption mix/FR U",4008,Pommes de terre,0.627,
+25009,Hachis Parmentier à la viande,"Semi-skimmed milk, at plant/FR U",19041,Lait demi-écremé,0.122,
+25009,Hachis Parmentier à la viande,"Tomato, for processing, peeled, at plant/FR U",20169,Tomate,0.0668,tomate pelée = tomate chair appertisée
+25081,Lasagnes ou cannelloni à la viande (bolognaise),"Broth, stock or bouillon, meat and vegetables, at plant/FR U",,Bouillon,0.0536,plat composé avec viande (règle 9) : pas de code pur
+25081,Lasagnes ou cannelloni à la viande (bolognaise),"Butter, unsalted, at dairy/FR U",16400,Beurre,0.0262,
+25081,Lasagnes ou cannelloni à la viande (bolognaise),"Carrot, peeled, at processing/FR U",20009,Carotte,0.0237,
+25081,Lasagnes ou cannelloni à la viande (bolognaise),"Emmental cheese, from cow's milk, at plant/FR U",12115,Emmental,0.0786,
+25081,Lasagnes ou cannelloni à la viande (bolognaise),"Ground beef, fresh, for processing/FR U",6254,Bœuf haché,0.087,hypothèse : 15 % de matières grasses
+25081,Lasagnes ou cannelloni à la viande (bolognaise),"Olive oil, at plant/FR U",17270,Huile d'olive,0.0101,
+25081,Lasagnes ou cannelloni à la viande (bolognaise),"Onions, peeled, at processing/FR U",20034,Oignons,0.0223,
+25081,Lasagnes ou cannelloni à la viande (bolognaise),"Pasta, dried, from durum wheat, at plant/FR U",9810,Pâtes,0.472,
+25081,Lasagnes ou cannelloni à la viande (bolognaise),"Semi-skimmed milk, at plant/FR U",19041,Lait demi-écremé,0.137,
+25081,Lasagnes ou cannelloni à la viande (bolognaise),"Tomato, for processing, peeled, at plant/FR U",20169,Tomate,0.134,tomate pelée = tomate chair appertisée
+25081,Lasagnes ou cannelloni à la viande (bolognaise),"Water, municipal/FR U",18066,,0.243,eau ajoutée (hors détail 3.2)
+25635,Lasagnes ou cannelloni au fromage et aux épinards,"Cheese, buche, from goat's milk, at plant/FR U",12812,Fromage,0.24,
+25635,Lasagnes ou cannelloni au fromage et aux épinards,"Emmental cheese, from cow's milk, at plant/FR U",12115,Emmental,0.0737,
+25635,Lasagnes ou cannelloni au fromage et aux épinards,"Pasta, dried, from durum wheat, at plant/FR U",9810,Pâtes,0.326,
+25635,Lasagnes ou cannelloni au fromage et aux épinards,"Semi-skimmed milk, at plant/FR U",19041,Lait demi-écremé,0.129,
+25635,Lasagnes ou cannelloni au fromage et aux épinards,"Spinach, peeled, at processing/FR U",20059,Epinard,0.27,
+25635,Lasagnes ou cannelloni au fromage et aux épinards,"Water, municipal/FR U",18066,,0.147,eau ajoutée (hors détail 3.2)
+25139,Lasagnes ou cannelloni au poisson,"Butter, unsalted, at dairy/FR U",16400,Beurre,0.0719,
+25139,Lasagnes ou cannelloni au poisson,"Emmental cheese, from cow's milk, at plant/FR U",12115,Emmental,0.0719,
+25139,Lasagnes ou cannelloni au poisson,"Leek, peeled, at processing/FR U",20039,Poireau,0.138,
+25139,Lasagnes ou cannelloni au poisson,"Pasta, dried, from durum wheat, at plant/FR U",9810,Pâtes,0.462,
+25139,Lasagnes ou cannelloni au poisson,"Salmon, fillet, raw, at processing/FR U",26036,Saumon,0.175,saumon sans origine = élevage
+25139,Lasagnes ou cannelloni au poisson,"Semi-skimmed milk, at plant/FR U",19041,Lait demi-écremé,0.133,
+25139,Lasagnes ou cannelloni au poisson,"Water, municipal/FR U",18066,,0.212,eau ajoutée (hors détail 3.2)
+25123,Moussaka,"Eggplant, peeled, at processing/FR U",20053,Aubergine,0.324,
+25123,Moussaka,"Emmental cheese, from cow's milk, at plant/FR U",12115,Emmental,0.0359,
+25123,Moussaka,"Meat without bone, lamb/FR U",21504,Viande d'agneau sans os,0.543,hypothèse : épaule crue
+25123,Moussaka,"Onions, peeled, at processing/FR U",20034,Oignons,0.084,
+25123,Moussaka,"Tomato, for processing, peeled, at plant/FR U",20169,Tomate,0.216,tomate pelée = tomate chair appertisée
+25124,Navarin d'agneau aux légumes,"Carrot, peeled, at processing/FR U",20009,Carotte,0.11,
+25124,Navarin d'agneau aux légumes,"Combined oil (mix of olive oil and seeds oil), at plant/FR U",17701,Huile combinée (mélange d'huile d'olive et d'huile de graines),0.0262,
+25124,Navarin d'agneau aux légumes,"Garden peas, consumption mix/FR U",20072,Petits pois,0.0673,
+25124,Navarin d'agneau aux légumes,"Meat without bone, lamb/FR U",21504,Viande d'agneau sans os,0.614,hypothèse : épaule crue
+25124,Navarin d'agneau aux légumes,"Onions, peeled, at processing/FR U",20034,Oignons,0.0673,
+25124,Navarin d'agneau aux légumes,"Potato, consumption mix/FR U",4008,Pommes de terre,0.134,
+25124,Navarin d'agneau aux légumes,"Tomato, for processing, peeled, at plant/FR U",20169,Tomate,0.0857,tomate pelée = tomate chair appertisée
+25124,Navarin d'agneau aux légumes,"Turnip, peeled, at processing/FR U",20064,Navet,0.11,
+25124,Navarin d'agneau aux légumes,"Wheat flour, at industrial mill/FR U",9435,Farine de blé,0.0157,
+25183,Nouilles sautées/poêlées aux crevettes,"Carrot, peeled, at processing/FR U",20009,Carotte,0.216,
+25183,Nouilles sautées/poêlées aux crevettes,"Curry sauce, prepacked, at plant/FR U",,Sauce au curry,0.0103,sauce composée (règle 9) : pas de code pur
+25183,Nouilles sautées/poêlées aux crevettes,"Garden peas, consumption mix/FR U",20072,Petits pois,0.1078,
+25183,Nouilles sautées/poêlées aux crevettes,"Honey, at plant/FR U",31008,Miel,0.0103,
+25183,Nouilles sautées/poêlées aux crevettes,"Pasta, dried, from durum wheat, at plant/FR U",9810,Pâtes,0.297,
+25183,Nouilles sautées/poêlées aux crevettes,"Pepper, green, peeled, at processing/FR U",20085,Poivre,0.12,poivron vert (nommé « Poivre » dans le détail 3.2)
+25183,Nouilles sautées/poêlées aux crevettes,"Shrimp, fillet, raw, frozen at processing/FR U",10038,Crevette,0.15,
+25183,Nouilles sautées/poêlées aux crevettes,"Spinach, peeled, at processing/FR U",20059,Epinard,0.0839,
+25183,Nouilles sautées/poêlées aux crevettes,"Sunflower oil, at plant/FR U",17440,Huile de tournesol,0.0103,
+25183,Nouilles sautées/poêlées aux crevettes,"Tomato, for processing, peeled, at plant/FR U",20169,Tomate,0.0599,tomate pelée = tomate chair appertisée
+25183,Nouilles sautées/poêlées aux crevettes,"Water, municipal/FR U",18066,,0.172,eau ajoutée (hors détail 3.2)
+25164,Osso buco,"Carrot, peeled, at processing/FR U",20009,Carotte,0.098,
+25164,Osso buco,"Celery, peeled, at processing/FR U",20023,Céleri,0.0306,
+25164,Osso buco,"Combined oil (mix of olive oil and seeds oil), at plant/FR U",17701,Huile combinée (mélange d'huile d'olive et d'huile de graines),0.0524,
+25164,Osso buco,"Meat without bone, veal/FR U",6550,Viande de veau sans os,0.747,hypothèse : rôti cru
+25164,Osso buco,"Onions, peeled, at processing/FR U",20034,Oignons,0.0857,
+25164,Osso buco,"Tomato, for processing, peeled, at plant/FR U",20169,Tomate,0.165,tomate pelée = tomate chair appertisée
+25164,Osso buco,"Wheat flour, at industrial mill/FR U",9435,Farine de blé,0.0314,
+25199,"Palet ou galette de légumes, préfrit, surgelé","Carrot, peeled, at processing/FR U",20009,Carotte,0.266,
+25199,"Palet ou galette de légumes, préfrit, surgelé","Chicken egg, raw, without shell, at plant/FR U",22000,Œuf de poule,0.0813,
+25199,"Palet ou galette de légumes, préfrit, surgelé","Combined oil (mix of olive oil and seeds oil), at plant/FR U",17701,Huile combinée (mélange d'huile d'olive et d'huile de graines),0.0495,
+25199,"Palet ou galette de légumes, préfrit, surgelé","Garden peas, consumption mix/FR U",20072,Petits pois,0.116,
+25199,"Palet ou galette de légumes, préfrit, surgelé","Onions, peeled, at processing/FR U",20034,Oignons,0.116,
+25199,"Palet ou galette de légumes, préfrit, surgelé","Potato starch, at farm gate/FR U",,Amidon de pomme de terre,0.0495,pas de code fécule de pomme de terre avec impact
+25199,"Palet ou galette de légumes, préfrit, surgelé","Zucchini, peeled, at processing/FR U",20020,Courgette,0.463,
+25157,"Pâtes fraîches farcies (ex : raviolis), à la viande (ex : bolognaise), crues","Chicken egg, raw, without shell, at plant/FR U",22000,Œuf de poule,0.26,
+25157,"Pâtes fraîches farcies (ex : raviolis), à la viande (ex : bolognaise), crues","Ground beef, fresh, for processing/FR U",6254,Bœuf haché,0.367,hypothèse : 15 % de matières grasses
+25157,"Pâtes fraîches farcies (ex : raviolis), à la viande (ex : bolognaise), crues","Parmesan cheese, from cow's milk, at plant/FR U",12120,Parmesan,0.101,
+25157,"Pâtes fraîches farcies (ex : raviolis), à la viande (ex : bolognaise), crues","Shallot, peeled, at processing/FR U",20097,Échalote,0.0219,
+25157,"Pâtes fraîches farcies (ex : raviolis), à la viande (ex : bolognaise), crues","Wheat flour, at industrial mill/FR U",9435,Farine de blé,0.337,
+25158,"Pâtes fraîches farcies (ex : raviolis), à la viande (ex : bolognaise), cuites","Chicken egg, raw, without shell, at plant/FR U",22000,Œuf de poule,0.26,
+25158,"Pâtes fraîches farcies (ex : raviolis), à la viande (ex : bolognaise), cuites","Ground beef, fresh, for processing/FR U",6254,Bœuf haché,0.367,hypothèse : 15 % de matières grasses
+25158,"Pâtes fraîches farcies (ex : raviolis), à la viande (ex : bolognaise), cuites","Parmesan cheese, from cow's milk, at plant/FR U",12120,Parmesan,0.101,
+25158,"Pâtes fraîches farcies (ex : raviolis), à la viande (ex : bolognaise), cuites","Shallot, peeled, at processing/FR U",20097,Échalote,0.0219,
+25158,"Pâtes fraîches farcies (ex : raviolis), à la viande (ex : bolognaise), cuites","Wheat flour, at industrial mill/FR U",9435,Farine de blé,0.337,
+25181,"Pâtes fraîches farcies (ex : raviolis, ravioles du Dauphiné), au fromage, crues","Butter, unsalted, at dairy/FR U",16400,Beurre,0.0467,
+25181,"Pâtes fraîches farcies (ex : raviolis, ravioles du Dauphiné), au fromage, crues","Chicken egg, raw, without shell, at plant/FR U",22000,Œuf de poule,0.148,
+25181,"Pâtes fraîches farcies (ex : raviolis, ravioles du Dauphiné), au fromage, crues","Hard cheese, emmental-type cheese, reduced fat, at plant/FR U",12116,Fromage à pâte dure,0.243,
+25181,"Pâtes fraîches farcies (ex : raviolis, ravioles du Dauphiné), au fromage, crues","Parsley, peeled, at processing/FR U",11014,Persil,0.0577,
+25181,"Pâtes fraîches farcies (ex : raviolis, ravioles du Dauphiné), au fromage, crues","Water, municipal/FR U",18066,,0.137,eau ajoutée (hors détail 3.2)
+25181,"Pâtes fraîches farcies (ex : raviolis, ravioles du Dauphiné), au fromage, crues","Wheat flour, at industrial mill/FR U",9435,Farine de blé,0.38,
+25149,"Pâtes fraîches farcies (ex : raviolis, ravioles du Dauphiné), au fromage, cuites","Butter, unsalted, at dairy/FR U",16400,Beurre,0.0467,
+25149,"Pâtes fraîches farcies (ex : raviolis, ravioles du Dauphiné), au fromage, cuites","Chicken egg, raw, without shell, at plant/FR U",22000,Œuf de poule,0.148,
+25149,"Pâtes fraîches farcies (ex : raviolis, ravioles du Dauphiné), au fromage, cuites","Hard cheese, emmental-type cheese, reduced fat, at plant/FR U",12116,Fromage à pâte dure,0.243,
+25149,"Pâtes fraîches farcies (ex : raviolis, ravioles du Dauphiné), au fromage, cuites","Parsley, peeled, at processing/FR U",11014,Persil,0.0577,
+25149,"Pâtes fraîches farcies (ex : raviolis, ravioles du Dauphiné), au fromage, cuites","Water, municipal/FR U",18066,,0.137,eau ajoutée (hors détail 3.2)
+25149,"Pâtes fraîches farcies (ex : raviolis, ravioles du Dauphiné), au fromage, cuites","Wheat flour, at industrial mill/FR U",9435,Farine de blé,0.38,
+20240,Piperade basquaise,"Onions, peeled, at processing/FR U",20034,Oignons,0.186,
+20240,Piperade basquaise,"Pepper, green, peeled, at processing/FR U",20085,Poivre,0.382,poivron vert (nommé « Poivre » dans le détail 3.2)
+20240,Piperade basquaise,"Tomato, for processing, peeled, at plant/FR U",20169,Tomate,0.435,tomate pelée = tomate chair appertisée
+20240,Piperade basquaise,"Vegetable fat (margarine type), 70% fat, unsalted, at plant/FR U",16080,Graisse végétale (type margarine),0.141,
+20274,"Poêlée de légumes assaisonnés grillée, méridionale ou méditerranéenne, surgelée, crue","Eggplant, peeled, at processing/FR U",20053,Aubergine,0.262,
+20274,"Poêlée de légumes assaisonnés grillée, méridionale ou méditerranéenne, surgelée, crue","Onions, peeled, at processing/FR U",20034,Oignons,0.179,
+20274,"Poêlée de légumes assaisonnés grillée, méridionale ou méditerranéenne, surgelée, crue","Pepper, green, peeled, at processing/FR U",20085,Poivre,0.43,poivron vert (nommé « Poivre » dans le détail 3.2)
+20274,"Poêlée de légumes assaisonnés grillée, méridionale ou méditerranéenne, surgelée, crue","Zucchini, peeled, at processing/FR U",20020,Courgette,0.298,
+25140,Poisson blanc à la florentine (sauce aux épinards),"Alaska pollock, fillet, raw, at processing/FR U",26006,Lieu ou colin d'Alaska,0.708,
+25140,Poisson blanc à la florentine (sauce aux épinards),"Combined oil (mix of olive oil and seeds oil), at plant/FR U",17701,Huile combinée (mélange d'huile d'olive et d'huile de graines),0.0311,
+25140,Poisson blanc à la florentine (sauce aux épinards),"Emmental cheese, from cow's milk, at plant/FR U",12115,Emmental,0.0519,
+25140,Poisson blanc à la florentine (sauce aux épinards),"Fresh cream cheese, at plant/FR U",,Fromage frais crémeux,0.0311,aucun code Ciqual de fromage frais crémeux avec impact (petit-suisse écarté)
+25140,Poisson blanc à la florentine (sauce aux épinards),"Semi-skimmed milk, at plant/FR U",19041,Lait demi-écremé,0.145,
+25140,Poisson blanc à la florentine (sauce aux épinards),"Spinach, peeled, at processing/FR U",20059,Epinard,0.17,
+25140,Poisson blanc à la florentine (sauce aux épinards),"White wine, consumption mix/FR U",5215,Vin blanc,0.0156,
+25128,Poisson blanc à la provençale ou niçoise (sauce tomate),"Alaska pollock, fillet, raw, at processing/FR U",26006,Lieu ou colin d'Alaska,0.809,
+25128,Poisson blanc à la provençale ou niçoise (sauce tomate),"Fennel, peeled, at processing/FR U",20028,Fenouil,0.0364,
+25128,Poisson blanc à la provençale ou niçoise (sauce tomate),"Olive oil, at plant/FR U",17270,Huile d'olive,0.0415,
+25128,Poisson blanc à la provençale ou niçoise (sauce tomate),"Olives, consumption mix/FR U",,Olives,0.0311,aucun code olive avec impact Agribalyse
+25128,Poisson blanc à la provençale ou niçoise (sauce tomate),"Onions, peeled, at processing/FR U",20034,Oignons,0.0364,
+25128,Poisson blanc à la provençale ou niçoise (sauce tomate),"Pepper, green, peeled, at processing/FR U",20085,Poivre,0.0606,poivron vert (nommé « Poivre » dans le détail 3.2)
+25128,Poisson blanc à la provençale ou niçoise (sauce tomate),"Tomato, for processing, peeled, at plant/FR U",20169,Tomate,0.109,tomate pelée = tomate chair appertisée
+25128,Poisson blanc à la provençale ou niçoise (sauce tomate),"Zucchini, peeled, at processing/FR U",20020,Courgette,0.0666,
+25207,Porc au caramel,"Combined oil (mix of olive oil and seeds oil), at plant/FR U",17701,Huile combinée (mélange d'huile d'olive et d'huile de graines),0.0516,
+25207,Porc au caramel,"Meat, pork, without bone/FR U",28001,Porc,0.976,hypothèse : épaule crue
+25207,Porc au caramel,"Onions, peeled, at processing/FR U",20034,Oignons,0.121,
+25207,Porc au caramel,"Soy sauce, prepacked, at plant/FR U",11104,Sauce soja,0.031,
+25207,Porc au caramel,"White sugar, production, at plant/FR U",31016,Sucre blanc,0.0413,
+25071,Potée auvergnate (chou et porc),"Carrot, peeled, at processing/FR U",20009,Carotte,0.0954,
+25071,Potée auvergnate (chou et porc),"Haricot bean, consumption mix/FR U",20501,Haricot,0.0219,légumineuse sèche
+25071,Potée auvergnate (chou et porc),"Meat, pork, without bone/FR U",28001,Porc,0.348,hypothèse : épaule crue
+25071,Potée auvergnate (chou et porc),"Offal, pork/FR U",,Abats de porc,0.0387,abats sans précision : pas de code
+25071,Potée auvergnate (chou et porc),"Potato, consumption mix/FR U",4008,Pommes de terre,0.145,
+25071,Potée auvergnate (chou et porc),"Turnip, peeled, at processing/FR U",20064,Navet,0.107,
+25071,Potée auvergnate (chou et porc),"Water, municipal/FR U",18066,,0.194,eau ajoutée (hors détail 3.2)
+25071,Potée auvergnate (chou et porc),"White cabbage, peeled, at processing/FR U",20116,Chou blanc,0.203,
+25174,Poulet au curry et au lait de coco,"Coconut milk or coconut cream, at plant/FR U",18041,Lait de coco ou crème de coco,0.18,
+25174,Poulet au curry et au lait de coco,"Combined oil (mix of olive oil and seeds oil), at plant/FR U",17701,Huile combinée (mélange d'huile d'olive et d'huile de graines),0.0408,
+25174,Poulet au curry et au lait de coco,"Meat without bone, chicken, for processing/FR U",36003,Viande de poulet sans os,0.944,
+25174,Poulet au curry et au lait de coco,"Shallot, peeled, at processing/FR U",20097,Échalote,0.0774,
+25190,Poulet basquaise,"Carrot, peeled, at processing/FR U",20009,Carotte,0.277,
+25190,Poulet basquaise,"Combined oil (mix of olive oil and seeds oil), at plant/FR U",17701,Huile combinée (mélange d'huile d'olive et d'huile de graines),0.031,
+25190,Poulet basquaise,"Meat without bone, chicken, for processing/FR U",36003,Viande de poulet sans os,0.689,
+25190,Poulet basquaise,"Onions, peeled, at processing/FR U",20034,Oignons,0.145,
+25190,Poulet basquaise,"Tomato, for processing, peeled, at plant/FR U",20169,Tomate,0.102,tomate pelée = tomate chair appertisée
+25018,Ratatouille cuisinée,"Eggplant, peeled, at processing/FR U",20053,Aubergine,0.178,
+25018,Ratatouille cuisinée,"Olive oil, at plant/FR U",17270,Huile d'olive,0.156,
+25018,Ratatouille cuisinée,"Onions, peeled, at processing/FR U",20034,Oignons,0.0533,
+25018,Ratatouille cuisinée,"Pepper, green, peeled, at processing/FR U",20085,Poivre,0.1478,poivron vert (nommé « Poivre » dans le détail 3.2)
+25018,Ratatouille cuisinée,"Tomato, for processing, peeled, at plant/FR U",20169,Tomate,0.278,tomate pelée = tomate chair appertisée
+25018,Ratatouille cuisinée,"Zucchini, peeled, at processing/FR U",20020,Courgette,0.329,
+25110,"Ravioli chinois à la vapeur à la crevette, cuit","Ginger, consumption mix/FR U",11074,Gingembre,0.0459,
+25110,"Ravioli chinois à la vapeur à la crevette, cuit","Potato starch, at farm gate/FR U",,Amidon de pomme de terre,0.043,pas de code fécule de pomme de terre avec impact
+25110,"Ravioli chinois à la vapeur à la crevette, cuit","Shrimp, fillet, raw, frozen at processing/FR U",10038,Crevette,0.525,
+25110,"Ravioli chinois à la vapeur à la crevette, cuit","Water, municipal/FR U",18066,,0.304,eau ajoutée (hors détail 3.2)
+25110,"Ravioli chinois à la vapeur à la crevette, cuit","Wheat flour, at industrial mill/FR U",9435,Farine de blé,0.177,
+25020,Soufflé au fromage,"Egg white, raw, at plant/FR U",22001,Blanc d'oeuf,0.192,
+25020,Soufflé au fromage,"Egg yolk, raw, at plant/FR U",22002,Jaune d'œuf,0.088,
+25020,Soufflé au fromage,"Gruyere cheese, from cow's milk, at plant/FR U",12114,Gruyère,0.197,
+25020,Soufflé au fromage,"Semi-skimmed milk, at plant/FR U",19041,Lait demi-écremé,0.47,
+25020,Soufflé au fromage,"Wheat flour, at industrial mill/FR U",9435,Farine de blé,0.0611,
+25159,Tajine de mouton,"Combined oil (mix of olive oil and seeds oil), at plant/FR U",17701,Huile combinée (mélange d'huile d'olive et d'huile de graines),0.0675,
+25159,Tajine de mouton,"Honey, at plant/FR U",31008,Miel,0.0364,
+25159,Tajine de mouton,"Meat without bone, lamb/FR U",21504,Viande d'agneau sans os,0.647,hypothèse : épaule crue
+25159,Tajine de mouton,"Olives, consumption mix/FR U",,Olives,0.0416,aucun code olive avec impact Agribalyse
+25159,Tajine de mouton,"Onions, peeled, at processing/FR U",20034,Oignons,0.121,
+25159,Tajine de mouton,"Tomato, for processing, peeled, at plant/FR U",20169,Tomate,0.133,tomate pelée = tomate chair appertisée
+25159,Tajine de mouton,"White sugar, production, at plant/FR U",31016,Sucre blanc,0.0203,
+25159,Tajine de mouton,"Zucchini, peeled, at processing/FR U",20020,Courgette,0.121,
+20904,"Tofu, nature","Mung bean, consumption mix/FR U",20530,Haricot mungo,0.165,légumineuse sèche
+20904,"Tofu, nature","Water, municipal/FR U",18066,,0.939,eau ajoutée (hors détail 3.2)
+25524,Tomate à la provençale,"Onions, peeled, at processing/FR U",20034,Oignons,0.0477,
+25524,Tomate à la provençale,"Sunflower oil, at plant/FR U",17440,Huile de tournesol,0.0204,
+25524,Tomate à la provençale,"Tomato paste 30° Brix, production, at plant/FR U",20268,Concentré de tomates,0.0954,
+25524,Tomate à la provençale,"Tomato, for processing, peeled, at plant/FR U",20169,Tomate,1.0,tomate pelée = tomate chair appertisée
+25600,"Céleri rémoulade, préemballé","Celeriac, peeled, at processing/FR U",20055,Céleri-rave,0.895,
+25600,"Céleri rémoulade, préemballé","Combined oil (mix of olive oil and seeds oil), at plant/FR U",17701,Huile combinée (mélange d'huile d'olive et d'huile de graines),0.145,
+25600,"Céleri rémoulade, préemballé","Egg yolk, raw, at plant/FR U",22002,Jaune d'œuf,0.0242,
+25600,"Céleri rémoulade, préemballé","Mustard, at plant/FR U",11013,Moutarde,0.0155,
+25600,"Céleri rémoulade, préemballé","Red wine, consumption mix/FR U",5214,Vin rouge,0.0495,
+25615,"Salade de pâtes, végétarienne","Combined oil (mix of olive oil and seeds oil), at plant/FR U",17701,Huile combinée (mélange d'huile d'olive et d'huile de graines),0.0513,
+25615,"Salade de pâtes, végétarienne","Eggplant, peeled, at processing/FR U",20053,Aubergine,0.144,
+25615,"Salade de pâtes, végétarienne","Pasta, dried, from durum wheat, at plant/FR U",9810,Pâtes,0.425,
+25615,"Salade de pâtes, végétarienne","Pepper, green, peeled, at processing/FR U",20085,Poivre,0.144,poivron vert (nommé « Poivre » dans le détail 3.2)
+25615,"Salade de pâtes, végétarienne","Red wine, consumption mix/FR U",5214,Vin rouge,0.0308,
+25615,"Salade de pâtes, végétarienne","Tomato, for processing, peeled, at plant/FR U",20169,Tomate,0.144,tomate pelée = tomate chair appertisée
+25615,"Salade de pâtes, végétarienne","Water, municipal/FR U",18066,,0.16,eau ajoutée (hors détail 3.2)
+25615,"Salade de pâtes, végétarienne","Zucchini, peeled, at processing/FR U",20020,Courgette,0.144,
+25606,Salade de pommes de terre maison,"Comté cheese, from cow's milk, at plant/FR U",12110,Comté,0.114,
+25606,Salade de pommes de terre maison,"Cooked ham, case ready, at plant/FR U",28910,Jambon cuit,0.432,jambon cuit choix
+25606,Salade de pommes de terre maison,"Potato, consumption mix/FR U",4008,Pommes de terre,0.626,
+25606,Salade de pommes de terre maison,"Red wine, consumption mix/FR U",5214,Vin rouge,0.0311,
+25606,Salade de pommes de terre maison,"Tomato, for processing, peeled, at plant/FR U",20169,Tomate,0.0848,tomate pelée = tomate chair appertisée
+26269,"Taboulé ou Salade de couscous au poulet, préemballé","Combined oil (mix of olive oil and seeds oil), at plant/FR U",17701,Huile combinée (mélange d'huile d'olive et d'huile de graines),0.0626,
+26269,"Taboulé ou Salade de couscous au poulet, préemballé","Durum wheat, semolina, at plant/FR U",9610,Blé dur,0.23,
+26269,"Taboulé ou Salade de couscous au poulet, préemballé","Meat without bone, chicken, for processing/FR U",36003,Viande de poulet sans os,0.179,
+26269,"Taboulé ou Salade de couscous au poulet, préemballé","Onions, peeled, at processing/FR U",20034,Oignons,0.146,
+26269,"Taboulé ou Salade de couscous au poulet, préemballé","Tomato, for processing, peeled, at plant/FR U",20169,Tomate,0.183,tomate pelée = tomate chair appertisée
+26269,"Taboulé ou Salade de couscous au poulet, préemballé","Water, municipal/FR U",18066,,0.25,eau ajoutée (hors détail 3.2)
+25400,Croque-monsieur,"Butter, unsalted, at dairy/FR U",16400,Beurre,0.0705,
+25400,Croque-monsieur,"Cooked ham, case ready, at plant/FR U",28910,Jambon cuit,0.25,jambon cuit choix
+25400,Croque-monsieur,"Emmental cheese, from cow's milk, at plant/FR U",12115,Emmental,0.187,
+25400,Croque-monsieur,"Semi-skimmed milk, at plant/FR U",19041,Lait demi-écremé,0.1892,
+25400,Croque-monsieur,"Water, municipal/FR U",18066,,0.0616,eau ajoutée (hors détail 3.2)
+25400,Croque-monsieur,"Wheat flour, at industrial mill/FR U",9435,Farine de blé,0.294,
+25547,"Croque-monsieur, rayon frais","Butter, unsalted, at dairy/FR U",16400,Beurre,0.0705,
+25547,"Croque-monsieur, rayon frais","Cooked ham, case ready, at plant/FR U",28910,Jambon cuit,0.25,jambon cuit choix
+25547,"Croque-monsieur, rayon frais","Emmental cheese, from cow's milk, at plant/FR U",12115,Emmental,0.187,
+25547,"Croque-monsieur, rayon frais","Semi-skimmed milk, at plant/FR U",19041,Lait demi-écremé,0.1892,
+25547,"Croque-monsieur, rayon frais","Water, municipal/FR U",18066,,0.0616,eau ajoutée (hors détail 3.2)
+25547,"Croque-monsieur, rayon frais","Wheat flour, at industrial mill/FR U",9435,Farine de blé,0.294,
+7812,"Fougasse, garnie","Olive oil, at plant/FR U",17270,Huile d'olive,0.0674,
+7812,"Fougasse, garnie","Water, municipal/FR U",18066,,0.384,eau ajoutée (hors détail 3.2)
+7812,"Fougasse, garnie","Wheat flour, at industrial mill/FR U",9435,Farine de blé,0.549,
+25513,Pan bagnat,"Chicken egg, raw, without shell, at plant/FR U",22000,Œuf de poule,0.086,
+25513,Pan bagnat,"Common anchovy, marinated, at plant/FR U",26000,Anchois commun,0.0471,
+25513,Pan bagnat,"Green salad, peeled, at processing/FR U",20031,Salade verte,0.0428,laitue
+25513,Pan bagnat,"Olive oil, at plant/FR U",17270,Huile d'olive,0.0681,
+25513,Pan bagnat,"Olives, consumption mix/FR U",,Olives,0.0367,aucun code olive avec impact Agribalyse
+25513,Pan bagnat,"Onions, peeled, at processing/FR U",20034,Oignons,0.0612,
+25513,Pan bagnat,"Pepper, green, peeled, at processing/FR U",20085,Poivre,0.0551,poivron vert (nommé « Poivre » dans le détail 3.2)
+25513,Pan bagnat,"Tomato, for processing, peeled, at plant/FR U",20169,Tomate,0.122,tomate pelée = tomate chair appertisée
+25513,Pan bagnat,"Tuna, fillet, raw, at processing/FR U",26053,Thon,0.16,
+25513,Pan bagnat,"Water, municipal/FR U",18066,,0.137,eau ajoutée (hors détail 3.2)
+25513,Pan bagnat,"Wheat flour, at industrial mill/FR U",9435,Farine de blé,0.255,
+25518,"Sandwich baguette, camembert, beurre","Butter, unsalted, at dairy/FR U",16400,Beurre,0.0618,
+25518,"Sandwich baguette, camembert, beurre","Camembert cheese, from cow's milk, at plant/FR U",12001,Camembert,0.381,
+25518,"Sandwich baguette, camembert, beurre","Water, municipal/FR U",18066,,0.201,eau ajoutée (hors détail 3.2)
+25518,"Sandwich baguette, camembert, beurre","Wheat flour, at industrial mill/FR U",9435,Farine de blé,0.356,
+25531,"Sandwich baguette, dinde, crudités (tomate, salade), mayonnaise","Carrot, peeled, at processing/FR U",20009,Carotte,0.0609,
+25531,"Sandwich baguette, dinde, crudités (tomate, salade), mayonnaise","Chicken egg, raw, without shell, at plant/FR U",22000,Œuf de poule,0.107,
+25531,"Sandwich baguette, dinde, crudités (tomate, salade), mayonnaise","Combined oil (mix of olive oil and seeds oil), at plant/FR U",17701,Huile combinée (mélange d'huile d'olive et d'huile de graines),0.0332,
+25531,"Sandwich baguette, dinde, crudités (tomate, salade), mayonnaise","Green salad, peeled, at processing/FR U",20031,Salade verte,0.0487,laitue
+25531,"Sandwich baguette, dinde, crudités (tomate, salade), mayonnaise","Meat without bone, chicken, for processing/FR U",36003,Viande de poulet sans os,0.159,
+25531,"Sandwich baguette, dinde, crudités (tomate, salade), mayonnaise","Tomato, for processing, peeled, at plant/FR U",20169,Tomate,0.146,tomate pelée = tomate chair appertisée
+25531,"Sandwich baguette, dinde, crudités (tomate, salade), mayonnaise","Water, municipal/FR U",18066,,0.189,eau ajoutée (hors détail 3.2)
+25531,"Sandwich baguette, dinde, crudités (tomate, salade), mayonnaise","Wheat flour, at industrial mill/FR U",9435,Farine de blé,0.335,
+25485,"Sandwich baguette, jambon emmental","Butter, unsalted, at dairy/FR U",16400,Beurre,0.0513,
+25485,"Sandwich baguette, jambon emmental","Cooked ham, case ready, at plant/FR U",28910,Jambon cuit,0.35,jambon cuit choix
+25485,"Sandwich baguette, jambon emmental","Emmental cheese, from cow's milk, at plant/FR U",12115,Emmental,0.185,
+25485,"Sandwich baguette, jambon emmental","Water, municipal/FR U",18066,,0.176,eau ajoutée (hors détail 3.2)
+25485,"Sandwich baguette, jambon emmental","Wheat flour, at industrial mill/FR U",9435,Farine de blé,0.311,
+25517,"Sandwich baguette, jambon, beurre","Butter, unsalted, at dairy/FR U",16400,Beurre,0.0515,
+25517,"Sandwich baguette, jambon, beurre","Cooked ham, case ready, at plant/FR U",28910,Jambon cuit,0.52,jambon cuit choix
+25517,"Sandwich baguette, jambon, beurre","Water, municipal/FR U",18066,,0.194,eau ajoutée (hors détail 3.2)
+25517,"Sandwich baguette, jambon, beurre","Wheat flour, at industrial mill/FR U",9435,Farine de blé,0.343,
+25521,"Sandwich baguette, jambon, emmental, beurre","Butter, unsalted, at dairy/FR U",16400,Beurre,0.0513,
+25521,"Sandwich baguette, jambon, emmental, beurre","Cooked ham, case ready, at plant/FR U",28910,Jambon cuit,0.35,jambon cuit choix
+25521,"Sandwich baguette, jambon, emmental, beurre","Emmental cheese, from cow's milk, at plant/FR U",12115,Emmental,0.185,
+25521,"Sandwich baguette, jambon, emmental, beurre","Water, municipal/FR U",18066,,0.176,eau ajoutée (hors détail 3.2)
+25521,"Sandwich baguette, jambon, emmental, beurre","Wheat flour, at industrial mill/FR U",9435,Farine de blé,0.311,
+25475,"Sandwich baguette, jambon, oeuf dur, crudités (tomate, salade), beurre","Carrot, peeled, at processing/FR U",20009,Carotte,0.0548,
+25475,"Sandwich baguette, jambon, oeuf dur, crudités (tomate, salade), beurre","Chicken egg, raw, without shell, at plant/FR U",22000,Œuf de poule,0.123,
+25475,"Sandwich baguette, jambon, oeuf dur, crudités (tomate, salade), beurre","Combined oil (mix of olive oil and seeds oil), at plant/FR U",17701,Huile combinée (mélange d'huile d'olive et d'huile de graines),0.0332,
+25475,"Sandwich baguette, jambon, oeuf dur, crudités (tomate, salade), beurre","Cooked ham, case ready, at plant/FR U",28910,Jambon cuit,0.197,jambon cuit choix
+25475,"Sandwich baguette, jambon, oeuf dur, crudités (tomate, salade), beurre","Green salad, peeled, at processing/FR U",20031,Salade verte,0.0487,laitue
+25475,"Sandwich baguette, jambon, oeuf dur, crudités (tomate, salade), beurre","Tomato, for processing, peeled, at plant/FR U",20169,Tomate,0.0913,tomate pelée = tomate chair appertisée
+25475,"Sandwich baguette, jambon, oeuf dur, crudités (tomate, salade), beurre","Water, municipal/FR U",18066,,0.189,eau ajoutée (hors détail 3.2)
+25475,"Sandwich baguette, jambon, oeuf dur, crudités (tomate, salade), beurre","Wheat flour, at industrial mill/FR U",9435,Farine de blé,0.335,
+25476,"Sandwich baguette, poulet, crudités (tomate, salade), mayonnaise","Combined oil (mix of olive oil and seeds oil), at plant/FR U",17701,Huile combinée (mélange d'huile d'olive et d'huile de graines),0.0968,
+25476,"Sandwich baguette, poulet, crudités (tomate, salade), mayonnaise","Green salad, peeled, at processing/FR U",20031,Salade verte,0.0737,laitue
+25476,"Sandwich baguette, poulet, crudités (tomate, salade), mayonnaise","Meat without bone, chicken, for processing/FR U",36003,Viande de poulet sans os,0.362,
+25476,"Sandwich baguette, poulet, crudités (tomate, salade), mayonnaise","Vegetable fat (margarine type), 70% fat, unsalted, at plant/FR U",16080,Graisse végétale (type margarine),0.0186,
+25476,"Sandwich baguette, poulet, crudités (tomate, salade), mayonnaise","Water, municipal/FR U",18066,,0.198,eau ajoutée (hors détail 3.2)
+25476,"Sandwich baguette, poulet, crudités (tomate, salade), mayonnaise","Wheat flour, at industrial mill/FR U",9435,Farine de blé,0.35,
+25431,"Sandwich baguette, thon, crudités (tomate, salade), mayonnaise","Combined oil (mix of olive oil and seeds oil), at plant/FR U",17701,Huile combinée (mélange d'huile d'olive et d'huile de graines),0.0968,
+25431,"Sandwich baguette, thon, crudités (tomate, salade), mayonnaise","Green salad, peeled, at processing/FR U",20031,Salade verte,0.0737,laitue
+25431,"Sandwich baguette, thon, crudités (tomate, salade), mayonnaise","Tuna, fillet, raw, at processing/FR U",26053,Thon,0.334,
+25431,"Sandwich baguette, thon, crudités (tomate, salade), mayonnaise","Vegetable fat (margarine type), 70% fat, unsalted, at plant/FR U",16080,Graisse végétale (type margarine),0.0186,
+25431,"Sandwich baguette, thon, crudités (tomate, salade), mayonnaise","Water, municipal/FR U",18066,,0.198,eau ajoutée (hors détail 3.2)
+25431,"Sandwich baguette, thon, crudités (tomate, salade), mayonnaise","Wheat flour, at industrial mill/FR U",9435,Farine de blé,0.35,
+25490,"Sandwich baguette, thon, maïs, crudités","Carrot, peeled, at processing/FR U",20009,Carotte,0.0548,
+25490,"Sandwich baguette, thon, maïs, crudités","Chicken egg, raw, without shell, at plant/FR U",22000,Œuf de poule,0.107,
+25490,"Sandwich baguette, thon, maïs, crudités","Combined oil (mix of olive oil and seeds oil), at plant/FR U",17701,Huile combinée (mélange d'huile d'olive et d'huile de graines),0.0332,
+25490,"Sandwich baguette, thon, maïs, crudités","Green salad, peeled, at processing/FR U",20031,Salade verte,0.0487,laitue
+25490,"Sandwich baguette, thon, maïs, crudités","Tomato, for processing, peeled, at plant/FR U",20169,Tomate,0.152,tomate pelée = tomate chair appertisée
+25490,"Sandwich baguette, thon, maïs, crudités","Tuna, fillet, raw, at processing/FR U",26053,Thon,0.153,
+25490,"Sandwich baguette, thon, maïs, crudités","Water, municipal/FR U",18066,,0.187,eau ajoutée (hors détail 3.2)
+25490,"Sandwich baguette, thon, maïs, crudités","Wheat flour, at industrial mill/FR U",9435,Farine de blé,0.332,
+25434,"Sandwich panini, jambon cru, mozzarella, tomates","Cooked ham, case ready, at plant/FR U",28910,Jambon cuit,0.342,jambon cuit choix
+25434,"Sandwich panini, jambon cru, mozzarella, tomates","Mozzarella cheese, from cow's milk, at plant/FR U",19590,Fromage mozzarella,0.26,
+25434,"Sandwich panini, jambon cru, mozzarella, tomates","Semi-skimmed milk, at plant/FR U",19041,Lait demi-écremé,0.0845,
+25434,"Sandwich panini, jambon cru, mozzarella, tomates","Water, municipal/FR U",18066,,0.112,eau ajoutée (hors détail 3.2)
+25434,"Sandwich panini, jambon cru, mozzarella, tomates","Wheat flour, at industrial mill/FR U",9435,Farine de blé,0.273,
+25913,"Soupe à la carotte, préemballée à réchauffer","Carrot, peeled, at processing/FR U",20009,Carotte,0.329,
+25913,"Soupe à la carotte, préemballée à réchauffer","Potato, consumption mix/FR U",4008,Pommes de terre,0.301,
+25913,"Soupe à la carotte, préemballée à réchauffer","Water, municipal/FR U",18066,,0.507,eau ajoutée (hors détail 3.2)
+25933,"Soupe à la tomate et aux vermicelles, préemballée à réchauffer","Carrot, peeled, at processing/FR U",20009,Carotte,0.0265,
+25933,"Soupe à la tomate et aux vermicelles, préemballée à réchauffer","Leek, peeled, at processing/FR U",20039,Poireau,0.0314,
+25933,"Soupe à la tomate et aux vermicelles, préemballée à réchauffer","Onions, peeled, at processing/FR U",20034,Oignons,0.1114,
+25933,"Soupe à la tomate et aux vermicelles, préemballée à réchauffer","Pasta, dried, from durum wheat, at plant/FR U",9810,Pâtes,0.0374,
+25933,"Soupe à la tomate et aux vermicelles, préemballée à réchauffer","Tomato, for processing, peeled, at plant/FR U",20169,Tomate,0.52,tomate pelée = tomate chair appertisée
+25933,"Soupe à la tomate et aux vermicelles, préemballée à réchauffer","Water, municipal/FR U",18066,,0.372,eau ajoutée (hors détail 3.2)
+25914,"Soupe à la tomate, préemballée à réchauffer","Tomato, for processing, peeled, at plant/FR U",20169,Tomate,0.193,tomate pelée = tomate chair appertisée
+25914,"Soupe à la tomate, préemballée à réchauffer","Water, municipal/FR U",18066,,0.834,eau ajoutée (hors détail 3.2)
+25953,"Soupe au pistou, préemballée à réchauffer","Carrot, peeled, at processing/FR U",20009,Carotte,0.0546,
+25953,"Soupe au pistou, préemballée à réchauffer","French bean, peeled, at processing/FR U",20061_1,Haricot vert,0.066,
+25953,"Soupe au pistou, préemballée à réchauffer","Haricot bean, consumption mix/FR U",20501,Haricot,0.0525,légumineuse sèche
+25953,"Soupe au pistou, préemballée à réchauffer","Leek, peeled, at processing/FR U",20039,Poireau,0.0399,
+25953,"Soupe au pistou, préemballée à réchauffer","Olive oil, at plant/FR U",17270,Huile d'olive,0.0382,
+25953,"Soupe au pistou, préemballée à réchauffer","Onions, peeled, at processing/FR U",20034,Oignons,0.0364,
+25953,"Soupe au pistou, préemballée à réchauffer","Potato, consumption mix/FR U",4008,Pommes de terre,0.131,
+25953,"Soupe au pistou, préemballée à réchauffer","Red kidney bean, consumption mix/FR U",20525,Haricot rouge,0.0368,légumineuse sèche
+25953,"Soupe au pistou, préemballée à réchauffer","Tomato, for processing, peeled, at plant/FR U",20169,Tomate,0.101,tomate pelée = tomate chair appertisée
+25953,"Soupe au pistou, préemballée à réchauffer","Water, municipal/FR U",18066,,0.378,eau ajoutée (hors détail 3.2)
+25953,"Soupe au pistou, préemballée à réchauffer","Zucchini, peeled, at processing/FR U",20020,Courgette,0.0657,
+25903,"Soupe aux légumes variés, préemballée à réchauffer","Carrot, peeled, at processing/FR U",20009,Carotte,0.112,
+25903,"Soupe aux légumes variés, préemballée à réchauffer","Leek, peeled, at processing/FR U",20039,Poireau,0.0832,
+25903,"Soupe aux légumes variés, préemballée à réchauffer","Onions, peeled, at processing/FR U",20034,Oignons,0.0603,
+25903,"Soupe aux légumes variés, préemballée à réchauffer","Potato, consumption mix/FR U",4008,Pommes de terre,0.331,
+25903,"Soupe aux légumes variés, préemballée à réchauffer","Water, municipal/FR U",18066,,0.41,eau ajoutée (hors détail 3.2)
+25903,"Soupe aux légumes variés, préemballée à réchauffer","Zucchini, peeled, at processing/FR U",20020,Courgette,0.162,
+25900,"Soupe aux lentilles, préemballée à réchauffer","Lentils, consumption mix/FR U",20585,Lentilles,0.103,légumineuse sèche ; hypothèse lentille verte
+25900,"Soupe aux lentilles, préemballée à réchauffer","Onions, peeled, at processing/FR U",20034,Oignons,0.041,
+25900,"Soupe aux lentilles, préemballée à réchauffer","Tomato, for processing, peeled, at plant/FR U",20169,Tomate,0.157,tomate pelée = tomate chair appertisée
+25900,"Soupe aux lentilles, préemballée à réchauffer","Water, municipal/FR U",18066,,0.699,eau ajoutée (hors détail 3.2)
+25907,"Soupe aux poireaux et pommes de terre, préemballée à réchauffer","Leek, peeled, at processing/FR U",20039,Poireau,0.12,
+25907,"Soupe aux poireaux et pommes de terre, préemballée à réchauffer","Potato, consumption mix/FR U",4008,Pommes de terre,0.217,
+25907,"Soupe aux poireaux et pommes de terre, préemballée à réchauffer","Water, municipal/FR U",18066,,0.744,eau ajoutée (hors détail 3.2)
+25915,"Soupe chorba frik, à base de viande et de frik","Celery, peeled, at processing/FR U",20023,Céleri,0.0376,
+25915,"Soupe chorba frik, à base de viande et de frik","Chick peas, consumption mix/FR U",20516,Pois chiches,0.0175,légumineuse sèche (masse crue d'après le rapport Agribalyse § 3.3.2)
+25915,"Soupe chorba frik, à base de viande et de frik","Meat without bone, lamb/FR U",21504,Viande d'agneau sans os,0.0872,hypothèse : épaule crue
+25915,"Soupe chorba frik, à base de viande et de frik","Onions, peeled, at processing/FR U",20034,Oignons,0.0308,
+25915,"Soupe chorba frik, à base de viande et de frik","Pasta, dried, from durum wheat, at plant/FR U",9810,Pâtes,0.113,
+25915,"Soupe chorba frik, à base de viande et de frik","Tomato, for processing, peeled, at plant/FR U",20169,Tomate,0.144,tomate pelée = tomate chair appertisée
+25915,"Soupe chorba frik, à base de viande et de frik","Water, municipal/FR U",18066,,0.652,eau ajoutée (hors détail 3.2)

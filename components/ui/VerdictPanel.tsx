@@ -24,11 +24,11 @@ export function VerdictPanel({ verdict, className = "" }: { verdict: VerdictView
             <span aria-hidden="true" className={`h-[10px] rounded-[4px] ${SEGMENT[c.winner]}`} />
             <span className="text-[11px] font-semibold leading-tight md:text-[13px] lg:text-[12px] lg:[hyphens:auto]">{c.short}</span>
             <span className="num text-[11px] text-ink-2 md:text-[13px]" aria-hidden="true">
-              {c.constructed ? "comblé" : `${c.animalPoints} – ${c.vegetalPoints}`}
+              {c.constructed ? (c.constructedLabel?.includes("sauf") ? "comblé, sauf…" : "comblé") : `${c.animalPoints} – ${c.vegetalPoints}`}
             </span>
             <span className="sr-only">
               {c.constructed
-                ? `${c.label} : écarts comblés par construction, non comptée.`
+                ? `${c.label} : ${(c.constructedLabel ?? "écarts comblés").toLowerCase()} par construction, non comptée.`
                 : `${c.label} : ${WINNER_LABEL[c.winner]}, ${c.animalPoints} indicateur(s) pour le plat animal, ${c.vegetalPoints} pour la version végétale.`}
             </span>
           </li>

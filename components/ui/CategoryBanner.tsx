@@ -4,7 +4,7 @@ import { WINNER_BG, WinnerBadge } from "./WinnerBadge";
 
 /** Row inside a card: winner badge on the left, score pill on the right. */
 export function WinnerRow({ score }: { score: CategoryScoreView }) {
-  if (score.constructed) return <span className="rounded-btn bg-track px-3 py-[9px] text-[14px] font-extrabold">{CONSTRUCTED_TEXT}</span>;
+  if (score.constructed) return <span className="rounded-btn bg-track px-3 py-[9px] text-[14px] font-extrabold">{score.constructedLabel ?? CONSTRUCTED_TEXT}</span>;
   return (
     <span className={`flex items-center justify-between gap-2 rounded-btn px-3 py-[9px] lg:py-[6px] ${WINNER_BG[score.winner]}`}>
       <WinnerBadge winner={score.winner} provisional={score.provisional} />
@@ -18,7 +18,7 @@ export function CategoryBanner({ score, unitLabel }: { score: CategoryScoreView;
   if (score.constructed)
     return (
       <div className="flex flex-col gap-2 rounded-panel bg-track p-4 md:p-5">
-        <span className="text-[19px] font-extrabold md:text-[22px]">{CONSTRUCTED_TEXT}</span>
+        <span className="text-[19px] font-extrabold md:text-[22px]">{score.constructedLabel ?? CONSTRUCTED_TEXT}</span>
         <p className="m-0 text-[13px] leading-normal md:text-[14px]">{score.sentence}</p>
       </div>
     );

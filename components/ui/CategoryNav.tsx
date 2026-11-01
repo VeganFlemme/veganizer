@@ -39,7 +39,7 @@ export function CategoryNav<T extends string>({
                 className={`flex w-full cursor-pointer flex-col gap-1 rounded-card border px-3 py-[6px] text-left ${on ? "border-ink bg-surface shadow-card" : "border-transparent bg-transparent hover:bg-surface"}`}
               >
                 <span className="text-[15px] font-extrabold leading-tight">{t.label}</span>
-                {s?.constructed && <span className="rounded-[8px] bg-track px-2 py-[3px] text-[13px] font-bold">Écarts comblés</span>}
+                {s?.constructed && <span className="rounded-[8px] bg-track px-2 py-[3px] text-[13px] font-bold">{s.constructedLabel ?? "Écarts comblés"}</span>}
                 {s && !s.constructed && (
                   <span className={`flex items-center justify-between gap-2 rounded-[8px] px-2 py-[3px] ${WINNER_BG[s.winner]}`}>
                     <span className="inline-flex items-center gap-[6px] whitespace-nowrap text-[13px] font-extrabold">

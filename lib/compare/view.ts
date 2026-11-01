@@ -63,6 +63,8 @@ export interface PairRow {
   vegan_dish_id: string;
   variant: string | null;
   rationale: string | null;
+  /** Completed version: the ingredient raised to equal protein (the protein chosen by the visitor); default = main protein. */
+  boost_code?: string;
 }
 export interface IngredientRow {
   dish_id: string;
@@ -217,8 +219,12 @@ export type Variant = string;
 export interface Choice {
   id: Variant;
   label: string;
-  /** Why this alternative (rule of the catalogue, rationale of the pair). */
+  /** Why this alternative (rule of the catalogue, rationale of the pair, rank by proximity). */
   reason?: string;
+  /** Short data shown with the choice (protein per 100 g). */
+  detail?: string;
+  /** Family of the protein (soja, légumineuses, blé, autres). */
+  family?: string;
 }
 
 const CHOICE_LABEL: Record<string, string> = { maison: "Fait maison", commerce: "Du commerce" };
@@ -297,6 +303,14 @@ export interface AdvantageView {
   conseil: Conseil | null;
   /** Category of the score the criterion belongs to: the box of each tab shows its own. */
   category: ScoreCategoryId | null;
+  /** Values of both dishes per serving (« plat animal : 12,7 mg ; version végétale : 5,3 mg »); absent for IARC grams and prices. */
+  animal?: SideValue | null;
+  vegetal?: SideValue | null;
+  unit?: string;
+  /** up = « plus = mieux » (a gap to cover); down = « moins = mieux » (shown apart, facts only). */
+  direction?: "up" | "down" | "none";
+  /** « moins = mieux » nutrients: plant ingredients that bring the most of it (Ciqual), largest first. */
+  contributors?: string[];
 }
 
 export interface ClimateCostView {
@@ -393,6 +407,8 @@ export interface VariantView {
    * impacts of eggs and of every product containing them (notice of the food spreadsheet, 21/08/2025).
    */
   eggImpactsUnderestimated: { animal: boolean; vegetal: boolean };
+  /** Soy-based ingredients of the plant version (Ciqual names): ANSES opinion on isoflavones (2025). */
+  soyIngredients: string[];
   /** true when at least one criterion shown rests on partial data. */
   anyPartial: boolean;
   climateCost: ClimateCostView[];
@@ -448,6 +464,9 @@ export interface PairPageModel {
   monetizationFactors: MonetizationFactor[];
   monetizationRules: MonetizationRule[];
 }
+
+// Soy-based foods, from their Ciqual name (isoflavones: ANSES opinion 2022-SA-0221).
+const SOY_WORD = /\bsoja\b|tofu|tempeh|edamame/i;
 
 // ---------------------------------------------------------------------------
 const num = (x: number | string | null | undefined): number | null => (x == null ? null : Number(x));
@@ -511,7 +530,7 @@ export function scoringData(raw: RawPairData): ScoringData {
   return { foods, categoryFactors };
 }
 
-function dishView(dish: DishRow, raw: RawPairData): DishView {
+export function dishView(dish: DishRow, raw: RawPairData): DishView {
   const names = new Map(raw.foods.map((f) => [f.code, f]));
   const ingredients = raw.ingredients
     .filter((i) => i.dish_id === dish.id)
@@ -699,7 +718,8 @@ function completedVariant(raw: RawPairData, dish: DishRow, pair: PairRow, data: 
   const shared = withoutSharedIngredients(animalDish, plantDish).shared;
   const animalProtein = dishTotals(animalDish, data, TOTALS_OPTIONS).proteinPerServing;
   // 1. Main protein raised to the protein of the animal dish.
-  const b = animalProtein == null ? null : boostMainProtein(plantDish, data, animalProtein, shared);
+  const boostShared = pair.boost_code ? plantDish.ingredients.map((i) => i.foodCode).filter((c) => c !== pair.boost_code) : shared;
+  const b = animalProtein == null ? null : boostMainProtein(plantDish, data, animalProtein, boostShared);
   const boosted = raw.ingredients.map((i) => (b && i.dish_id === dish.id && i.food_code === b.code ? { ...i, grams: Number(i.grams) + b.extraGrams } : i));
   const prices = (ingredients: IngredientRow[]) =>
     [raw.animal, dish]
@@ -772,6 +792,15 @@ export function buildPairPage(raw: RawPairData, options: BuildOptions = {}): Pai
     const rows = Object.fromEntries(BASES.map((b) => [b.id, rowsFor(animalTotals, vegTotals, raw, b.id, verdict)])) as Record<Basis, CriterionRow[]>;
     for (const r of rows.perServing) r.sourceIds.forEach((s) => usedSources.add(s));
 
+    // Plant ingredients that bring the most of a nutrient (Ciqual per 100 g × grams), two at most.
+    const plantView = dishView(dish, raw);
+    const contributorsOf = (nutrient: string) =>
+      plantView.ingredients
+        .map((i) => ({ label: i.label, amount: ((data.foods[i.code]?.nutrients[nutrient] ?? 0) * i.grams) / 100 }))
+        .filter((x) => x.amount > 0)
+        .sort((a, b) => b.amount - a.amount)
+        .slice(0, 2)
+        .map((x) => x.label.replace(/\s*\(.*\)$/, ""));
     // Where the animal dish does better (rule 3): verdicts, plus partial-data cases flagged as such,
     // so that a gap in the data never hides an advantage of the animal dish.
     const animalBetter: AdvantageView[] = rows.perServing
@@ -782,6 +811,11 @@ export function buildPairPage(raw: RawPairData, options: BuildOptions = {}): Pai
         partial: r.winner !== "animal",
         conseil: raw.conseils.find((c) => c.criteria.includes(r.id)) ?? null,
         category: categoryOf(r.id),
+        animal: r.animal,
+        vegetal: r.vegetal,
+        unit: r.unit,
+        direction: r.direction,
+        contributors: r.direction === "down" && r.group === "nutrients" ? contributorsOf(r.id) : [],
       }));
     for (const x of animalBetter) x.conseil?.sources.forEach((s) => usedSources.add(s.sourceId));
 
@@ -952,6 +986,12 @@ export function buildPairPage(raw: RawPairData, options: BuildOptions = {}): Pai
       }
     }
 
+    // « Écarts comblés, sauf : … » names exactly what the « Ce qui reste à couvrir » box lists.
+    for (const c of [...scores.verdict.categories, ...Object.values(scores.nutritionByBasis)]) {
+      if (!c.constructed) continue;
+      const left = animalBetter.filter((x) => x.category === c.id && x.direction !== "down").map((x) => x.name.charAt(0).toLowerCase() + x.name.slice(1));
+      c.constructedLabel = left.length ? `Écarts comblés, sauf : ${left.join(", ")}` : "Écarts comblés";
+    }
     variants[p.variant] = {
       variant: p.variant,
       dish: dishView(dish, raw),
@@ -960,6 +1000,7 @@ export function buildPairPage(raw: RawPairData, options: BuildOptions = {}): Pai
       animalBetter,
       keyCoverage: coverages.length ? Math.min(...coverages) : null,
       eggImpactsUnderestimated: { animal: hasEgg(raw.animal), vegetal: hasEgg(dish) },
+      soyIngredients: [...new Set(raw.ingredients.filter((i) => i.dish_id === dish.id).map((i) => foodsByCode.get(i.food_code)?.name_fr).filter((n): n is string => !!n && SOY_WORD.test(n)))],
       anyPartial: rows.perServing.some((r) => r.lowCoverage && (r.animal != null || r.vegetal != null)),
       climateCost,
       hasAnimalData: Object.keys(animalTotals.animalImpacts).length > 0,

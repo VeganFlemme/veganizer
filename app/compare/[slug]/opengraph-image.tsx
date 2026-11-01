@@ -1,6 +1,8 @@
 import { ImageResponse } from "next/og";
 import { ShareImage } from "@/components/ui/ShareImage";
-import { getPairPage, listPairs } from "@/lib/compare/data";
+import { buildAutoPage } from "@/lib/compare/auto";
+import { getAutoPair } from "@/lib/compare/auto-data";
+import { listPairs } from "@/lib/compare/data";
 
 export const alt = "Un plat face à sa version végétale — Veganizer";
 export const size = { width: 1200, height: 630 };
@@ -13,8 +15,9 @@ export async function generateStaticParams() {
 
 export default async function Image({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const model = await getPairPage(slug);
-  const v = model?.variants.maison ?? model?.variants.commerce;
+  const pair = await getAutoPair(slug);
+  const model = pair ? buildAutoPage(pair.input, pair.defaultCode, { light: true })?.model : null;
+  const v = pair && model ? model.variants[pair.defaultCode] : undefined;
   const verdict = v?.scores.verdict;
   return new ImageResponse(
     <ShareImage

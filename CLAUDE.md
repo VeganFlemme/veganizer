@@ -7,7 +7,7 @@ L'objectif est d'inciter par les faits. La crédibilité est l'actif n° 1 : un 
 ## Règles absolues
 1. **Aucun chiffre inventé.** Toute valeur affichée vient d'une table Supabase et d'une ligne de `public.sources` (id, version, licence). Si une donnée manque, afficher « donnée manquante », jamais 0.
 2. **Ne jamais coder en dur** une valeur nutritionnelle, un facteur d'émission, un nombre d'animaux ou un prix dans le code front ou les tests de production. Les seules constantes autorisées dans le code sont des conversions d'unités.
-3. **Montrer aussi quand le plat animal fait mieux** (B12, DIAAS, prix…) avec la solution (complément, aliment enrichi, association de protéines).
+3. **Montrer « ce qui reste à couvrir »** : tout ce que le plat animal apporte de plus (B12, DIAAS, prix…), avec les valeurs des deux plats et la solution sourcée (complément, aliment enrichi, association de protéines). Titre neutre « Ce qui reste à couvrir », jamais « le plat animal fait mieux » (décision de Matt, 2026-11-01).
 4. **Comparer à fonction égale** : même rôle dans le repas, portion réaliste ; afficher aussi par 100 kcal et par 10 g de protéines.
 5. **Afficher l'incertitude** : fourchettes (`low_per_serving`, `high_per_serving`), DQR Agribalyse, et `mass_coverage` (avertir si < 0,95).
 6. **Pas de conseil médical.** Mention visible et renvoi vers un professionnel de santé.
