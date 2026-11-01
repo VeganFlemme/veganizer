@@ -570,6 +570,51 @@ export type Database = {
           },
         ]
       }
+      monetization_rules: {
+        Row: {
+          cap_year: number
+          growth_rate: number
+          indicator_id: string
+          method: string
+          notes: string | null
+          source_id: string
+          start_year: number
+        }
+        Insert: {
+          cap_year: number
+          growth_rate: number
+          indicator_id: string
+          method: string
+          notes?: string | null
+          source_id: string
+          start_year: number
+        }
+        Update: {
+          cap_year?: number
+          growth_rate?: number
+          indicator_id?: string
+          method?: string
+          notes?: string | null
+          source_id?: string
+          start_year?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "monetization_rules_indicator_id_fkey"
+            columns: ["indicator_id"]
+            isOneToOne: false
+            referencedRelation: "indicators"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "monetization_rules_source_id_fkey"
+            columns: ["source_id"]
+            isOneToOne: false
+            referencedRelation: "sources"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       nutrient_references: {
         Row: {
           kind: string
