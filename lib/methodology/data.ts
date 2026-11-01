@@ -26,7 +26,18 @@ export type NutrientCoverage = {
 
 export type NegativeCount = { id: string; name: string; unit: string | null; negatives: number | null };
 
+export type AnimalFactor = {
+  category: string;
+  indicator: string;
+  value: number;
+  per: string;
+  unitBasis: string;
+  sourceId: string;
+  notes: string | null;
+};
+
 export type MethodologyStats = {
+  animalFactors: AnimalFactor[];
   sources: SourceInfo[];
   ciqualFoods: number | null;
   agribalyseProducts: number | null;
@@ -96,7 +107,22 @@ export async function getMethodologyStats(): Promise<MethodologyStats> {
     }),
   );
 
+  const [factors, indicatorAll] = await Promise.all([
+    db.from("category_factors").select("category, indicator_id, value, per, unit_basis, source_id, notes").order("indicator_id").order("category"),
+    db.from("indicators").select("id, name_fr").eq("pillar", "animaux"),
+  ]);
+  const indicatorName = new Map((indicatorAll.data ?? []).map((i) => [i.id, i.name_fr]));
+
   return {
+    animalFactors: (factors.data ?? []).map((f) => ({
+      category: f.category,
+      indicator: indicatorName.get(f.indicator_id) ?? f.indicator_id,
+      value: Number(f.value),
+      per: f.per,
+      unitBasis: f.unit_basis,
+      sourceId: f.source_id,
+      notes: f.notes,
+    })),
     sources: sources.data ?? [],
     ciqualFoods: count(ciqualFoods),
     agribalyseProducts: count(agribalyseProducts),

@@ -47,6 +47,7 @@ export type Database = {
           indicator_id: string
           low: number | null
           notes: string | null
+          per: string
           source_id: string
           unit_basis: string
           value: number
@@ -58,6 +59,7 @@ export type Database = {
           indicator_id: string
           low?: number | null
           notes?: string | null
+          per?: string
           source_id: string
           unit_basis: string
           value: number
@@ -69,6 +71,7 @@ export type Database = {
           indicator_id?: string
           low?: number | null
           notes?: string | null
+          per?: string
           source_id?: string
           unit_basis?: string
           value?: number
@@ -836,22 +839,7 @@ export type Database = {
           slug: string | null
           source_id: string | null
         }
-        Relationships: [
-          {
-            foreignKeyName: "category_factors_indicator_id_fkey"
-            columns: ["indicator_id"]
-            isOneToOne: false
-            referencedRelation: "indicators"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "category_factors_source_id_fkey"
-            columns: ["source_id"]
-            isOneToOne: false
-            referencedRelation: "sources"
-            referencedColumns: ["id"]
-          },
-        ]
+        Relationships: []
       }
       dish_impacts: {
         Row: {

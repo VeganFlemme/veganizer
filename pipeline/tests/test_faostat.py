@@ -4,7 +4,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
-from faostat import compute_factors  # noqa: E402
+from faostat import compute_dairy, compute_factors  # noqa: E402
 
 MAP = [{"animal_category": "porc", "item_code_cpc": "21113.01", "item": "Meat of pig", "notes": ""}]
 
@@ -42,6 +42,19 @@ class ComputeFactors(unittest.TestCase):
     def test_unknown_unit_stops(self):
         with self.assertRaises(ValueError):
             compute_factors([row("Production", 2024, 1, "kg"), row("Producing Animals/Slaughtered", 2024, 1, "An")], MAP)
+
+
+class ComputeDairy(unittest.TestCase):
+    def test_days_per_kg_from_latest_official_yield(self):
+        rows = [row("Yield/Carcass Weight", 2023, 7300, "kg/An", cpc="'02211"),
+                row("Yield/Carcass Weight", 2024, 7300, "kg/An", flag="E", cpc="'02211")]
+        (f,) = compute_dairy(rows)
+        self.assertAlmostEqual(f["value"], 365 / 7300)
+        self.assertEqual((f["_year"], f["per"], f["indicator_id"]), (2023, "kg", "life_days_farmed"))
+
+    def test_unknown_yield_unit_stops(self):
+        with self.assertRaises(ValueError):
+            compute_dairy([row("Yield/Carcass Weight", 2024, 1, "hg/An", cpc="'02211")])
 
 
 if __name__ == "__main__":

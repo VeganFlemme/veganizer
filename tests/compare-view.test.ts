@@ -227,3 +227,27 @@ describe("animal pillar without any factor", () => {
     expect(r.vegetal?.value).toBe(0);
   });
 });
+
+describe("per-animal factors on the page", () => {
+  it("shows missing data when the animal ingredient has only an unconvertible per-animal factor", () => {
+    const p = buildPairPage(
+      raw({ categoryFactors: [{ category: "bovin", indicator_id: "pain_hours_annoying", value: 100, low: null, high: null, source_id: "welfare-footprint", per: "animal" }] }),
+    );
+    const r = p.variants.maison!.rows.perServing.find((x) => x.id === "pain_hours_annoying")!;
+    expect(r.animal).toBeNull();
+    expect(r.vegetal?.value).toBe(0);
+  });
+
+  it("converts per-animal factors with animals_killed_land of the same category", () => {
+    const p = buildPairPage(
+      raw({
+        categoryFactors: [
+          { category: "bovin", indicator_id: "animals_killed_land", value: 0.003, low: null, high: null, source_id: "faostat-qcl", per: "kg" },
+          { category: "bovin", indicator_id: "life_days_farmed", value: 500, low: null, high: null, source_id: "x", per: "animal" },
+        ],
+      }),
+    );
+    const r = p.variants.maison!.rows.perServing.find((x) => x.id === "life_days_farmed")!;
+    expect(r.animal?.value).toBeCloseTo(0.4 * 0.003 * 500 / 2); // 0.3 day per serving
+  });
+});

@@ -36,6 +36,40 @@ function Section({ id, title, children }: { id: string; title: string; children:
   );
 }
 
+const valueFr = new Intl.NumberFormat("fr-FR", { maximumSignificantDigits: 4 });
+
+function AnimalFactors({ stats }: { stats: MethodologyStats }) {
+  if (stats.animalFactors.length === 0) return <p>Facteurs : <Missing />.</p>;
+  return (
+    <div className="overflow-x-auto">
+      <table className="w-full text-left text-sm">
+        <caption className="mb-1 text-left font-medium">Facteurs utilisés (lus dans la base)</caption>
+        <thead>
+          <tr className="border-b border-zinc-300">
+            <th className="py-1 pr-2">Indicateur</th>
+            <th className="py-1 pr-2">Catégorie</th>
+            <th className="py-1 pr-2">Valeur</th>
+            <th className="py-1">Base, source et remarques</th>
+          </tr>
+        </thead>
+        <tbody>
+          {stats.animalFactors.map((f) => (
+            <tr key={`${f.indicator}-${f.category}-${f.sourceId}`} className="border-b border-zinc-200 align-top">
+              <td className="py-1 pr-2">{f.indicator}</td>
+              <td className="py-1 pr-2">{f.category}</td>
+              <td className="py-1 pr-2">{valueFr.format(f.value)}</td>
+              <td className="py-1 text-xs text-zinc-700">
+                {f.unitBasis} — <Link href={`/sources#${f.sourceId}`} className="underline">{f.sourceId}</Link>
+                {f.notes ? `. ${f.notes}` : ""}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+}
+
 function Formula({ children }: { children: ReactNode }) {
   return (
     <p className="rounded border border-zinc-200 bg-zinc-50 px-4 py-3 font-mono text-sm leading-relaxed">
@@ -368,6 +402,7 @@ export default async function MethodologiePage() {
       </Section>
 
       <Section id="animaux" title="Animaux : une estimation basse">
+        <AnimalFactors stats={stats} />
         <p>
           Pour la viande, nous divisons le nombre d’animaux abattus en France par la production de viande
           en poids de carcasse (FAOSTAT, chiffres officiels, dernière année disponible ; la fourchette
@@ -376,9 +411,29 @@ export default async function MethodologiePage() {
           est une <strong>estimation basse</strong>.
         </p>
         <p>
-          Les bovins sont une moyenne tous âges (veaux compris), les ovins aussi. Le veau, les œufs,
-          les produits laitiers et les poissons n’ont pas encore de facteur sourcé : ils apparaissent
-          comme « donnée manquante ».
+          Les bovins sont une moyenne tous âges (veaux compris), les ovins aussi. Le veau vient de la
+          statistique agricole annuelle (Agreste : veaux de boucherie finis, têtes et tonnes équivalent
+          carcasse). Les poissons et les œufs n’ont pas encore de facteur d’animaux par kg : ils
+          apparaissent comme « donnée manquante ».
+        </p>
+        <p>
+          <strong>Douleur.</strong> Les heures de douleur par animal viennent du Welfare Footprint
+          Institute (Schuck-Paim &amp; Alonso, licence CC BY 4.0), via Our World in Data. Ce sont des
+          estimations minimales (seules les heures éveillées comptent, certaines atteintes au
+          bien-être ne sont pas incluses). Elles sont données par intensité (gênante, pénible,
+          invalidante, atroce) et ne sont jamais additionnées. Nous n’utilisons que les valeurs
+          publiées en heures ou en secondes. Pour le poulet, la valeur retenue est celle des souches
+          à croissance rapide (standard) ; celle des souches à croissance plus lente est donnée pour
+          information dans le tableau ci-dessus. Pour les poules, les cages conventionnelles sont
+          interdites dans l’Union européenne (directive 1999/74/CE, article 5, paragraphe 2) : nous
+          retenons la volière sans cage, avec les cages aménagées comme borne haute ; ces chiffres ne
+          couvrent que la période de ponte et ne sont pas encore rapportés au kg d’œufs.
+        </p>
+        <p>
+          <strong>Jours de vie en élevage.</strong> Pour la viande : âge d’abattage du produit courant
+          (cahiers des charges label rouge, ministère de l’Agriculture) multiplié par le nombre
+          d’animaux par kg. Pour le lait : 365 jours divisés par le rendement annuel d’une vache
+          (FAOSTAT) ; seule la lactation est comptée (élevage des génisses et des veaux exclu). Appliqué aux fromages et au beurre au poids du produit, c’est une estimation basse.
         </p>
       </Section>
 

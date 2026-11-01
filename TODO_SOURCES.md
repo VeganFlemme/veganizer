@@ -3,13 +3,18 @@
 Valeurs **non saisies** faute d'avoir pu citer la page exacte de la source officielle (état au 2026-11-01). Ne rien inventer : remplir `pipeline/manual_factors.csv` (avec `page` et `quote`) ou un script dédié une fois la source consultée.
 
 ## Animaux
+État au 2026-11-01 (session « facteurs manquants »).
+
 | Indicateur | Catégories | Source visée | Blocage |
 |---|---|---|---|
-| `fish_killed` (poissons tués par kg) | saumon d'élevage, poisson sauvage… | Fishcount — poids moyens estimés (fishcount.org.uk) | Le site renvoie HTTP 401 (accès refusé) le 2026-11-01. |
-| `pain_hours_*` (douleur cumulée) | poulet de chair, poule pondeuse, porc | Welfare Footprint Institute | Chiffres publiés dans des livres et articles : page exacte non vérifiée. |
-| `life_days_farmed` (jours de vie en élevage) | toutes | Âges d'abattage (sources françaises : interprofessions, INRAE, ITAVI…) | Aucune source officielle consultée avec page exacte. |
-| `animals_killed_land` | veau | FAOSTAT n'a pas de ligne « veaux » séparée | Trouver une statistique d'abattage des veaux (Agreste) avec poids carcasse. |
-| `animals_killed_land` | poule pondeuse (œufs), vache laitière (lait, fromages) | — | Méthode à définir (poules et vaches de réforme, poussins mâles) et à sourcer. |
+| `fish_killed` (poissons tués par kg) | saumon d'élevage, poisson sauvage… | Fishcount (fishcount.org.uk) | Réessayé le 2026-11-01 : HTTP 401 depuis l'environnement de travail (la page répond 200 depuis les runners GitHub, issue #11). Aucune source secondaire utilisée. |
+| `pain_hours_annoying`, `pain_hours_hurtful`, `pain_hours_disabling` | poulet de chair | Welfare Footprint via OWID | OWID ne publie ces trois intensités qu'en jours (jours éveillés de 16 h), règle : jamais les colonnes en jours. Chercher les heures dans le livre *Quantifying Pain in Broiler Chickens* (page exacte). Seule la douleur atroce (secondes) est utilisée. |
+| `pain_hours_*` | porc, bovin, autres | Welfare Footprint | Pas de jeu de données ouvert trouvé. |
+| `pain_hours_*` par kg d'œufs | poule pondeuse | — | Valeurs par poule importées ; conversion par kg impossible tant que la durée de ponte et les animaux par kg d'œufs ne sont pas sourcés (welfarefootprint.org indique une phase de ponte supposée de 40 à 60 semaines : à confirmer, voir `docs/A_VERIFIER.md`). |
+| `life_days_farmed` | bovin, agneau, dinde, canard | Agreste, FranceAgriMer, Idele, ITAVI, cahiers des charges label rouge | Aucun âge du « produit courant » trouvé avec citation. Pour la dinde, le seul trouvé (LA 10/80) vise une « dinde baby de 70 jours maximum », non représentative. |
+| `life_days_farmed` | veau | — | Âge d'abattage des veaux de boucherie non trouvé. |
+| `life_days_farmed` | poule pondeuse (œufs) | FAOSTAT | Le rendement officiel récent est en œufs par poule (No/An) ; le rendement en kg n'est officiel qu'en 2014. Un poids d'œuf n'est pas une conversion d'unité. |
+| `animals_killed_land` | poule pondeuse (œufs), vache laitière (lait, fromages) | — | Méthode à décider (poules et vaches de réforme, poussins mâles, veaux) : question dans `docs/A_VERIFIER.md`. |
 
 ## Santé
 | Élément | Source visée | Blocage |
