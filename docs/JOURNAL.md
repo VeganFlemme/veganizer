@@ -32,6 +32,7 @@ Suivi étape par étape : heure, ce qui est fait, lien de la PR, état (en cours
   - prix INSEE (6 aliments) et masses volumiques FAO/INFOODS (5 liquides, via Open Prices) ;
   - animaux par portion « pour 1 000 portions » ; section publique « Données manquantes » sur `/methodologie` ; `TODO_SOURCES.md` mis à jour.
 - Restent manquants : âges d'abattage (aucune source officielle citable), douleur porcs, bovins et poissons, CALNUT (503), rendements de cuisson des féculents (candidat Bognár 2002 non appliqué, méthode de matière sèche proposée), EAT-Lancet (rapport absent des fichiers déposés), masse d'œuf UE (EUR-Lex bloqué).
+- 2026-11-01 16:46 — fin de l'étape 2 : PR https://github.com/VeganFlemme/veganizer/pull/18, CI verte, conditions remplies, fusionnée (squash). État : fusionnée.
 
 ## Bloqué par les permissions
 
