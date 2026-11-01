@@ -653,6 +653,23 @@ function SanteTab({ v }: { v: VariantView }) {
   );
 }
 
+/** ADEME reports that Agribalyse 3.2 underestimates the impacts of eggs (notice of the food spreadsheet, 21/08/2025). */
+export function eggNoteText(egg: VariantView["eggImpactsUnderestimated"]): string | null {
+  if (!egg.animal && !egg.vegetal) return null;
+  const who = egg.animal && egg.vegetal ? "des deux plats" : egg.animal ? "du plat animal" : "de la version végétale";
+  return `Œufs : l’ADEME signale que les impacts environnementaux des œufs, et de tous les produits qui en contiennent, sont sous-évalués dans Agribalyse 3.2 (mise à jour en cours). Les valeurs ${who} sont donc probablement trop basses.`;
+}
+
+function EggNote({ v }: { v: VariantView }) {
+  const text = eggNoteText(v.eggImpactsUnderestimated);
+  if (!text) return null;
+  return (
+    <p role="note" className="m-0 rounded-select bg-win-animal px-4 py-3 text-[14px] leading-normal text-ink">
+      {text} <Link href="/methodologie#oeufs-agribalyse">Source et détails</Link>.
+    </p>
+  );
+}
+
 function EnvironmentTab({ v }: { v: VariantView }) {
   const rows = v.rows.perServing.filter((r) => r.group === "impacts");
   const co2 = find(v.rows.perServing, CLIMATE_MAIN);
@@ -677,6 +694,7 @@ function EnvironmentTab({ v }: { v: VariantView }) {
           <FaceToFaceBar rows={norm} />
         </Panel>
       </div>
+      <EggNote v={v} />
       <Panel title={`Les ${rows.length} indicateurs Agribalyse`}>
         <DataTable
           rich

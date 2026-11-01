@@ -4,3 +4,4 @@ requests>=2.32
 python-dotenv>=1.0
 supabase>=2.10
 pyarrow
+py7zr>=0.22

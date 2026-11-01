@@ -437,3 +437,23 @@ describe("animal welfare: plant dish without any identified animal ingredient (d
     expect(a.sentence).not.toContain("aucun ingrédient animal identifié");
   });
 });
+
+describe("eggs: impacts underestimated according to ADEME (Agribalyse 3.2 notice, 21/08/2025)", () => {
+  it("flags the side whose recipe contains an egg ingredient, and only that side", () => {
+    const base = raw();
+    const p = buildPairPage({ ...base, foods: base.foods.map((f) => (f.code === "meat" ? { ...f, food_subgroup: "oeufs" } : f)) });
+    expect(p.variants.maison!.eggImpactsUnderestimated).toEqual({ animal: true, vegetal: false });
+  });
+  it("is false on both sides without eggs", () => {
+    expect(buildPairPage(raw()).variants.maison!.eggImpactsUnderestimated).toEqual({ animal: false, vegetal: false });
+  });
+});
+
+describe("eggNoteText", () => {
+  it("names the side concerned and says the values are probably too low", async () => {
+    const { eggNoteText } = await import("@/components/compare/PairView");
+    expect(eggNoteText({ animal: false, vegetal: false })).toBeNull();
+    expect(eggNoteText({ animal: true, vegetal: false })).toContain("du plat animal sont donc probablement trop basses");
+    expect(eggNoteText({ animal: true, vegetal: true })).toContain("des deux plats");
+  });
+});
