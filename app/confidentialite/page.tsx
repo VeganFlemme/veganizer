@@ -34,7 +34,8 @@ export default function PrivacyPage() {
           <p className="m-0">
             Le formulaire « Signaler une erreur » enregistre trois choses : la page concernée, ton message et la date d’envoi. Aucun nom, aucune adresse e-mail ni
             adresse IP n’est enregistré par Veganizer ; le formulaire demande de ne pas écrire de donnée personnelle dans le message. Ces messages servent
-            uniquement à corriger le site et ne sont lisibles que par l’équipe. Durée de conservation : {REPORT_RETENTION}.
+            uniquement à corriger le site et ne sont lisibles que par l’équipe. Durée de conservation : {REPORT_RETENTION}. La suppression est
+            automatique : chaque nuit, une tâche planifiée de la base de données (extension pg_cron de Supabase) efface les signalements de plus de 12 mois.
           </p>
           <p className="m-0">Base légale : intérêt légitime (fiabilité des informations publiées).</p>
         </ProseSection>

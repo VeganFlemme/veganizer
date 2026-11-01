@@ -1,0 +1,15 @@
+# Journal de la suite V1 (`docs/SUITE_V1.md`)
+
+Suivi étape par étape : heure, ce qui est fait, lien de la PR, état (en cours, fusionnée, bloquée).
+
+## Étape 0 — Terminer la PR #16 (relecture des lots C et D)
+
+- 2026-11-01 15:56 — début. PR https://github.com/VeganFlemme/veganizer/pull/16 (brouillon). État : en cours.
+- `supabase db push` (migration `20261103000000`), `pairs.py` (40 paires, 116 plats, 815 ingrédients ; 7 versions dépubliées, dont les crêpes du commerce sur décision de Matt), `substitutions.py` (16 règles). Résumé de `pairs.py` identique ligne à ligne au tableau « Chiffres clés » calculé hors ligne.
+- `npm run test:db` (5 tests SQL, dont 2 nouveaux : fourchettes « < x » de `dish_nutrients`, purge des signalements) et `npm run test:db:scoring` : passés.
+- Mentions légales : directeur de la publication VeganFlemme ; adresse remplacée par le régime des éditeurs non professionnels, **article 1-1, II de la LCEN** (loi n° 2004-575, version en vigueur depuis le 23 mai 2024, créée par la loi n° 2024-449 du 21 mai 2024, art. 48 ; Légifrance LEGIARTI000049568614, consulté le 2026-11-01) : « peuvent ne tenir à la disposition du public, pour préserver leur anonymat, que le nom, la dénomination ou la raison sociale et l'adresse du fournisseur de services d'hébergement, sous réserve d'avoir communiqué à ce fournisseur les éléments d'identification personnelle mentionnés au I ». Hébergeur affiché : Vercel Inc., 440 N Barranca Avenue #4133, Covina, CA 91723, privacy@vercel.com. **À confirmer par Matt** : ses éléments d'identification sont bien connus de Vercel (compte).
+- Purge des signalements : pg_cron disponible sur le plan Free ; fonction `purge_old_error_reports()` et tâche quotidienne (migration `20261103010000`, appliquée), expliquée sur `/confidentialite`.
+
+## Bloqué par les permissions
+
+(aucune commande bloquée pour l'instant)
