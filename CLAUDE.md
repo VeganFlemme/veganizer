@@ -58,7 +58,7 @@ Impact d'un plat par portion = Σ (grammes_i / 1000 × impact_par_kg_i) / nombre
 - `npm run lint` et `npm run typecheck`
 - `supabase db push` — appliquer les migrations au projet distant
 - `python3 -m venv .venv && .venv/bin/pip install -r pipeline/requirements.txt` — environnement du pipeline
-- `.venv/bin/python pipeline/<source>.py [--download] [--dry-run]` — importer une source (lit `NEXT_PUBLIC_SUPABASE_URL` et `SUPABASE_SECRET_KEY` depuis `.env.local` ou `.env`, jamais commités). Ordre : `ciqual.py`, `agribalyse.py`, `animal_categories.py import`, puis `report.py`
+- `.venv/bin/python pipeline/<source>.py [--download] [--dry-run]` — importer une source (lit `NEXT_PUBLIC_SUPABASE_URL` et `SUPABASE_SECRET_KEY` depuis `.env.local` ou `.env`, jamais commités). Ordre : `ciqual.py`, `agribalyse.py`, `animal_categories.py import`, `pairs.py`, puis `report.py`
 - `npm run test:pipeline` (règles de parsing) et `npm run test:db` (test SQL sur la base liée, annulé par rollback)
 - `npm run test:db:scoring` — vérifie que `lib/scoring` et la vue `dish_impacts` donnent les mêmes résultats (crée puis supprime un plat de test sur la base liée)
 
