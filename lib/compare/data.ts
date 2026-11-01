@@ -5,7 +5,7 @@ import santeFile from "@/data/sante.json";
 import { createPublicClient } from "@/lib/supabase/public";
 import type { Conseil } from "@/lib/scoring";
 import { CIQUAL_SOURCE, CLIMATE_COST_YEARS, CLIMATE_INDICATORS, CLIMATE_MAIN, NUTRIENTS } from "./config";
-import { buildPairPage, reductionPercent, type IarcEntry, type PairPageModel, type RawPairData } from "./view";
+import { buildPairPage, reductionPercent, type IarcEntry, type PairPageModel, type PnnsEntry, type RawPairData } from "./view";
 
 // Supabase caps a response at 1000 rows: a full page means rows may be missing.
 const MAX_ROWS = 1000;
@@ -85,7 +85,7 @@ export async function getPairPage(slug: string): Promise<PairPageModel | null> {
   const dishIds = [animal.id, ...vegetal.map((v) => v.id)];
   const ingredients = rows(await db.from("dish_ingredients").select("dish_id, food_code, grams, note").in("dish_id", dishIds), "dish_ingredients");
   const codes = [...new Set(ingredients.map((i) => i.food_code))];
-  const foods = rows(await db.from("foods").select("code, name_fr, is_animal, animal_category, ciqual_code, iarc_meat").in("code", codes), "foods");
+  const foods = rows(await db.from("foods").select("code, name_fr, is_animal, animal_category, ciqual_code, iarc_meat, food_subgroup").in("code", codes), "foods");
   const nutrientCodes = [...new Set(foods.map((f) => f.ciqual_code ?? f.code))];
   const nutrientIds = NUTRIENTS.map((n) => n.id);
 
@@ -127,6 +127,7 @@ export async function getPairPage(slug: string): Promise<PairPageModel | null> {
         : [],
     ),
     iarc: santeFile.iarc as IarcEntry[],
+    pnns: santeFile.pnns as PnnsEntry[],
   };
   return buildPairPage(raw);
 }

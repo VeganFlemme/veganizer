@@ -17,11 +17,11 @@ Valeurs **non saisies** faute d'avoir pu citer la page exacte de la source offic
 | `animals_killed_land` | poule pondeuse (œufs), vache laitière (lait, fromages) | — | Méthode à décider (poules et vaches de réforme, poussins mâles, veaux) : question dans `docs/A_VERIFIER.md`. |
 
 ## Santé
-| Élément | Source visée | Blocage |
+| Élément | Source visée | État au 2026-11-01 |
 |---|---|---|
-| Repères PNNS (viande hors volaille, charcuterie, par semaine) | Santé publique France, « Recommandations relatives à l'alimentation, à l'activité physique et à la sédentarité pour les adultes » (2019) | PDF officiel non téléchargeable (redirection vers l'accueil) et mangerbouger.fr en maintenance le 2026-11-01. Les chiffres vus dans des sources secondaires ne sont pas utilisés. |
-| Repères EAT-Lancet 2025 | The Lancet, EAT-Lancet Commission 2.0 | Non consulté. |
-| HENI (minutes de vie en bonne santé) par catégorie | Stylianou, Fulgoni, Jolliet, Nature Food 2021 (données supplémentaires) | Article non accessible depuis l'environnement (redirection) ; licence des données à vérifier (afficher le badge « usage non commercial » si c'est le cas). |
+| Repères PNNS adultes | Santé publique France (2019), PDF officiel | **Fait (S12)** : viande, charcuterie, poisson, légumes secs (p. 32-35 et 49). Licence du PDF à vérifier. |
+| Repères EAT-Lancet 2025 | The Lancet, Commission EAT-Lancet 2.0 | thelancet.com renvoie HTTP 403 (article et page de la Commission). EAT Forum publie un *Summary Report 2025* (eatforum.org/eat-lancet/summary-report/) : document différent, non utilisé (question dans `docs/A_VERIFIER.md`). |
+| HENI par catégorie | Stylianou, Fulgoni, Jolliet, Nature Food 2021 | Page lue : pas de licence ouverte (« Reprints and permissions »), « Data are available from the corresponding author upon reasonable request » ; données pour 167 aliments américains. Non importé ; `sources.heni-2021.commercial_use = false`. Il faudrait une autorisation écrite des auteurs. |
 
 ## Coût
 | Élément | Source visée | Blocage |

@@ -57,6 +57,10 @@ function raw(over: Partial<RawPairData> = {}): RawPairData {
     monetizationRules: [],
     conseils: [{ id: "b12", criteria: ["vit_b12_ug"], titre: "B12", texte: "complément", sources: [] }],
     climateCostYears: [2025, 2050],
+    pnns: [
+      { id: "viande", libelle: "Viande hors volaille", repere: "…", limiteGrammesSemaine: 500, source: { sourceId: "spf-pnns-2019", publisher: "SpF", title: "t", url: "https://example.org", accessedOn: "2026-11-01" } },
+      { id: "legumes-secs", libelle: "Légumes secs", repere: "…", foisParSemaine: 2, source: { sourceId: "spf-pnns-2019", publisher: "SpF", title: "t", url: "https://example.org", accessedOn: "2026-11-01" } },
+    ],
     dishPrices: [{ dish_id: "A", source_id: "open-prices", per_serving: 2, low_per_serving: 1, high_per_serving: 3, mass_coverage: 0.5 }],
     iarc: [
       {
@@ -249,5 +253,25 @@ describe("per-animal factors on the page", () => {
     );
     const r = p.variants.maison!.rows.perServing.find((x) => x.id === "life_days_farmed")!;
     expect(r.animal?.value).toBeCloseTo(0.4 * 0.003 * 500 / 2); // 0.3 day per serving
+  });
+});
+
+describe("PNNS guidelines", () => {
+  it("gives meat grams per serving as a share of the weekly limit, and legumes without a percentage", () => {
+    const p = buildPairPage(
+      raw({
+        foods: [
+          { code: "meat", name_fr: "Viande", is_animal: true, animal_category: "bovin", ciqual_code: null, iarc_meat: "rouge" },
+          { code: "beans", name_fr: "Haricot, bouilli", is_animal: false, animal_category: null, ciqual_code: null, food_subgroup: "légumineuses" },
+          { code: "nodata", name_fr: "Fève fraîche", is_animal: false, animal_category: null, ciqual_code: null, food_subgroup: "légumineuses" },
+        ],
+      }),
+    );
+    const [viande, legumes] = p.variants.commerce!.pnns;
+    expect(viande.animalGrams).toBe(200);
+    expect(viande.animalPercent).toBe(40); // 200 g / 500 g
+    expect(viande.vegetalPercent).toBe(0);
+    expect(legumes.vegetalGrams).toBe(150); // 300 g / 2 servings; the fresh broad bean is not counted
+    expect(legumes.animalPercent).toBeNull();
   });
 });

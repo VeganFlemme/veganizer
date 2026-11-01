@@ -445,6 +445,18 @@ export default async function MethodologiePage() {
           une portion, selon les définitions du CIRC (p. 37). Le groupe indique la solidité des
           preuves, pas l’ampleur du risque.
         </p>
+        <p>
+          Nous situons aussi chaque plat par rapport aux repères de Santé publique France pour les
+          adultes (2019) : viande hors volaille (au plus 500 g par semaine) et charcuterie (au plus
+          150 g par semaine), exprimées en part du repère hebdomadaire ; poisson (deux fois par
+          semaine) et légumes secs (au moins deux fois par semaine), indiqués en grammes par portion.
+          Ce ne sont pas des conseils personnalisés : parlez-en à un professionnel de santé.
+        </p>
+        <p>
+          L’indice HENI (minutes de vie en bonne santé, Stylianou et al., 2021) n’est pas utilisé :
+          ses données ne sont pas publiées sous licence ouverte et portent sur des aliments
+          américains.
+        </p>
       </Section>
 
       <Section id="prix" title="Prix : quand nous les affichons">

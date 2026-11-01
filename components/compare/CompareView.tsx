@@ -293,10 +293,32 @@ function VariantPanel({ model, v, basis }: { model: PairPageModel; v: VariantVie
             ))}
           </ul>
           <p className="text-sm text-zinc-700">{IARC_READING}</p>
-          <Soon>
-            Les repères de consommation du PNNS et les minutes de vie en bonne santé (HENI) seront ajoutés dès que leurs sources officielles auront pu
-            être vérifiées.
-          </Soon>
+          <div className="flex flex-col gap-2">
+            <h3 className="font-medium">Repères de consommation pour les adultes (PNNS)</h3>
+            <ul className="flex flex-col gap-2 text-sm">
+              {v.pnns.map((x) => (
+                <li key={x.entry.id} className="flex flex-col gap-0.5">
+                  <span>
+                    <strong>{x.entry.libelle}</strong> — repère : « {x.entry.repere} »
+                  </span>
+                  <span>
+                    {a} : {formatInt(x.animalGrams)} g par portion
+                    {x.animalPercent != null && <> ({formatPercent(x.animalPercent)} du repère hebdomadaire)</>} · version végétale :{" "}
+                    {formatInt(x.vegetalGrams)} g par portion
+                    {x.vegetalPercent != null && <> ({formatPercent(x.vegetalPercent)} du repère hebdomadaire)</>}
+                  </span>
+                </li>
+              ))}
+            </ul>
+            {v.pnns[0] && (
+              <a href={v.pnns[0].entry.source.url} className="self-start rounded border border-zinc-300 bg-zinc-50 px-1.5 py-0.5 text-xs text-zinc-800 underline" rel="noopener noreferrer">
+                Santé publique France, recommandations pour les adultes, {[...new Set(v.pnns.map((x) => x.entry.source.pages))].join(" ; ")}
+              </a>
+            )}
+          </div>
+          <p className="text-sm text-zinc-700">
+            Les minutes de vie en bonne santé (indice HENI) ne sont pas affichées : leurs données ne sont pas publiées sous une licence ouverte.
+          </p>
           <p className="text-sm text-zinc-700">Pas de conseil médical : parlez-en à un professionnel de santé.</p>
         </Card>
 

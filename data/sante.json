@@ -1,6 +1,6 @@
 {
   "version": "0.1",
-  "status": "rédigé le 2026-11-01 à partir du PDF officiel du CIRC ; à relire (docs/A_VERIFIER.md)",
+  "status": "CIRC rédigé le 2026-11-01 à partir du PDF officiel ; repères PNNS recopiés du PDF de Santé publique France le 2026-11-01 ; à relire (docs/A_VERIFIER.md)",
   "iarc": [
     {
       "id": "transformée",
@@ -34,5 +34,63 @@
     }
   ],
   "lecture": "Le groupe du CIRC indique la solidité des preuves qu'un aliment peut causer un cancer, pas l'ampleur du risque.",
-  "avertissement": "Informations générales, pas un conseil médical. Parlez-en à un professionnel de santé."
+  "avertissement": "Informations générales, pas un conseil médical. Parlez-en à un professionnel de santé.",
+  "pnns": [
+    {
+      "id": "viande",
+      "libelle": "Viande hors volaille",
+      "repere": "Privilégier la volaille, et limiter les autres viandes (porc, bœuf, veau, mouton, agneau, abats) à 500 g par semaine.",
+      "limiteGrammesSemaine": 500,
+      "source": {
+        "sourceId": "spf-pnns-2019",
+        "publisher": "Santé publique France",
+        "title": "Recommandations relatives à l'alimentation, à l'activité physique et à la sédentarité pour les adultes",
+        "pages": "p. 35 et 49",
+        "url": "https://www.santepubliquefrance.fr/sites/default/files/rdd/document/42466_spf00000619.pdf",
+        "accessedOn": "2026-11-01"
+      }
+    },
+    {
+      "id": "charcuterie",
+      "libelle": "Charcuterie",
+      "repere": "Limiter la charcuterie à 150 g par semaine.",
+      "limiteGrammesSemaine": 150,
+      "source": {
+        "sourceId": "spf-pnns-2019",
+        "publisher": "Santé publique France",
+        "title": "Recommandations relatives à l'alimentation, à l'activité physique et à la sédentarité pour les adultes",
+        "pages": "p. 35 et 49",
+        "url": "https://www.santepubliquefrance.fr/sites/default/files/rdd/document/42466_spf00000619.pdf",
+        "accessedOn": "2026-11-01"
+      }
+    },
+    {
+      "id": "poisson",
+      "libelle": "Poisson",
+      "repere": "Deux fois par semaine du poisson, dont un poisson gras (sardines, maquereau, hareng, saumon).",
+      "foisParSemaine": 2,
+      "source": {
+        "sourceId": "spf-pnns-2019",
+        "publisher": "Santé publique France",
+        "title": "Recommandations relatives à l'alimentation, à l'activité physique et à la sédentarité pour les adultes",
+        "pages": "p. 33 et 49",
+        "url": "https://www.santepubliquefrance.fr/sites/default/files/rdd/document/42466_spf00000619.pdf",
+        "accessedOn": "2026-11-01"
+      }
+    },
+    {
+      "id": "legumes-secs",
+      "libelle": "Légumes secs",
+      "repere": "Au moins 2 fois par semaine des légumes secs car ils sont naturellement riches en fibres.",
+      "foisParSemaine": 2,
+      "source": {
+        "sourceId": "spf-pnns-2019",
+        "publisher": "Santé publique France",
+        "title": "Recommandations relatives à l'alimentation, à l'activité physique et à la sédentarité pour les adultes",
+        "pages": "p. 32 et 49",
+        "url": "https://www.santepubliquefrance.fr/sites/default/files/rdd/document/42466_spf00000619.pdf",
+        "accessedOn": "2026-11-01"
+      }
+    }
+  ]
 }

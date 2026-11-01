@@ -174,10 +174,10 @@ export function Simulator({
                 <div>
                   <dt className="text-zinc-700">
                     Minutes de vie en bonne santé{" "}
-                    <span className="rounded border border-zinc-400 px-1 text-xs">HENI · usage non commercial à vérifier</span>
+                    <span className="rounded border border-zinc-400 px-1 text-xs">HENI · usage non commercial</span>
                   </dt>
                   <dd>
-                    <Missing why="indice HENI pas encore intégré" />
+                    <Missing why="données HENI sans licence ouverte, non intégrées" />
                   </dd>
                 </div>
               </dl>

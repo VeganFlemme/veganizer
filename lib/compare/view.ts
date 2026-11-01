@@ -16,7 +16,19 @@ import {
   type MonetizationRule,
   type ScoringData,
 } from "@/lib/scoring";
-import { BASES, CLIMATE_INDICATORS, CLIMATE_MAIN, COVERAGE_WARNING, KEY_CRITERIA, NUTRIENTS, VEGAN_WORD } from "./config";
+import {
+  BASES,
+  CLIMATE_INDICATORS,
+  CLIMATE_MAIN,
+  COVERAGE_WARNING,
+  FRESH_WORD,
+  KEY_CRITERIA,
+  NUTRIENTS,
+  PNNS_FISH_CATEGORIES,
+  PNNS_LEGUME_SUBGROUP,
+  PNNS_MEAT_CATEGORIES,
+  VEGAN_WORD,
+} from "./config";
 
 // ---------------------------------------------------------------------------
 // Raw rows (subset of the Supabase rows)
@@ -48,6 +60,7 @@ export interface FoodRow {
   ciqual_code: string | null;
   /** IARC vol. 114 category of the food (foods.iarc_meat). */
   iarc_meat?: string | null;
+  food_subgroup?: string | null;
 }
 export interface NutrientValueRow {
   food_code: string;
@@ -108,6 +121,15 @@ export interface SourceRow {
   url: string | null;
 }
 
+export interface PnnsEntry {
+  id: string;
+  libelle: string;
+  repere: string;
+  limiteGrammesSemaine?: number;
+  foisParSemaine?: number;
+  source: IarcEntry["source"];
+}
+
 export interface RawPairData {
   animal: DishRow;
   vegetal: DishRow[];
@@ -127,6 +149,7 @@ export interface RawPairData {
   climateCostYears: number[];
   dishPrices: DishPriceRow[];
   iarc: IarcEntry[];
+  pnns: PnnsEntry[];
 }
 
 // ---------------------------------------------------------------------------
@@ -212,6 +235,15 @@ export interface IarcView {
   vegetalGrams: number;
 }
 
+export interface PnnsView {
+  entry: PnnsEntry;
+  animalGrams: number;
+  vegetalGrams: number;
+  /** grams per serving / weekly limit × 100, only for guidelines given in grams per week. */
+  animalPercent: number | null;
+  vegetalPercent: number | null;
+}
+
 export interface AnimalFactorNote {
   category: string;
   indicatorId: string;
@@ -247,6 +279,7 @@ export interface VariantView {
   animalWithoutFactor: string[];
   price: PriceView;
   iarc: IarcView[];
+  pnns: PnnsView[];
   sim: SimInput;
 }
 
@@ -499,6 +532,26 @@ export function buildPairPage(raw: RawPairData): PairPageModel {
       return { entry, animalGrams: iarcGrams(raw.animal, entry.id), vegetalGrams: iarcGrams(dish, entry.id) };
     });
 
+    const pnnsMatch: Record<string, (f: FoodRow) => boolean> = {
+      viande: (f) => f.is_animal && PNNS_MEAT_CATEGORIES.includes(f.animal_category ?? "") && f.iarc_meat !== "transformée",
+      charcuterie: (f) => f.iarc_meat === "transformée",
+      poisson: (f) => f.is_animal && PNNS_FISH_CATEGORIES.includes(f.animal_category ?? ""),
+      "legumes-secs": (f) => f.food_subgroup === PNNS_LEGUME_SUBGROUP && !FRESH_WORD.test(f.name_fr),
+    };
+    const pnnsGrams = (d: DishRow, match: (f: FoodRow) => boolean) =>
+      raw.ingredients
+        .filter((i) => i.dish_id === d.id && foodsByCode.has(i.food_code) && match(foodsByCode.get(i.food_code)!))
+        .reduce((sum, i) => sum + Number(i.grams), 0) / d.servings;
+    const pnns: PnnsView[] = raw.pnns.flatMap((entry) => {
+      const match = pnnsMatch[entry.id];
+      if (!match) return [];
+      usedSources.add(entry.source.sourceId);
+      const ag = pnnsGrams(raw.animal, match);
+      const vg = pnnsGrams(dish, match);
+      const pct = (g: number) => (entry.limiteGrammesSemaine ? (g / entry.limiteGrammesSemaine) * 100 : null);
+      return [{ entry, animalGrams: ag, vegetalGrams: vg, animalPercent: pct(ag), vegetalPercent: pct(vg) }];
+    });
+
     const animalFoods = raw.ingredients
       .filter((i) => i.dish_id === raw.animal.id)
       .map((i) => foodsByCode.get(i.food_code))
@@ -549,6 +602,7 @@ export function buildPairPage(raw: RawPairData): PairPageModel {
       animalWithoutFactor,
       price,
       iarc,
+      pnns,
       sim: { animal: simTotals(animalTotals), vegetal: simTotals(vegTotals) },
     };
   }
