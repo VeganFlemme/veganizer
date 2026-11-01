@@ -29,6 +29,13 @@ class MappingTest(unittest.TestCase):
             if not r["code"]:
                 self.assertTrue(r["note"].strip(), r["flow"])
 
+    def test_an_input_without_code_says_whether_it_may_be_animal(self) -> None:
+        for r in self.rows:
+            if not r["code"]:
+                self.assertIn(r["unmapped_is_animal"], ("true", "false"), r["flow"])
+            else:
+                self.assertEqual(r["unmapped_is_animal"], "", r["flow"])
+
     def test_known_matches(self) -> None:
         by = {r["flow"]: r for r in self.rows}
         self.assertEqual(by["Ground beef, fresh, for processing/FR U"]["code"], "6254")

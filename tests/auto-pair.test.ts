@@ -131,3 +131,26 @@ describe("recipe link (« Modifier cette recette »)", () => {
     expect(parseSharedRecipe("{not json")).toBeNull();
   });
 });
+
+describe("official dish: published impact kept on both sides (suite V1, 5 quater)", () => {
+  // Dish of 1 kg: beef 0.3 kg (contribution 9 kg CO2e per kg of dish), potato 0.7 kg (0.1), other steps 0.5.
+  const official = [
+    { dish_code: "D", flow: "Beef", food_code: "meat", ingredient_fr: "Bœuf haché", kg_per_kg_dish: 0.3 },
+    { dish_code: "D", flow: "Potato", food_code: "nodata", ingredient_fr: "Pommes de terre", kg_per_kg_dish: 0.7 },
+  ];
+  const contributions = [
+    { ingredient: "Bœuf haché", indicator_id: "ghg_100y_kgco2e", value_per_kg: 9, source_id: "agribalyse-3.2" },
+    { ingredient: "Pommes de terre", indicator_id: "ghg_100y_kgco2e", value_per_kg: 0.1, source_id: "agribalyse-3.2" },
+    { ingredient: "Autres étapes", indicator_id: "ghg_100y_kgco2e", value_per_kg: 0.5, source_id: "agribalyse-3.2" },
+  ];
+  it("animal = published impact; plant = published − replaced contributions + substitute × its impact per kg", async () => {
+    const { officialRecipe } = await import("@/lib/compare/auto");
+    const base = input();
+    const r = officialRecipe({ dishId: "A", dishCode: "D", official, contributions, ours: [{ dish_id: "A", food_code: "__mass", grams: 1000, note: null }], sides: [], raw: base.raw, context: base.context });
+    const i: AutoInput = { ...base, raw: { ...base.raw, animal: { ...base.raw.animal, servings: 1, fixed_impacts: r.fixed }, foods: [...base.raw.foods, ...r.foods], impacts: [...base.raw.impacts, ...r.impacts], ingredients: r.ingredients }, context: r.context };
+    const { model } = buildAutoPage(i, "seitan")!;
+    const co2 = model.variants.seitan!.rows.perServing.find((x) => x.id === "ghg_100y_kgco2e")!;
+    expect(co2.animal!.value).toBeCloseTo(9 + 0.1 + 0.5); // published total of 1 kg of dish
+    expect(co2.vegetal!.value).toBeCloseTo(9 + 0.1 + 0.5 - 9 + 0.3 * 2); // seitan 0.3 kg × 2 kg CO2e/kg
+  });
+});

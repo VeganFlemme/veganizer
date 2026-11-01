@@ -184,7 +184,7 @@ function scoreOf(category: RuleCategory, input: ScoreInput, basis: Basis, exclud
   if (constructed.includes(category.id)) {
     const left = score.indicators.filter((i) => i.outcome === "animal" && i.direction === "higher_is_better").map((i) => lower(labels[i.id] ?? i.id));
     const constructedLabel = left.length ? `Écarts comblés, sauf : ${list(left)}` : "Écarts comblés";
-    const text = `${CONSTRUCTED_TEXT} : la version végétale complétée reçoit autant de protéines que le plat animal et ses autres manques sont comblés quand un aliment de la liste le permet${
+    const text = `${CONSTRUCTED_TEXT} : la version végétale complétée vise autant de protéines que le plat animal (protéine principale doublée au plus) et ses manques sont comblés quand un aliment de la liste le permet${
       left.length ? `, sauf : ${list(left)}` : ""
     }. Pas de score, pour rester équitable.`;
     return { ...score, animalPoints: 0, vegetalPoints: 0, winner: "egal", provisional: false, id: category.id as CategoryId, label: category.label, short: category.short, sentence: text, summary: text, constructed: true, constructedLabel };

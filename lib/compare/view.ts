@@ -16,6 +16,7 @@ import {
   type MonetizationRule,
   amountBounds,
   boostMainProtein,
+  mainAnimalIngredient,
   solveComplements,
   withoutSharedIngredients,
   type ComplementFood,
@@ -44,6 +45,7 @@ import {
   VEGAN_WORD,
   type ScoreCategoryId,
 } from "./config";
+import proteinChoice from "@/data/protein_choice.json";
 import scoreRules from "@/data/score_rules.json";
 import { dishPriceFromFoods } from "./prices";
 import { scorePair, type PairScores } from "./scores";
@@ -58,6 +60,8 @@ export interface DishRow {
   kind: string;
   servings: number;
   description: string | null;
+  /** « Autres étapes » of an AGRIBALYSE dish for the whole recipe (5 quater), identical on both sides. */
+  fixed_impacts?: Record<string, { value: number; sourceId: string }>;
 }
 export interface PairRow {
   vegan_dish_id: string;
@@ -81,6 +85,8 @@ export interface FoodRow {
   /** IARC vol. 114 category of the food (foods.iarc_meat). */
   iarc_meat?: string | null;
   food_subgroup?: string | null;
+  /** Official recipe ingredient (5 quater): the Ciqual food whose category factors apply. */
+  factor_code?: string;
 }
 export interface NutrientValueRow {
   food_code: string;
@@ -445,7 +451,9 @@ export interface ComplementAddition {
 export interface CompletedVariantView {
   view: VariantView;
   /** Main protein increased (null when the plant version already had as much protein). */
-  boost: { code: string; label: string; extraGrams: number } | null;
+  boost: { code: string; label: string; extraGrams: number; capped: boolean } | null;
+  /** « Le fromage apporte surtout du calcium… » when the main animal food is not mainly a protein (5 ter). */
+  roleNote: string | null;
   additions: ComplementAddition[];
   /** Gaps no whitelisted food closes (B12, EPA + DHA, vitamin D…): advice only, no dose. */
   open: string[];
@@ -510,6 +518,7 @@ export function scoringData(raw: RawPairData): ScoringData {
       impacts,
       isAnimal: byCode.get(f.code)?.is_animal ?? false,
       animalCategory: f.animal_category,
+      ...(f.factor_code ? { factorCode: f.factor_code } : {}),
     };
   }
   const categoryFactors: ScoringData["categoryFactors"] = {};
@@ -708,10 +717,20 @@ const COMPLETABLE = new Set(scoreRules.categories.find((c) => c.id === "nutritio
 // Fortified foods are used only when everyday foods are not enough.
 const KIND_WEIGHT = { courant: 1, enrichi: 10 } as const;
 
+const ROLE_NOTES = Object.entries(proteinChoice.roleNotes as Record<string, string>);
+
+/** Role note of the main animal food, from its Ciqual subgroup (data/protein_choice.json). */
+function roleNoteOf(raw: RawPairData, dish: { servings: number; ingredients: { foodCode: string; grams: number }[] }, data: ScoringData): string | null {
+  const main = mainAnimalIngredient(dish, data, proteinChoice.mainIngredientMinProteinEnergyShare);
+  const sub = (raw.foods.find((f) => f.code === main)?.food_subgroup ?? "").toLowerCase();
+  return ROLE_NOTES.find(([k]) => sub.startsWith(k))?.[1] ?? null;
+}
+
 function completedVariant(raw: RawPairData, dish: DishRow, pair: PairRow, data: ScoringData): { view: CompletedVariantView; sources: Record<string, SourceRow> } | null {
   const dishOf = (d: DishRow) => ({
     servings: d.servings,
     ingredients: raw.ingredients.filter((i) => i.dish_id === d.id).map((i) => ({ foodCode: i.food_code, grams: Number(i.grams) })),
+    ...(d.fixed_impacts ? { fixedImpacts: d.fixed_impacts } : {}),
   });
   const animalDish = dishOf(raw.animal);
   const plantDish = dishOf(dish);
@@ -719,7 +738,7 @@ function completedVariant(raw: RawPairData, dish: DishRow, pair: PairRow, data: 
   const animalProtein = dishTotals(animalDish, data, TOTALS_OPTIONS).proteinPerServing;
   // 1. Main protein raised to the protein of the animal dish.
   const boostShared = pair.boost_code ? plantDish.ingredients.map((i) => i.foodCode).filter((c) => c !== pair.boost_code) : shared;
-  const b = animalProtein == null ? null : boostMainProtein(plantDish, data, animalProtein, boostShared);
+  const b = animalProtein == null ? null : boostMainProtein(plantDish, data, animalProtein, boostShared, proteinChoice.maxBoostFactor);
   const boosted = raw.ingredients.map((i) => (b && i.dish_id === dish.id && i.food_code === b.code ? { ...i, grams: Number(i.grams) + b.extraGrams } : i));
   const prices = (ingredients: IngredientRow[]) =>
     [raw.animal, dish]
@@ -765,7 +784,13 @@ function completedVariant(raw: RawPairData, dish: DishRow, pair: PairRow, data: 
   if (!view) return null;
   return {
     // Recipe label, never the raw official name (rule 10).
-    view: { view, boost: b ? { code: b.code, label: dishView(dish, raw).ingredients.find((i) => i.code === b.code)?.label ?? b.code, extraGrams: b.extraGrams } : null, additions, open: solved.open },
+    view: {
+      view,
+      boost: b ? { code: b.code, label: dishView(dish, raw).ingredients.find((i) => i.code === b.code)?.label ?? b.code, extraGrams: b.extraGrams, capped: b.capped } : null,
+      additions,
+      open: solved.open,
+      roleNote: roleNoteOf(raw, animalDish, data),
+    },
     sources: page.sources,
   };
 }
@@ -777,6 +802,7 @@ export function buildPairPage(raw: RawPairData, options: BuildOptions = {}): Pai
   const dishOf = (d: DishRow) => ({
     servings: d.servings,
     ingredients: raw.ingredients.filter((i) => i.dish_id === d.id).map((i) => ({ foodCode: i.food_code, grams: Number(i.grams) })),
+    ...(d.fixed_impacts ? { fixedImpacts: d.fixed_impacts } : {}),
   });
   const totalsOf = (d: DishRow) => dishTotals(dishOf(d), data, totalsOptions);
   const animalTotals = totalsOf(raw.animal);
@@ -939,7 +965,7 @@ export function buildPairPage(raw: RawPairData, options: BuildOptions = {}): Pai
       const factors = raw.categoryFactors.filter((c) => c.category === f.animal_category);
       if (factors.length === 0) animalWithoutFactor.push(f.name_fr);
       for (const c of factors) {
-        if (c.food_codes && !c.food_codes.includes(f.code)) continue;
+        if (c.food_codes && !c.food_codes.includes(f.factor_code ?? f.code)) continue;
         if (!animalFactorNotes.some((n) => n.category === c.category && n.indicatorId === c.indicator_id && n.sourceId === c.source_id)) {
           animalFactorNotes.push({ category: c.category, indicatorId: c.indicator_id, per: c.per === "animal" ? "animal" : "kg", unitBasis: c.unit_basis ?? null, notes: c.notes ?? null, sourceId: c.source_id });
         }
@@ -950,10 +976,11 @@ export function buildPairPage(raw: RawPairData, options: BuildOptions = {}): Pai
     const applies = (c: CategoryFactorRow, code: string) => !c.food_codes || c.food_codes.includes(code);
     const usable = (food: FoodRow, id: string) => {
       const fs = raw.categoryFactors.filter((c) => c.category === food.animal_category);
-      const f = fs.find((c) => c.indicator_id === id && applies(c, food.code));
+      const code = food.factor_code ?? food.code;
+      const f = fs.find((c) => c.indicator_id === id && applies(c, code));
       if (!f) return false;
       if (f.per !== "animal") return true;
-      return fs.some((c) => c.indicator_id === "animals_killed_land" && c.per !== "animal" && applies(c, food.code));
+      return fs.some((c) => c.indicator_id === "animals_killed_land" && c.per !== "animal" && applies(c, code));
     };
     for (const b of BASES) {
       for (const r of rows[b.id]) {

@@ -4,7 +4,7 @@ import "server-only";
 import { cacheLife } from "next/cache";
 import officialPairs from "@/data/official_pairs.json";
 import { createPublicClient } from "@/lib/supabase/public";
-import { buildAutoPage, climateWins, NO_CODE_PREFIX, officialIngredients, rankedCandidates, type AutoInput, type CandidateRow, type OfficialRecipeRow } from "./auto";
+import { buildAutoPage, climateWins, NO_CODE_PREFIX, officialRecipe, rankedCandidates, type AutoInput, type CandidateRow, type OfficialContribution, type OfficialRecipeRow } from "./auto";
 import { loadRecipeData } from "./data";
 import { displayName } from "./food";
 import { substitutionContext } from "./recipe";
@@ -50,13 +50,54 @@ async function support(ingredientCodes: string[]): Promise<Support | null> {
   return { rest, rules: substitutions, context: substitutionContext({ foods: data.foods, nutrientValues: data.nutrientValues, cookingYields }), candidates: cands };
 }
 
-function makeInput(s: Support, animal: DishRow, ingredients: IngredientRow[], recipe: AutoInput["recipe"]): AutoInput {
-  return { raw: { ...s.rest, animal, vegetal: [], pairs: [], ingredients, dishPrices: [] }, candidates: s.candidates, rules: s.rules, context: s.context, recipe };
+type Official = { dishCode: string; rows: OfficialRecipeRow[]; contributions: OfficialContribution[]; ours: IngredientRow[]; sides: string[] };
+
+/** 5 quater: an official dish keeps its published impact (contributions + « Autres étapes »). */
+function makeInput(s: Support, animal: DishRow, ingredients: IngredientRow[], recipe: AutoInput["recipe"], official?: Official): AutoInput {
+  const base = { candidates: s.candidates, rules: s.rules, recipe };
+  if (!official) return { ...base, raw: { ...s.rest, animal, vegetal: [], pairs: [], ingredients, dishPrices: [] }, context: s.context };
+  const r = officialRecipe({ dishId: animal.id, dishCode: official.dishCode, official: official.rows, contributions: official.contributions, ours: official.ours, sides: official.sides, raw: s.rest, context: s.context });
+  return {
+    ...base,
+    raw: {
+      ...s.rest,
+      animal: { ...animal, fixed_impacts: r.fixed },
+      vegetal: [],
+      pairs: [],
+      ingredients: r.ingredients,
+      foods: [...s.rest.foods, ...r.foods],
+      impacts: [...s.rest.impacts, ...r.impacts],
+      foodPrices: [...s.rest.foodPrices, ...r.foodPrices],
+      dishPrices: [],
+    },
+    context: r.context,
+  };
 }
 
-async function assemble(animal: DishRow, ingredients: IngredientRow[], recipe: AutoInput["recipe"]): Promise<AutoInput | null> {
-  const s = await support(ingredients.map((i) => i.food_code));
-  return s ? makeInput(s, animal, ingredients, recipe) : null;
+async function assemble(animal: DishRow, ingredients: IngredientRow[], recipe: AutoInput["recipe"], official?: Official): Promise<AutoInput | null> {
+  const codes = [
+    ...ingredients.map((i) => i.food_code),
+    ...(official?.ours.map((i) => i.food_code).filter((c) => c !== "__mass") ?? []),
+    ...(official?.rows.flatMap((r) => (r.food_code ? [r.food_code] : [])) ?? []),
+  ];
+  const s = await support(codes);
+  return s ? makeInput(s, animal, ingredients, recipe, official) : null;
+}
+
+/** Published contributions of each ingredient of these AGRIBALYSE dishes (detail per ingredient 3.2). */
+async function contributionsOf(codes: string[]): Promise<Map<string, OfficialContribution[]>> {
+  const db = createPublicClient();
+  const out = new Map<string, OfficialContribution[]>();
+  for (let from = 0; codes.length; from += 1000) {
+    const page = must(
+      await db.from("food_impact_ingredients").select("food_code, ingredient, indicator_id, value_per_kg, source_id").in("food_code", codes)
+        .order("food_code").order("ingredient").order("indicator_id").range(from, from + 999),
+      "food_impact_ingredients",
+    );
+    for (const r of page) out.set(r.food_code, [...(out.get(r.food_code) ?? []), { ingredient: r.ingredient, indicator_id: r.indicator_id, value_per_kg: Number(r.value_per_kg), source_id: r.source_id }]);
+    if (page.length < 1000) break;
+  }
+  return out;
 }
 
 /** A published animal dish of our catalogue, its recipe replaced by the official one when retained. */
@@ -71,11 +112,13 @@ export async function getAutoInput(slug: string): Promise<AutoInput | null> {
   const official = map ? await officialRows(map.dishCode) : [];
   if (map && official.length > 0) {
     const name = must(await db.from("foods").select("name_fr").eq("code", map.dishCode), "foods")[0]?.name_fr;
-    return assemble(animal, officialIngredients(animal.id, official, ours, map.sides), {
-      kind: "officielle",
-      officialCode: map.dishCode,
-      officialName: name ? displayName(name) : undefined,
-      sidesNote: map.note,
+    const contributions = (await contributionsOf([map.dishCode])).get(map.dishCode) ?? [];
+    return assemble(animal, [], { kind: "officielle", officialCode: map.dishCode, officialName: name ? displayName(name) : undefined, sidesNote: map.note }, {
+      dishCode: map.dishCode,
+      rows: official,
+      contributions,
+      ours,
+      sides: map.sides,
     });
   }
   return assemble(animal, ours, { kind: "type" });
@@ -91,8 +134,14 @@ export async function getOfficialDishInput(code: string): Promise<AutoInput | nu
   const food = must(await db.from("foods").select("code, name_fr").eq("code", code), "foods")[0];
   if (!food) return null;
   const animal: DishRow = { id: "A", slug: `aliment-${code}`, name_fr: displayName(food.name_fr), kind: "animal", servings: 1, description: null };
-  const ingredients = officialIngredients("A", official, [{ dish_id: "A", food_code: "__mass", grams: OFFICIAL_DISH_GRAMS, note: null }], []);
-  const input = await assemble(animal, ingredients, { kind: "officielle", officialCode: code, officialName: animal.name_fr });
+  const contributions = (await contributionsOf([code])).get(code) ?? [];
+  const input = await assemble(animal, [], { kind: "officielle", officialCode: code, officialName: animal.name_fr }, {
+    dishCode: code,
+    rows: official,
+    contributions,
+    ours: [{ dish_id: "A", food_code: "__mass", grams: OFFICIAL_DISH_GRAMS, note: null }],
+    sides: [],
+  });
   if (!input || rankedCandidates(input).length === 0 || !buildAutoPage(input, rankedCandidates(input)[0].code, { light: true })) return null;
   return input;
 }
@@ -184,18 +233,21 @@ export async function listAutoCards(): Promise<AutoCard[]> {
   const officialCodes = [...new Set(officialAll.map((r) => r.dish_code))].filter((c) => !paired.has(c));
   const names = new Map(must(await db.from("foods").select("code, name_fr").in("code", officialCodes), "foods").map((f) => [f.code, displayName(f.name_fr)]));
 
-  const entries: { href: string; kind: AutoCard["kind"]; description: string | null; animal: DishRow; ingredients: IngredientRow[]; recipe: AutoInput["recipe"] }[] = [];
+  const contributions = await contributionsOf([...new Set([...officialCodes, ...PAIRS.map((p) => p.dishCode)])]);
+  const entries: { href: string; kind: AutoCard["kind"]; description: string | null; animal: DishRow; ingredients: IngredientRow[]; recipe: AutoInput["recipe"]; official?: Official }[] = [];
   for (const d of dishes) {
     const own = ours.filter((i) => i.dish_id === d.id);
     const map = PAIRS.find((p) => p.slug === d.slug);
     const off = map ? officialAll.filter((r) => r.dish_code === map.dishCode) : [];
+    const official = map && off.length ? { dishCode: map.dishCode, rows: off, contributions: contributions.get(map.dishCode) ?? [], ours: own, sides: map.sides } : undefined;
     entries.push({
       href: `/compare/${d.slug}`,
       kind: "paire",
       description: d.description,
       animal: d,
-      ingredients: map && off.length ? officialIngredients(d.id, off, own, map.sides) : own,
-      recipe: map && off.length ? { kind: "officielle", officialCode: map.dishCode } : { kind: "type" },
+      ingredients: official ? [] : own,
+      recipe: official ? { kind: "officielle", officialCode: map!.dishCode } : { kind: "type" },
+      official,
     });
   }
   for (const code of officialCodes) {
@@ -206,15 +258,17 @@ export async function listAutoCards(): Promise<AutoCard[]> {
       kind: "agribalyse",
       description: "Recette officielle Agribalyse, pour 100 g.",
       animal,
-      ingredients: officialIngredients("A", rows, [{ dish_id: "A", food_code: "__mass", grams: OFFICIAL_DISH_GRAMS, note: null }], []),
+      ingredients: [],
       recipe: { kind: "officielle", officialCode: code },
+      official: { dishCode: code, rows, contributions: contributions.get(code) ?? [], ours: [{ dish_id: "A", food_code: "__mass", grams: OFFICIAL_DISH_GRAMS, note: null }], sides: [] },
     });
   }
-  const s = await support(entries.flatMap((e) => e.ingredients.map((i) => i.food_code)));
+  const codes = entries.flatMap((e) => [...e.ingredients.map((i) => i.food_code), ...(e.official?.ours.map((i) => i.food_code) ?? []), ...(e.official?.rows.flatMap((r) => (r.food_code ? [r.food_code] : [])) ?? [])]);
+  const s = await support(codes.filter((c) => c !== "__mass"));
   if (!s) return [];
   const out: AutoCard[] = [];
   for (const e of entries) {
-    const input = makeInput(s, e.animal, e.ingredients, e.recipe);
+    const input = makeInput(s, e.animal, e.ingredients, e.recipe, e.official);
     const first = rankedCandidates(input)[0];
     const c = first && card({ input, defaultCode: first.code, wins: { wins: 0, total: 0 } }, e.href, e.kind, e.description);
     if (c) out.push(c);

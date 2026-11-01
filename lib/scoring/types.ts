@@ -9,6 +9,11 @@ export interface Ingredient {
 export interface Dish {
   servings: number;
   ingredients: Ingredient[];
+  /**
+   * Impacts of the dish itself, for the whole recipe, without mass: the « Autres étapes » of an
+   * AGRIBALYSE dish (processing, packaging, transport, cooking), kept identical on both sides.
+   */
+  fixedImpacts?: Record<string, { value: number; sourceId: string }>;
 }
 
 /** One impact value per kg of food (food_impacts row). */
@@ -40,6 +45,8 @@ export interface FoodData {
   isAnimal: boolean;
   /** foods.animal_category; null for an animal food = category unknown (missing data). */
   animalCategory: string | null;
+  /** Food whose category factors apply (an official recipe ingredient standing for a Ciqual food); default = its own code. */
+  factorCode?: string;
 }
 
 /** One category_factors row. */

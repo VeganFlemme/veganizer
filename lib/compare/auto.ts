@@ -11,7 +11,7 @@ import proteinChoice from "@/data/protein_choice.json";
 import { displayName } from "./food";
 import { dishPriceFromFoods } from "./prices";
 import { applySubstitutions, type RecipeFood, type SubstitutionContext, type SubstitutionRule } from "./recipe";
-import { buildPairPage, dishView, scoringData, type DishPriceRow, type DishRow, type IngredientRow, type PairPageModel, type RawPairData } from "./view";
+import { buildPairPage, dishView, scoringData, type DishPriceRow, type DishRow, type FoodRow, type ImpactRow, type IngredientRow, type PairPageModel, type RawPairData } from "./view";
 
 export interface CandidateRow {
   code: string;
@@ -71,6 +71,82 @@ export function officialIngredients(dishId: string, official: OfficialRecipeRow[
   return [...merged.values(), ...kept];
 }
 
+export interface OfficialContribution {
+  ingredient: string;
+  indicator_id: string;
+  value_per_kg: number;
+  source_id: string;
+}
+
+// Name of the steps of the dish itself in the AGRIBALYSE 3.2 detail per ingredient.
+export const OTHER_STEPS = "Autres étapes";
+// Prefix of an ingredient of an official dish, standing for a Ciqual food with the 3.2 contribution as impact.
+export const OFFICIAL_PREFIX = "agb:";
+
+/**
+ * Official AGRIBALYSE dish with its published impact kept (5 quater): each 3.2 ingredient of the
+ * dish becomes an ingredient whose impact per kg is its published contribution (contribution per kg
+ * of dish ÷ kg of the ingredient per kg of dish), its nutrients and animal factors those of the
+ * Ciqual food it stands for; « Autres étapes » (processing, packaging, transport, cooking) become
+ * the steps of the dish, identical on both sides. The animal dish then has exactly the published
+ * impact, the plant version the published impact − the replaced contributions + the substitutes.
+ */
+export function officialRecipe(args: {
+  dishId: string;
+  dishCode: string;
+  official: OfficialRecipeRow[];
+  contributions: OfficialContribution[];
+  ours: IngredientRow[];
+  sides: string[];
+  raw: Pick<RawPairData, "foods" | "foodPrices">;
+  context: SubstitutionContext;
+}): { ingredients: IngredientRow[]; foods: FoodRow[]; impacts: ImpactRow[]; foodPrices: RawPairData["foodPrices"]; fixed: NonNullable<DishRow["fixed_impacts"]>; context: SubstitutionContext } {
+  const { dishId, dishCode, official, contributions, ours, sides, raw } = args;
+  const kept = ours.filter((i) => sides.includes(i.food_code));
+  const mainMass = ours.filter((i) => !sides.includes(i.food_code)).reduce((s, i) => s + Number(i.grams), 0);
+  const byCode = new Map(raw.foods.map((f) => [f.code, f]));
+  const fixed: NonNullable<DishRow["fixed_impacts"]> = {};
+  for (const c of contributions.filter((x) => x.ingredient === OTHER_STEPS)) fixed[c.indicator_id] = { value: (Number(c.value_per_kg) * mainMass) / 1000, sourceId: c.source_id };
+  const groups = new Map<string, OfficialRecipeRow[]>();
+  for (const r of official) {
+    const k = r.ingredient_fr?.trim() || "";
+    groups.set(k, [...(groups.get(k) ?? []), r]);
+  }
+  const ingredients: IngredientRow[] = [];
+  const foods: FoodRow[] = [];
+  const impacts: ImpactRow[] = [];
+  const foodPrices: RawPairData["foodPrices"] = [];
+  const context: SubstitutionContext = { fatPer100g: { ...args.context.fatPer100g }, cookingYieldPct: { ...args.context.cookingYieldPct } };
+  for (const [name, rows] of groups) {
+    const kg = rows.reduce((s, r) => s + Number(r.kg_per_kg_dish), 0);
+    const grams = kg * mainMass;
+    const contrib = contributions.filter((c) => c.ingredient.trim() === name);
+    const baseCode = rows.find((r) => r.food_code)?.food_code ?? null;
+    if (!name || contrib.length === 0 || !(kg > 0)) {
+      // Added water, or no published contribution: the ingredient with its own data (or none).
+      ingredients.push({ dish_id: dishId, food_code: baseCode ?? `${NO_CODE_PREFIX}${rows[0].flow}`, grams, note: `${name ? lowerFirst(name) : "eau"} (recette officielle${baseCode ? "" : ", sans donnée"})` });
+      continue;
+    }
+    const code = `${OFFICIAL_PREFIX}${dishCode}:${name}`;
+    const base = baseCode ? byCode.get(baseCode) : undefined;
+    foods.push(
+      base
+        ? { ...base, code, ciqual_code: base.ciqual_code ?? base.code, factor_code: base.code }
+        : { code, name_fr: name, is_animal: false, animal_category: null, ciqual_code: null },
+    );
+    for (const c of contrib) {
+      impacts.push({ food_code: code, indicator_id: c.indicator_id, value_per_kg: Number(c.value_per_kg) / kg, low_per_kg: null, high_per_kg: null, dqr: null, source_id: c.source_id });
+    }
+    if (baseCode) {
+      for (const p of raw.foodPrices.filter((x) => x.food_code === baseCode)) foodPrices.push({ ...p, food_code: code });
+      context.fatPer100g[code] = context.fatPer100g[baseCode];
+      context.cookingYieldPct[code] = context.cookingYieldPct[baseCode];
+    }
+    ingredients.push({ dish_id: dishId, food_code: code, grams, note: `${lowerFirst(name)} (recette officielle${base ? "" : ", sans donnée nutritionnelle"})` });
+  }
+  return { ingredients: [...ingredients, ...kept], foods, impacts, foodPrices, fixed, context };
+}
+
 function animalDish(input: AutoInput) {
   const a = input.raw.animal;
   return {
@@ -122,6 +198,7 @@ function rawFor(input: AutoInput, code: string, ranked: RankedChoice[]) {
     kind: "vegetal",
     servings: a.servings,
     description: null,
+    ...(a.fixed_impacts ? { fixed_impacts: a.fixed_impacts } : {}),
   };
   const plantRows: IngredientRow[] = sub.dish.ingredients.map((i) => ({
     dish_id: VEGETAL_ID,

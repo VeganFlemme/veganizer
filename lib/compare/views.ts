@@ -71,8 +71,13 @@ export function additionLine(a: { label: string; gramsPerServing: number; nutrie
 }
 
 /** « +212 g pour la recette (+53 g par portion) : quantité augmentée pour autant de protéines ». */
-export function boostLine(extraGrams: number, servings: number): string {
-  return `+${formatInt(extraGrams)}${NBSP}g pour la recette (+${formatInt(extraGrams / servings)}${NBSP}g par portion) : quantité augmentée pour autant de protéines`;
+export function boostLine(extraGrams: number, servings: number, capped = false): string {
+  return `+${formatInt(extraGrams)}${NBSP}g pour la recette (+${formatInt(extraGrams / servings)}${NBSP}g par portion) : ${boostReason(capped)}`;
+}
+
+/** 5 ter: above twice its starting mass the serving is no longer plausible; the rest comes from the list. */
+export function boostReason(capped: boolean): string {
+  return capped ? "quantité doublée, au plus (portion plausible) ; le reste des protéines vient de la liste ci-dessous" : "quantité augmentée pour autant de protéines";
 }
 
 /** « À couvrir hors de ce plat : … » — no dose, a health professional (rule 6). */
