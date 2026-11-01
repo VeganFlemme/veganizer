@@ -50,3 +50,4 @@ export {
 } from "./score";
 export { proteinFamily, rankCandidates, type ProteinCandidate, type ProteinFamily, type ProteinTarget, type RankedCandidate } from "./proximity";
 export { mainAnimalIngredient, substituteDish, type OtherRule, type SubstituteChange } from "./substitute";
+export { adjustDish, type AdjustConstraint, type AdjustRequest, type AdjustResult, type AdjustSense } from "./adjust";

@@ -250,6 +250,8 @@ export interface SideValue {
 }
 
 export interface CriterionRow {
+  /** Reached by an adjustment of the plant version (step 3 quinquies): « comblé », not counted. */
+  filled?: boolean;
   id: string;
   name: string;
   /** Name as published by the source (Ciqual / Agribalyse). */
@@ -333,9 +335,8 @@ export interface PriceSide {
   low: number | null;
   high: number | null;
   coverage: number;
-  /** null when energy / protein are not known for the whole dish. */
-  per100kcal: number | null;
-  per10gProtein: number | null;
+  /** Per 100 g of dish. */
+  per100g: number | null;
   firstObservedOn: string | null;
   lastObservedOn: string | null;
 }
@@ -454,6 +455,10 @@ export interface CompletedVariantView {
   boost: { code: string; label: string; extraGrams: number; capped: boolean } | null;
   /** « Le fromage apporte surtout du calcium… » when the main animal food is not mainly a protein (5 ter). */
   roleNote: string | null;
+  /** Step 3 quinquies: the whole plant serving scaled (calories), null otherwise. */
+  scale?: number | null;
+  /** Indicators reached by the adjustment: « comblé », not counted in the score. */
+  filled?: string[];
   additions: ComplementAddition[];
   /** Gaps no whitelisted food closes (B12, EPA + DHA, vitamin D…): advice only, no dose. */
   open: string[];
@@ -713,14 +718,14 @@ export interface BuildOptions {
 }
 
 // Nutrients a dish can gain by adding food: counted, « plus = mieux » (data/score_rules.json).
-const COMPLETABLE = new Set(scoreRules.categories.find((c) => c.id === "nutrition")!.indicators.filter((i) => i.direction === "higher_is_better").map((i) => i.id));
+export const COMPLETABLE = new Set(scoreRules.categories.find((c) => c.id === "nutrition")!.indicators.filter((i) => i.direction === "higher_is_better").map((i) => i.id));
 // Fortified foods are used only when everyday foods are not enough.
-const KIND_WEIGHT = { courant: 1, enrichi: 10 } as const;
+export const KIND_WEIGHT = { courant: 1, enrichi: 10 } as const;
 
 const ROLE_NOTES = Object.entries(proteinChoice.roleNotes as Record<string, string>);
 
 /** Role note of the main animal food, from its Ciqual subgroup (data/protein_choice.json). */
-function roleNoteOf(raw: RawPairData, dish: { servings: number; ingredients: { foodCode: string; grams: number }[] }, data: ScoringData): string | null {
+export function roleNoteOf(raw: RawPairData, dish: { servings: number; ingredients: { foodCode: string; grams: number }[] }, data: ScoringData): string | null {
   const main = mainAnimalIngredient(dish, data, proteinChoice.mainIngredientMinProteinEnergyShare);
   const sub = (raw.foods.find((f) => f.code === main)?.food_subgroup ?? "").toLowerCase();
   return ROLE_NOTES.find(([k]) => sub.startsWith(k))?.[1] ?? null;
@@ -877,8 +882,7 @@ export function buildPairPage(raw: RawPairData, options: BuildOptions = {}): Pai
         low: num(r.low_per_serving),
         high: num(r.high_per_serving),
         coverage: Number(r.mass_coverage),
-        per100kcal: t.kcalPerServing ? (value / t.kcalPerServing) * 100 : null,
-        per10gProtein: t.proteinPerServing ? (value / t.proteinPerServing) * 10 : null,
+        per100g: t.totalGrams > 0 ? (value / (t.totalGrams / t.servings)) * 100 : null,
         firstObservedOn: r.first_observed_on,
         lastObservedOn: r.last_observed_on,
       };

@@ -13,24 +13,24 @@ export function isVersionId(x: string | null | undefined): x is VersionId {
   return VERSIONS.some((v) => v.id === x);
 }
 
-/** « CO₂e : −87 % par portion, −82 % une fois complétée » (reduction = (animal − plant) / animal × 100). */
+/** « CO₂e : −87 % par portion, −82 % une fois ajustée » (reduction = (animal − plant) / animal × 100). */
 export function co2Summary(base: number | null, completed: number | null, per = "par portion"): string | null {
   if (base == null) return null;
   const parts = [`${signedGap(base)} ${per}`];
-  if (completed != null) parts.push(`${signedGap(completed)} une fois complétée`);
+  if (completed != null) parts.push(`${signedGap(completed)} une fois ajustée`);
   return `CO₂e${NBSP}: ${parts.join(", ")}`;
 }
 
 const pctFr = new Intl.NumberFormat("fr-FR", { maximumFractionDigits: 0 });
 const gramsFr = new Intl.NumberFormat("fr-FR", { maximumFractionDigits: 1 });
 
-/** « Même complétée, la version végétale émet 82 % de CO₂e en moins. » */
+/** « Même ajustée, la version végétale émet 82 % de CO₂e en moins. » */
 export function completedSentence(reduction: number | null): string | null {
   if (reduction == null || !Number.isFinite(reduction)) return null;
   const r = Math.round(reduction);
   return r >= 0
-    ? `Même complétée, la version végétale émet ${pctFr.format(r)}${NBSP}% de CO₂e en moins.`
-    : `Complétée, la version végétale émet ${pctFr.format(-r)}${NBSP}% de CO₂e en plus.`;
+    ? `Même ajustée, la version végétale émet ${pctFr.format(r)}${NBSP}% de CO₂e en moins.`
+    : `Ajustée, la version végétale émet ${pctFr.format(-r)}${NBSP}% de CO₂e en plus.`;
 }
 
 /** Reason of an addition, by nutrient (« ajouté pour le calcium »). */
@@ -89,4 +89,25 @@ export function outsideLine(open: string[]): string | null {
 /** Text copied by « Copier la liste des ingrédients ». */
 export function ingredientsText(name: string, servings: number, items: { label: string; grams: number }[]): string {
   return [`${name} (${servings} portions)`, ...items.map((i) => `- ${formatInt(i.grams)} g ${i.label}`)].join("\n");
+}
+
+/** « Portion végétale ×1,4 pour autant de calories que le plat animal » (step 3 quinquies). */
+export function scaleLine(scale: number): string {
+  return `Portion végétale ×${new Intl.NumberFormat("fr-FR", { maximumFractionDigits: 2 }).format(scale)} pour autant de calories que le plat animal`;
+}
+
+/** Gaps no whitelisted food closes: no dose, a health professional (rule 6). */
+export function openLine(open: string[]): string {
+  return `Ne se comble pas avec des aliments : ${open.map((n) => NUTRIENT_NAME[n] ?? n).join(", ")} (complément ou aliment enrichi, sans dose ici : demande conseil à un professionnel de santé).`;
+}
+
+/** « Version ajustée : +76 g de protéines de soja texturées par portion, zinc comblé » (tabs other than Nutrition). */
+export function adjustSummary(c: { boost: { label: string; extraGrams: number } | null; additions: unknown[]; scale?: number | null; filled?: string[] }, servings: number): string {
+  const parts: string[] = [];
+  if (c.scale != null) parts.push(`portion ×${new Intl.NumberFormat("fr-FR", { maximumFractionDigits: 2 }).format(c.scale)} (calories égalisées)`);
+  if (c.boost) parts.push(`${c.boost.extraGrams >= 0 ? "+" : "−"}${formatInt(Math.abs(c.boost.extraGrams) / servings)}${NBSP}g de ${c.boost.label} par portion`);
+  const filled = (c.filled ?? []).filter((x) => x !== "protein_g").map((n) => NUTRIENT_NAME[n] ?? n);
+  if (filled.length) parts.push(`${filled.join(", ")} comblé${filled.length > 1 ? "s" : ""}`);
+  else if (c.additions.length) parts.push(`${c.additions.length} ajout${c.additions.length > 1 ? "s" : ""}`);
+  return `Version ajustée : ${parts.join(", ") || "recette de base"}`;
 }

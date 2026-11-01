@@ -200,6 +200,7 @@ export function dishTotals(dish: Dish, data: ScoringData, options: TotalsOptions
   const kcalPerServing = fullyKnown(energyId);
   const proteinPerServing = fullyKnown(proteinId);
 
+  const gramsPerServing = totalGrams / dish.servings;
   const toAmounts = (acc: Map<string, Accumulator>): Record<string, Amount> => {
     const out: Record<string, Amount> = {};
     for (const [id, a] of acc) {
@@ -209,8 +210,7 @@ export function dishTotals(dish: Dish, data: ScoringData, options: TotalsOptions
         perServing,
         lowPerServing: a.low / dish.servings,
         highPerServing: a.high / dish.servings,
-        per100kcal: kcalPerServing && perServing != null ? (perServing / kcalPerServing) * 100 : null,
-        per10gProtein: proteinPerServing && perServing != null ? (perServing / proteinPerServing) * 10 : null,
+        per100g: gramsPerServing > 0 && perServing != null ? (perServing / gramsPerServing) * GRAMS_PER_100G : null,
         massCoverage: a.coveredGrams / totalGrams,
         worstDqr: a.worstDqr,
         sourceIds: [...a.sourceIds].sort(),

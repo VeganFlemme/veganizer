@@ -1,6 +1,6 @@
 # Suite V1 — à exécuter d'une traite (décisions de Matt, 2026-11-01)
 
-Lis d'abord CLAUDE.md, docs/ROADMAP.md, docs/DESIGN.md, docs/DECISIONS.md et docs/A_VERIFIER.md. Exécute les étapes 0 à 5 sans attendre Matt entre les étapes, dans cet ordre (ordre mis à jour le 1er novembre à 16 h 50) : 0, 1, 2, 3, **3 quater (affichage sur ordinateur, prioritaire)**, 3 bis, 3 ter, 4, 5. La décision de Matt de 17 h 25 (section suivante) s'applique à toutes les étapes restantes.
+Lis d'abord CLAUDE.md, docs/ROADMAP.md, docs/DESIGN.md, docs/DECISIONS.md et docs/A_VERIFIER.md. Exécute les étapes 0 à 5 (V1), puis 6 à 9 (V2, décision de Matt, 19 h 43) et 10 (recette finale), sans attendre Matt entre les étapes, dans cet ordre (ordre mis à jour le 1er novembre à 16 h 50) : 0, 1, 2, 3, **3 quater (affichage sur ordinateur, prioritaire)**, 3 bis, 3 ter, **3 quinquies (une seule version végétale ajustable, décision de Matt, 19 h 31)**, 4, 5, puis la V2 : 6, 7, 8, 9, puis 10 (recette finale de tout le site). La décision de Matt de 17 h 25 (section suivante) s'applique à toutes les étapes restantes.
 
 ## Autorisations données par Matt pour toute cette suite
 
@@ -230,6 +230,40 @@ Objectif : sur ordinateur (dès 1 024 px, surtout dès 1 280 px), une mise en pa
     - un sous-agent « designer », qui ne lit pas le code, relit les captures à 1 440 et 1 920 px et liste ce qui fait encore « téléphone agrandi » ; corrige, puis refais une passe ;
     - téléphone : compare les captures à 375 px avant et après ; toute différence doit être voulue.
 
+## Étape 3 quinquies — S24e : une seule version végétale, qui s'ajuste (décision de Matt, 19 h 31)
+
+Matt ne veut plus deux versions (« de base » et « complétée »). Il veut **une seule version végétale**, que le visiteur peut ajuster : il force une valeur (plus de protéines, combler un manque), la recette s'adapte toute seule en quantités et en ingrédients, et tous les autres indicateurs se recalculent aussitôt. Ce mode remplace le sélecteur « Version de base / Version complétée » de l'étape 3 quater. Fais-le après les corrections 5 ter et 5 quater en cours, et avant l'étape 4, pour que la relecture porte sur l'interface finale.
+
+1. **Point de départ** : la recette végétale telle qu'on la mange, avec la protéine choisie (étape 3 ter). C'est la vue par défaut et celle des scores de référence.
+2. **Panneau « Ajuster la version végétale »** (dans l'onglet Nutrition, et en version courte dans la vue d'ensemble) :
+   - **Protéines** : un réglage de la quantité de la protéine principale (curseur ou boutons − / +, en grammes par portion), avec un bouton « Autant de protéines que le plat animal ». Garde la limite de portion plausible du point 5 ter : au-delà, ajoute un aliment protéique de la liste blanche.
+   - **Chaque manque** de « Ce qui reste à couvrir » a un interrupteur « Combler ». Le solveur existant (`lib/scoring/complements.ts`) ajoute les plus petites quantités d'aliments de la liste blanche, sans dépasser les maxima ni les limites de l'Anses. Si aucun aliment ne suffit : « ne se comble pas avec des aliments : complément ou aliment enrichi », sans dose, avec le renvoi vers un professionnel de santé.
+   - Deux boutons : « Tout combler » (l'ancienne version complétée) et « Revenir à la recette de base ».
+2 bis. **Égaliser (décision de Matt, 19 h 34)** : un choix exclusif « Égaliser avec le plat animal : aucun · les protéines · les calories ». Le reste se calcule tout seul.
+   - Protéines : la protéine principale est augmentée (ou diminuée), comme aujourd'hui, avec la limite de portion plausible.
+   - Calories : toute la portion végétale est mise à l'échelle pour apporter autant de kcal que le plat animal.
+   - Les interrupteurs « Combler » des autres manques restent indépendants et s'appliquent après l'égalisation.
+   - « Tout combler » = égaliser les protéines et combler tous les manques possibles.
+   - Une phrase dit toujours ce qui a été égalisé et de combien la portion a changé (« portion végétale ×1,4 pour autant de calories »).
+3. **Tout se recalcule en direct, dans le navigateur** : onglets, scores, vainqueurs, verdict, phrase sur le CO₂e, simulateur, prix, et la liste des ingrédients (ajouts et quantités changées mis en évidence, avec leur raison).
+   - Les données nécessaires (nutriments et impacts des ingrédients, des protéines candidates et de la liste blanche) sont livrées avec la page. Aucun appel réseau : `lib/scoring` est pur.
+   - Les plats Agribalyse gardent la règle du point 5 quater (« Autres étapes » des deux côtés).
+4. **Le score suit les ajustements (décision de Matt, 19 h 50 ; remplace la règle « comblé, non compté »)** : le score compare toujours le plat animal, qui ne change jamais, et la version végétale telle qu'elle est affichée. Quand le visiteur comble un manque ou augmente les protéines, l'indicateur peut passer de « plat animal » à « égalité », puis à « version végétale », et le score Nutrition évolue en direct.
+   - Transparence obligatoire : le verdict affiche les deux scores, par exemple « Recette de base : 4 sur 5 → ta version ajustée : 5 sur 5 ».
+   - La carte d'équivalence (point 4 bis) est toujours visible en haut tant qu'un ajustement est actif.
+   - Les scores partagés et les métadonnées de la page restent ceux de la recette de base.
+4 bis. **Carte d'équivalence en haut de la page (décision de Matt, 19 h 50)** : dès qu'un ajustement est actif, une carte bien visible sous le titre présente **la recette végétale équilibrée** qui compense le produit ou la recette animale.
+   - Forme : « 100 g de dorade ≈ 120 g de tofu ferme + 10 g de cerneaux de noix + 1 g de sel iodé ». Pour un plat : la liste complète des ingrédients végétaux en grammes, pour la recette et par portion, face au plat animal.
+   - Dessous, sur quoi porte l'équivalence (« mêmes protéines ; zinc et iode comblés ») et ce qui reste à couvrir (« sauf vitamine B12 et EPA + DHA : complément ou aliment enrichi, à voir avec un professionnel de santé », sans dose).
+   - « En tout point » seulement si tous les indicateurs nutritionnels comptés sont à égalité ou en faveur du végétal, et qu'il ne reste rien à couvrir ; sinon, écris « équivalent sur : … ».
+   - Bouton « Copier la recette ». La carte reste factuelle : c'est un exemple, pas un conseil (règle 6).
+5. **Bases de comparaison (décision de Matt, 19 h 34)** : seulement **« Par portion »** (par défaut) et **« Pour 100 g »**. Supprime « Pour 100 kcal » et « Pour 10 g de protéines » partout : l'égalisation du point 2 bis les remplace. Mets à jour la règle 4 de `CLAUDE.md` dans ce sens (« par portion et pour 100 g ; le visiteur peut égaliser les protéines ou les calories »), ainsi que `docs/DESIGN.md` et `/methodologie`.
+6. **État dans l'URL**, pour le partage : par exemple `?proteine=<code>&ajuste=proteines,zinc`. Supprime `?vue=complete`, avec une redirection vers l'équivalent `?ajuste=tout`.
+7. **Partout pareil** : pages de plats, pages d'aliments, `/recette`.
+8. **Ce qui devient obsolète** : le sélecteur « Version de base / Version complétée », et le point 0 bis de l'étape 4 (l'encadré des ajouts vit désormais dans le panneau d'ajustement de l'onglet Nutrition ; dans les autres onglets, une seule ligne « Version ajustée : +76 g de soja texturé, zinc comblé · Modifier dans Nutrition »).
+8 bis. **Préparer la V2 sans la faire (relectrice, 19 h 41)** : écris la fonction d'ajustement comme un ensemble de contraintes génériques `{ indicateur, sens (= ; ≥ ; ≤), cible }`, résolues par le programme linéaire existant. En V1, l'interface n'expose que les protéines, les calories et « Combler ». En V2 (voir `docs/IDEES_V2.md`), on ouvrira tous les indicateurs et le changement automatique d'alternative, sans tout réécrire.
+9. **Tests d'abord** : Vitest pour la fonction d'ajustement (réglage de protéines, égalisation des protéines ou des calories, interrupteurs, « Tout combler », retour à la base, score qui évolue, carte d'équivalence) ; e2e pour le panneau sur téléphone et sur ordinateur, avec la mise à jour des chiffres et de l'URL.
+
 ## Étape 4 — S25 : relecture automatisée (en dernier, pour relire aussi la version complétée) (remplace les tests humains et la relecture d'experts)
 
 0. **Avant la relecture : le gagnant de chaque ligne (demande de Matt, 19 h 09), tests d'abord.** Aujourd'hui, les tableaux ne signalent que les avantages du plat animal (« Avantage au plat animal »), jamais ceux du végétal, et on ne voit pas d'un coup d'œil qui fait mieux.
@@ -238,11 +272,11 @@ Objectif : sur ordinateur (dès 1 024 px, surtout dès 1 280 px), une mise en pa
    - À côté du nom de chaque indicateur, le sens en petit : « ↑ plus = mieux » ou « ↓ moins = mieux » (d'après `data/score_rules.json`). Les indicateurs sans sens défini (énergie…) n'ont pas de ✓.
    - Pas de code rouge/vert pour « bon/mauvais » : le vert est déjà la couleur du végétal, et le rouge/vert est la confusion de couleurs la plus fréquente. Le ✓ et le gras portent l'information, la couleur ne fait qu'aider.
    - Remplace la mention asymétrique « Avantage au plat animal » par ce marquage symétrique. La règle 3 reste respectée : ✓ côté animal et « Ce qui reste à couvrir ».
-0 bis. **Encadré des ajouts de la version complétée seulement dans l'onglet Nutrition (demande de Matt, 19 h 12).** Aujourd'hui, l'encadré « Version complétée : exemple d'ajouts possibles » (long texte, calories, liste des ajouts, ce qui reste à couvrir) s'affiche en haut de chaque onglet : sur téléphone, il repousse les données de l'Environnement ou de la Protection animale sous l'écran.
+0 bis. **[Remplacé par l'étape 3 quinquies, point 8.]** *Ancien texte, pour mémoire :* **Encadré des ajouts de la version complétée seulement dans l'onglet Nutrition (demande de Matt, 19 h 12).** Aujourd'hui, l'encadré « Version complétée : exemple d'ajouts possibles » (long texte, calories, liste des ajouts, ce qui reste à couvrir) s'affiche en haut de chaque onglet : sur téléphone, il repousse les données de l'Environnement ou de la Protection animale sous l'écran.
    - Encadré complet seulement dans l'onglet Nutrition.
    - Dans les autres onglets, et dans la vue d'ensemble, une seule ligne : « Version complétée : +76 g de protéines de soja texturées par portion, et 2 ajouts · Voir le détail dans Nutrition ». Le lien ouvre l'onglet Nutrition. Cette ligne explique pourquoi les chiffres ont changé.
    - Raccourcis l'explication à 2 phrases (« Le plat animal ne change pas. La version végétale reçoit autant de protéines que lui, puis ses autres manques sont comblés quand c'est possible. C'est un exemple, pas un conseil. ») et ajoute un lien « Pourquoi ? » vers `/methodologie`, où le texte long reste.
-1. **Tests de parcours** : fais tourner `npm run test:e2e` dans la CI, avec un serveur lancé dans le workflow. Parcours, en 375, 1 280 et 1 920 px : chercher un plat avec une faute de frappe, ouvrir chaque onglet, changer de protéine de remplacement, passer de la version de base à la version complétée, utiliser le simulateur, analyser une recette, signaler une erreur.
+1. **Tests de parcours** : fais tourner `npm run test:e2e` dans la CI, avec un serveur lancé dans le workflow. Parcours, en 375, 1 280 et 1 920 px : chercher un plat avec une faute de frappe, ouvrir chaque onglet, changer de protéine de remplacement, ajuster la version végétale (protéines, un manque, « Tout combler », retour à la base), utiliser le simulateur, analyser une recette, signaler une erreur.
 2. **Visiteurs simulés** : lance 5 sous-agents indépendants, qui ne lisent ni le code ni nos documents, chacun avec un profil : omnivore sceptique, personne de 70 ans sur petit téléphone, personne daltonienne, étudiant pressé, et (ajout de Matt) analyste sur grand écran d'ordinateur qui veut tout comparer d'un coup. Chacun parcourt le site en ligne avec Playwright (captures hors git) et rend la liste de ce qui l'a bloqué ou fait douter.
 3. **Experts simulés** : lance 2 sous-agents indépendants.
    - Le premier joue une diététicienne : il relit les recettes types, la règle de remplacement, le classement par proximité, les portions, `data/conseils.json` et le sens des indicateurs de `data/score_rules.json`.
@@ -280,6 +314,65 @@ Le plan Free de Supabase met le projet en pause après 7 jours d'inactivité, et
 - ajoute `.github/workflows/supabase-keep-alive.yml` : deux fois par semaine (cron) et à la main (`workflow_dispatch`), une requête en lecture seule sur une table publique, avec la clé publishable (secret GitHub `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`, jamais la clé secrète) ;
 - si le secret n'existe pas dans le dépôt, note dans `docs/JOURNAL.md` la commande exacte que Matt devra lancer (`gh secret set …`), sans afficher la valeur ;
 - une PR, comme les autres étapes.
+
+## V2 — à faire cette nuit, après la V1 (décision de Matt, 19 h 43)
+
+**Ne commence la V2 que lorsque toute la V1 (étapes 0 à 5) est fusionnée et en ligne.** Ainsi, si la V2 bloque, la V1 reste en ligne, relue et propre.
+
+Règles pour toute la V2 :
+- mêmes conditions de fusion que la V1, une PR par étape, tests d'abord ;
+- les tests e2e de la V1 doivent toujours passer : la V2 ne casse rien ;
+- l'état par défaut ne change pas (la recette telle qu'on la mange). Les réglages avancés sont dans une section repliée « Ajustement avancé » du panneau d'ajustement, pour que le panneau simple reste simple ;
+- si une étape de la V2 ne remplit pas les conditions après des tentatives raisonnables : ne la fusionne pas, écris pourquoi dans `docs/JOURNAL.md`, passe à l'étape suivante si elle n'en dépend pas, sinon arrête-toi ;
+- `docs/IDEES_V2.md` décrit les idées ; ce qui suit fait foi.
+
+## Étape 6 — V2a : tout indicateur réglable
+
+1. Dans l'onglet Nutrition, chaque ligne du tableau peut recevoir une contrainte : « = plat animal », « au moins », « au plus » ou une valeur choisie. Lipides, glucides, sucres, fibres, sel, acides gras saturés, vitamines, minéraux… La fonction générique de contraintes de l'étape 3 quinquies (point 8 bis) les résout avec le programme linéaire existant.
+2. **Ingrédients que le moteur peut ajouter ou doser** : la liste blanche élargie de façon traçable. Pour chaque aliment courant végétal (légumineuses, céréales complètes, oléagineux, graines, légumes, fruits, boissons enrichies), il faut nutriments et impacts, et respecter les règles 9 à 11. Chaque aliment a une quantité maximale par portion : celle de l'enquête INCA3 s'il y en a une, sinon un maximum éditorial écrit dans le fichier et sur `/methodologie`. Au plus 4 ajouts par recette. Jamais de dose de complément.
+3. Les ingrédients de base de la recette peuvent varier de ±50 % au plus. Le plat animal ne change jamais.
+4. **Impossible = le dire** : si les contraintes ne peuvent pas être tenues ensemble, affiche lesquelles se contredisent (« plus de protéines et moins de calories : impossible avec ces aliments ») et propose de relâcher l'une d'elles.
+5. Score : même règle que l'étape 3 quinquies, point 4 (le score suit la version affichée, avec « recette de base → ta version ajustée » et la carte d'équivalence).
+6. Calcul en moins de 200 ms sur téléphone (sinon, utilise un Web Worker).
+
+## Étape 7 — V2b : changement automatique d'alternative
+
+1. Quand les contraintes du visiteur ne sont pas tenables avec la protéine choisie, ou le sont mieux avec une autre, le moteur essaie toutes les protéines candidates (étape 3 ter) et propose la plus proche des souhaits. Exemple : lentilles + moins de glucides + plus de protéines → protéines de soja texturées.
+2. **Critères du choix : uniquement les souhaits nutritionnels du visiteur**, puis le classement de proximité de l'étape 3 ter en cas d'égalité. Jamais le CO₂e, le prix ou le score.
+3. Le changement est proposé et expliqué (« Pour tenir vos réglages, nous passons des lentilles aux protéines de soja texturées : 2 contraintes sur 3 n'étaient pas tenables avec les lentilles »). Le visiteur peut refuser et garder sa protéine.
+4. Tests : la règle de choix, l'absence de tout critère CO₂e, prix ou score (un test qui échoue si l'un d'eux est lu), le refus du visiteur.
+
+## Étape 8 — V2c : produits courants mis en avant
+
+Sur l'accueil, une rangée « Comparaisons du quotidien » : lait et boisson d'avoine ou de soja, beurre et margarine ou huile, steak haché et galette végétale, yaourt et dessert au soja, fromage râpé et alternative, œufs et tofu brouillé. Ce sont des pages d'aliments existantes, choisies par une règle écrite (les aliments animaux les plus consommés selon INCA3 si les données le permettent, sinon une liste éditoriale annoncée comme telle).
+
+## Étape 9 — V2d : relecture de la V2
+
+1. e2e : les réglages avancés et le changement d'alternative, sur téléphone et sur ordinateur, avec l'URL qui garde l'état.
+2. 3 visiteurs simulés (omnivore sceptique, personne de 70 ans, étudiant pressé), avec des tâches et des questions à réponse connue sur le panneau d'ajustement. Corrige ce qui n'est pas compris.
+3. Un sous-agent diététicienne relit 10 scénarios d'ajustement : quantités plausibles, ajouts sensés, aucune dose, mentions de prudence.
+4. Audit : recalcule indépendamment 10 scénarios et compare.
+5. Notes dans `docs/RETOURS.md`, puis bilan V2 dans `docs/JOURNAL.md`.
+
+## Étape 10 — Recette finale de tout le site (demande de Matt, 19 h 57)
+
+À faire en tout dernier, après la V2 (ou après la V1 si la V2 n'a pas pu être fusionnée), **sur le site en ligne** (https://veganizer.vercel.app) et pas seulement sur le build local. Objectif : vérifier que tout fonctionne ensemble, V1 et V2.
+
+1. **Non-régression** : toute la suite de tests (Vitest, pipeline, `test:db`, `test:db:scoring`, tous les e2e de la V1 et de la V2) passe sur la dernière version de `main`.
+2. **Invariants de logique, vérifiés automatiquement sur 30 pages tirées au hasard** (plats, plats Agribalyse, aliments), dans plusieurs états (protéines différentes, réglages, « Tout combler », pour 100 g) :
+   - le plat animal ne change jamais, quels que soient les réglages ;
+   - le score d'une catégorie est le même partout sur la page ;
+   - aucun « NaN », « undefined », 0 inventé ni carte vide ;
+   - chaque valeur affichée a une source sur `/sources` ;
+   - le choix ou le changement de protéine ne dépend jamais du CO₂e, du prix ou du score ;
+   - la carte d'équivalence n'écrit « en tout point » que s'il ne reste rien à couvrir ;
+   - jamais « vegan », « végétalien » ni « vérifiée » sur le site ;
+   - l'état de l'URL redonne la même page.
+3. **Audit de 30 valeurs** tirées au hasard sur le site en ligne, comparées aux fichiers officiels, et 5 scénarios d'ajustement recalculés à part.
+4. **Expérience utilisateur sur le site final** : les 5 visiteurs simulés de l'étape 4, plus l'analyste sur grand écran, refont leurs tâches et leurs questions de compréhension, cette fois avec le panneau d'ajustement, la carte d'équivalence et les réglages avancés. Objectif : toutes les questions comprises. Le sous-agent expérience utilisateur relit chaque page type à 375, 1 440 et 1 920 px.
+5. **Technique** : aucun lien cassé (interne), aucune erreur dans la console, pages 404 correctes, accessibilité WCAG AA (axe-core), et un score Lighthouse « Performance » sur téléphone noté dans le journal pour l'accueil, une page de plat et une page d'aliment.
+6. **Corrige et recommence** : chaque problème trouvé est corrigé (une PR, mêmes conditions de fusion), puis le point concerné est revérifié. **Au plus 3 passes.** Ce qui reste ensuite est écrit honnêtement dans le bilan, avec sa gravité.
+7. **Bilan final** dans `docs/JOURNAL.md` : ce qui marche, ce qui reste imparfait et pourquoi, les résultats chiffrés (tests, questions comprises, audit, Lighthouse). N'écris pas « parfait » : les vérifications automatiques ne remplacent pas de vrais visiteurs.
 
 ## Fin
 

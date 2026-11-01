@@ -26,7 +26,7 @@ function input(over: Partial<ScoreInput> = {}): ScoreInput {
     row("life_days_farmed", "animalImpacts", null, 0, true),
   ];
   return {
-    rows: { perServing: rows, per100kcal: rows, per10gProtein: rows.map((r) => (r.id === "protein_g" ? row("protein_g", "nutrients", 10, 10) : r)) },
+    rows: { perServing: rows, per100g: rows.map((r) => (r.id === "protein_g" ? row("protein_g", "nutrients", 10, 10) : r)) },
     iarc: [{ entry: ROUGE, animalGrams: 125, vegetalGrams: 0, animalFoods: ["bœuf"], vegetalFoods: [], animalItems: [{ name: "bœuf", grams: 125 }], vegetalItems: [] }],
     price: { animal: null, vegetal: null, sourceIds: [], animalIngredients: [], vegetalIngredients: [] },
     climateCost: [{ year: 2025, animalEur: 1.29, vegetalEur: 0.17, eurPerKg: 0.256, derived: false, sourceId: "vac-2025" }],
@@ -68,8 +68,8 @@ describe("scorePair", () => {
   it("does not count a price that covers less than 95 % of the mass", () => {
     const p = scorePair(input({
       price: {
-        animal: { value: 3, low: null, high: null, coverage: 0.5, per100kcal: null, per10gProtein: null, firstObservedOn: null, lastObservedOn: null },
-        vegetal: { value: 1, low: null, high: null, coverage: 1, per100kcal: null, per10gProtein: null, firstObservedOn: null, lastObservedOn: null },
+        animal: { value: 3, low: null, high: null, coverage: 0.5, per100g: null, firstObservedOn: null, lastObservedOn: null },
+        vegetal: { value: 1, low: null, high: null, coverage: 1, per100g: null, firstObservedOn: null, lastObservedOn: null },
         sourceIds: [], animalIngredients: [], vegetalIngredients: [],
       },
     }));
@@ -83,20 +83,20 @@ describe("scorePair", () => {
 
   it("counts a verdict on the ingredients that differ even when the displayed coverage is low", () => {
     const rows = [row("fiber_g", "nutrients", 2, 9, true, false)];
-    const p = scorePair(input({ rows: { perServing: rows, per100kcal: rows, per10gProtein: rows } }));
+    const p = scorePair(input({ rows: { perServing: rows, per100g: rows } }));
     expect(p.verdict.categories[0].indicators.find((i) => i.id === "fiber_g")?.outcome).toBe("vegetal");
   });
 
   it("gives no point when the ranges overlap (« < x » values)", () => {
     const r = { ...row("salt_g", "nutrients", null, 0.4), verdictRanges: { animal: { low: 0.2, high: 1.5 }, vegetal: { low: 0.4, high: 0.4 } } };
-    const p = scorePair(input({ rows: { perServing: [r], per100kcal: [r], per10gProtein: [r] } }));
+    const p = scorePair(input({ rows: { perServing: [r], per100g: [r] } }));
     expect(p.verdict.categories[0].indicators.find((i) => i.id === "salt_g")?.outcome).toBe("egal");
   });
 
   it("follows the unit of the Nutrition tab", () => {
     expect(s.nutritionByBasis.perServing.animalPoints).toBe(1);
-    expect(s.nutritionByBasis.per10gProtein.animalPoints).toBe(0);
-    expect(s.nutritionByBasis.per10gProtein.winner).toBe("vegetal");
+    expect(s.nutritionByBasis.per100g.animalPoints).toBe(0);
+    expect(s.nutritionByBasis.per100g.winner).toBe("vegetal");
   });
 });
 

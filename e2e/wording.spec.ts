@@ -1,7 +1,7 @@
 // Decision of Matt (17 h 25): no reviewed pair exists, the word « vérifiée » must never come back.
 import { expect, test } from "@playwright/test";
 
-const PAGES = ["/", "/compare/boeuf-bourguignon", "/compare/boeuf-bourguignon?vue=complete", "/aliment/36004", "/aliment/6255", "/recette", "/methodologie", "/a-propos", "/sources"];
+const PAGES = ["/", "/compare/boeuf-bourguignon", "/compare/boeuf-bourguignon?ajuste=tout", "/aliment/36004", "/aliment/6255", "/recette", "/methodologie", "/a-propos", "/sources"];
 
 for (const path of PAGES) {
   test(`no « vérifiée » on ${path}`, async ({ page }) => {

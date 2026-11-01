@@ -2,6 +2,7 @@
 
 import { useId, useMemo, useRef, useState } from "react";
 import { PairView } from "@/components/compare/PairView";
+import { useAdjust } from "@/components/compare/useAdjust";
 import { useQueryParam } from "@/components/compare/useQueryParam";
 import { buildAutoPage, rankedCandidates, type AutoInput, type CandidateRow } from "@/lib/compare/auto";
 import { parseSharedRecipe } from "@/lib/compare/recipe-link";
@@ -124,6 +125,7 @@ export function RecipeBuilder() {
     return ranked.length ? { input, defaultCode: ranked[0].code } : null;
   }, [data, draft]);
   const protein = auto && urlProtein && auto.input.candidates.some((c) => c.code === urlProtein) ? urlProtein : auto?.defaultCode ?? null;
+  const adjust = useAdjust(auto?.input ?? null, protein);
 
   const result = useMemo(() => {
     if (!data) return null;
@@ -292,7 +294,16 @@ export function RecipeBuilder() {
           useUrl={false}
           viewInUrl
           base="recette"
-          {...(result.mode === "auto" && auto && protein ? { variant: protein, onVariantChange: (c: string) => setUrlProtein(c === auto.defaultCode ? null : c) } : {})}
+          {...(result.mode === "auto" && auto && protein
+            ? {
+                variant: protein,
+                onVariantChange: (c: string) => setUrlProtein(c === auto.defaultCode ? null : c),
+                adjusted: adjust.adjusted,
+                adjustRequest: adjust.request,
+                onAdjust: adjust.setRequest,
+                gaps: adjust.gaps,
+              }
+            : {})}
         />
       )}
     </div>

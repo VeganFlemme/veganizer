@@ -413,3 +413,11 @@ Recettes (règles appliquées à **toutes** les paires, y compris les 10 premiè
 - [ ] **Plats Agribalyse, impact publié gardé** : ingrédient = contribution 3.2 ÷ masse par kg de plat ; « Autres étapes » ajoutées des deux côtés (`fixedImpacts`). Vérifié : hachis parmentier 1,20 kg CO₂e pour 100 g, croissant au jambon 0,46, endives au jambon 0,39 = valeurs publiées. Appliqué aussi aux 7 paires à recette officielle (part « plat » de la recette ; accompagnements calculés ingrédient par ingrédient). Les trois sous-parties du changement climatique n'ont pas de détail par ingrédient : « donnée manquante » côté animal pour ces plats (non comptées).
 - [ ] **Ingrédient animal sans code** (bouillon de viande, abats, mayonnaise, moules avec coquille…, et par prudence pain à hamburger, croûtons et sauce au curry) : plat exclu (`unmapped_is_animal` dans `pipeline/agribalyse_recipe_ingredients.csv`). 81 plats retenus ; lasagnes à la bolognaise retirées des paires à recette officielle (bouillon), 7 paires restent.
 - [ ] **Nos recettes types** : étapes propres au plat non comptées, écart en % un peu surestimé (dit sur `/methodologie`).
+
+## S24e — Une version végétale ajustable (étape 3 quinquies)
+
+- [ ] **Égalisation des protéines vers le bas** : quand la version végétale a plus de protéines, la protéine choisie est diminuée (jamais sous 0). À valider.
+- [ ] **Calories égalisées** : toute la portion végétale est mise à l'échelle, accompagnements compris (pas seulement la protéine). Alternative : n'ajuster que la protéine.
+- [ ] **Manques proposés à « Combler »** : nutriments « plus = mieux » où la recette de départ a moins que le plat animal (fourchettes comparées) ; B12, vitamine D et EPA + DHA y figurent même si aucun aliment de la liste ne les comble (le panneau le dit alors).
+- [ ] **Réglage à la main** : pas de 10 g par portion ; le réglage annule l'égalisation des protéines.
+- [ ] **Rapprochement avec l'étape 4 en cours** (branche `roadmap/s25`) : les remarques des relectures (docs/RETOURS.md) ont porté sur l'interface d'avant cette étape ; les points sur la « version complétée » (V4, V12) sont à revoir sur la nouvelle interface.

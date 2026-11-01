@@ -123,10 +123,11 @@ describe("components/ui", () => {
     expect(h).toContain("Avantage au plat animal");
   });
 
-  it("UnitSwitch: three units", () => {
-    const h = html(<UnitSwitch value="per100kcal" onChange={noop} />);
-    expect(h.match(/aria-pressed/g)).toHaveLength(3);
-    expect(h).toContain("10 g prot.");
+  it("UnitSwitch: per serving and per 100 g only", () => {
+    const h = html(<UnitSwitch value="per100g" onChange={noop} />);
+    expect(h.match(/aria-pressed/g)).toHaveLength(2);
+    expect(h).toContain("100 g");
+    expect(h).not.toContain("kcal");
   });
 
   it("AnimalBetterBox: advice and sources, or nothing to report", () => {
@@ -178,7 +179,7 @@ describe("components/ui", () => {
   });
 
   it("Simulator: frequency and duration, missing data written out", () => {
-    const amount = (v: number): Amount => ({ perServing: v, lowPerServing: v, highPerServing: v, per100kcal: null, per10gProtein: null, massCoverage: 1, worstDqr: null, sourceIds: [] });
+    const amount = (v: number): Amount => ({ perServing: v, lowPerServing: v, highPerServing: v, per100g: null, massCoverage: 1, worstDqr: null, sourceIds: [] });
     const t = (co2: number): DishTotals => ({ totalGrams: 400, servings: 1, kcalPerServing: null, proteinPerServing: null, nutrients: {}, impacts: { ghg_100y_kgco2e: amount(co2) }, animalImpacts: {} });
     const h = html(<Simulator sim={{ animal: t(5), vegetal: t(1) }} dishName="A" plantName="V" factors={[]} rules={[]} animalsCounted={false} />);
     expect(h).toContain("1×/mois");
@@ -188,7 +189,7 @@ describe("components/ui", () => {
   });
 
   it("Simulator: animals spared written as a low estimate", () => {
-    const amount = (v: number): Amount => ({ perServing: v, lowPerServing: v, highPerServing: v, per100kcal: null, per10gProtein: null, massCoverage: 1, worstDqr: null, sourceIds: [] });
+    const amount = (v: number): Amount => ({ perServing: v, lowPerServing: v, highPerServing: v, per100g: null, massCoverage: 1, worstDqr: null, sourceIds: [] });
     const t = (co2: number, animals: number): DishTotals => ({ totalGrams: 400, servings: 1, kcalPerServing: null, proteinPerServing: null, nutrients: {}, impacts: { ghg_100y_kgco2e: amount(co2) }, animalImpacts: { animals_killed_land: amount(animals) } });
     const h = html(<Simulator sim={{ animal: t(5, 0.000593), vegetal: t(1, 0) }} dishName="A" plantName="V" factors={[]} rules={[]} animalsCounted />);
     expect(h).toContain("au moins 0,03"); // 0.000593 × 52 = 0.0308

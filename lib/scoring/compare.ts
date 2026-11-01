@@ -1,7 +1,8 @@
 import { amountBounds, judgeRanges } from "./ranges";
 import type { Amount, DishTotals } from "./types";
 
-export type Basis = "perServing" | "per100kcal" | "per10gProtein";
+/** Bases of comparison (decision of Matt, 19 h 34): per serving and per 100 g of dish. */
+export type Basis = "perServing" | "per100g";
 export type Group = "nutrients" | "impacts" | "animalImpacts";
 
 /** indicators.higher_is_better, plus the same flag for the nutrients compared. */
@@ -78,8 +79,7 @@ export interface CompareOptions {
   /**
    * Totals the verdicts rest on, e.g. the two dishes without their identical ingredients
    * (verdictTotals). Displayed values stay those of `animal` and `vegetal`. Per serving only:
-   * per 100 kcal or per 10 g of protein the identical ingredients no longer cancel out, so this
-   * option is ignored on those bases.
+   * per 100 g the identical ingredients no longer cancel out, so this option is ignored there.
    */
   verdict?: { animal: DishTotals; vegetal: DishTotals };
 }
