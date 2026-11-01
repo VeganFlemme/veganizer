@@ -19,9 +19,11 @@ import { UNIT_OPTIONS, UnitSwitch } from "@/components/ui/UnitSwitch";
 import { VariantSwitch, type VariantId } from "@/components/ui/VariantSwitch";
 import { VerdictPanel } from "@/components/ui/VerdictPanel";
 import { animalBetterTitle, CLIMATE_MAIN, COVERAGE_WARNING } from "@/lib/compare/config";
-import { co2Summary, isViewId, scaleSentence, VIEWS, type ViewId } from "@/lib/compare/views";
+import { additionLine, co2Summary, completedSentence, isViewId, scaleSentence, VIEWS, type ViewId } from "@/lib/compare/views";
+import complementsFile from "@/data/complements.json";
+import scoreRulesFile from "@/data/score_rules.json";
 import type { CategoryId, CategoryScoreView } from "@/lib/compare/scores";
-import type { CriterionRow, DishView, IngredientPrice, PairPageModel, PriceSide, SideValue, VariantView } from "@/lib/compare/view";
+import type { CompletedVariantView, CriterionRow, DishView, IngredientPrice, PairPageModel, PriceSide, SideValue, VariantView } from "@/lib/compare/view";
 import type { Basis } from "@/lib/scoring";
 import { formatEur, formatForUnit, formatInt, formatPerServing, formatPercent, formatValue, MISSING, NBSP, signedGap } from "@/lib/format";
 import { useQueryParam } from "./useQueryParam";
@@ -535,6 +537,56 @@ function EconomyTab({ v, animalName }: { v: VariantView; animalName: string }) {
   );
 }
 
+const NUTRIENT_LABELS: Record<string, string> = Object.fromEntries(
+  scoreRulesFile.categories.flatMap((c) => c.indicators.map((i) => [i.id, i.label] as const)),
+);
+
+function ComplementList({ title, side, series }: { title: string; side: CompletedVariantView["plant"]; series: "animal" | "plant" }) {
+  return (
+    <div className="flex flex-col gap-1">
+      <h3 className="m-0 flex items-center gap-2 text-[15px] font-extrabold">
+        <Dot series={series} /> {title}
+      </h3>
+      {side.additions.length === 0 ? (
+        <p className="m-0 text-[14px] text-ink-2">Aucun ajout.</p>
+      ) : (
+        <ul className="m-0 flex list-none flex-col gap-1 p-0 text-[14px]">
+          {side.additions.map((a) => (
+            <li key={a.code}>
+              {additionLine(a, NUTRIENT_LABELS)}
+              {a.kind === "enrichi" && " — aliment enrichi"}. <span className="text-[13px] text-ink-3">{a.justification}</span>
+            </li>
+          ))}
+        </ul>
+      )}
+      {side.open.length > 0 && (
+        <p className="m-0 text-[13px] text-ink-3">
+          Non comblé par un aliment de la liste : {side.open.map((n) => (NUTRIENT_LABELS[n] ?? n).toLowerCase()).join(", ")} (voir le conseil dans l’encadré, sans dose).
+        </p>
+      )}
+    </div>
+  );
+}
+
+/** « Avec compléments »: what was added to each dish, and why (data/complements.json). */
+function ComplementsPanel({ c }: { c: CompletedVariantView }) {
+  return (
+    <Panel title="Avec compléments : ce qui a été ajouté" className="mt-3">
+      <p className="m-0 text-[14px] leading-normal text-ink-2">
+        Les plus petites quantités d’aliments courants (puis enrichis) d’une liste relue qui comblent, par portion, les nutriments où l’autre plat fait mieux,
+        sans dépasser les limites de sécurité de l’ANSES. {complementsFile.dailyNeeds.text}
+      </p>
+      <div className="grid gap-4 md:grid-cols-2">
+        <ComplementList title="Version végétale" side={c.plant} series="plant" />
+        <ComplementList title="Plat animal" side={c.animal} series="animal" />
+      </div>
+      <p className="m-0 text-[13px] text-ink-3">
+        Sources : valeurs Ciqual et Agribalyse des aliments ajoutés ; conseils et limites de l’ANSES (<Link href="/methodologie#complements">méthode</Link>).
+      </p>
+    </Panel>
+  );
+}
+
 // ---------------------------------------------------------------------------
 export function PairView({
   model,
@@ -570,8 +622,10 @@ export function PairView({
   };
   const realistic = model.variants[variant];
   const scaled = model.equalProtein[variant];
-  // « À protéines égales »: the whole page (tabs, scores, simulator) uses the scaled plant version.
-  const v = view === "proteines" && scaled ? scaled.view : realistic;
+  const completed = model.completed[variant];
+  // Derived views: the whole page (tabs, scores, simulator) uses the scaled or completed dishes.
+  const v = view === "proteines" && scaled ? scaled.view : view === "complements" && completed ? completed.view : realistic;
+  const views = VIEWS.filter((x) => x.id === "portion" || (x.id === "proteines" && scaled) || (x.id === "complements" && completed));
   if (!v || !realistic) return <p className="px-5">Alternative indisponible.</p>;
   const co2Of = (x: VariantView | undefined) => x?.rows.perServing.find((r) => r.id === CLIMATE_MAIN)?.reductionPercent ?? null;
   const co2Line = co2Summary(co2Of(realistic), co2Of(scaled?.view));
@@ -599,9 +653,10 @@ export function PairView({
             )}
             <div className="flex flex-col gap-2 md:self-start">
               <VariantSwitch value={variant} available={available} onChange={setVariant} />
-              {scaled && <Segmented tone="dark" label="Base de comparaison" options={VIEWS} value={view} onChange={setView} />}
+              {views.length > 1 && <Segmented tone="dark" label="Base de comparaison" options={views} value={view} onChange={setView} />}
               {view === "proteines" && scaled && <p className="m-0 text-[14px] leading-normal text-on-dark-1">{scaleSentence(scaled, animalProtein)} Protéines non comptées dans le score (égales par construction).</p>}
               {co2Line && <p className="m-0 text-[14px] font-semibold text-on-dark-1">{co2Line}</p>}
+              {view === "complements" && completed && <p className="m-0 text-[14px] font-semibold text-on-dark-1">{completedSentence(co2Of(completed.view))}</p>}
             </div>
           </div>
           <VerdictPanel verdict={v.scores.verdict} className="hidden md:flex" />
@@ -610,6 +665,7 @@ export function PairView({
       <TabBar tabs={TABS} active={tab} onChange={setTab} base={base} label="Catégories de la comparaison" />
       <div className="mx-auto w-full max-w-[1200px] px-5 pb-8 pt-5 md:px-8 md:pt-7">
         <Legend />
+        {view === "complements" && completed && <ComplementsPanel c={completed} />}
         {TABS.map((t) => (
           <div key={t.id} role="tabpanel" id={panelId(base, t.id)} aria-labelledby={tabId(base, t.id)} hidden={t.id !== tab} tabIndex={-1} className="pt-3">
             {t.id === tab &&

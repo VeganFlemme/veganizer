@@ -1,5 +1,6 @@
 import "server-only";
 import { cacheLife } from "next/cache";
+import complementsFile from "@/data/complements.json";
 import conseilsFile from "@/data/conseils.json";
 import santeFile from "@/data/sante.json";
 import { createPublicClient } from "@/lib/supabase/public";
@@ -7,7 +8,12 @@ import type { Conseil } from "@/lib/scoring";
 import { CIQUAL_SOURCE, CLIMATE_COST_YEARS, CLIMATE_INDICATORS, CLIMATE_MAIN } from "./config";
 import { buildFoodPage, displayName, type FoodPageModel } from "./food";
 import type { RecipeData, RecipeFood, SubstitutionRule } from "./recipe";
-import { buildPairPage, reductionPercent, type IarcEntry, type PairPageModel, type PnnsEntry, type RawPairData } from "./view";
+import { buildPairPage, reductionPercent, type ComplementSpec, type IarcEntry, type PairPageModel, type PnnsEntry, type RawPairData } from "./view";
+
+// « Avec compléments » whitelist (data/complements.json): its foods are loaded with every page.
+const COMPLEMENTS = complementsFile.foods as ComplementSpec[];
+const COMPLEMENT_CODES = COMPLEMENTS.map((c) => c.code);
+const COMPLEMENT_LIMITS = Object.fromEntries(complementsFile.limits.map((l) => [l.nutrient, l.perDay]));
 
 // Supabase caps a response at 1000 rows: a full page means rows may be missing.
 const MAX_ROWS = 1000;
@@ -104,7 +110,7 @@ export async function getPairPage(slug: string): Promise<PairPageModel | null> {
   );
   const dishIds = [animal.id, ...vegetal.map((v) => v.id)];
   const ingredients = rows(await db.from("dish_ingredients").select("dish_id, food_code, grams, note").in("dish_id", dishIds), "dish_ingredients");
-  const codes = [...new Set(ingredients.map((i) => i.food_code))];
+  const codes = [...new Set([...ingredients.map((i) => i.food_code), ...COMPLEMENT_CODES])];
   const foods = rows(await db.from("foods").select("code, name_fr, is_animal, animal_category, ciqual_code, iarc_meat, food_subgroup").in("code", codes), "foods");
   const nutrientCodes = [...new Set(foods.map((f) => f.ciqual_code ?? f.code))];
 
@@ -180,6 +186,8 @@ export async function getPairPage(slug: string): Promise<PairPageModel | null> {
     iarc: santeFile.iarc as IarcEntry[],
     pnns: santeFile.pnns as PnnsEntry[],
     eatLancet: santeFile.eatLancet as PnnsEntry[],
+    complements: COMPLEMENTS,
+    complementLimits: COMPLEMENT_LIMITS,
   };
   return buildPairPage(raw);
 }
@@ -295,7 +303,7 @@ export async function getRecipeData(
 ): Promise<(RecipeData & { substitutions: SubstitutionRule[]; recipeFoods: RecipeFood[]; cookingYields: { raw_code: string; yield_pct: number }[] }) | null> {
   const db = createPublicClient();
   const subs = rows(await db.from("ingredient_substitutions").select("priority, match_type, match_value, to_code, ratio, ratio_basis, justification"), "ingredient_substitutions");
-  const codes = [...new Set([...requested.slice(0, MAX_RECIPE_CODES), ...subs.map((s) => s.to_code)])];
+  const codes = [...new Set([...requested.slice(0, MAX_RECIPE_CODES), ...subs.map((s) => s.to_code), ...COMPLEMENT_CODES])];
   const foods = rows(await db.from("foods").select("code, name_fr, is_animal, animal_category, ciqual_code, iarc_meat, food_subgroup").in("code", codes), "foods");
   if (foods.length === 0) return null;
   const nutrientCodes = [...new Set(foods.map((f) => f.ciqual_code ?? f.code))];
@@ -346,5 +354,7 @@ export async function getRecipeData(
     iarc: santeFile.iarc as IarcEntry[],
     pnns: santeFile.pnns as PnnsEntry[],
     eatLancet: santeFile.eatLancet as PnnsEntry[],
+    complements: COMPLEMENTS,
+    complementLimits: COMPLEMENT_LIMITS,
   };
 }

@@ -358,3 +358,11 @@ Recettes (règles appliquées à **toutes** les paires, y compris les 10 premiè
 - [ ] **Âges d'abattage** : rien de nouveau de citable ; la fiche du ministère dit « vers l'âge de 35 jours » pour le poulet standard, contre 38 jours retenus (label rouge, colonne « produit courant ») : garder 38 ?
 - [ ] **Animaux par portion** « pour 1 000 portions » quand la valeur est inférieure à 1 (onglet Protection animale).
 - [ ] **EAT-Lancet 2025** : le rapport annoncé par Matt n'est pas dans `~/Downloads` (seuls les articles de Mood et al. y sont) : à déposer dans `pipeline/raw/eat-lancet/`.
+
+## S24 — Version végétale complétée
+
+- [ ] **Liste blanche** (`data/complements.json`) et **quantités maximales par portion** (lin 10 g, noix 15 g, sésame 10 g, amandes 20 g, boisson au soja enrichie 250 g, sel iodé 1 g) : choix éditoriaux à valider par un·e diététicien·ne. Pas d'aliment enrichi en B12 dans Ciqual avec impacts Agribalyse (seule une boisson énergisante) : B12 et EPA + DHA restent des conseils.
+- [ ] **Limites de sécurité** (ANSES, page du 21/02/2025) : calcium 2 500 mg/j, fer 40 mg/j (valeur d'apport sans risque EFSA 2024), zinc 25 mg/j (tableau peu lisible sur la page, à vérifier), iode 600 µg/j, vitamine D 100 µg/j ; appliquées au total d'une portion.
+- [ ] **« Les besoins se couvrent sur la journée »** : la page ANSES ne le dit pas en ces termes ; nous citons que les références sont des apports par jour et que la LSS est « l'apport journalier chronique maximal ». L'avis ANSES 2019 sur les végétariens ne contient pas non plus de phrase « pas plat par plat ». Formulation à valider.
+- [ ] **Sel iodé** : il comble l'iode mais augmente le sel (compté) ; alternative : le retirer de la liste.
+- [ ] **Exemple** (bœuf bourguignon, version maison) : 10 g de lin, 15 g de noix et 10 g de sésame par portion comblent protéines, fer et ALA ; le zinc reste non comblé. Côté plat animal, le lin comble l'écart de fibres.
