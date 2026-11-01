@@ -343,7 +343,7 @@ export interface PairPageModel {
 // ---------------------------------------------------------------------------
 const num = (x: number | string | null | undefined): number | null => (x == null ? null : Number(x));
 
-function scoringData(raw: RawPairData): ScoringData {
+export function scoringData(raw: RawPairData): ScoringData {
   const foods: Record<string, FoodData> = {};
   const byCode = new Map(raw.foods.map((f) => [f.code, f]));
   for (const f of raw.foods) {
@@ -444,7 +444,7 @@ export function reductionPercent(animal: number | null, vegetal: number | null):
   return ((animal - vegetal) / Math.abs(animal)) * 100;
 }
 
-function rowsFor(animal: DishTotals, vegetal: DishTotals, raw: RawPairData, basis: Basis): CriterionRow[] {
+export function rowsFor(animal: DishTotals, vegetal: DishTotals, raw: RawPairData, basis: Basis): CriterionRow[] {
   const dirs = directions(raw);
   const cmp = compareDishes(animal, vegetal, { directions: dirs, conseils: raw.conseils, basis });
   const meta = new Map([...raw.nutrients, ...raw.indicators].map((m) => [m.id, m]));

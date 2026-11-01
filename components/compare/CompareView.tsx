@@ -17,7 +17,7 @@ const WELFARE_CITATION = "Welfare Footprint Institute — Schuck-Paim & Alonso, 
 const VARIANT_LABEL: Record<Variant, string> = { maison: "Fait maison", commerce: "Du commerce" };
 
 // ---------------------------------------------------------------------------
-function Toggle<T extends string>({
+export function Toggle<T extends string>({
   label,
   options,
   value,
@@ -47,7 +47,7 @@ function Toggle<T extends string>({
   );
 }
 
-function SourceBadges({ ids, sources }: { ids: string[]; sources: Record<string, SourceRow> }) {
+export function SourceBadges({ ids, sources }: { ids: string[]; sources: Record<string, SourceRow> }) {
   if (ids.length === 0) return null;
   return (
     <span className="flex flex-wrap gap-1">
@@ -122,7 +122,7 @@ function sourceLabel(id: string): string {
   return SOURCE_LABELS[id] ?? id;
 }
 
-function Rows({
+export function Rows({
   rows,
   sources,
   animalName,
@@ -173,7 +173,7 @@ function Rows({
   );
 }
 
-function Card({ id, title, children }: { id: string; title: string; children: ReactNode }) {
+export function Card({ id, title, children }: { id: string; title: string; children: ReactNode }) {
   return (
     <section aria-labelledby={id} className="flex flex-col gap-2 rounded-xl border border-zinc-300 p-4">
       <h2 id={id} className="text-xl font-semibold">
@@ -184,7 +184,7 @@ function Card({ id, title, children }: { id: string; title: string; children: Re
   );
 }
 
-function Soon({ children }: { children: ReactNode }) {
+export function Soon({ children }: { children: ReactNode }) {
   return (
     <p className="rounded-lg bg-zinc-100 px-3 py-2 text-sm text-zinc-800">
       <strong>Bientôt.</strong> {children}

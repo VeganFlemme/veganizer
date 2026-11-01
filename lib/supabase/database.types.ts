@@ -288,6 +288,7 @@ export type Database = {
           is_published: boolean
           kind: string
           name_fr: string
+          name_norm: string | null
           prep_minutes: number | null
           servings: number
           slug: string
@@ -300,6 +301,7 @@ export type Database = {
           is_published?: boolean
           kind: string
           name_fr: string
+          name_norm?: string | null
           prep_minutes?: number | null
           servings?: number
           slug: string
@@ -312,6 +314,7 @@ export type Database = {
           is_published?: boolean
           kind?: string
           name_fr?: string
+          name_norm?: string | null
           prep_minutes?: number | null
           servings?: number
           slug?: string
@@ -344,6 +347,42 @@ export type Database = {
           status?: string
         }
         Relationships: []
+      }
+      food_alternatives: {
+        Row: {
+          animal_code: string
+          plant_code: string
+          rank: number
+          rule: string
+        }
+        Insert: {
+          animal_code: string
+          plant_code: string
+          rank: number
+          rule: string
+        }
+        Update: {
+          animal_code?: string
+          plant_code?: string
+          rank?: number
+          rule?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "food_alternatives_animal_code_fkey"
+            columns: ["animal_code"]
+            isOneToOne: false
+            referencedRelation: "foods"
+            referencedColumns: ["code"]
+          },
+          {
+            foreignKeyName: "food_alternatives_plant_code_fkey"
+            columns: ["plant_code"]
+            isOneToOne: false
+            referencedRelation: "foods"
+            referencedColumns: ["code"]
+          },
+        ]
       }
       food_impact_ingredients: {
         Row: {
@@ -500,6 +539,7 @@ export type Database = {
           is_animal: boolean
           name_en: string | null
           name_fr: string
+          name_norm: string | null
           source_id: string | null
           state: string | null
           state_inferred: boolean
@@ -514,6 +554,7 @@ export type Database = {
           is_animal?: boolean
           name_en?: string | null
           name_fr: string
+          name_norm?: string | null
           source_id?: string | null
           state?: string | null
           state_inferred?: boolean
@@ -528,6 +569,7 @@ export type Database = {
           is_animal?: boolean
           name_en?: string | null
           name_fr?: string
+          name_norm?: string | null
           source_id?: string | null
           state?: string | null
           state_inferred?: boolean
@@ -806,6 +848,21 @@ export type Database = {
           },
         ]
       }
+      search_synonyms: {
+        Row: {
+          expansion: string
+          term: string
+        }
+        Insert: {
+          expansion: string
+          term: string
+        }
+        Update: {
+          expansion?: string
+          term?: string
+        }
+        Relationships: []
+      }
       sources: {
         Row: {
           accessed_on: string | null
@@ -1039,8 +1096,21 @@ export type Database = {
       }
     }
     Functions: {
+      f_unaccent: { Args: { "": string }; Returns: string }
+      search_catalog: {
+        Args: { max_results?: number; q: string }
+        Returns: {
+          has_alternatives: boolean
+          is_animal: boolean
+          kind: string
+          name_fr: string
+          ref: string
+          score: number
+        }[]
+      }
       show_limit: { Args: never; Returns: number }
       show_trgm: { Args: { "": string }; Returns: string[] }
+      unaccent: { Args: { "": string }; Returns: string }
     }
     Enums: {
       [_ in never]: never

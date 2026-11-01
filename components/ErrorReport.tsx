@@ -3,7 +3,19 @@
 import { useActionState, useId, useState } from "react";
 import { reportError, type ReportState } from "@/app/actions";
 
-export function ErrorReport({ page }: { page: string }) {
+export function ErrorReport({
+  page,
+  title = "Un chiffre vous semble faux ?",
+  intro = "La fiabilité est notre priorité : chaque signalement est relu.",
+  buttonLabel = "Signaler une erreur",
+  defaultMessage = "",
+}: {
+  page: string;
+  title?: string;
+  intro?: string;
+  buttonLabel?: string;
+  defaultMessage?: string;
+}) {
   const [open, setOpen] = useState(false);
   const [state, action, pending] = useActionState<ReportState, FormData>(reportError, { status: "idle", message: "" });
   const id = useId();
@@ -11,16 +23,16 @@ export function ErrorReport({ page }: { page: string }) {
   return (
     <section aria-labelledby={`${id}-t`} className="flex flex-col gap-3 rounded-xl border border-zinc-300 p-4">
       <h2 id={`${id}-t`} className="text-lg font-semibold">
-        Un chiffre vous semble faux ?
+        {title}
       </h2>
-      <p className="text-sm text-zinc-800">La fiabilité est notre priorité : chaque signalement est relu.</p>
+      <p className="text-sm text-zinc-800">{intro}</p>
       {!open ? (
         <button
           type="button"
           onClick={() => setOpen(true)}
           className="self-start rounded-lg border border-zinc-500 px-4 py-2 font-medium hover:bg-zinc-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-700"
         >
-          Signaler une erreur
+          {buttonLabel}
         </button>
       ) : state.status === "ok" ? (
         <p role="status" className="text-emerald-800">{state.message}</p>
@@ -33,6 +45,7 @@ export function ErrorReport({ page }: { page: string }) {
           <textarea
             id={`${id}-m`}
             name="message"
+            defaultValue={defaultMessage}
             required
             minLength={5}
             maxLength={2000}

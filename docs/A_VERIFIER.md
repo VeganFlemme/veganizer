@@ -137,3 +137,12 @@ Tous les critères sont respectés.
 - [ ] **EAT-Lancet 2025** : repères recopiés de la figure 01, p. 11 du *Summary Report* (EAT Forum), lus par position dans le PDF (pas de rendu image disponible) : bœuf, porc ou agneau 15 g/j (0-30), volaille 30 (0-60), poisson et fruits de mer 30 (0-100), œufs 15 (0-25). Vérifier sur la figure. À recouper avec l'article du Lancet.
 - [ ] **Non comparés** : produits laitiers 250 g/j (0-500) et légumineuses 75 g/j (0-150), car le résumé ne dit pas s'il s'agit d'équivalent lait / de poids sec ou cuit. Alternative : les afficher avec cette réserve.
 - [ ] **Correspondances** : « bœuf, porc ou agneau » inclut le veau et la charcuterie de ces espèces (lardons, jambon) ; volaille hors œufs ; poisson et fruits de mer = poissons, crustacés, mollusques, céphalopodes.
+
+## Lot B — S15 Recherche sur tout le catalogue
+
+- [ ] **Règles d'alternatives** (`pipeline/auto_alternatives_rules.csv`, 25 règles) : relire le « même rôle » de chaque famille. Exemples à contrôler : quenelle de volaille → spécialité végétale type pâté ; emmental → spécialité végétale type fromage (0,25 g de protéines pour 100 g contre 27,9 g : écart affiché) ; beurre → huiles ; poisson → seitan / tempeh / tofu fumé (pas d'EPA ni de DHA, signalé dans la règle).
+- [ ] **Résultat** : 3 664 alternatives pour 1 253 aliments animaux (`pipeline/auto_alternatives.csv`). Les plats composés sans équivalent végétal du même type n'ont pas d'alternative (ex. lasagnes bolognaise préemballées, pizza bolognaise, croque-monsieur) : seule la paire vérifiée existe.
+- [ ] **Recherche** : fautes légères tolérées (« quiche lorene »), mais pas les mots courts très déformés (« lazagne ») ; synonymes dans `search_synonyms` à compléter.
+- [ ] **Portion type** : non sourcée, la page aliment compare pour 100 g. À ajouter si une source (INCA 3) est intégrée.
+- [ ] **Libellé du verdict** sur `/aliment` : « le plat animal fait mieux » est réutilisé pour un aliment ; alternative : « l'aliment d'origine fait mieux ».
+- [ ] **Correction de `fetch_all`** (pipeline) : les scripts déjà exécutés ont été revérifiés (CIRC, lait, classement animal : identiques).

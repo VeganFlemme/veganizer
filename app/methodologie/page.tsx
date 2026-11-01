@@ -81,6 +81,7 @@ function Formula({ children }: { children: ReactNode }) {
 const SECTIONS = [
   ["principe", "Le principe : comparer à fonction égale"],
   ["paires", "Les paires de plats : maison et du commerce"],
+  ["comparaison-simplifiee", "Paires vérifiées et comparaisons simplifiées"],
   ["formule", "La formule de calcul"],
   ["cout-climat", "Le coût climat"],
   ["animaux", "Animaux : une estimation basse"],
@@ -349,6 +350,29 @@ export default async function MethodologiePage() {
           nous retenons l’option la plus proche disposant de données complètes, de la même façon
           dans les deux plats. Chaque choix est consigné dans le dépôt du projet
           (<a href="https://github.com/VeganFlemme/veganizer/blob/main/docs/DECISIONS.md" className="underline" rel="noopener noreferrer">journal des décisions</a>).
+        </p>
+      </Section>
+
+      <Section id="comparaison-simplifiee" title="Paires vérifiées et comparaisons simplifiées">
+        <p>
+          Chaque résultat affiche son niveau de fiabilité. Une <strong>paire vérifiée</strong> est une
+          recette détaillée ingrédient par ingrédient et relue, comparée sur les cinq piliers. Une{" "}
+          <strong>comparaison simplifiée</strong> compare un aliment ou un plat du catalogue Ciqual /
+          Agribalyse, pour 100 g, à une à trois alternatives végétales du même catalogue.
+        </p>
+        <p>
+          Ces alternatives sont choisies par des règles écrites et relues (fichier
+          <code> pipeline/auto_alternatives_rules.csv</code> du dépôt) : même rôle dans le repas
+          (par exemple une viande cuite face à une protéine végétale prête à cuisiner ou à une
+          légumineuse cuite, un lait face à une boisson végétale), puis les protéines les plus proches.
+          Pour un plat composé, l’alternative doit être du même type (pizza, lasagnes, quiche…) ; s’il
+          n’y en a pas dans le catalogue, aucune alternative n’est proposée. L’écart de protéines est
+          toujours affiché. Faute de portion type sourcée, la comparaison est donnée pour 100 g, pour
+          100 kcal et pour 10 g de protéines.
+        </p>
+        <p>
+          La recherche tolère les accents, les fautes légères et quelques abréviations courantes
+          (« bolo », « croque »…).
         </p>
       </Section>
 
