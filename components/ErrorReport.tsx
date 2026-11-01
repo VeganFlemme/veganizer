@@ -5,7 +5,7 @@ import { reportError, type ReportState } from "@/app/actions";
 
 export function ErrorReport({
   page,
-  title = "Un chiffre vous semble faux ?",
+  title = "Un chiffre te semble faux ?",
   intro = "La fiabilité est notre priorité : chaque signalement est relu.",
   buttonLabel = "Signaler une erreur",
   defaultMessage = "",
@@ -21,26 +21,26 @@ export function ErrorReport({
   const id = useId();
 
   return (
-    <section aria-labelledby={`${id}-t`} className="flex flex-col gap-3 rounded-xl border border-zinc-300 p-4">
-      <h2 id={`${id}-t`} className="text-lg font-semibold">
+    <section aria-labelledby={`${id}-t`} className="flex flex-col gap-3 rounded-panel bg-surface p-5 md:p-6">
+      <h2 id={`${id}-t`} className="m-0 text-[17px] font-extrabold">
         {title}
       </h2>
-      <p className="text-sm text-zinc-800">{intro}</p>
+      <p className="m-0 text-[14px] leading-normal text-ink-2">{intro}</p>
       {!open ? (
         <button
           type="button"
           onClick={() => setOpen(true)}
-          className="self-start rounded-lg border border-zinc-500 px-4 py-2 font-medium hover:bg-zinc-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-700"
+          className="h-11 cursor-pointer self-start rounded-btn border border-action bg-surface px-[18px] text-[15px] font-bold text-action hover:bg-win-plant"
         >
           {buttonLabel}
         </button>
       ) : state.status === "ok" ? (
-        <p role="status" className="text-emerald-800">{state.message}</p>
+        <p role="status" className="m-0 text-action">{state.message}</p>
       ) : (
         <form action={action} className="flex flex-col gap-2">
           <input type="hidden" name="page" value={page} />
-          <label htmlFor={`${id}-m`} className="font-medium">
-            Qu’avez-vous repéré ? (sans donnée personnelle)
+          <label htmlFor={`${id}-m`} className="text-[14px] font-semibold">
+            Qu’as-tu repéré ? (sans donnée personnelle)
           </label>
           <textarea
             id={`${id}-m`}
@@ -50,17 +50,17 @@ export function ErrorReport({
             minLength={5}
             maxLength={2000}
             rows={4}
-            className="rounded-lg border border-zinc-400 p-2 focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-emerald-700"
+            className="rounded-btn border border-ink-3 bg-surface p-3 text-[16px] text-ink"
           />
           {state.status === "error" && (
-            <p role="alert" className="text-red-800">
+            <p role="alert" className="m-0 text-animal-note">
               {state.message}
             </p>
           )}
           <button
             type="submit"
             disabled={pending}
-            className="self-start rounded-lg bg-emerald-800 px-4 py-2 font-medium text-white hover:bg-emerald-900 disabled:opacity-60 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-700"
+            className="h-11 cursor-pointer self-start rounded-btn border-0 bg-action px-[18px] text-[15px] font-bold text-white hover:bg-action-hover disabled:opacity-60"
           >
             {pending ? "Envoi…" : "Envoyer"}
           </button>

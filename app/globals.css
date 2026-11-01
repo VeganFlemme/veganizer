@@ -57,6 +57,8 @@
   }
   a {
     color: var(--color-action);
+    text-decoration: underline;
+    text-underline-offset: 2px;
   }
   a:hover {
     color: var(--color-action-hover);

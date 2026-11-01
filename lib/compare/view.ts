@@ -190,6 +190,8 @@ export interface SideValue {
   /** true when the source publishes no range (low = high = value). */
   rangePublished: boolean;
   coverage: number;
+  /** Worst Agribalyse DQR among the ingredients of this dish (null for nutrients and animal factors). */
+  dqr: number | null;
 }
 
 export interface CriterionRow {
@@ -287,6 +289,9 @@ export interface IarcView {
   /** Grams per serving of foods in this IARC category; plant dish: real 0 when no animal ingredient. */
   animalGrams: number;
   vegetalGrams: number;
+  /** Ingredients of each dish in this IARC category (recipe labels). */
+  animalFoods: string[];
+  vegetalFoods: string[];
 }
 
 export interface PnnsView {
@@ -438,6 +443,7 @@ function side(a: Amount | undefined, basis: Basis): SideValue | null {
     high,
     rangePublished: low != null && high != null && value != null && (low !== value || high !== value),
     coverage: a.massCoverage,
+    dqr: a.worstDqr,
   };
 }
 
@@ -620,7 +626,8 @@ export function buildPairPage(raw: RawPairData): PairPageModel {
         .reduce((sum, i) => sum + Number(i.grams), 0) / d.servings;
     const iarc = raw.iarc.map((entry) => {
       usedSources.add(entry.source.sourceId);
-      return { entry, animalGrams: iarcGrams(raw.animal, entry.id), vegetalGrams: iarcGrams(dish, entry.id) };
+      const labels = (d: DishRow) => dishView(d, raw).ingredients.filter((i) => foodsByCode.get(i.code)?.iarc_meat === entry.id).map((i) => i.label);
+      return { entry, animalGrams: iarcGrams(raw.animal, entry.id), vegetalGrams: iarcGrams(dish, entry.id), animalFoods: labels(raw.animal), vegetalFoods: labels(dish) };
     });
 
     const pnnsMatch: Record<string, (f: FoodRow) => boolean> = {

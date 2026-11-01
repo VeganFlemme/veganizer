@@ -4,7 +4,7 @@ import { categorySentence, categorySummary, scorePair, type ScoreInput } from "@
 import type { CriterionRow, SideValue } from "@/lib/compare/view";
 import { scoreCategory } from "@/lib/scoring";
 
-const side = (value: number | null, coverage = 1): SideValue => ({ value, low: value, high: value, rangePublished: false, coverage });
+const side = (value: number | null, coverage = 1): SideValue => ({ value, low: value, high: value, rangePublished: false, coverage, dqr: null });
 const row = (id: string, group: CriterionRow["group"], a: number | null, v: number | null, lowCoverage = false): CriterionRow => ({
   id, name: id, sourceName: id, unit: "", group, direction: "down",
   animal: a == null ? null : side(a), vegetal: v == null ? null : side(v),
@@ -23,7 +23,7 @@ function input(over: Partial<ScoreInput> = {}): ScoreInput {
   ];
   return {
     rows: { perServing: rows, per100kcal: rows, per10gProtein: rows.map((r) => (r.id === "protein_g" ? row("protein_g", "nutrients", 10, 10) : r)) },
-    iarc: [{ entry: { id: "rouge" } as never, animalGrams: 125, vegetalGrams: 0 }],
+    iarc: [{ entry: { id: "rouge" } as never, animalGrams: 125, vegetalGrams: 0, animalFoods: ["bœuf"], vegetalFoods: [] }],
     price: { animal: null, vegetal: null, sourceIds: [], animalIngredients: [], vegetalIngredients: [] },
     climateCost: [{ year: 2025, animalEur: 1.29, vegetalEur: 0.17, eurPerKg: 0.256, derived: false, sourceId: "vac-2025" }],
     ...over,

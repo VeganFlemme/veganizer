@@ -38,7 +38,9 @@ export interface PairCard {
   slug: string;
   name: string;
   description: string | null;
-  variants: { variant: "maison" | "commerce"; name: string; co2Reduction: number | null; coverage: number | null }[];
+  /** kg CO2e per serving of the animal dish (dish_impacts view); null = missing. */
+  co2: number | null;
+  variants: { variant: "maison" | "commerce"; name: string; co2: number | null; co2Reduction: number | null; coverage: number | null }[];
 }
 
 /** Published pairs for the home page grid, with the CO2e gap read from the dish_impacts view. */
@@ -64,12 +66,13 @@ export async function listPairs(): Promise<PairCard[]> {
     const a = d.get(p.animal_dish_id);
     const v = d.get(p.vegan_dish_id);
     if (!a || !v || (p.variant !== "maison" && p.variant !== "commerce")) continue;
-    const card = cards.get(a.id) ?? { slug: a.slug, name: a.name_fr, description: a.description, variants: [] };
     const ca = co2.get(a.id);
     const cv = co2.get(v.id);
+    const card = cards.get(a.id) ?? { slug: a.slug, name: a.name_fr, description: a.description, co2: ca?.per_serving ?? null, variants: [] };
     card.variants.push({
       variant: p.variant,
       name: v.name_fr,
+      co2: cv?.per_serving ?? null,
       co2Reduction: reductionPercent(ca?.per_serving ?? null, cv?.per_serving ?? null),
       coverage: ca && cv ? Math.min(Number(ca.mass_coverage), Number(cv.mass_coverage)) : null,
     });

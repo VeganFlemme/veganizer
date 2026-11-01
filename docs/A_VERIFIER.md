@@ -284,3 +284,14 @@ Chiffres clés par portion (nouvelles paires) :
 - [ ] **Tutoiement** : les nouveaux textes suivent les maquettes (« Ton plat… », « Et si je change ? », « Analyser ma recette »). Les anciennes pages au vouvoiement sont passées au tutoiement là où elles sont refaites. Alternative : vouvoiement partout.
 - [ ] **Favicon** : `app/icon.svg` (logo) remplace le `favicon.ico` par défaut de Next.js ; vieux navigateurs sans SVG : pas d'icône. Alternative : ajouter un `favicon.ico` généré depuis le logo.
 - [ ] **Images de partage** : rendu de `/opengraph-image` et `/compare/<plat>/opengraph-image` (titres longs, accents) à regarder.
+
+## Lot C — S20 Refonte des pages
+
+- [ ] **Nutrition du bœuf bourguignon : « Plat animal, provisoire, 1–0 »**. Seules les protéines sont comparables : fibres, sel, AGS, sucres, fer… ne sont connus que pour 83 à 87 % de la masse (un ingrédient sans valeur Ciqual pour ces constituants, a priori le vin rouge, 250 g sur 1 620 g) et la règle des 95 % les écarte. C'est le résultat strict de la méthode (et celui de la maquette) ; à rediscuter avec la personne diététicienne (ex. seuil de couverture, ou valeurs « traces » de Ciqual). Même effet attendu sur d'autres paires.
+- [ ] **Coût climat : 2025 seulement** dans l'onglet Économie, alors que DESIGN.md § 4 cite 2025 / 2030 / 2050. La règle S14 (une seule année de référence partout) a été gardée. Alternative : afficher 2030 et 2050 comme projections, sans les compter.
+- [ ] **Paire mise en avant sur l'accueil** : bœuf bourguignon (celle des maquettes), choix éditorial. Alternative : paire au hasard ou la plus récente.
+- [ ] **Liste des paires de l'accueil** : triée par CO₂e du plat animal (décroissant), barres à la même échelle, version maison.
+- [ ] **Onglets** : seul l'onglet actif est rendu dans le HTML (les autres sont vides tant qu'on ne les ouvre pas). `?onglet=` est lu dans le navigateur : la page reste statique, l'URL partagée ouvre le bon onglet après chargement (bref affichage de la vue d'ensemble).
+- [ ] **`/aliment/[code]`** : pas de score ni de vainqueur (comparaison simplifiée, sans recette : santé et économie non calculables). Mêmes tableaux et encadrés que `/compare`.
+- [ ] **« Télécharger les données »** : `/compare/<plat>/donnees` renvoie un JSON (valeurs par portion, sources, licences, mention ODbL pour les prix Open Prices). Vérifier que ce format convient.
+- [ ] **Accessibilité** : axe (WCAG 2.1 AA) sans erreur sur toutes les pages et tous les onglets en 375 et 1 280 px (`npm run test:e2e`, serveur lancé) ; navigation clavier des onglets testée.

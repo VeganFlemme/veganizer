@@ -48,3 +48,7 @@ pipeline/raw/
 __pycache__/
 
 pipeline/sources_watch_report.md
+
+# Playwright
+/test-results/
+/playwright-report/

@@ -308,7 +308,7 @@
     {
       "id": "environnement",
       "label": "Environnement",
-      "short": "Environnement",
+      "short": "Environ­nement",
       "indicators": [
         {
           "id": "ghg_100y_kgco2e",
