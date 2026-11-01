@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { Fragment, useState, type ReactNode } from "react";
 import sante from "@/data/sante.json";
+import { Simulator } from "./Simulator";
 import { BASES, CLIMATE_MAIN, COVERAGE_WARNING } from "@/lib/compare/config";
 import type { CriterionRow, DishView, PairPageModel, SideValue, SourceRow, Variant, VariantView } from "@/lib/compare/view";
 import type { Basis } from "@/lib/scoring";
@@ -370,6 +371,8 @@ function VariantPanel({ model, v, basis }: { model: PairPageModel; v: VariantVie
           </div>
         </Card>
       </div>
+
+      <Simulator v={v} dishName={a} factors={model.monetizationFactors} rules={model.monetizationRules} />
 
       <section aria-labelledby={`mieux-${v.variant}`} className="flex flex-col gap-3 rounded-xl border-2 border-zinc-400 p-4">
         <h2 id={`mieux-${v.variant}`} className="text-xl font-semibold">

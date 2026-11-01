@@ -20,4 +20,11 @@ export {
   type MonetizedValue,
   type MonetizeOptions,
 } from "./monetize";
-export { simulate, type Cumulative, type Simulation } from "./simulate";
+export {
+  climateCostByYear,
+  simulate,
+  totalClimateCost,
+  type Cumulative,
+  type Simulation,
+  type YearlyClimateCost,
+} from "./simulate";

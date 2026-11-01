@@ -75,3 +75,11 @@ Tous les critères sont respectés.
 - [ ] **Texte santé** : « Le groupe du CIRC indique la solidité des preuves qu'un aliment peut causer un cancer, pas l'ampleur du risque » (`data/sante.json`) — phrase de lecture habituelle du CIRC, à confirmer avec la page Q&R du CIRC.
 - [ ] **Open Prices** : médianes 2026 — carotte 2,15 €/kg (60 relevés), oignon 2,83 €/kg (55), citron 3,99 €/kg (38). Le citron est appliqué à la chair (prix du fruit entier). Rappel ODbL : la table `prices` dérivée doit rester sous ODbL et citer Open Prices.
 - [ ] **Coût climat** : bœuf bourguignon 1,29 € (2025) et 2,83 € (2050) par portion, contre 0,17 € et 0,36 € pour la version maison.
+
+## Étape E — Simulateur
+
+- [ ] Vérifier à la main un résultat : bœuf bourguignon → bourguignon maison, 1 fois par semaine, 1 an = (5,03 − 0,647) × 52 ≈ 228 kg CO₂e ; 10 ans ≈ 2 280 kg.
+- [ ] « Animaux épargnés » est une estimation basse (facteurs par kg de carcasse) et peut être une fraction d'animal (ex. 0,03 par an) : formulation à valider.
+- [ ] Le texte de partage (« j'éviterais environ … kg CO₂e ») : ton et exactitude.
+- [ ] « Si 10 % des Français… » : à activer seulement avec une fréquence de consommation sourcée (INCA 3, ANSES) et la population de référence (Insee).
+- [ ] Badge HENI « usage non commercial à vérifier » : à confirmer quand la licence des données HENI sera connue.
