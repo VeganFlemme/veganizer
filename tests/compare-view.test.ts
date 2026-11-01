@@ -74,11 +74,9 @@ describe("buildPairPage", () => {
     expect(row(maison, "energy_eu_kcal").winner).toBeNull();
   });
 
-  it("normalises per 100 kcal and per 10 g of protein", () => {
-    const co2 = maison.rows.per10gProtein.find((r) => r.id === "ghg_100y_kgco2e")!;
-    expect(co2.animal?.value).toBeCloseTo(1); // 6 kg for 60 g protein → 1 kg per 10 g
-    const per100 = maison.rows.per100kcal.find((r) => r.id === "ghg_100y_kgco2e")!;
-    expect(per100.animal?.value).toBeCloseTo(1.5); // 6 kg for 400 kcal
+  it("normalises per 100 g of dish", () => {
+    const per100 = maison.rows.per100g.find((r) => r.id === "ghg_100y_kgco2e")!;
+    expect(per100.animal?.value).toBeCloseTo(3); // 30 kg/kg × 400 g / 2 servings = 6 kg per 200 g serving -> 3 kg per 100 g
   });
 
   it("monetises CO2e with the published carbon value", () => {
@@ -119,10 +117,9 @@ describe("buildPairPage", () => {
     expect(p.variants.maison!.iarc[0].vegetalGrams).toBe(0);
   });
 
-  it("keeps the price coverage and normalises the dish price per 100 kcal and per 10 g of protein", () => {
+  it("keeps the price coverage and normalises the dish price per 100 g", () => {
     expect(maison.price.animal?.coverage).toBe(1);
-    expect(maison.price.animal?.per100kcal).toBeCloseTo(0.5); // 2 € for 400 kcal
-    expect(maison.price.animal?.per10gProtein).toBeCloseTo(2 / 60 * 10);
+    expect(maison.price.animal?.per100g).toBeCloseTo(1); // 2 € per serving of 200 g
     expect(maison.price.vegetal).toBeNull();
   });
 

@@ -13,12 +13,12 @@
     "accessedOn": "2026-11-01"
   },
   "maxBoostFactor": 2,
-  "maxBoostRule": "Version complétée : la protéine principale n'est augmentée que jusqu'à 2 fois sa masse de départ (choix éditorial de Veganizer : portion plausible ; la portion de l'enquête INCA 3 n'est pas utilisée, licence non précisée). Au-delà, l'écart de protéines est comblé par un aliment protéique courant de la liste blanche (data/complements.json), sinon il reste dans « Ce qui reste à couvrir ».",
+  "maxBoostRule": "Protéines égalisées : la protéine principale n'est augmentée que jusqu'à 2 fois sa masse de départ (choix éditorial de Veganizer : portion plausible ; la portion de l'enquête INCA 3 n'est pas utilisée, licence non précisée). Au-delà, l'écart de protéines est comblé par un aliment protéique courant de la liste blanche (data/complements.json), sinon il reste dans « Ce qui reste à couvrir ».",
   "roleNotes": {
     "fromage": "Le fromage apporte surtout du calcium et des matières grasses ; l’égaler en protéines n’est qu’un repère.",
     "lait": "Le lait apporte surtout du calcium ; l’égaler en protéines n’est qu’un repère.",
     "crème": "La crème apporte surtout des matières grasses ; l’égaler en protéines n’est qu’un repère.",
     "beurre": "Le beurre apporte surtout des matières grasses ; l’égaler en protéines n’est qu’un repère."
   },
-  "roleNotesRule": "Note de la version complétée quand le rôle de l'aliment animal principal n'est pas d'apporter des protéines, d'après son sous-groupe Ciqual (texte éditorial, sans chiffre)."
+  "roleNotesRule": "Note de la version ajustée quand le rôle de l'aliment animal principal n'est pas d'apporter des protéines, d'après son sous-groupe Ciqual (texte éditorial, sans chiffre)."
 }

@@ -212,8 +212,7 @@ export function scorePair(input: ScoreInput, exclude: string[] = [], constructed
     },
     nutritionByBasis: {
       perServing: categories[0],
-      per100kcal: scoreOf(nutrition, input, "per100kcal", exclude, constructed),
-      per10gProtein: scoreOf(nutrition, input, "per10gProtein", exclude, constructed),
+      per100g: scoreOf(nutrition, input, "per100g", exclude, constructed),
     },
   };
 }

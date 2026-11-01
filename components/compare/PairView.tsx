@@ -24,8 +24,8 @@ import { VerdictPanel } from "@/components/ui/VerdictPanel";
 import { animalBetterTitle, CLIMATE_MAIN, COVERAGE_WARNING } from "@/lib/compare/config";
 import { alignRecipes } from "@/lib/compare/align";
 import { NUTRIENT_REASON } from "@/lib/compare/views";
-import { additionLine, boostLine, boostReason, co2Summary, completedSentence, ingredientsText, isVersionId, VERSIONS, type VersionId } from "@/lib/compare/views";
-import complementsFile from "@/data/complements.json";
+import { additionLine, adjustSummary, boostLine, boostReason, co2Summary, ingredientsText, openLine, scaleLine } from "@/lib/compare/views";
+import type { AdjustRequest } from "@/lib/scoring";
 import type { CategoryId, CategoryScoreView } from "@/lib/compare/scores";
 import type { CompletedVariantView, CriterionRow, DishView, IngredientPrice, PairPageModel, PriceSide, SideValue, VariantView } from "@/lib/compare/view";
 import type { Basis } from "@/lib/scoring";
@@ -113,6 +113,8 @@ function Cell({ v, unit, range = true, servings = false, compact = false }: { v:
 /** Note under a table row: partial data, advantage to the animal dish (rule 3), negative values. */
 function rowNote(r: CriterionRow): ReactNode {
   const notes: string[] = [];
+  // Step 3 quinquies: reached by an adjustment of the plant version, not scored.
+  if (r.filled) notes.push("Comblé par l’ajustement, non compté dans le score");
   const known = (s: SideValue | null) => !!s && (s.value != null || s.low != null);
   const partial = (s: SideValue | null) => known(s) && s!.coverage < COVERAGE_WARNING;
   const coverage = `${r.animal ? pct(r.animal.coverage) : MISSING} et ${r.vegetal ? pct(r.vegetal.coverage) : MISSING} de la masse`;
@@ -171,6 +173,11 @@ export function tableRows(rows: CriterionRow[], servings = false): DataTableRow[
     reliability: reliability(r),
     source: [...new Set(r.sourceIds.map(sourceLabel))].join(", ") || "—",
   }));
+}
+
+/** The chosen protein in the plant version (its label and grams for the recipe). */
+function mainOf(v: VariantView, code: string) {
+  return v.dish.ingredients.find((i) => i.code === code) ?? null;
 }
 
 export function Panel({ title, children, className = "" }: { title?: string; children: ReactNode; className?: string }) {
@@ -537,7 +544,7 @@ function ThreeBasisTable({ v, ids, caption }: { v: VariantView; ids: string[]; c
   );
 }
 
-const BASIS_ORDER: Basis[] = ["perServing", "per100kcal", "per10gProtein"];
+const BASIS_ORDER: Basis[] = ["perServing", "per100g"];
 
 function NutritionTab({ v, basis, setBasis, servingLabel }: { v: VariantView; basis: Basis; setBasis: (b: Basis) => void; servingLabel: string }) {
   const all = v.rows[basis].filter((r) => r.group === "nutrients");
@@ -565,7 +572,7 @@ function NutritionTab({ v, basis, setBasis, servingLabel }: { v: VariantView; ba
         <DataTable caption={`Composition nutritionnelle, nutriments principaux, ${unitLabel.toLowerCase()}`} unitLabel={unitLabel} rows={tableRows(featured)} footer={footer} />
       </div>
       <div className="hidden xl:block">
-        <ThreeBasisTable v={v} ids={ids(v.rows.perServing.filter((r) => r.group === "nutrients" && r.featured))} caption="Composition nutritionnelle, nutriments principaux, trois bases" />
+        <ThreeBasisTable v={v} ids={ids(v.rows.perServing.filter((r) => r.group === "nutrients" && r.featured))} caption="Composition nutritionnelle, nutriments principaux, deux bases" />
         <div className="pt-3 text-[13px] leading-normal text-ink-3">{footer}</div>
       </div>
       <details className="flex flex-col gap-2">
@@ -574,7 +581,7 @@ function NutritionTab({ v, basis, setBasis, servingLabel }: { v: VariantView; ba
           <DataTable caption={`Tous les constituants Ciqual, ${unitLabel.toLowerCase()}`} unitLabel={unitLabel} rows={tableRows(ciqual)} />
         </div>
         <div className="hidden xl:block">
-          <ThreeBasisTable v={v} ids={ids(v.rows.perServing.filter((r) => r.group === "nutrients" && !r.id.startsWith("fa_epa_dha")))} caption="Tous les constituants Ciqual, trois bases" />
+          <ThreeBasisTable v={v} ids={ids(v.rows.perServing.filter((r) => r.group === "nutrients" && !r.id.startsWith("fa_epa_dha")))} caption="Tous les constituants Ciqual, deux bases" />
         </div>
       </details>
     </Panel>
@@ -697,7 +704,7 @@ function EggNote({ v }: { v: VariantView }) {
 function EnvironmentTab({ v }: { v: VariantView }) {
   const rows = v.rows.perServing.filter((r) => r.group === "impacts");
   const co2 = find(v.rows.perServing, CLIMATE_MAIN);
-  const norm = (["perServing", "per100kcal", "per10gProtein"] as Basis[]).map((b) => {
+  const norm = (["perServing", "per100g"] as Basis[]).map((b) => {
     const r = find(v.rows[b], CLIMATE_MAIN);
     return { id: b, label: UNIT_OPTIONS.find((u) => u.id === b)!.long, aside: signedGap(r?.reductionPercent ?? null), animal: r?.animal?.value ?? null, vegetal: r?.vegetal?.value ?? null, format: (x: number) => formatForUnit(x, CO2_UNIT) };
   });
@@ -820,8 +827,7 @@ function EconomyTab({ v, animalName }: { v: VariantView; animalName: string }) {
           unitLabel="Prix des ingrédients"
           rows={[
             { id: "s", name: "Par portion", animal: price(animal, (p) => p.value), vegetal: price(vegetal, (p) => p.value), strong: true },
-            { id: "k", name: "Pour 100 kcal", animal: price(animal, (p) => p.per100kcal), vegetal: price(vegetal, (p) => p.per100kcal) },
-            { id: "p", name: "Pour 10 g de protéines", animal: price(animal, (p) => p.per10gProtein), vegetal: price(vegetal, (p) => p.per10gProtein) },
+            { id: "k", name: "Pour 100 g", animal: price(animal, (p) => p.per100g), vegetal: price(vegetal, (p) => p.per100g) },
           ]}
           footer={
             complete ? (
@@ -851,43 +857,127 @@ function EconomyTab({ v, animalName }: { v: VariantView; animalName: string }) {
  * Version complétée: the additions, as an example (never a recommendation, rule 6), with the
  * energy of both dishes in view.
  */
-function CompletedPanel({ c, animal, per }: { c: CompletedVariantView; animal: DishView; per: string }) {
-  const energy = c.view.rows.perServing.find((r) => r.id === "energy_eu_kcal");
-  const kcal = (x: SideValue | null) => (x?.value == null ? MISSING : `${formatInt(x.value)}${NBSP}kcal`);
+/**
+ * Step 3 quinquies: « Ajuster la version végétale » (Nutrition tab). One plant version, adjusted by
+ * the visitor: equalise protein or calories, set the main protein, close a gap. Everything is
+ * recomputed in the browser; the animal dish never changes; filled indicators are not scored.
+ */
+function AdjustPanel({
+  c,
+  animal,
+  per,
+  request,
+  onAdjust,
+  gaps,
+  mainLabel,
+  mainGrams,
+  servings,
+}: {
+  c: CompletedVariantView | undefined;
+  animal: DishView;
+  per: string;
+  request: AdjustRequest | null;
+  onAdjust: (r: AdjustRequest | null) => void;
+  gaps: { id: string; label: string }[];
+  mainLabel: string | null;
+  mainGrams: number | null;
+  servings: number;
+}) {
+  const r: AdjustRequest = request ?? { equalize: "none", close: [] };
+  const closeList = r.close === "all" ? gaps.map((g) => g.id) : r.close;
+  const set = (next: Partial<AdjustRequest>) => {
+    const merged: AdjustRequest = { ...r, ...next };
+    const empty = merged.equalize === "none" && (merged.close === "all" ? false : merged.close.length === 0) && merged.mainGramsPerServing == null;
+    onAdjust(empty ? null : merged);
+  };
+  const toggle = (id: string) => set({ close: closeList.includes(id) ? closeList.filter((x) => x !== id) : [...closeList, id] });
+  const step = (delta: number) => mainGrams != null && set({ equalize: r.equalize === "protein" ? "none" : r.equalize, mainGramsPerServing: Math.max(0, Math.round(mainGrams + delta)) });
+  const energy = c?.view.rows.perServing.find((x) => x.id === "energy_eu_kcal");
+  const kcal = (x: SideValue | null | undefined) => (x?.value == null ? MISSING : `${formatInt(x.value)}${NBSP}kcal`);
+  const chip = (on: boolean) => `min-h-11 cursor-pointer rounded-full border px-[14px] text-[14px] font-bold lg:min-h-9 lg:px-3 lg:text-[13px] ${on ? "border-ink bg-ink text-white" : "border-[#C9D5D0] bg-surface text-ink hover:border-ink-3"}`;
   return (
-    <Panel title="Version complétée : exemple d’ajouts possibles" className="mt-3">
+    <Panel title="Ajuster la version végétale" className="mt-3">
       <p className="m-0 text-[14px] leading-normal text-ink-2">
-        Le plat animal ne change pas. La version végétale vise autant de protéines que lui : la protéine principale est augmentée, jusqu’à deux fois sa
-        masse au plus (portion plausible), puis ses manques, protéines comprises, sont comblés avec des aliments d’une liste relue, quand c’est possible.
-        C’est un exemple, pas un conseil : {complementsFile.dailyNeeds.text}
+        Le plat animal ne change pas. Vous ajustez la version végétale : tous les chiffres se recalculent. Un indicateur comblé par un ajustement n’est plus compté
+        dans le score Nutrition. C’est un exemple, pas un conseil. <Link href="/methodologie#version-complete">Pourquoi ?</Link>
       </p>
-      {c.roleNote && <p className="m-0 text-[14px] font-semibold leading-normal">{c.roleNote}</p>}
-      <p className="m-0 flex flex-wrap gap-x-6 gap-y-1 text-[15px] font-bold">
-        <span className="inline-flex items-center gap-2">
-          <Dot series="animal" /> {animal.name} : {kcal(energy?.animal ?? null)} {per}
-        </span>
-        <span className="inline-flex items-center gap-2">
-          <Dot series="plant" /> Version complétée : {kcal(energy?.vegetal ?? null)} {per}
-        </span>
-      </p>
-      <ul className="m-0 flex list-disc flex-col gap-1 pl-5 text-[14px]">
-        {c.boost && (
-          <li>
-            {c.boost.label} : {boostLine(c.boost.extraGrams, animal.servings, c.boost.capped)}.
-          </li>
-        )}
-        {c.additions.map((a) => (
-          <li key={a.code}>
-            {additionLine(a)}
-            {a.kind === "enrichi" && " (aliment enrichi)"}. <span className="text-[13px] text-ink-3">{a.justification}</span>
-          </li>
+      <div role="group" aria-label="Égaliser avec le plat animal" className="flex flex-wrap items-center gap-[6px]">
+        <span className="mr-1 text-[14px] font-semibold">Égaliser avec le plat animal :</span>
+        {(
+          [
+            ["none", "aucun"],
+            ["protein", "les protéines"],
+            ["energy", "les calories"],
+          ] as const
+        ).map(([id, label]) => (
+          <button key={id} type="button" aria-pressed={r.equalize === id && r.mainGramsPerServing == null} onClick={() => set({ equalize: id, mainGramsPerServing: null })} className={chip(r.equalize === id && r.mainGramsPerServing == null)}>
+            {label}
+          </button>
         ))}
-        {!c.boost && c.additions.length === 0 && <li>Aucun ajout : la version végétale n’a pas d’écart que la liste permet de combler.</li>}
-      </ul>
-      <AnimalBetterBox items={c.view.animalBetter.filter((x) => x.category === "nutrition")} title={REMAINING_TITLE} collapsible per={per} />
-      <p className="m-0 text-[13px] text-ink-3">
-        Valeurs Ciqual et Agribalyse des aliments ajoutés ; limites de sécurité de l’ANSES (<Link href="/methodologie#version-complete">méthode</Link>).
-      </p>
+      </div>
+      {mainLabel && mainGrams != null && (
+        <div role="group" aria-label="Quantité de la protéine principale" className="flex flex-wrap items-center gap-[6px]">
+          <span className="mr-1 text-[14px] font-semibold">
+            {mainLabel} : <span className="num">{formatInt(mainGrams)}{NBSP}g</span> {per}
+          </span>
+          <button type="button" onClick={() => step(-10)} className={chip(false)} aria-label="10 g de moins">
+            −{NBSP}10{NBSP}g
+          </button>
+          <button type="button" onClick={() => step(10)} className={chip(false)} aria-label="10 g de plus">
+            +{NBSP}10{NBSP}g
+          </button>
+        </div>
+      )}
+      {gaps.length > 0 && (
+        <div role="group" aria-label="Combler un manque" className="flex flex-wrap items-center gap-[6px]">
+          <span className="mr-1 text-[14px] font-semibold">Combler :</span>
+          {gaps.map((g) => (
+            <button key={g.id} type="button" aria-pressed={closeList.includes(g.id)} onClick={() => toggle(g.id)} className={chip(closeList.includes(g.id))}>
+              {g.label}
+            </button>
+          ))}
+        </div>
+      )}
+      <div className="flex flex-wrap gap-[6px]">
+        <button type="button" onClick={() => onAdjust({ equalize: "protein", close: "all" })} className="min-h-11 cursor-pointer rounded-btn bg-action px-[16px] text-[14px] font-bold text-white hover:bg-action-hover">
+          Tout combler
+        </button>
+        <button type="button" onClick={() => onAdjust(null)} disabled={!request} className="min-h-11 cursor-pointer rounded-btn border border-ink-3 bg-surface px-[16px] text-[14px] font-bold text-ink disabled:cursor-not-allowed disabled:opacity-50">
+          Revenir à la recette de base
+        </button>
+      </div>
+      {c && (
+        <>
+          {c.roleNote && <p className="m-0 text-[14px] font-semibold leading-normal">{c.roleNote}</p>}
+          <p className="m-0 flex flex-wrap gap-x-6 gap-y-1 text-[15px] font-bold">
+            <span className="inline-flex items-center gap-2">
+              <Dot series="animal" /> {animal.name} : {kcal(energy?.animal)} {per}
+            </span>
+            <span className="inline-flex items-center gap-2">
+              <Dot series="plant" /> Version ajustée : {kcal(energy?.vegetal)} {per}
+            </span>
+          </p>
+          <ul className="m-0 flex list-disc flex-col gap-1 pl-5 text-[14px]">
+            {c.scale != null && <li>{scaleLine(c.scale)}</li>}
+            {c.boost && (
+              <li>
+                {c.boost.label} : {boostLine(c.boost.extraGrams, servings, c.boost.capped)}.
+              </li>
+            )}
+            {c.additions.map((a) => (
+              <li key={a.code}>
+                {additionLine(a)}
+                {a.kind === "enrichi" && " (aliment enrichi)"}. <span className="text-[13px] text-ink-3">{a.justification}</span>
+              </li>
+            ))}
+            {c.open.length > 0 && <li className="text-animal-note">{openLine(c.open)}</li>}
+          </ul>
+          <AnimalBetterBox items={c.view.animalBetter.filter((x) => x.category === "nutrition")} title={REMAINING_TITLE} collapsible per={per} />
+          <p className="m-0 text-[13px] text-ink-3">
+            Valeurs Ciqual et Agribalyse des aliments ajoutés ; limites de sécurité de l’ANSES (<Link href="/methodologie#version-complete">méthode</Link>).
+          </p>
+        </>
+      )}
     </Panel>
   );
 }
@@ -985,6 +1075,10 @@ export function PairView({
   onVariantChange,
   choiceSentence,
   notice,
+  adjusted,
+  adjustRequest = null,
+  onAdjust,
+  gaps = [],
 }: {
   model: PairPageModel;
   badge: ReactNode;
@@ -1000,6 +1094,12 @@ export function PairView({
   choiceSentence?: string;
   /** Warning shown under the toolbar (animal ingredient without a replacement rule…). */
   notice?: ReactNode;
+  /** Step 3 quinquies: the adjusted plant version (null = base recipe), its request and setter. */
+  adjusted?: CompletedVariantView | null;
+  adjustRequest?: AdjustRequest | null;
+  onAdjust?: (r: AdjustRequest | null) => void;
+  /** Gaps of the base plant version the visitor can ask to close. */
+  gaps?: { id: string; label: string }[];
 }) {
   const choices = model.choices;
   const [localVariant, setLocalVariant] = useState<string>(choices[0]?.id ?? "maison");
@@ -1009,10 +1109,7 @@ export function PairView({
   const [basis, setBasis] = useState<Basis>("perServing");
   const [urlTab, setUrlTab] = useQueryParam("onglet", useUrl);
   const [localTab, setLocalTab] = useState<TabIdT>("apercu");
-  const [urlView, setUrlView] = useQueryParam("vue", viewInUrl);
-  const [localView, setLocalView] = useState<VersionId>("base");
-  const version: VersionId = viewInUrl ? (isVersionId(urlView) ? urlView : "base") : localView;
-  const setVersion = (x: VersionId) => (viewInUrl ? setUrlView(x === "base" ? null : x) : setLocalView(x));
+  void viewInUrl;
   const tab: TabIdT = useUrl ? (isTab(urlTab) ? urlTab : "apercu") : localTab;
   const setTab = (t: TabIdT) => (useUrl ? setUrlTab(t === "apercu" ? null : t) : setLocalTab(t));
   const open = (t: TabIdT) => {
@@ -1023,9 +1120,9 @@ export function PairView({
   const realistic = model.variants[variant];
   // Food pages and AGRIBALYSE dishes: one « serving » of 100 g.
   const per = model.animal.servings === 1 ? "pour 100 g" : "par portion";
-  const completed = model.completed[variant];
-  // « Version complétée »: the whole page (tabs, scores, simulator) uses the completed plant version.
-  const isComplete = version === "complete" && !!completed;
+  // Step 3 quinquies: one plant version; once adjusted, the whole page (tabs, scores, simulator) uses it.
+  const completed = adjusted ?? undefined;
+  const isComplete = !!completed;
   const v = isComplete ? completed!.view : realistic;
   if (!v || !realistic) return <p className="px-5">Alternative indisponible.</p>;
   const co2Of = (x: VariantView | undefined) => x?.rows.perServing.find((r) => r.id === CLIMATE_MAIN)?.reductionPercent ?? null;
@@ -1055,7 +1152,11 @@ export function PairView({
               ) : (
                 choices.length > 1 && <ChipGroup tone="dark" wrap caption="Alternative" label="Alternative végétale" options={choices.map((c) => ({ id: c.id, label: c.label }))} value={variant} onChange={setVariant} />
               )}
-              {completed && <ChipGroup tone="dark" caption="Version" label="Version comparée" options={VERSIONS} value={isComplete ? "complete" : "base"} onChange={setVersion} />}
+              {onAdjust && (
+                <button type="button" onClick={() => open("nutrition")} className="min-h-11 cursor-pointer rounded-full border border-white/30 bg-transparent px-[14px] text-[14px] font-bold text-white hover:border-white/60 lg:min-h-9 lg:px-3 lg:text-[13px]">
+                  {isComplete ? "Version ajustée · modifier" : "Ajuster la version végétale"}
+                </button>
+              )}
             </div>
             <div className="flex flex-col gap-1">
               {choice?.reason && (
@@ -1066,7 +1167,6 @@ export function PairView({
               {choiceSentence && <p className="m-0 text-[14px] leading-normal text-on-dark-2">{choiceSentence}</p>}
               {notice && <div className="m-0 text-[14px] leading-normal text-on-dark-1">{notice}</div>}
               {co2Line && <p className="m-0 text-[14px] font-semibold text-on-dark-1">{co2Line}</p>}
-              {isComplete && <p className="m-0 text-[14px] font-semibold text-on-dark-1">{completedSentence(co2Of(completed!.view))}</p>}
             </div>
           </div>
           <VerdictPanel verdict={v.scores.verdict} className="hidden md:flex" />
@@ -1085,7 +1185,28 @@ export function PairView({
         />
         <div className="min-w-0">
         <Legend />
-        {isComplete && <CompletedPanel c={completed!} animal={model.animal} per={per} />}
+        {/* Step 3 quinquies: the panel in Nutrition; elsewhere one line, linking to it. */}
+        {onAdjust && tab === "nutrition" && (
+          <AdjustPanel
+            c={completed}
+            animal={model.animal}
+            per={per}
+            request={adjustRequest}
+            onAdjust={onAdjust}
+            gaps={gaps}
+            mainLabel={mainOf(v, variant)?.label ?? null}
+            mainGrams={mainOf(v, variant) ? mainOf(v, variant)!.grams / v.dish.servings : null}
+            servings={v.dish.servings}
+          />
+        )}
+        {isComplete && tab !== "nutrition" && (
+          <p className="m-0 mt-3 rounded-btn bg-track px-4 py-3 text-[14px] leading-normal">
+            {adjustSummary(completed!, v.dish.servings)} ·{" "}
+            <button type="button" onClick={() => open("nutrition")} className="cursor-pointer text-action underline">
+              Modifier dans Nutrition
+            </button>
+          </p>
+        )}
         {TABS.map((t) => (
           <div key={t.id} role="tabpanel" id={panelId(base, t.id)} aria-labelledby={tabId(base, t.id)} hidden={t.id !== tab} tabIndex={-1} className="pt-3">
             {t.id === tab &&
@@ -1123,6 +1244,23 @@ export function PairView({
               ))}
           </div>
         ))}
+        {onAdjust && !isComplete && tab === "apercu" && (
+          <div className="mt-3 flex flex-wrap items-center gap-[6px] rounded-btn bg-track px-4 py-3 text-[14px]">
+            <span className="mr-1 font-semibold">Ajuster la version végétale :</span>
+            <button type="button" onClick={() => onAdjust({ equalize: "protein", close: [] })} className="min-h-11 cursor-pointer rounded-full border border-[#C9D5D0] bg-surface px-3 text-[13px] font-bold text-ink lg:min-h-9">
+              autant de protéines
+            </button>
+            <button type="button" onClick={() => onAdjust({ equalize: "energy", close: [] })} className="min-h-11 cursor-pointer rounded-full border border-[#C9D5D0] bg-surface px-3 text-[13px] font-bold text-ink lg:min-h-9">
+              autant de calories
+            </button>
+            <button type="button" onClick={() => onAdjust({ equalize: "protein", close: "all" })} className="min-h-11 cursor-pointer rounded-full border border-[#C9D5D0] bg-surface px-3 text-[13px] font-bold text-ink lg:min-h-9">
+              tout combler
+            </button>
+            <button type="button" onClick={() => open("nutrition")} className="cursor-pointer text-action underline">
+              plus de réglages dans Nutrition
+            </button>
+          </div>
+        )}
         <div className="mt-6">
           <MedicalNote />
         </div>

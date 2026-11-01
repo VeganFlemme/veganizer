@@ -80,8 +80,8 @@ export interface Amount {
   perServing: number | null;
   lowPerServing: number | null;
   highPerServing: number | null;
-  per100kcal: number | null;
-  per10gProtein: number | null;
+  /** Per 100 g of dish (perServing ÷ grams per serving × 100). */
+  per100g: number | null;
   /** Share (0–1) of the dish mass covered by data for this indicator. Warn if < 0.95. */
   massCoverage: number;
   /** Worst (highest) DQR among covered ingredients; null if none published. */

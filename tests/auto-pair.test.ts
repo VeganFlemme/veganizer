@@ -78,9 +78,23 @@ describe("buildAutoPage", () => {
     expect(model.variants.seitan!.dish.name).not.toMatch(/v[ée]gan/i);
   });
 
-  it("raises the chosen protein, not another ingredient, in the completed version", () => {
-    const { model } = buildAutoPage(input(), "beans")!;
-    expect(model.completed.beans?.boost?.code).toBe("beans");
+  it("raises the chosen protein, not another ingredient, when protein is equalised (step 3 quinquies)", async () => {
+    const { buildAdjusted } = await import("@/lib/compare/auto");
+    // beans (10 g/100 g): the cap (2 × the mass) is hit, the fixture's list cannot close the rest
+    const capped = buildAdjusted(input(), "beans", { equalize: "protein", close: [] })!;
+    expect(capped.boost?.code).toBe("beans");
+    expect(capped.boost?.capped).toBe(true);
+    expect(capped.filled).toEqual([]);
+    // seitan (25 g/100 g): +40 g per serving reaches the animal dish
+    const adj = buildAdjusted(input(), "seitan", { equalize: "protein", close: [] })!;
+    expect(adj.boost?.code).toBe("seitan");
+    expect(adj.filled).toEqual(["protein_g"]);
+    // filled indicators are marked and not counted in the score
+    expect(adj.view.rows.perServing.find((r) => r.id === "protein_g")?.filled).toBe(true);
+    expect(adj.view.scores.verdict.categories.find((c) => c.id === "nutrition")!.indicators.map((i) => i.id)).not.toContain("protein_g");
+  });
+  it("has no precomputed completed version any more: one plant version, adjusted on demand", () => {
+    expect(buildAutoPage(input(), "beans")!.model.completed).toEqual({});
   });
 
   it("returns null for an unknown protein code", () => {
@@ -152,5 +166,19 @@ describe("official dish: published impact kept on both sides (suite V1, 5 quater
     const co2 = model.variants.seitan!.rows.perServing.find((x) => x.id === "ghg_100y_kgco2e")!;
     expect(co2.animal!.value).toBeCloseTo(9 + 0.1 + 0.5); // published total of 1 kg of dish
     expect(co2.vegetal!.value).toBeCloseTo(9 + 0.1 + 0.5 - 9 + 0.3 * 2); // seitan 0.3 kg × 2 kg CO2e/kg
+  });
+});
+
+
+describe("?ajuste= and ?quantite= (step 3 quinquies)", () => {
+  it("parses and writes back the adjustment", async () => {
+    const { parseAdjust, adjustParams } = await import("@/lib/compare/auto");
+    expect(parseAdjust(null, null)).toBeNull();
+    expect(parseAdjust("proteines,zn_mg", null)).toEqual({ equalize: "protein", close: ["zn_mg"], mainGramsPerServing: null });
+    expect(parseAdjust("calories", null)).toEqual({ equalize: "energy", close: [], mainGramsPerServing: null });
+    expect(parseAdjust("tout", null)).toEqual({ equalize: "protein", close: "all", mainGramsPerServing: null });
+    expect(parseAdjust(null, "150")).toEqual({ equalize: "none", close: [], mainGramsPerServing: 150 });
+    expect(adjustParams({ equalize: "protein", close: ["zn_mg"] })).toEqual({ ajuste: "proteines,zn_mg", quantite: null });
+    expect(adjustParams({ equalize: "protein", close: "all" })).toEqual({ ajuste: "tout", quantite: null });
   });
 });

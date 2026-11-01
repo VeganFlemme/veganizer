@@ -72,9 +72,10 @@ Une seule famille : **Schibsted Grotesk** (Google Fonts, poids 400 à 900), char
 | `Logo` | Cercle coupé verticalement, moitié gauche `animal`, moitié droite `plant`, 2 px d'écart ; mot « veganizer » en minuscules, 800, `-0.03em`. SVG : `<path d="M13 1.04A13 13 0 0 0 13 26.96z"/>` et `<path d="M15 1.04A13 13 0 0 1 15 26.96z"/>` (viewBox 28). |
 | `SiteHeader` | Bandeau `ink` : logo, recherche, partage (téléphone : boutons icône 44 px avec `aria-label`). |
 | `DishTitle` | Pastille `animal` + nom du plat ; pastille `plant-on-dark` + nom de l'alternative. |
-| `ChipGroup` | Boutons-étiquettes à la largeur de leur texte (`aria-pressed`) : version (« Version de base » / « Version complétée », `?vue=complete`), unité, et alternative quand il y en a trois au plus. Remplace les boutons segmentés étirés. |
+| `ChipGroup` | Boutons-étiquettes à la largeur de leur texte (`aria-pressed`) : unité, et alternative quand il y en a trois au plus. Remplace les boutons segmentés étirés. |
+| `AdjustPanel` | « Ajuster la version végétale » (étape 3 quinquies), dans l'onglet Nutrition : égaliser avec le plat animal (aucun · les protéines · les calories), quantité de la protéine principale (− / + 10 g), « Combler » par manque, « Tout combler », « Revenir à la recette de base » ; détail des ajouts et « Ce qui reste à couvrir ». Vue d'ensemble : boutons rapides ; autres onglets : une ligne « Version ajustée : … · Modifier dans Nutrition ». État dans l'URL (`?ajuste=`, `?quantite=`). Remplace le sélecteur « Version de base / Version complétée ». |
 | `ProteinPicker` | « Protéine » : bouton qui déplie la liste des protéines classées par proximité (nom, raison du rang, protéines pour 100 g), `?proteine=<code>`. La raison du choix et la phrase climat (« avec N protéines sur M ») sont écrites sous la barre d'outils. |
-| `AnimalBetterBox` | « Ce qui reste à couvrir » (titre neutre, décision de Matt 18 h 27) : valeurs des deux plats et solution sourcée ; « À surveiller (moins = mieux) » à part, avec les ingrédients qui en apportent le plus ; sans conseil sourcé, les faits seulement. Version complétée : un seul encadré, dans le panneau de la version complétée. |
+| `AnimalBetterBox` | « Ce qui reste à couvrir » (titre neutre, décision de Matt 18 h 27) : valeurs des deux plats et solution sourcée ; « À surveiller (moins = mieux) » à part, avec les ingrédients qui en apportent le plus ; sans conseil sourcé, les faits seulement. Version ajustée : un seul encadré, dans le panneau d'ajustement. |
 | `TabBar` | `role="tablist"`, onglets `role="tab"` + `aria-selected`, collante en haut, défilement horizontal sur téléphone. Ordre : Vue d'ensemble, Nutrition, Santé, Environnement, Protection animale, Économie. URL : `?onglet=nutrition` (partageable, rendu statique conservé). |
 | `VerdictPanel` | « X sur 5 » + phrase + barre de 5 segments (couleur du vainqueur, gris `line` pour égalité ou données insuffisantes) + légende + phrase de méthode. |
 | `CategoryCard` | Bouton entier vers l'onglet ; titre, `WinnerBadge`, `ScorePill`, une donnée clé en face-à-face, phrase de base. |
@@ -82,7 +83,7 @@ Une seule famille : **Schibsted Grotesk** (Google Fonts, poids 400 à 900), char
 | `ScorePill` | `● a – v ●` (pastille `animal` à gauche, `plant` à droite) + `aria-label="Indicateurs gagnés : plat animal a, version végétale v"`. |
 | `FaceToFaceBar` | Deux barres qui partent d'un axe central (écart 2 px), animal à gauche, végétal à droite, épaisseur 8 à 18 px (≤ 24), valeurs aux extrémités extérieures en `ink`. Chaque ligne a sa propre échelle, sauf mention « même échelle pour toutes les lignes ». Valeur manquante : pas de barre, « donnée manquante ». |
 | `DataTable` | Trois colonnes : indicateur, plat animal, végétal. En-tête avec pastilles. Note sous la ligne si couverture < 95 % ou avantage animal. |
-| `UnitSwitch` | Par portion / pour 100 kcal / pour 10 g de protéines (règle 4). |
+| `UnitSwitch` | Par portion / pour 100 g (règle 4 ; étape 3 quinquies : l'égalisation des protéines ou des calories remplace les bases « 100 kcal » et « 10 g de protéines »). |
 | `CategoryNav` | Dès 1 280 px : les catégories en colonne de gauche, fixe au défilement, avec score et vainqueur de chacune (même état et même `?onglet=` que la `TabBar`). |
 | `MiniBars` | Barres face-à-face dans une cellule de tableau (colonnes riches dès 1 440 px). |
 | `AnimalBetterBox` | Fond `win-animal-bg` : dans chaque onglet, seulement les points **de cette catégorie** où le plat animal fait mieux (« Là où le plat animal fait mieux en nutrition »…) + la solution sourcée (`data/conseils.json`) ; absent s'il n'y en a aucun. `AnimalBetterSummary` : récapitulatif groupé par catégorie sur la vue d'ensemble. |
@@ -102,7 +103,7 @@ Une seule famille : **Schibsted Grotesk** (Google Fonts, poids 400 à 900), char
    - Santé : classement CIRC par ingrédient, avec le nom de l'aliment et les grammes par portion (« 20 g de lardon fumé (viande transformée, groupe 1) et 125 g de bœuf (viande rouge, groupe 2A) par portion », aussi sur la carte de la vue d'ensemble) (« le classement indique la solidité des preuves, pas l'ampleur du risque ») + repères PNNS, HENI, EAT-Lancet (« à venir » tant que non sourcés) + `MedicalNote`.
    - Environnement : chiffre héros CO₂e + `FaceToFaceBar`, CO₂e par unité (3 lignes), tableau des 16 indicateurs Agribalyse, DQR, couverture, valeurs négatives telles que publiées.
    - Protection animale : chiffre héros + tableau (animaux tués, jours de vie, heures de douleur par intensité, poissons tués).
-   - Économie : coût climat de l'année de référence unique (2025, valeur de l'action pour le climat) en face-à-face, prix en magasin (par portion, pour 10 g de protéines).
+   - Économie : coût climat de l'année de référence unique (2025, valeur de l'action pour le climat) en face-à-face, prix en magasin (par portion, pour 100 g).
 5. Ordinateur : contenu à gauche (`flex: 999 1 560px`), colonne à droite (bandeau vainqueur, `AnimalBetterBox`, `MedicalNote`) qui passe dessous sur petit écran.
 6. `SourcesFooter`.
 

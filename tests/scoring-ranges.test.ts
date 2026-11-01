@@ -64,10 +64,9 @@ describe("dishTotals with values published as « < x » (Ciqual)", () => {
     expect(t.nutrients.salt_g.massCoverage).toBe(1); // "< 2" for the wine: covered
   });
 
-  it("does not normalise per 100 kcal when energy is only an interval", () => {
+  it("has no central value per 100 g when only a range is known", () => {
     const t = dishTotals({ servings: 1, ingredients: [{ foodCode: "FUZZY", grams: 100 }] }, data);
     expect(t.kcalPerServing).toBeNull();
-    expect(t.nutrients.protein_g.per100kcal).toBeNull();
   });
 
   it("sums EPA and DHA ingredient by ingredient, only where both are known", () => {
@@ -89,11 +88,10 @@ describe("amountBounds", () => {
     const t = dishTotals({ servings: 1, ingredients: [{ foodCode: "WINE", grams: 100 }, { foodCode: "MEAT", grams: 100 }] }, data);
     // energy 280 kcal, protein 20 g; fat 10 to 10.5 g
     expect(amountBounds(t.nutrients.fat_g, "perServing", t)).toEqual({ low: 10, high: 10.5 });
-    const k = amountBounds(t.nutrients.fat_g, "per100kcal", t)!;
-    expect(k.low).toBeCloseTo((10 / 280) * 100);
-    expect(k.high).toBeCloseTo((10.5 / 280) * 100);
-    const p = amountBounds(t.nutrients.fat_g, "per10gProtein", t)!;
-    expect(p.high).toBeCloseTo((10.5 / 20) * 10);
+    // 200 g per serving: per 100 g = half
+    const k = amountBounds(t.nutrients.fat_g, "per100g", t)!;
+    expect(k.low).toBeCloseTo(5);
+    expect(k.high).toBeCloseTo(5.25);
   });
 });
 

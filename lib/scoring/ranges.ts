@@ -25,12 +25,14 @@ export function roundForUnit(x: number, unit: string | undefined): number {
 }
 
 /** [low, high] of an amount at a basis; null when neither a value nor a range is known. */
-export function amountBounds(a: Amount | undefined, basis: Basis, totals: Pick<DishTotals, "kcalPerServing" | "proteinPerServing">): Range | null {
+export function amountBounds(a: Amount | undefined, basis: Basis, totals: Pick<DishTotals, "totalGrams" | "servings">): Range | null {
   if (!a) return null;
   const low = a.lowPerServing ?? a.perServing;
   const high = a.highPerServing ?? a.perServing;
   if (low == null || high == null) return null;
-  const k = basis === "perServing" ? 1 : basis === "per100kcal" ? (totals.kcalPerServing ? 100 / totals.kcalPerServing : null) : totals.proteinPerServing ? 10 / totals.proteinPerServing : null;
+  const grams = totals.servings > 0 ? totals.totalGrams / totals.servings : 0;
+  // Unit conversion only: 100 g.
+  const k = basis === "perServing" ? 1 : grams > 0 ? 100 / grams : null;
   if (k == null) return null;
   return { low: Math.min(low, high) * k, high: Math.max(low, high) * k };
 }
@@ -76,7 +78,7 @@ export function withoutSharedIngredients(animal: Dish, vegetal: Dish): { shared:
 function zeroTotals(servings: number, like: DishTotals): DishTotals {
   const zero = (r: Record<string, Amount>) =>
     Object.fromEntries(
-      Object.keys(r).map((id) => [id, { perServing: 0, lowPerServing: 0, highPerServing: 0, per100kcal: null, per10gProtein: null, massCoverage: 1, worstDqr: null, sourceIds: [] } satisfies Amount]),
+      Object.keys(r).map((id) => [id, { perServing: 0, lowPerServing: 0, highPerServing: 0, per100g: null, massCoverage: 1, worstDqr: null, sourceIds: [] } satisfies Amount]),
     );
   return { totalGrams: 0, servings, kcalPerServing: null, proteinPerServing: null, nutrients: zero(like.nutrients), impacts: zero(like.impacts), animalImpacts: zero(like.animalImpacts) };
 }

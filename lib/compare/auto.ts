@@ -6,12 +6,42 @@
 // - plant ingredients unchanged.
 // Same page model as before (lib/compare/view.ts), one plant variant: the chosen protein.
 
-import { mainAnimalIngredient, proteinFamily, rankCandidates, substituteDish, type OtherRule, type RankedCandidate, type SubstituteChange } from "@/lib/scoring";
+import {
+  adjustDish,
+  dishTotals,
+  mainAnimalIngredient,
+  proteinFamily,
+  rankCandidates,
+  substituteDish,
+  type AdjustRequest,
+  type ComplementFood,
+  type OtherRule,
+  type RankedCandidate,
+  type SubstituteChange,
+} from "@/lib/scoring";
 import proteinChoice from "@/data/protein_choice.json";
+import scoreRules from "@/data/score_rules.json";
 import { displayName } from "./food";
 import { dishPriceFromFoods } from "./prices";
 import { applySubstitutions, type RecipeFood, type SubstitutionContext, type SubstitutionRule } from "./recipe";
-import { buildPairPage, dishView, scoringData, type DishPriceRow, type DishRow, type FoodRow, type ImpactRow, type IngredientRow, type PairPageModel, type RawPairData } from "./view";
+import {
+  buildPairPage,
+  COMPLETABLE,
+  dishView,
+  KIND_WEIGHT,
+  roleNoteOf,
+  scoringData,
+  TOTALS_OPTIONS,
+  type ComplementAddition,
+  type CompletedVariantView,
+  type DishPriceRow,
+  type DishRow,
+  type FoodRow,
+  type ImpactRow,
+  type IngredientRow,
+  type PairPageModel,
+  type RawPairData,
+} from "./view";
 
 export interface CandidateRow {
   code: string;
@@ -232,7 +262,9 @@ export function buildAutoPage(
   const r = rawFor(input, code, ranked);
   if (!r) return null;
   // light: base version only (no completed version), for lists and counts.
-  const model = buildPairPage(r.raw, { withViews: !options.light });
+  // Step 3 quinquies: one plant version; its adjustment is built on demand (buildAdjusted).
+  void options.light;
+  const model = buildPairPage(r.raw, { withViews: false });
   model.choices = ranked.map((c) => ({
     id: c.code,
     label: c.name,
@@ -254,4 +286,116 @@ export function climateWins(input: AutoInput): { wins: number; total: number } {
     if (v?.rows.perServing.find((x) => x.id === "ghg_100y_kgco2e")?.winner === "vegetal") wins++;
   }
   return { wins, total: ranked.length };
+}
+
+// ---------------------------------------------------------------------------
+// Step 3 quinquies: one plant version, adjusted by the visitor (?ajuste=, ?quantite=).
+
+export const ADJUST_ALL = "tout";
+const ADJUST_PROTEIN = "proteines";
+const ADJUST_ENERGY = "calories";
+
+/** ?ajuste=proteines,zn_mg (or calories, or tout) and ?quantite=<g per serving> -> request; null = base recipe. */
+export function parseAdjust(ajuste: string | null, quantite: string | null): AdjustRequest | null {
+  const tokens = (ajuste ?? "").split(",").map((t) => t.trim()).filter(Boolean);
+  const qty = quantite != null && quantite !== "" && Number.isFinite(Number(quantite)) && Number(quantite) >= 0 ? Number(quantite) : null;
+  if (tokens.length === 0 && qty == null) return null;
+  if (tokens.includes(ADJUST_ALL)) return { equalize: "protein", close: "all", mainGramsPerServing: qty };
+  return {
+    equalize: tokens.includes(ADJUST_PROTEIN) ? "protein" : tokens.includes(ADJUST_ENERGY) ? "energy" : "none",
+    close: tokens.filter((t) => t !== ADJUST_PROTEIN && t !== ADJUST_ENERGY),
+    mainGramsPerServing: qty,
+  };
+}
+
+/** Inverse of parseAdjust, for the URL. */
+export function adjustParams(r: AdjustRequest | null): { ajuste: string | null; quantite: string | null } {
+  if (!r) return { ajuste: null, quantite: null };
+  const tokens = r.close === "all" ? [ADJUST_ALL] : [...(r.equalize === "protein" ? [ADJUST_PROTEIN] : r.equalize === "energy" ? [ADJUST_ENERGY] : []), ...r.close];
+  return { ajuste: tokens.length ? tokens.join(",") : null, quantite: r.mainGramsPerServing != null ? String(Math.round(r.mainGramsPerServing)) : null };
+}
+
+/** Gaps the visitor can ask to close: « plus = mieux » nutrients where the base plant version has less. */
+export function baseGaps(input: AutoInput, code: string): { id: string; label: string }[] {
+  const ranked = rankedCandidates(input);
+  const r = rawFor(input, code, ranked);
+  if (!r) return [];
+  const data = scoringData(r.raw);
+  const dishOf = (id: string, d: DishRow) => ({ servings: d.servings, ingredients: r.raw.ingredients.filter((i) => i.dish_id === id).map((i) => ({ foodCode: i.food_code, grams: Number(i.grams) })) });
+  const a = dishTotals(dishOf(r.raw.animal.id, r.raw.animal), data, TOTALS_OPTIONS);
+  const v = dishTotals(dishOf(VEGETAL_ID, r.raw.vegetal[0]), data, TOTALS_OPTIONS);
+  const rules = new Map(scoreRules.categories.flatMap((c) => c.indicators.map((i) => [i.id, i.label] as const)));
+  const names = new Map(r.raw.nutrients.map((n) => [n.id, rules.get(n.id) ?? n.name_fr]));
+  for (const [id, label] of rules) if (!names.has(id)) names.set(id, label);
+  return [...COMPLETABLE]
+    .filter((id) => id !== "protein_g")
+    .filter((id) => {
+      const ah = a.nutrients[id]?.highPerServing ?? a.nutrients[id]?.perServing;
+      const vl = v.nutrients[id]?.lowPerServing ?? v.nutrients[id]?.perServing;
+      return ah != null && vl != null && ah > vl;
+    })
+    .map((id) => ({ id, label: names.get(id) ?? id }));
+}
+
+/** The adjusted plant version for the protein `code` (same page model as the base version). */
+export function buildAdjusted(input: AutoInput, code: string, request: AdjustRequest): CompletedVariantView | null {
+  const ranked = rankedCandidates(input);
+  const r = rawFor(input, code, ranked);
+  if (!r) return null;
+  const data = scoringData(r.raw);
+  const a = r.raw.animal;
+  const v = r.raw.vegetal[0];
+  const rowsOf = (id: string) => r.raw.ingredients.filter((i) => i.dish_id === id);
+  const plantDish = { servings: v.servings, ingredients: rowsOf(VEGETAL_ID).map((i) => ({ foodCode: i.food_code, grams: Number(i.grams) })), ...(v.fixed_impacts ? { fixedImpacts: v.fixed_impacts } : {}) };
+  const animalDish = { servings: a.servings, ingredients: rowsOf(a.id).map((i) => ({ foodCode: i.food_code, grams: Number(i.grams) })), ...(a.fixed_impacts ? { fixedImpacts: a.fixed_impacts } : {}) };
+  const animalTotals = dishTotals(animalDish, data, TOTALS_OPTIONS);
+  const specs = (r.raw.complements ?? []).filter((c) => data.foods[c.code]);
+  const foods: ComplementFood[] = specs.map((c) => ({
+    code: c.code,
+    maxGrams: c.maxGramsPerServing,
+    weight: KIND_WEIGHT[c.kind],
+    per100g: Object.fromEntries(Object.entries(data.foods[c.code]!.nutrients).filter(([, x]) => x != null)) as Record<string, number>,
+  }));
+  const res = adjustDish({
+    dish: plantDish,
+    data,
+    main: code,
+    animal: animalTotals,
+    request,
+    complements: foods,
+    limits: r.raw.complementLimits,
+    maxBoostFactor: proteinChoice.maxBoostFactor,
+    completable: [...COMPLETABLE],
+    totalsOptions: TOTALS_OPTIONS,
+  });
+  const notes = new Map(rowsOf(VEGETAL_ID).map((i) => [i.food_code, i.note]));
+  const additions: ComplementAddition[] = res.additions.map((x) => {
+    const s = specs.find((c) => c.code === x.code)!;
+    return { code: x.code, label: s.label, gramsPerServing: x.grams, nutrients: x.nutrients, justification: s.justification, kind: s.kind };
+  });
+  const plantRows: IngredientRow[] = res.dish.ingredients.map((i) => ({
+    dish_id: VEGETAL_ID,
+    food_code: i.foodCode,
+    grams: i.grams,
+    note: notes.get(i.foodCode) ?? additions.find((x) => x.code === i.foodCode)?.label ?? null,
+  }));
+  const prices = [
+    dishPriceFromFoods(a.id, a.servings, rowsOf(a.id).map((i) => ({ code: i.food_code, grams: Number(i.grams) })), r.raw.foodPrices),
+    dishPriceFromFoods(VEGETAL_ID, v.servings, plantRows.map((i) => ({ code: i.food_code, grams: Number(i.grams) })), r.raw.foodPrices),
+  ].filter((p): p is DishPriceRow => p != null);
+  const raw: RawPairData = { ...r.raw, ingredients: [...rowsOf(a.id), ...plantRows], dishPrices: prices };
+  const page = buildPairPage(raw, { withViews: false, excludeFromScore: res.filled });
+  const view = page.variants[code];
+  if (!view) return null;
+  for (const rows of Object.values(view.rows)) for (const row of rows) if (res.filled.includes(row.id)) row.filled = true;
+  const label = dishView(v, raw).ingredients.find((i) => i.code === code)?.label ?? code;
+  return {
+    view,
+    boost: res.boost ? { code: res.boost.code, label, extraGrams: res.boost.extraGrams, capped: res.boost.capped } : null,
+    additions,
+    open: res.open,
+    roleNote: roleNoteOf(raw, animalDish, data),
+    scale: res.scale,
+    filled: res.filled,
+  };
 }

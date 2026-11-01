@@ -12,13 +12,13 @@ describe("versions", () => {
     expect(isVersionId(null)).toBe(false);
   });
   it("gives both CO2e results", () => {
-    expect(nb(co2Summary(87.2, 81.6))).toBe("CO₂e : −87 % par portion, −82 % une fois complétée");
+    expect(nb(co2Summary(87.2, 81.6))).toBe("CO₂e : −87 % par portion, −82 % une fois ajustée");
     expect(nb(co2Summary(87.2, null))).toBe("CO₂e : −87 % par portion");
     expect(co2Summary(null, null)).toBeNull();
   });
   it("says what changes once the plant version is completed", () => {
-    expect(nb(completedSentence(82.4))).toBe("Même complétée, la version végétale émet 82 % de CO₂e en moins.");
-    expect(nb(completedSentence(-5))).toBe("Complétée, la version végétale émet 5 % de CO₂e en plus.");
+    expect(nb(completedSentence(82.4))).toBe("Même ajustée, la version végétale émet 82 % de CO₂e en moins.");
+    expect(nb(completedSentence(-5))).toBe("Ajustée, la version végétale émet 5 % de CO₂e en plus.");
   });
 });
 

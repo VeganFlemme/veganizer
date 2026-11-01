@@ -74,8 +74,7 @@ export const CLIMATE_INDICATORS: string[] = [
 
 export const BASES: { id: Basis; label: string }[] = [
   { id: "perServing", label: "par portion" },
-  { id: "per100kcal", label: "pour 100 kcal" },
-  { id: "per10gProtein", label: "pour 10 g de protéines" },
+  { id: "per100g", label: "pour 100 g" },
 ];
 
 /** Methodology threshold (not a data value): below this mass coverage, a warning is shown. */

@@ -92,7 +92,7 @@ const SECTIONS = [
   ["principe", "Le principe : comparer à fonction égale"],
   ["paires", "Les plats et leur version végétale"],
   ["recettes-types", "Recettes types et recettes officielles"],
-  ["version-complete", "Version de base et version complétée"],
+  ["version-complete", "Une version végétale, ajustable"],
   ["choix-proteine", "La protéine au choix"],
   ["ta-recette", "« Analyse ta recette »"],
   ["formule", "La formule de calcul"],
@@ -372,8 +372,8 @@ export default async function MethodologiePage() {
       <Section id="principe" title="Le principe : comparer à fonction égale">
         <p>
           Nous comparons deux plats qui jouent le même rôle dans le repas, en portions réalistes. Les
-          résultats sont aussi rapportés à 100 kcal et à 10 g de protéines, pour comparer à apport
-          égal.
+          résultats sont donnés par portion et pour 100 g ; pour comparer à apport égal, vous pouvez
+          égaliser les protéines ou les calories de la version végétale (voir « Une version végétale, ajustable »).
         </p>
         <p>
           Nous montrons aussi, sous le titre « Ce qui reste à couvrir », tout ce que le plat animal apporte de plus (vitamine B12,
@@ -438,23 +438,26 @@ export default async function MethodologiePage() {
         </p>
       </Section>
 
-      <Section id="version-complete" title="Version de base et version complétée">
+      <Section id="version-complete" title="Une version végétale, ajustable">
         <p>
-          <strong>La référence reste le plat tel qu’on le mange.</strong> La « version de base » compare des portions réalistes, avec les mêmes accompagnements des
-          deux côtés : c’est la vue par défaut, et ses scores sont les scores de référence. Deux raisons. Selon l’ANSES, la référence nutritionnelle en protéines
+          <strong>La référence reste le plat tel qu’on le mange.</strong> La recette végétale de départ compare des portions réalistes, avec les mêmes
+          accompagnements des deux côtés : c’est la vue par défaut, et ses scores sont les scores de référence. Deux raisons. Selon l’ANSES, la référence nutritionnelle en protéines
           des adultes en bonne santé est de 0,83 g par kg de poids et par jour, et en France « les apports énergétiques et protéiques atteignent les références
           nutritionnelles » ; l’apport moyen des adultes, mesuré par l’étude INCA 1, était de 1,4 g par kg et par jour (AFSSA, 2007). Les références
           nutritionnelles de l’ANSES sont des apports par jour (mg/j, µg/j), et pour les protéines l’ANSES indique que varier les sources sur la journée
           suffit. Nous en concluons qu’un plat isolé n’a pas à couvrir à lui seul ces références ; ce n’est pas une phrase de l’ANSES.
         </p>
         <p>
-          <strong>La version complétée</strong> répond à l’objection « il manque des protéines, du calcium… ». Le plat animal ne change pas. La version végétale
-          vise autant de protéines que lui : la protéine choisie par le visiteur est augmentée, deux fois sa masse au plus (voir « Une portion
-          plausible » ci-dessous). Puis ses manques, protéines comprises, sont comblés par les plus petites quantités d’aliments d’une liste blanche relue (aliments courants
-          d’abord, aliments enrichis seulement s’il le faut), sans jamais dépasser une limite de sécurité de l’ANSES (calcium, fer, zinc, iode, vitamine D, par
-          jour, appliquées au total de la portion). Tous les onglets, le climat, les animaux et le prix sont recalculés et comparés normalement ; la nutrition
-          affiche « écarts comblés » (« sauf : … » quand il en reste) au lieu d’un score, pour rester équitable. La vitamine B12, l’EPA + DHA et la vitamine D, qu’aucun aliment
-          de la liste ne comble, sont indiquées « à couvrir hors de ce plat » : complément ou aliment enrichi, sans dose, avec un professionnel de santé.
+          <strong>Ajuster la version végétale</strong> répond à l’objection « il manque des protéines, du calcium… ». Le plat animal ne change jamais. Dans
+          l’onglet Nutrition, vous pouvez : égaliser avec le plat animal les protéines (la protéine choisie est augmentée ou diminuée, deux fois sa masse au
+          plus, voir « Une portion plausible ») ou les calories (toute la portion végétale est mise à l’échelle) ; régler à la main la quantité de la
+          protéine ; combler un manque, un par un ou tous (« Tout combler »). Un manque est comblé par les plus petites quantités d’aliments d’une liste
+          blanche relue (aliments courants d’abord, aliments enrichis seulement s’il le faut), sans jamais dépasser une limite de sécurité de l’ANSES
+          (calcium, fer, zinc, iode, vitamine D, par jour, appliquées au total de la portion). Tous les onglets, le climat, les animaux, le prix et le
+          simulateur sont recalculés aussitôt. <strong>Équité du score</strong> : un indicateur comblé par un ajustement est marqué « comblé » et n’est plus
+          compté dans le score Nutrition ; les autres sont comptés normalement. La vitamine B12, l’EPA + DHA et la vitamine D, qu’aucun aliment de la liste
+          ne comble, ne se comblent pas avec des aliments : complément ou aliment enrichi, sans dose, avec un professionnel de santé. L’ajustement est gardé
+          dans l’adresse de la page (<code>?ajuste=proteines,zn_mg</code>, <code>?ajuste=calories</code> ou <code>?ajuste=tout</code>), pour le partage.
         </p>
         <ul className="list-disc space-y-1 pl-5">
           {complementsFile.foods.map((f) => (
@@ -467,8 +470,9 @@ export default async function MethodologiePage() {
         <p>
           <strong>Pourquoi le plat animal n’est plus complété.</strong> Une version précédente complétait aussi le plat animal là où la version végétale faisait
           mieux (fibres…). Nous l’avons retiré : la question posée est « que faudrait-il ajouter à la version végétale pour égaler le plat animal ? ». Compléter
-          les deux plats reviendrait à comparer deux plats que personne ne mange ; les avantages de la version végétale restent visibles dans la version de base.
-          Ce sélecteur remplace les vues « Portion réaliste », « À protéines égales » et « Avec compléments ».
+          les deux plats reviendrait à comparer deux plats que personne ne mange ; les avantages de la version végétale restent visibles dans la recette de départ.
+          Ce réglage remplace les vues « Portion réaliste », « À protéines égales », « Avec compléments », puis « Version de base / Version complétée », ainsi
+          que les bases « pour 100 kcal » et « pour 10 g de protéines » : l’égalisation des calories ou des protéines les remplace.
         </p>
         <p>
           <strong>Choix des protéines végétales des recettes</strong> : dans chaque version maison, la protéine végétale la plus proche du rôle de la viande, pour
@@ -486,11 +490,11 @@ export default async function MethodologiePage() {
           <a href="https://www.anses.fr/fr/system/files/PRES2017DPA04.pdf" className="underline" rel="noopener noreferrer">PDF</a>).
         </p>
               <p>
-          <strong>Une portion plausible.</strong> Dans la version complétée, la protéine principale n’est augmentée que jusqu’à deux fois sa masse
+          <strong>Une portion plausible.</strong> Quand les protéines sont égalisées, la protéine principale n’est augmentée que jusqu’à deux fois sa masse
           de départ (choix éditorial de Veganizer : la portion de l’enquête INCA 3 n’est pas utilisée, sa licence n’étant pas précisée). Au-delà,
           l’écart de protéines est comblé par un aliment protéique courant de la liste (tofu, lentilles ou pois chiches cuits, une portion au plus),
           comme les autres manques ; s’il reste un écart, il apparaît dans « Ce qui reste à couvrir ». Quand l’aliment animal n’est pas d’abord une
-          source de protéines (fromage, lait, crème, beurre), la version complétée le dit : l’égaler en protéines n’est qu’un repère.
+          source de protéines (fromage, lait, crème, beurre), la version ajustée le dit : l’égaler en protéines n’est qu’un repère.
         </p>
       </Section>
 
@@ -516,7 +520,7 @@ export default async function MethodologiePage() {
         <p>
           <strong>La règle de remplacement</strong> est unique. L’ingrédient animal principal (l’ingrédient animal qui apporte le plus de protéines, parmi
           les « sources de protéines » du même règlement : au moins 12 % de l’énergie ; le beurre ou la crème ne le sont jamais) est remplacé par la protéine
-          choisie, à masse égale dans la version de base et à protéines égales dans la version complétée. Les autres ingrédients animaux (beurre, lait,
+          choisie, à masse égale (la recette de départ) ; le visiteur peut ensuite égaliser les protéines ou les calories. Les autres ingrédients animaux (beurre, lait,
           crème, lardons, fromage…) sont remplacés par une table relue, dont chaque ligne est justifiée. Les ingrédients végétaux ne changent pas. Une
           phrase indique pour combien de protéines de la liste la version végétale émet moins de gaz à effet de serre par portion (fourchettes qui ne se
           chevauchent pas).
@@ -713,8 +717,7 @@ export default async function MethodologiePage() {
           Release 2, domaine public). Par exemple, le prix du steak haché cuit est celui du steak
           haché cru divisé par son rendement de cuisson à la poêle ; le rendement utilisé est affiché
           avec chaque prix. Les recettes restent pesées cuites ; sans rendement sourcé (légumes, pâtes,
-          riz, légumineuses), le prix reste « donnée manquante ». Le prix d’un plat, par portion, pour 100 kcal et pour 10 g de
-          protéines, n’est affiché que si ces prix couvrent au moins 95 % de sa masse ; sinon nous
+          riz, légumineuses), le prix reste « donnée manquante ». Le prix d’un plat, par portion et pour 100 g, n’est affiché que si ces prix couvrent au moins 95 % de sa masse ; sinon nous
           indiquons la part couverte et le prix au kilo de chaque ingrédient, avec la source, le lieu
           et la période des relevés.
         </p>

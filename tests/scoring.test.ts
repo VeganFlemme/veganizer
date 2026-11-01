@@ -163,32 +163,14 @@ describe("dishTotals", () => {
     expect(t.impacts.ghg_100y_kgco2e.worstDqr).toBe(2.5);
   });
 
-  it("normalises per 100 kcal and per 10 g of protein", () => {
-    // 100 g beef: 200 kcal, 20 g protein, 3 kg CO2e
-    const t = dishTotals({ servings: 1, ingredients: [{ foodCode: "BEEF", grams: 100 }] }, data);
+  it("normalises per 100 g of dish (step 3 quinquies: per serving and per 100 g only)", () => {
+    // 2 servings of 100 g beef each (3 kg CO2e per 100 g of beef)
+    const t = dishTotals({ servings: 2, ingredients: [{ foodCode: "BEEF", grams: 200 }] }, data);
     expect(t.kcalPerServing).toBe(200);
-    expect(t.proteinPerServing).toBe(20);
-    expect(t.impacts.ghg_100y_kgco2e.per100kcal).toBeCloseTo(1.5);
-    expect(t.impacts.ghg_100y_kgco2e.per10gProtein).toBeCloseTo(1.5);
-    expect(t.nutrients.fe_mg.per100kcal).toBeCloseTo(1.5);
-  });
-
-  it("does not normalise on a partial energy or protein total", () => {
-    // MYSTERY_MEAT has energy but no protein value and no impact
-    const t = dishTotals(
-      {
-        servings: 1,
-        ingredients: [
-          { foodCode: "BEEF", grams: 100 },
-          { foodCode: "MYSTERY_MEAT", grams: 100 },
-        ],
-      },
-      data,
-    );
-    expect(t.kcalPerServing).toBe(300);
-    expect(t.proteinPerServing).toBeNull();
-    expect(t.impacts.ghg_100y_kgco2e.per10gProtein).toBeNull();
-    expect(t.impacts.ghg_100y_kgco2e.per100kcal).toBeCloseTo(1);
+    expect(t.impacts.ghg_100y_kgco2e.perServing).toBeCloseTo(3);
+    expect(t.impacts.ghg_100y_kgco2e.per100g).toBeCloseTo(3);
+    const big = dishTotals({ servings: 1, ingredients: [{ foodCode: "BEEF", grams: 400 }] }, data);
+    expect(big.impacts.ghg_100y_kgco2e.per100g).toBeCloseTo(3); // same food, same value per 100 g
   });
 
   it("computes animal impacts from category factors; plant foods count as 0, unknown categories as missing", () => {
@@ -298,11 +280,10 @@ describe("compareDishes", () => {
     expect(c.criteria.ghg_100y_kgco2e.rangesOverlap).toBe(false);
   });
 
-  it("can compare per 100 kcal or per 10 g of protein", () => {
-    const c = compareDishes(beef, lentil, { directions, conseils, basis: "per10gProtein" });
-    // 1.5 vs 0.1 kg CO2e per 10 g protein
-    expect(c.criteria.ghg_100y_kgco2e.animal).toBeCloseTo(1.5);
-    expect(c.criteria.ghg_100y_kgco2e.vegetal).toBeCloseTo(0.1);
+  it("can compare per 100 g", () => {
+    const c = compareDishes(beef, lentil, { directions, conseils, basis: "per100g" });
+    expect(c.criteria.ghg_100y_kgco2e.animal).toBeCloseTo(beef.impacts.ghg_100y_kgco2e.per100g!);
+    expect(c.criteria.ghg_100y_kgco2e.vegetal).toBeCloseTo(lentil.impacts.ghg_100y_kgco2e.per100g!);
   });
 });
 

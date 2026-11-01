@@ -1,4 +1,4 @@
-// Completed version on raw foods (suite V1, step 3 ter, 5 ter): the main protein is at most doubled
+// Protein equalised on raw foods (suite V1, step 3 ter, 5 ter; step 3 quinquies): the main protein is at most doubled
 // (plausible serving), the rest comes from the list; foods whose role is not protein say so.
 //   BASE_URL=http://localhost:3000 npx playwright test e2e/completed-plausible.spec.ts
 import { expect, test } from "@playwright/test";
@@ -13,8 +13,8 @@ const FOODS = [
 
 for (const f of FOODS) {
   test(`${f.name}: main protein at most doubled, role stated when it is not protein`, async ({ page }) => {
-    await page.goto(`/aliment/${f.code}?vue=complete`, { waitUntil: "networkidle" });
-    const panel = page.locator("section").filter({ hasText: "Version complétée : exemple d’ajouts possibles" }).first();
+    await page.goto(`/aliment/${f.code}?ajuste=proteines&onglet=nutrition`, { waitUntil: "networkidle" });
+    const panel = page.locator("section").filter({ has: page.getByRole("heading", { name: "Ajuster la version végétale" }) }).last();
     await expect(panel).toBeVisible();
     // 100 g of the plant protein at the start: never more than +100 g.
     const lines = panel.getByText(/g pour la recette \(\+\d+/);
