@@ -30,3 +30,11 @@ describe("advantagesByCategory and titles", () => {
     expect(animalBetterTitle("nutrition", "l’aliment d’origine")).toBe("Là où l’aliment d’origine fait mieux en nutrition");
   });
 });
+
+describe("splitFirstSentence", () => {
+  it("cuts the advice after its first sentence", async () => {
+    const { splitFirstSentence } = await import("@/components/ui/AnimalBetterBox");
+    expect(splitFirstSentence("Première phrase (ANSES). Deuxième phrase.")).toEqual(["Première phrase (ANSES).", "Deuxième phrase."]);
+    expect(splitFirstSentence("Une seule phrase.")).toEqual(["Une seule phrase.", ""]);
+  });
+});

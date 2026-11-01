@@ -6,7 +6,7 @@ import santeFile from "@/data/sante.json";
 import { createPublicClient } from "@/lib/supabase/public";
 import type { Conseil } from "@/lib/scoring";
 import { CIQUAL_SOURCE, CLIMATE_COST_YEARS, CLIMATE_INDICATORS, CLIMATE_MAIN } from "./config";
-import { buildFoodPage, displayName, type FoodPageModel } from "./food";
+import { buildFoodPage, buildFoodPairPage, displayName, type FoodPageModel } from "./food";
 import type { RecipeData, RecipeFood, SubstitutionRule } from "./recipe";
 import { buildPairPage, reductionPercent, type ComplementSpec, type IarcEntry, type PairPageModel, type PnnsEntry, type RawPairData } from "./view";
 
@@ -216,7 +216,8 @@ export async function listSources(): Promise<SourceListRow[]> {
 }
 
 /** /aliment/[code]: the food, its plant alternatives (food_alternatives) and the data to compare them. */
-export async function getFoodPage(code: string): Promise<FoodPageModel | null> {
+/** /aliment/[code]: the page model of a dish page (PairView) and the food alone (no alternative). */
+export async function getFoodPage(code: string): Promise<{ pair: PairPageModel; food: FoodPageModel } | null> {
   "use cache";
   cacheLife({ stale: 3600, revalidate: 86400, expire: 604800 });
   const db = createPublicClient();
@@ -226,13 +227,13 @@ export async function getFoodPage(code: string): Promise<FoodPageModel | null> {
   )[0];
   if (!food) return null;
   const alternatives = rows(await db.from("food_alternatives").select("plant_code, rank, rule").eq("animal_code", code), "food_alternatives");
-  const codes = [code, ...alternatives.map((a) => a.plant_code)];
+  const codes = [...new Set([code, ...alternatives.map((a) => a.plant_code), ...COMPLEMENT_CODES])];
   const foods = rows(
     await db.from("foods").select("code, name_fr, is_animal, animal_category, ciqual_code, iarc_meat, food_subgroup").in("code", codes),
     "foods",
   );
   const nutrientCodes = [...new Set(foods.map((f) => f.ciqual_code ?? f.code))];
-  const [nutrientValues, impacts, categoryFactors, nutrients, indicators, sources] = await Promise.all([
+  const [nutrientValues, impacts, categoryFactors, nutrients, indicators, sources, factors, monRules, foodPrices] = await Promise.all([
     paged("food_nutrients", (from, to) =>
       db.from("food_nutrients").select("food_code, nutrient_id, value_per_100g, qualifier, source_id").in("food_code", nutrientCodes).eq("source_id", CIQUAL_SOURCE)
         .order("food_code").order("nutrient_id").range(from, to),
@@ -242,8 +243,11 @@ export async function getFoodPage(code: string): Promise<FoodPageModel | null> {
     db.from("nutrients").select("id, name_fr, unit"),
     db.from("indicators").select("id, name_fr, unit, higher_is_better, pillar"),
     db.from("sources").select("id, name, publisher, version, license, commercial_use, url"),
+    db.from("monetization_factors").select("indicator_id, year, eur_per_unit, method, source_id").eq("indicator_id", CLIMATE_MAIN),
+    db.from("monetization_rules").select("indicator_id, method, growth_rate, start_year, cap_year, source_id").eq("indicator_id", CLIMATE_MAIN),
+    db.from("food_prices_best").select("food_code, source_id, median_eur_per_kg, observations, first_observed_on, last_observed_on, place, derived_from, yield_pct").in("food_code", codes),
   ]);
-  return buildFoodPage({
+  const base = {
     code,
     foodGroup: food.food_group,
     foodSubgroup: food.food_subgroup,
@@ -256,7 +260,29 @@ export async function getFoodPage(code: string): Promise<FoodPageModel | null> {
     indicators: rows(indicators, "indicators"),
     sources: rows(sources, "sources"),
     conseils: conseilsFile.conseils as Conseil[],
+  };
+  const pair = buildFoodPairPage({
+    ...base,
+    monetizationFactors: rows(factors, "monetization_factors").map((f) => ({
+      indicatorId: f.indicator_id, year: f.year, eurPerUnit: Number(f.eur_per_unit), method: f.method, sourceId: f.source_id,
+    })),
+    monetizationRules: rows(monRules, "monetization_rules").map((r) => ({
+      indicatorId: r.indicator_id, method: r.method, growthRate: Number(r.growth_rate), startYear: r.start_year, capYear: r.cap_year, sourceId: r.source_id,
+    })),
+    climateCostYears: CLIMATE_COST_YEARS,
+    foodPrices: rows(foodPrices, "food_prices_best").flatMap((p) =>
+      p.food_code && p.source_id && p.median_eur_per_kg != null
+        ? [{ food_code: p.food_code, source_id: p.source_id, median_eur_per_kg: Number(p.median_eur_per_kg), observations: Number(p.observations), first_observed_on: p.first_observed_on, last_observed_on: p.last_observed_on, place: p.place, derived_from: p.derived_from, yield_pct: p.yield_pct }]
+        : [],
+    ),
+    iarc: santeFile.iarc as IarcEntry[],
+    pnns: santeFile.pnns as PnnsEntry[],
+    eatLancet: santeFile.eatLancet as PnnsEntry[],
+    complements: COMPLEMENTS,
+    complementLimits: COMPLEMENT_LIMITS,
   });
+  const alone = buildFoodPage(base);
+  return pair && alone ? { pair, food: alone } : null;
 }
 
 export interface SearchHit {

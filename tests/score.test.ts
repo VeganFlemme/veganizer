@@ -10,7 +10,7 @@ import {
   type ScoreOptions,
 } from "@/lib/scoring";
 
-const OPTS: ScoreOptions = { significantDigits: 3, provisionalBelowShare: 0.5 };
+const OPTS: ScoreOptions = { significantDigits: 3 };
 
 const NUT: ScoreCategoryRule = {
   id: "nutrition",
@@ -95,9 +95,63 @@ describe("scoreCategory", () => {
     expect(c.provisional).toBe(true);
   });
 
-  it("is not provisional when exactly half of the indicators are compared", () => {
-    const c = scoreCategory(NUT, { protein_g: { animal: 1, vegetal: 2 }, fiber_g: { animal: 1, vegetal: 2 } }, OPTS);
-    expect(c.provisional).toBe(false);
+  describe("'provisoire' only when the missing data could change the winner (decision of Matt, 17 h 40)", () => {
+    it("is provisional when the indicators not counted could reach a tie", () => {
+      // 2-0 for the plant dish, 2 indicators missing: both could go to the animal dish.
+      const c = scoreCategory(NUT, { protein_g: { animal: 1, vegetal: 2 }, fiber_g: { animal: 1, vegetal: 2 } }, OPTS);
+      expect([c.winner, c.provisional]).toEqual(["vegetal", true]);
+    });
+    it("is not provisional when the lead is larger than the indicators not counted, whatever their share", () => {
+      // 3-0, 1 missing: the animal dish could reach 1 at most.
+      const c = scoreCategory(NUT, { protein_g: { animal: 1, vegetal: 2 }, fiber_g: { animal: 1, vegetal: 2 }, salt_g: { animal: 2, vegetal: 1 } }, OPTS);
+      expect([c.winner, c.provisional]).toEqual(["vegetal", false]);
+      // 1-0 out of 1 compared, 3 missing: provisional although the rule used to be "half compared".
+      const few = scoreCategory(NUT, { protein_g: { animal: 1, vegetal: 2 } }, OPTS);
+      expect(few.provisional).toBe(true);
+    });
+    it("counts 'partiel' indicators as not counted too", () => {
+      const c = scoreCategory(NUT, { protein_g: { animal: 1, vegetal: 2 }, fiber_g: { animal: 1, vegetal: 2 }, salt_g: { animal: 2, vegetal: 1 }, fa_sat_g: { animal: 1, vegetal: 9, partial: true } }, OPTS);
+      expect([c.compared, c.provisional]).toEqual([3, false]);
+    });
+    it("a tie is provisional as soon as one indicator is not counted, final when all are", () => {
+      const tie = { protein_g: { animal: 2, vegetal: 1 }, fiber_g: { animal: 1, vegetal: 2 } };
+      expect(scoreCategory(NUT, tie, OPTS).provisional).toBe(true);
+      const all = { ...tie, salt_g: { animal: 1, vegetal: 1 }, fa_sat_g: { animal: 1, vegetal: 1 } };
+      expect(scoreCategory(NUT, all, OPTS).provisional).toBe(false);
+    });
+    it("is never provisional when every indicator is compared", () => {
+      const c = scoreCategory(NUT, { protein_g: { animal: 2, vegetal: 1 }, fiber_g: { animal: 1, vegetal: 2 }, salt_g: { animal: 1, vegetal: 2 }, fa_sat_g: { animal: 1, vegetal: 1 } }, OPTS);
+      expect([c.winner, c.provisional]).toEqual(["animal", false]);
+    });
+  });
+
+  describe("plant dish without any identified animal ingredient (animal welfare, decision of Matt, 17 h 40)", () => {
+    const ANI: ScoreCategoryRule = {
+      id: "animaux",
+      vegetalCannotBeWorse: true,
+      indicators: [
+        { id: "killed", direction: "lower_is_better" },
+        { id: "days", direction: "lower_is_better" },
+        { id: "pain", direction: "lower_is_better" },
+      ],
+    };
+    it("is won by the plant dish without 'provisoire', even with values missing on the animal side", () => {
+      const c = scoreCategory(ANI, { killed: { animal: 0.01, vegetal: 0 }, days: { animal: null, vegetal: 0 }, pain: { animal: null, vegetal: 0 } }, OPTS);
+      expect([c.winner, c.provisional]).toEqual(["vegetal", false]);
+      // Missing values stay missing: nothing invented, the count of compared indicators is unchanged.
+      expect([c.compared, c.total, c.vegetalPoints, c.animalPoints]).toEqual([1, 3, 1, 0]);
+      expect(c.indicators.map((i) => i.outcome)).toEqual(["vegetal", "manquant", "manquant"]);
+      expect(c.vegetalCannotBeWorse).toBe(true);
+    });
+    it("holds when no indicator can be compared", () => {
+      const c = scoreCategory(ANI, { killed: { animal: null, vegetal: 0 } }, OPTS);
+      expect([c.winner, c.provisional, c.compared]).toEqual(["vegetal", false, 0]);
+    });
+    it("falls back to the general rule if the data contradicts it (an animal point)", () => {
+      const c = scoreCategory(ANI, { killed: { animal: 0, vegetal: 1 } }, OPTS);
+      expect(c.winner).toBe("animal");
+      expect(c.vegetalCannotBeWorse).toBeFalsy();
+    });
   });
 
   it("a tie on every compared indicator is 'Égalité', not 'insufficient'", () => {

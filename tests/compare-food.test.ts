@@ -1,6 +1,6 @@
 // Fixture values are invented for the test only.
 import { describe, expect, it } from "vitest";
-import { buildFoodPage, displayName, type FoodRawData } from "@/lib/compare/food";
+import { buildFoodPage, buildFoodPairPage, displayName, type FoodRawData } from "@/lib/compare/food";
 
 const base: FoodRawData = {
   code: "meat",
@@ -62,5 +62,46 @@ describe("buildFoodPage", () => {
 describe("displayName", () => {
   it("removes the quoted claim only", () => {
     expect(displayName("Nuggets soja et blé (convient aux véganes ou végétaliens), préemballé")).toBe("Nuggets soja et blé, préemballé");
+  });
+});
+
+describe("buildFoodPairPage (S24d: same display as dish pages)", () => {
+  const extra = {
+    monetizationFactors: [],
+    monetizationRules: [],
+    climateCostYears: [2025],
+    foodPrices: [],
+    iarc: [],
+    pnns: [],
+    eatLancet: [],
+  };
+  const page = buildFoodPairPage({ ...base, ...extra })!;
+  const old = buildFoodPage(base)!;
+
+  it("treats each food as a one-ingredient dish of 100 g, with one choice per alternative", () => {
+    expect(page.animal.servings).toBe(1);
+    expect(page.animal.gramsPerServing).toBe(100);
+    expect(page.choices).toEqual([{ id: "tofu", label: "Galette", reason: "Viande cuite → protéine végétale" }]);
+  });
+
+  it("has the same five categories, scores and versions as a dish page", () => {
+    const v = page.variants.tofu!;
+    expect(v.scores.verdict.categories.map((c) => c.id)).toEqual(["nutrition", "sante", "environnement", "animaux", "economie"]);
+    expect(page.completed.tofu).toBeDefined();
+  });
+
+  it("keeps the figures per 100 g unchanged", () => {
+    const value = (rows: { id: string; animal: { value: number | null } | null; vegetal: { value: number | null } | null }[], id: string) => {
+      const r = rows.find((x) => x.id === id)!;
+      return [r.animal?.value, r.vegetal?.value];
+    };
+    for (const id of ["ghg_100y_kgco2e", "protein_g", "animals_killed_land"]) {
+      expect(value(page.variants.tofu!.rows.perServing, id)).toEqual(value(old.alternatives[0].rows.perServing, id));
+    }
+  });
+
+  it("returns a page without choice for a food without alternative, and null for an unknown code", () => {
+    expect(buildFoodPairPage({ ...base, ...extra, code: "tofu", alternatives: [] })!.choices).toEqual([]);
+    expect(buildFoodPairPage({ ...base, ...extra, code: "nope" })).toBeNull();
   });
 });

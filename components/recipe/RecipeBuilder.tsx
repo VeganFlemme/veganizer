@@ -110,7 +110,8 @@ export function RecipeBuilder() {
   const button = "h-11 cursor-pointer rounded-btn px-[18px] text-[15px] font-bold disabled:cursor-not-allowed disabled:opacity-60";
   return (
     <div className="flex flex-col gap-6">
-      <div className="mx-auto w-full max-w-[1200px] px-5 md:px-8">
+      {/* From 1 024 px: input on the left, proposed replacements on the right; the comparison below, full width. */}
+      <div className="mx-auto w-full max-w-[1440px] px-5 md:px-8 lg:grid lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] lg:items-start lg:gap-6 min-[1440px]:px-12">
         <section aria-labelledby={`${id}-t`} className="flex flex-col gap-4 rounded-panel bg-surface p-5 shadow-card md:p-6">
           <h2 id={`${id}-t`} className="m-0 text-[19px] font-extrabold">
             Ma recette
@@ -216,7 +217,7 @@ export function RecipeBuilder() {
         </section>
 
         {result && (
-          <section aria-labelledby={`${id}-s`} className="mt-6 flex flex-col gap-2 rounded-panel bg-surface p-5 md:p-6">
+          <section aria-labelledby={`${id}-s`} className="mt-6 flex flex-col gap-2 rounded-panel bg-surface p-5 md:p-6 lg:sticky lg:top-4 lg:mt-0">
             <h2 id={`${id}-s`} className="m-0 text-[19px] font-extrabold">
               Version végétale : les remplacements proposés
             </h2>

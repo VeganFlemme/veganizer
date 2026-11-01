@@ -25,7 +25,6 @@ interface RuleCategory {
 const CATEGORIES = scoreRules.categories as RuleCategory[];
 export const SCORE_OPTIONS: ScoreOptions = {
   significantDigits: scoreRules.significantDigits,
-  provisionalBelowShare: scoreRules.provisionalBelowShare,
 };
 
 export interface CategoryScoreView extends CategoryScore {
@@ -36,7 +35,11 @@ export interface CategoryScoreView extends CategoryScore {
   sentence: string;
   /** Short form for the summary cards. */
   summary: string;
+  /** Completed version: the gaps of this category are closed by construction, no score (decision of Matt, 17 h 12). */
+  constructed?: boolean;
 }
+
+export const CONSTRUCTED_TEXT = "Écarts comblés par construction";
 
 export interface VerdictView {
   vegetalWins: number;
@@ -58,7 +61,11 @@ export interface ScoreInput {
   iarc: IarcView[];
   price: PriceView;
   climateCost: ClimateCostView[];
+  /** The plant dish has no identified animal ingredient and the animal dish has at least one (rule 10: "identifié", never "vegan"). */
+  vegetalAnimalFree?: boolean;
 }
+
+export const ANIMAL_FREE_TEXT = "La version végétale ne contient aucun ingrédient animal identifié : elle ne peut pas faire moins bien sur la protection animale.";
 
 const list = (xs: string[]) => xs.join(", ");
 const lower = (s: string) => s.charAt(0).toLowerCase() + s.slice(1);
@@ -96,7 +103,8 @@ export function categorySummary(score: CategoryScore, labels: Record<string, str
   return head + tail;
 }
 
-export function verdictSentence(categories: CategoryScoreView[]): string {
+export function verdictSentence(all: CategoryScoreView[]): string {
+  const categories = all.filter((c) => !c.constructed);
   const v = categories.filter((c) => c.winner === "vegetal").length;
   const parts = [`${v === 1 ? "catégorie gagnée" : "catégories gagnées"} par la version végétale.`];
   const animal = categories.filter((c) => c.winner === "animal").map((c) => lower(c.label));
@@ -105,6 +113,8 @@ export function verdictSentence(categories: CategoryScoreView[]): string {
   if (animal.length) parts.push(`Le plat animal fait mieux en ${list(animal)}.`);
   if (tie.length) parts.push(`Égalité en ${list(tie)}.`);
   if (none.length) parts.push(`Données insuffisantes en ${list(none)}.`);
+  const built = all.filter((c) => c.constructed).map((c) => c.label);
+  if (built.length) parts.push(`${list(built)} : écarts comblés par construction, non comptée.`);
   return parts.join(" ");
 }
 
@@ -161,36 +171,43 @@ export function healthSummary(iarc: IarcView[]): string {
   return animal + vegetal;
 }
 
-function scoreOf(category: RuleCategory, input: ScoreInput, basis: Basis, exclude: string[] = []): CategoryScoreView {
+function scoreOf(category: RuleCategory, input: ScoreInput, basis: Basis, exclude: string[] = [], constructed: string[] = []): CategoryScoreView {
   const rule: ScoreCategoryRule = {
     id: category.id,
     indicators: category.indicators.filter((i) => !exclude.includes(i.id)).map((i) => ({ id: i.id, direction: i.direction === "higher_is_better" ? "higher_is_better" : "lower_is_better" })),
+    vegetalCannotBeWorse: category.id === "animaux" && input.vegetalAnimalFree === true,
   };
   const score = scoreCategory(rule, values(category, input, basis), SCORE_OPTIONS);
   const labels = Object.fromEntries(category.indicators.map((i) => [i.id, i.label]));
-  const summary = category.id === "sante" ? healthSummary(input.iarc) : categorySummary(score, labels);
-  return { ...score, id: category.id as CategoryId, label: category.label, short: category.short, sentence: categorySentence(score, labels), summary };
+  if (constructed.includes(category.id)) {
+    const text = `${CONSTRUCTED_TEXT} : la version végétale complétée reçoit autant de protéines que le plat animal et ses autres manques sont comblés quand un aliment de la liste le permet. Pas de score, pour rester équitable.`;
+    return { ...score, animalPoints: 0, vegetalPoints: 0, winner: "egal", provisional: false, id: category.id as CategoryId, label: category.label, short: category.short, sentence: text, summary: text, constructed: true };
+  }
+  const lead = score.vegetalCannotBeWorse ? `${ANIMAL_FREE_TEXT} ` : "";
+  const summary = lead + (category.id === "sante" ? healthSummary(input.iarc) : categorySummary(score, labels));
+  return { ...score, id: category.id as CategoryId, label: category.label, short: category.short, sentence: lead + categorySentence(score, labels), summary };
 }
 
 /**
  * Scores of a pair. `exclude`: indicators not counted in this view (e.g. protein in the
  * equal-protein view, equal by construction).
  */
-export function scorePair(input: ScoreInput, exclude: string[] = []): PairScores {
-  const categories = CATEGORIES.map((c) => scoreOf(c, input, "perServing", exclude));
+export function scorePair(input: ScoreInput, exclude: string[] = [], constructed: string[] = []): PairScores {
+  const categories = CATEGORIES.map((c) => scoreOf(c, input, "perServing", exclude, constructed));
+  const counted = categories.filter((c) => !c.constructed);
   const nutrition = CATEGORIES.find((c) => c.id === "nutrition")!;
   return {
     verdict: {
-      vegetalWins: categories.filter((c) => c.winner === "vegetal").length,
-      animalWins: categories.filter((c) => c.winner === "animal").length,
-      total: categories.length,
+      vegetalWins: counted.filter((c) => c.winner === "vegetal").length,
+      animalWins: counted.filter((c) => c.winner === "animal").length,
+      total: counted.length,
       categories,
       sentence: verdictSentence(categories),
     },
     nutritionByBasis: {
       perServing: categories[0],
-      per100kcal: scoreOf(nutrition, input, "per100kcal", exclude),
-      per10gProtein: scoreOf(nutrition, input, "per10gProtein", exclude),
+      per100kcal: scoreOf(nutrition, input, "per100kcal", exclude, constructed),
+      per10gProtein: scoreOf(nutrition, input, "per10gProtein", exclude, constructed),
     },
   };
 }

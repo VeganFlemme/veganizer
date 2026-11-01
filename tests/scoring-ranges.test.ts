@@ -126,7 +126,7 @@ describe("judgeRanges: a point only when the ranges do not overlap", () => {
 });
 
 describe("scoreIndicator with ranges", () => {
-  const opts = { significantDigits: 3, provisionalBelowShare: 0.5 };
+  const opts = { significantDigits: 3 };
   const rule = { id: "fat_g", direction: "lower_is_better" as const };
   it("counts a range-only value (« < x ») and gives no point when the ranges overlap", () => {
     expect(scoreIndicator(rule, { animal: null, vegetal: 2, animalRange: { low: 1, high: 3 } }, opts).outcome).toBe("egal");

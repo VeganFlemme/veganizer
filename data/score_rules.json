@@ -1,5 +1,5 @@
 {
-  "version": "1.1",
+  "version": "1.2",
   "date": "2026-11-01",
   "status": "Provisoire : sens à valider par un·e diététicien·ne et une personne experte en ACV (docs/A_VERIFIER.md).",
   "method": {
@@ -8,11 +8,11 @@
     "shared": "Par portion, les ingrédients strictement identiques des deux côtés (même aliment, même quantité par portion) sont mis de côté pour le verdict : leur contribution s'annule dans la comparaison. Les totaux affichés, eux, gardent tous les ingrédients, leur couverture réelle et l'avertissement sous 95 %. Pour 100 kcal ou pour 10 g de protéines, ces ingrédients ne s'annulent plus : ils restent comptés.",
     "missing": "Valeur manquante d'un côté ou de l'autre, ou données couvrant moins de 95 % de la masse d'un des plats (ingrédients identiques mis de côté, par portion) : indicateur non compté (« x indicateurs comparés sur y »).",
     "winner": "Plus de points = vainqueur de la catégorie ; autant de points = « Égalité » ; aucun indicateur comparé = « Données insuffisantes ».",
-    "provisional": "« provisoire » quand moins de la moitié des indicateurs de la catégorie sont comparés.",
+    "provisional": "« provisoire » seulement quand les indicateurs non comptés (données manquantes ou partielles) pourraient inverser le vainqueur : on essaie toutes les issues possibles de ces indicateurs, et le vainqueur est définitif si aucune ne le change (décision du 1er novembre 2026, qui remplace la règle « moins de la moitié des indicateurs comparés »).",
+    "animalFree": "Protection animale : quand la version végétale ne contient aucun ingrédient animal identifié (d'après les noms Ciqual et Agribalyse et le détail par ingrédient Agribalyse) et que le plat animal en contient au moins un, la version végétale ne peut faire moins bien sur aucun indicateur animal : un côté vaut 0 et l'autre ne peut pas être négatif. La catégorie est donc gagnée par la version végétale, sans « provisoire », même si des valeurs manquent côté animal. Ces valeurs restent « donnée manquante » et le nombre d'indicateurs comparés ne change pas.",
     "verdict": "Verdict global = nombre de catégories gagnées par chaque plat (« 4 sur 5 »). Pas de note pondérée en V1."
   },
   "significantDigits": 3,
-  "provisionalBelowShare": 0.5,
   "categories": [
     {
       "id": "nutrition",

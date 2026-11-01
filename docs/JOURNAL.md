@@ -41,6 +41,14 @@ Suivi étape par étape : heure, ce qui est fait, lien de la PR, état (en cours
 - Matt a ajouté les étapes 3 ter et 3 quater et changé l'ordre (3 quater juste après cette étape) : relu avant de continuer.
 - 2026-11-01 16:58 — fin de l'étape 3 : PR https://github.com/VeganFlemme/veganizer/pull/19, CI verte, conditions remplies, fusionnée (squash). État : fusionnée.
 
+## Étape 3 quater — S24d : affichage sur ordinateur (prioritaire, nouvel ordre de Matt : 0, 1, 2, 3, 3 quater, 3 bis, 3 ter, 4)
+
+- 2026-11-01 17:45 — début, branche `roadmap/s24d`. État : en cours.
+- Fait : conteneur 1 440 px, colonne de catégories dès 1 280 px, vue d'ensemble en tableau de bord, trois bases côte à côte, tableaux riches, conseils repliés, recettes alignées ; sélecteur « Version de base / Version complétée » (`?vue=complete`, recette complète avec chaque ajout et sa raison, « À couvrir hors de ce plat », bouton Copier) ; pages d'aliments rendues par `PairView` ; « Paire vérifiée » retiré, mention commune ; corrections valables partout (fourchettes identiques, titres équilibrés, boutons étiquettes, mention médicale en bas).
+- Point 9 ajouté par Matt (17 h 40) appliqué, tests d'abord : « provisoire » seulement si les données manquantes pourraient inverser le vainqueur ; Protection animale gagnée sans « provisoire » quand la version végétale n'a aucun ingrédient animal identifié.
+- Sous-agent designer : deux passes sur les captures à 1 440 et 1 920 px, corrections appliquées, points restants dans `docs/A_VERIFIER.md`. Téléphone : différences à 375 px voulues (corrections valables partout).
+- Contrôles : 279 tests Vitest, lint, typecheck, `test:pipeline`, `test:db` (5 PASS), `test:db:scoring` (3), 109 tests e2e sur le build de production local (6 largeurs), accueil, `/compare` et `/recette` en 200 (build local).
+
 ## Bloqué par les permissions
 
 - **2026-11-01 16:50, étape 2 (S23, points 2 et 8)** — refusé par le système de permissions (motif : « Bot Check Circumvention »). Commande : création de `.github/workflows/fetch-blocked-sources.yml` (déclencheurs `workflow_dispatch` et `push`) et de `scripts/fetch_blocked_sources.py` (téléchargement en artefact, avec exploration d'un niveau, de fishcount.org.uk, des deux articles de Mood et al. sur cambridge.org et de thelancet.com/commissions/EAT), puis `git push` et `gh run list --workflow fetch-blocked-sources.yml`. Ces sites renvoient 401 ou 403 à l'environnement de travail ; le refus porte sur le fait de les contourner par un autre réseau. Rien n'a été créé. Conséquence : poissons tués par kg et article EAT-Lancet restent « donnée manquante » / source provisoire. Pour débloquer : Matt télécharge lui-même les tableaux de poids moyens de Fishcount (ou le supplément de Mood et al. 2023, CC BY) dans `pipeline/raw/fishcount/`, ou autorise explicitement ce workflow.

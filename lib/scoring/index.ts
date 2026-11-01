@@ -1,7 +1,7 @@
 // Scoring engine: pure TypeScript, no network, no Supabase. Receives data, returns results.
 export * from "./types";
 export { dishTotals, type TotalsOptions } from "./totals";
-export { equalProteinFactor, scaleDish } from "./scale";
+export { boostMainProtein, equalProteinFactor, scaleDish } from "./scale";
 export { solveComplements, solveLinearProgram, type ComplementFood, type ComplementOptions, type ComplementResult, type LpConstraint } from "./complements";
 export { amountBounds, judgeRanges, roundForUnit, verdictTotals, withoutSharedIngredients, type Range } from "./ranges";
 export {

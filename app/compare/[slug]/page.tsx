@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { notFound } from "next/navigation";
 import { PairView } from "@/components/compare/PairView";
 import { ErrorReport } from "@/components/ErrorReport";
@@ -55,11 +56,22 @@ export default async function ComparePage({ params }: PageProps<"/compare/[slug]
   return (
     <main className="flex flex-1 flex-col">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }} />
-      <PairView model={model} badge={`Paire vérifiée, recette pour ${model.animal.servings} portions`} />
-      <div id="signaler" className="mx-auto w-full max-w-[1200px] scroll-mt-20 px-5 pb-6 md:px-8">
+      <PairView
+        model={model}
+        badge={
+          <>
+            Comparaison automatique d’après Ciqual et Agribalyse ·{" "}
+            <Link href="/methodologie" className="text-on-dark-1 underline hover:text-white">
+              Méthode
+            </Link>{" "}
+            · recette type rédigée par Veganizer, pour {model.animal.servings} portions
+          </>
+        }
+      />
+      <div id="signaler" className="mx-auto w-full max-w-[1440px] scroll-mt-20 px-5 pb-6 md:px-8 min-[1440px]:px-12 xl:pl-[256px] min-[1440px]:pl-[272px]">
         <ErrorReport page={`/compare/${slug}`} />
       </div>
-      <SourcesFooter sources={Object.values(model.sources)} dataHref={`/compare/${slug}/donnees`} />
+      <SourcesFooter sources={Object.values(model.sources)} dataHref={`/compare/${slug}/donnees`} indent />
     </main>
   );
 }

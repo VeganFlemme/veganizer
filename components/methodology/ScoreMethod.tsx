@@ -28,6 +28,7 @@ export function ScoreMethod() {
         <li>{m.missing}</li>
         <li>{m.winner}</li>
         <li>{m.provisional}</li>
+        <li>{m.animalFree}</li>
         <li>{m.verdict}</li>
       </ul>
       <p>

@@ -18,3 +18,32 @@ export function equalProteinFactor(animal: DishTotals, vegetal: DishTotals): num
 export function scaleDish(dish: Dish, factor: number): Dish {
   return { servings: dish.servings, ingredients: dish.ingredients.map((i) => ({ foodCode: i.foodCode, grams: i.grams * factor })) };
 }
+
+/**
+ * « Version complétée » (decision of Matt, 2026-11-01, 17 h 12): only the main protein of the plant
+ * version is increased, up to the protein of the animal dish per serving. Main protein = the
+ * ingredient, among those not shared with the animal dish, that brings the most protein. null when
+ * there is nothing to add or no such ingredient with a known protein value.
+ */
+export function boostMainProtein(
+  dish: Dish,
+  data: { foods: Record<string, { nutrients: Record<string, number | null | undefined> } | undefined> },
+  targetProteinPerServing: number,
+  sharedCodes: string[],
+): { dish: Dish; code: string; extraGrams: number } | null {
+  const per100 = (code: string) => data.foods[code]?.nutrients.protein_g;
+  const known = dish.ingredients.map((i) => ({ ...i, p: per100(i.foodCode) }));
+  if (known.some((i) => i.p == null)) return null; // total not known: no invented boost
+  const current = known.reduce((s, i) => s + (i.grams / 100) * i.p!, 0) / dish.servings;
+  const missing = targetProteinPerServing - current;
+  if (!(missing > 0)) return null;
+  const candidates = known.filter((i) => !sharedCodes.includes(i.foodCode) && i.p! > 0);
+  if (candidates.length === 0) return null;
+  const main = candidates.reduce((a, b) => ((b.grams * b.p!) > (a.grams * a.p!) ? b : a));
+  const extraGrams = (missing * dish.servings * 100) / main.p!;
+  return {
+    code: main.foodCode,
+    extraGrams,
+    dish: { servings: dish.servings, ingredients: dish.ingredients.map((i) => (i.foodCode === main.foodCode ? { foodCode: i.foodCode, grams: i.grams + extraGrams } : i)) },
+  };
+}

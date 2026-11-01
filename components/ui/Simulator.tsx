@@ -76,7 +76,7 @@ export function Simulator({
     }
   }
 
-  const big = "text-[24px] font-extrabold tracking-[-0.02em] md:text-[26px]";
+  const big = "whitespace-nowrap text-[24px] font-extrabold tracking-[-0.02em] md:text-[26px] lg:text-[22px]";
   return (
     <section aria-labelledby={`${id}-t`} className="on-dark flex flex-col gap-[14px] rounded-panel bg-ink p-5 text-white md:p-[22px]">
       <h2 id={`${id}-t`} className="m-0 text-[17px] font-extrabold md:text-[19px]">
@@ -84,7 +84,7 @@ export function Simulator({
       </h2>
       <Chips label="Fréquence" options={FREQUENCIES.map((x) => ({ id: x.id, label: x.label }))} value={freq} onChange={setFreq} />
       <Chips label="Durée" options={YEARS.map((y) => ({ id: y, label: y === 1 ? "1 an" : `${y} ans` }))} value={years} onChange={setYears} />
-      <dl aria-live="polite" className="m-0 grid grid-cols-3 gap-[10px] border-t border-white/15 pt-[10px]">
+      <dl aria-live="polite" className="m-0 grid grid-cols-2 gap-[10px] border-t border-white/15 pt-[10px]">
         <div className="flex flex-col-reverse justify-end gap-[2px]">
           <dt className="text-[12px] text-on-dark-3">kg CO₂e évités</dt>
           <dd className={`m-0 ${big}`}>{co2 == null ? <span className="text-[15px] italic text-on-dark-3">{MISSING}</span> : formatForUnit(co2, "kg CO2e")}</dd>
@@ -93,7 +93,7 @@ export function Simulator({
           <dt className="text-[12px] text-on-dark-3">coût climat évité (valeur {CLIMATE_REFERENCE_YEAR})</dt>
           <dd className={`m-0 ${big}`}>{cost == null ? <span className="text-[15px] italic text-on-dark-3">{MISSING}</span> : formatEur(cost.eur)}</dd>
         </div>
-        <div className="flex flex-col-reverse justify-end gap-[2px]">
+        <div className="col-span-2 flex flex-col-reverse justify-end gap-[2px]">
           <dt className="text-[12px] text-on-dark-3">{spared?.noun ?? "animaux épargnés"} (estimation basse)</dt>
           <dd className={`m-0 ${big}`}>{spared == null ? <span className="text-[15px] italic text-on-dark-3">{MISSING}</span> : `au moins ${spared.number}`}</dd>
         </div>

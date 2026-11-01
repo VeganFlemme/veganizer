@@ -3,9 +3,9 @@ import { publicLicense } from "@/lib/format";
 import type { SourceRow } from "@/lib/compare/view";
 
 /** Sources of the page + Méthodologie, Signaler une erreur, Télécharger les données. */
-export function SourcesFooter({ sources, reportHref = "#signaler", dataHref }: { sources: SourceRow[]; reportHref?: string; dataHref?: string }) {
+export function SourcesFooter({ sources, reportHref = "#signaler", dataHref, indent = false }: { sources: SourceRow[]; reportHref?: string; dataHref?: string; /** Aligned on the content column, right of the category nav (xl). */ indent?: boolean }) {
   return (
-    <footer className="mx-auto flex w-full max-w-[1200px] flex-col gap-[10px] px-5 pb-8 pt-2 text-[13px] leading-normal text-ink-2 md:px-8 md:text-[14px]">
+    <footer className={`mx-auto flex w-full max-w-[1440px] min-[1440px]:px-12 ${indent ? "xl:pl-[256px] min-[1440px]:pl-[272px]" : ""} flex-col gap-[10px] px-5 pb-8 pt-2 text-[13px] leading-normal text-ink-2 md:px-8 md:text-[14px]`}>
       <h2 className="m-0 text-[13px] font-bold text-ink md:text-[14px]">Sources de cette page</h2>
       {sources.length === 0 ? (
         <p className="m-0">Aucune source utilisée.</p>

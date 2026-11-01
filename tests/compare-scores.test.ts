@@ -100,12 +100,29 @@ describe("scorePair", () => {
   });
 });
 
+describe("animal welfare when the plant dish has no identified animal ingredient (decision of Matt, 17 h 40)", () => {
+  const PHRASE = "La version végétale ne contient aucun ingrédient animal identifié : elle ne peut pas faire moins bien sur la protection animale.";
+  it("is won by the plant dish, not provisional, with the sentence, missing values still missing", () => {
+    const a = scorePair(input({ vegetalAnimalFree: true })).verdict.categories.find((c) => c.id === "animaux")!;
+    expect([a.winner, a.provisional]).toEqual(["vegetal", false]);
+    expect(a.sentence.startsWith(PHRASE)).toBe(true);
+    expect(a.summary.startsWith(PHRASE)).toBe(true);
+    expect(a.sentence).not.toMatch(/vegan|végétalien/i);
+    expect(a.indicators.find((i) => i.id === "life_days_farmed")?.outcome).not.toBe("vegetal");
+    expect(a.compared).toBe(scorePair(input()).verdict.categories.find((c) => c.id === "animaux")!.compared);
+  });
+  it("is not applied otherwise", () => {
+    const a = scorePair(input()).verdict.categories.find((c) => c.id === "animaux")!;
+    expect(a.sentence).not.toContain(PHRASE);
+  });
+});
+
 describe("categorySentence", () => {
   it("says what each dish wins and what is not counted", () => {
     const c = scoreCategory(
       { id: "x", indicators: [{ id: "a", direction: "lower_is_better" }, { id: "b", direction: "lower_is_better" }, { id: "c", direction: "lower_is_better" }] },
       { a: { animal: 2, vegetal: 1 }, b: { animal: 1, vegetal: 2 }, c: { animal: null, vegetal: 1 } },
-      { significantDigits: 3, provisionalBelowShare: 0.5 },
+      { significantDigits: 3 },
     );
     expect(categorySentence(c, { a: "Gaz", b: "Eau", c: "Sols" })).toBe(
       "2 indicateurs comparés sur 3. Mieux pour la version végétale : gaz. Mieux pour le plat animal : eau. Non comptés (données manquantes ou partielles) : sols.",
@@ -113,13 +130,13 @@ describe("categorySentence", () => {
   });
 
   it("explains when nothing is comparable", () => {
-    const c = scoreCategory({ id: "x", indicators: [{ id: "a", direction: "lower_is_better" }] }, {}, { significantDigits: 3, provisionalBelowShare: 0.5 });
+    const c = scoreCategory({ id: "x", indicators: [{ id: "a", direction: "lower_is_better" }] }, {}, { significantDigits: 3 });
     expect(categorySentence(c, { a: "Prix" })).toMatch(/^Aucun indicateur comparable : prix/);
   });
 });
 
 describe("categorySummary", () => {
-  const opts = { significantDigits: 3, provisionalBelowShare: 0.5 };
+  const opts = { significantDigits: 3 };
   const rule = { id: "x", indicators: ["a", "b", "c", "d"].map((id) => ({ id, direction: "lower_is_better" as const })) };
   it("names the compared indicators when there are few", () => {
     const c = scoreCategory(rule, { a: { animal: 2, vegetal: 1 } }, opts);

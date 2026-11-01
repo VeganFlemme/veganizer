@@ -411,3 +411,29 @@ describe("corrections after the review of PR #15", () => {
     expect(m.scores.verdict.categories.find((x) => x.id === "sante")!.summary).toContain("200 g de bœuf (viande rouge, groupe 2A) par portion");
   });
 });
+
+describe("choices (S24d)", () => {
+  it("lists the plant versions as choices, « Fait maison » before « Du commerce »", () => {
+    const page = buildPairPage(raw());
+    expect(page.choices.map((c) => [c.id, c.label])).toEqual([
+      ["maison", "Fait maison"],
+      ["commerce", "Du commerce"],
+    ]);
+  });
+});
+
+describe("animal welfare: plant dish without any identified animal ingredient (decision of Matt, 17 h 40)", () => {
+  it("wins the category without 'provisoire', even with every animal value missing", () => {
+    const p = buildPairPage(raw());
+    const a = p.variants.maison!.scores.verdict.categories.find((c) => c.id === "animaux")!;
+    expect([a.winner, a.provisional]).toEqual(["vegetal", false]);
+    expect(a.sentence).toContain("aucun ingrédient animal identifié");
+  });
+  it("keeps the general rule when the plant dish has an identified animal ingredient", () => {
+    const base = raw();
+    const p = buildPairPage({ ...base, foods: base.foods.map((f) => (f.code === "beans" ? { ...f, is_animal: true } : f)) });
+    const a = p.variants.maison!.scores.verdict.categories.find((c) => c.id === "animaux")!;
+    expect(a.vegetalCannotBeWorse).toBeFalsy();
+    expect(a.sentence).not.toContain("aucun ingrédient animal identifié");
+  });
+});
