@@ -241,7 +241,7 @@ export function RecipeBuilder() {
           </section>
         )}
       </div>
-      {result && <PairView model={result.model} badge="Ta recette, calculée à partir de tes ingrédients (non relue)" headingAs="h2" useUrl={false} base="recette" />}
+      {result && <PairView model={result.model} badge="Ta recette, calculée à partir de tes ingrédients (non relue)" headingAs="h2" useUrl={false} viewInUrl base="recette" />}
     </div>
   );
 }

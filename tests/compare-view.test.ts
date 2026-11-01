@@ -122,6 +122,10 @@ describe("buildPairPage", () => {
     expect(b12?.partial).toBe(false);
   });
 
+  it("tags each animal advantage with its category", () => {
+    expect(maison.animalBetter.find((a) => a.criterion === "vit_b12_ug")?.category).toBe("nutrition");
+  });
+
   it("keeps animal advantages found on partial data, flagged as partial", () => {
     const b12 = commerce.animalBetter.find((a) => a.criterion === "vit_b12_ug");
     expect(b12?.partial).toBe(true);

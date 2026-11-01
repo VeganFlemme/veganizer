@@ -81,7 +81,8 @@ Une seule famille : **Schibsted Grotesk** (Google Fonts, poids 400 à 900), char
 | `FaceToFaceBar` | Deux barres qui partent d'un axe central (écart 2 px), animal à gauche, végétal à droite, épaisseur 8 à 18 px (≤ 24), valeurs aux extrémités extérieures en `ink`. Chaque ligne a sa propre échelle, sauf mention « même échelle pour toutes les lignes ». Valeur manquante : pas de barre, « donnée manquante ». |
 | `DataTable` | Trois colonnes : indicateur, plat animal, végétal. En-tête avec pastilles. Note sous la ligne si couverture < 95 % ou avantage animal. |
 | `UnitSwitch` | Par portion / pour 100 kcal / pour 10 g de protéines (règle 4). |
-| `AnimalBetterBox` | Fond `win-animal-bg` : chaque point où le plat animal fait mieux + la solution sourcée (`data/conseils.json`). |
+| `ViewSwitch` (`Segmented` sur le bandeau) | « Portion réaliste » (défaut) / « À protéines égales » (`?vue=proteines`) : toute la page est recalculée ; facteur, poids obtenu et résultat CO₂e des deux vues affichés sous le sélecteur. |
+| `AnimalBetterBox` | Fond `win-animal-bg` : dans chaque onglet, seulement les points **de cette catégorie** où le plat animal fait mieux (« Là où le plat animal fait mieux en nutrition »…) + la solution sourcée (`data/conseils.json`) ; absent s'il n'y en a aucun. `AnimalBetterSummary` : récapitulatif groupé par catégorie sur la vue d'ensemble. |
 | `Simulator` | Fond `ink` : fréquence (1×/mois, 1×/sem., 2×/sem.) × durée (1, 5, 10 ans) → kg CO₂e, coût climat (valeur de l'année de référence 2025), « au moins N animal épargné ». |
 | `MissingValue` | « donnée manquante », italique, `ink-3`. |
 | `MedicalNote` | Fond `track` : « Informations générales, pas un conseil médical… » (règle 6). |

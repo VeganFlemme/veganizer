@@ -45,6 +45,12 @@ Lis d'abord CLAUDE.md, docs/ROADMAP.md, docs/DESIGN.md, docs/DECISIONS.md et doc
    - Le verdict affiche les deux résultats (ex. « −87 % par portion, −82 % à protéines égales »).
 3. **`/methodologie`** : explique pourquoi la portion réaliste reste la vue par défaut, pourquoi la vue à protéines égales existe, et la règle de choix des protéines végétales. Cite les besoins et apports moyens en protéines et en fibres uniquement depuis des sources ANSES ouvertes et vérifiées, avec la page.
 
+4. **Ajout de Matt (16 h 07) : encadré « Là où le plat animal fait mieux » par onglet.** Aujourd'hui, le même encadré nutritionnel s'affiche sous tous les onglets (Environnement, Protection animale…), ce qui est incohérent.
+   - Chaque onglet de catégorie n'affiche que les indicateurs **de cette catégorie** où le plat animal fait mieux, avec la solution sourcée quand il y en a une. Titre : « Là où le plat animal fait mieux en nutrition », « … en environnement », etc.
+   - S'il n'y en a aucun dans la catégorie, l'encadré disparaît. Pas de phrase « ne fait mieux sur aucun point » répétée partout.
+   - La vue d'ensemble garde un récapitulatif, regroupé par catégorie.
+   - Même règle pour `/recette` et `/aliment/[code]`. Tests d'abord.
+
 ## Étape 2 — S23 : compléter les données manquantes
 
 1. **Âges d'abattage manquants** (bovin, vache de réforme, veau, agneau, dinde, canard…) : sources officielles françaises (Idele, Agreste, FranceAgriMer, INRAE, cahiers des charges au BO agri, colonne « produit courant »).
@@ -54,6 +60,14 @@ Lis d'abord CLAUDE.md, docs/ROADMAP.md, docs/DESIGN.md, docs/DECISIONS.md et doc
 5. **Prix** : étends les correspondances RNM et les rendements de cuisson USDA à tous les ingrédients possibles.
 6. **Affichage** : les très petits nombres (animaux par portion) s'affichent « pour 1 000 portions ».
 7. **Données encore manquantes** : mets à jour `TODO_SOURCES.md` avec la raison et la source visée pour chacune. Ajoute sur `/methodologie` une section publique « Données manquantes » qui liste ce qui manque et pourquoi.
+
+8. **Pistes supplémentaires ajoutées par Matt (16 h 11)**. Pour chacune : vérifie la source et sa licence, cite la page ; si la piste échoue, la donnée reste manquante.
+   - **Fromage, beurre, crème → équivalent lait** : facteurs de conversion techniques de la FAO (*Technical Conversion Factors for Agricultural Commodities*), taux d'extraction lait → produit laitier pour la France ou l'Europe.
+   - **Masse d'un œuf** : catégories de poids réglementaires de l'UE (règlement (CE) n° 589/2008 : S, M, L, XL), utilisées comme **fourchette** et non comme valeur unique. Combinée au nombre d'œufs par poule de FAOSTAT, elle donne les kg d'œufs par poule, donc les jours de vie et la douleur des poules par kg d'œufs (seulement si la durée de ponte est aussi sourcée).
+   - **Liquides vendus au litre** (huiles, lait, boissons végétales, vin, sauce soja) : masses volumiques de la *FAO/INFOODS Density Database* pour convertir les prix au litre en prix au kg.
+   - **Rendements de cuisson des pâtes, du riz, des légumineuses et des pommes de terre** : cherche une table officielle ouverte (FAO/INFOODS, EuroFIR). À défaut, propose dans `docs/A_VERIFIER.md` (sans l'appliquer) une méthode par bilan de matière sèche à partir des teneurs en eau Ciqual cru/cuit.
+   - **Âges d'abattage** : publications de l'Idele (« chiffres clés »), de l'Institut de l'élevage, de l'ITAVI et d'INRAE, en plus des cahiers des charges.
+   - **EAT-Lancet et Fishcount** : si la page bloque l'environnement de travail, essaie le téléchargement par un workflow GitHub Actions manuel (comme pour Fishcount).
 
 ## Étape 3 — S24 : version végétale complétée (compensation automatique des écarts)
 

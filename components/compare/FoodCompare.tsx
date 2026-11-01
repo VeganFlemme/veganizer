@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useState } from "react";
 import { AnimalBetterBox } from "@/components/ui/AnimalBetterBox";
+import { animalBetterTitle } from "@/lib/compare/config";
 import { DataTable } from "@/components/ui/DataTable";
 import { DishTitle } from "@/components/ui/DishTitle";
 import { MedicalNote } from "@/components/ui/MedicalNote";
@@ -14,6 +15,8 @@ import { Panel, tableRows } from "./PairView";
 
 // Per 100 g instead of "per serving": no sourced typical portion is used for single foods.
 const unitLabel = (b: Basis) => (b === "perServing" ? "Pour 100 g" : UNIT_OPTIONS.find((u) => u.id === b)!.long);
+
+const ORIGIN = "l’aliment d’origine";
 
 export function FoodCompare({ model }: { model: FoodPageModel }) {
   const [index, setIndex] = useState(0);
@@ -83,9 +86,11 @@ export function FoodCompare({ model }: { model: FoodPageModel }) {
             <Panel title="Nutrition">
               <DataTable caption={`Nutrition, ${label.toLowerCase()}`} unitLabel={label} rows={tableRows(group("nutrients"))} footer="Ciqual 2025 (ANSES). En gras : indicateurs comptés dans les scores des paires." />
             </Panel>
+            {alt && <AnimalBetterBox items={alt.animalBetter.filter((x) => x.category === "nutrition")} title={animalBetterTitle("nutrition", ORIGIN)} />}
             <Panel title="Environnement">
               <DataTable caption={`Environnement, ${label.toLowerCase()}`} unitLabel={label} rows={tableRows(group("impacts"))} footer="Agribalyse 3.2 (ADEME). Valeurs négatives affichées telles que publiées." />
             </Panel>
+            {alt && <AnimalBetterBox items={alt.animalBetter.filter((x) => x.category === "environnement")} title={animalBetterTitle("environnement", ORIGIN)} />}
             <Panel title="Protection animale">
               {group("animalImpacts").length > 0 ? (
                 <DataTable caption={`Protection animale, ${label.toLowerCase()}`} unitLabel={label} rows={tableRows(group("animalImpacts"))} />
@@ -93,9 +98,9 @@ export function FoodCompare({ model }: { model: FoodPageModel }) {
                 <p className="m-0 text-[14px] italic text-ink-3">Pas de facteur animal sourcé pour cet aliment (donnée manquante).</p>
               )}
             </Panel>
+            {alt && <AnimalBetterBox items={alt.animalBetter.filter((x) => x.category === "animaux")} title={animalBetterTitle("animaux", ORIGIN)} />}
           </div>
           <aside aria-label="À retenir" className="flex min-w-0 flex-[1_1_300px] flex-col gap-[18px]">
-            {alt && <AnimalBetterBox items={alt.animalBetter} title="Là où l’aliment d’origine fait mieux" none="Sur les indicateurs affichés, l’aliment d’origine ne fait mieux sur aucun point." />}
             <MedicalNote />
           </aside>
         </div>

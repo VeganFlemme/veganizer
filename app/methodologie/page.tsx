@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { formatValue, publicLicense } from "@/lib/format";
+import { formatValue, NBSP, publicLicense } from "@/lib/format";
 import Link from "next/link";
 import type { ReactNode } from "react";
 import { PageHero, Prose } from "@/components/ui/PageHero";
@@ -84,6 +84,7 @@ function Formula({ children }: { children: ReactNode }) {
 const SECTIONS = [
   ["principe", "Le principe : comparer à fonction égale"],
   ["paires", "Les paires de plats : maison et du commerce"],
+  ["proteines-egales", "Portion réaliste ou « à protéines égales »"],
   ["comparaison-simplifiee", "Paires vérifiées et comparaisons simplifiées"],
   ["ta-recette", "« Analyse ta recette »"],
   ["formule", "La formule de calcul"],
@@ -382,6 +383,34 @@ export default async function MethodologiePage() {
           nous retenons l’option la plus proche disposant de données complètes, de la même façon
           dans les deux plats. Chaque choix est consigné dans le dépôt du projet
           (<a href="https://github.com/VeganFlemme/veganizer/blob/main/docs/DECISIONS.md" className="underline" rel="noopener noreferrer">journal des décisions</a>).
+        </p>
+      </Section>
+
+      <Section id="proteines-egales" title="Portion réaliste ou « à protéines égales »">
+        <p>
+          <strong>Par défaut, nous comparons des portions réalistes</strong> : ce qu’une personne mange vraiment dans ce plat, avec les mêmes accompagnements des deux
+          côtés. C’est la comparaison la plus fidèle à la vie réelle. Elle a une limite : une version végétale apporte souvent un peu moins de protéines.
+        </p>
+        <p>
+          La vue <strong>« À protéines égales »</strong> répond à l’objection « il faudrait en manger plus » : la version végétale entière est multipliée par un
+          facteur, protéines du plat animal ÷ protéines de la version végétale (valeurs Ciqual de la recette), puis tous les onglets, les scores et le simulateur sont
+          recalculés. Le facteur et le poids obtenu sont affichés. Les protéines y sont égales par construction : elles ne sont pas comptées dans le score. Ce n’est
+          pas la vue par défaut, car personne ne mange une portion agrandie juste pour égaler les protéines d’un plat. Selon l’ANSES, les apports en protéines
+          atteignent déjà les références nutritionnelles en France (référence de 0,83 g par kg de poids et par jour pour les adultes en bonne santé) ; les fibres, au
+          contraire, sont trop faibles (20 g par jour en moyenne chez les adultes, pour une référence de 30 g).
+        </p>
+        <p>
+          <strong>Choix des protéines végétales</strong> : dans chaque version maison, la protéine végétale la plus proche du rôle de la viande, pour approcher les
+          protéines du plat animal à portion réaliste sans dépasser le plafond de +20 % en masse. Plats à base de haché et pièces de viande : protéines de soja
+          texturées réhydratées (comptées comme « fait maison ») ; œufs, fromage et poisson : tofu. Lentilles et pois chiches ne sont gardés que lorsqu’ils
+          remplacent réellement un ingrédient du plat d’origine, jamais pour gonfler les protéines. Un produit n’est retenu que s’il a des nutriments Ciqual et des
+          impacts Agribalyse.
+        </p>
+        <p className="text-sm text-ink-3">
+          Sources : ANSES, «{NBSP}Protéines : rôle, sources et apports recommandés{NBSP}», page mise à jour le 22/12/2025 (
+          <a href="https://www.anses.fr/fr/content/les-prot%C3%A9ines" className="underline" rel="noopener noreferrer">anses.fr</a>) ; ANSES, «{NBSP}Actualisation des repères du PNNS : élaboration des références nutritionnelles{NBSP}», décembre 2016, p. 22 du PDF (fibres, 30 g/j) (
+          <a href="https://www.anses.fr/fr/system/files/NUT2012SA0103Ra-1.pdf" className="underline" rel="noopener noreferrer">PDF</a>) ; ANSES, dossier de presse INCA 3, 12 juillet 2017, p. 11 du PDF (fibres, 20 g/j chez les adultes de 18 à 79 ans) (
+          <a href="https://www.anses.fr/fr/system/files/PRES2017DPA04.pdf" className="underline" rel="noopener noreferrer">PDF</a>).
         </p>
       </Section>
 

@@ -2,6 +2,7 @@
 // A food is compared, per 100 g / per 100 kcal / per 10 g of protein, with 1 to 3 plant
 // alternatives chosen by the reviewed rules of pipeline/auto_alternatives_rules.csv.
 
+import { categoryOf } from "./config";
 import { dishTotals, type Basis, type Conseil } from "@/lib/scoring";
 import { BASES, VEGAN_WORD } from "./config";
 import { rowsFor, scoringData, TOTALS_OPTIONS, type AdvantageView, type CriterionRow, type RawPairData, type SourceRow } from "./view";
@@ -82,6 +83,7 @@ export function buildFoodPage(raw: FoodRawData): FoodPageModel | null {
           name: r.name,
           partial: r.winner !== "animal",
           conseil: raw.conseils.find((c: Conseil) => c.criteria.includes(r.id)) ?? null,
+          category: categoryOf(r.id),
         }));
       animalBetter.forEach((x) => x.conseil?.sources.forEach((s) => usedSources.add(s.sourceId)));
       const pa = own.nutrients.protein_g?.perServing ?? null;

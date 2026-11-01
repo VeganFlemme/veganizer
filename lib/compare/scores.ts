@@ -161,10 +161,10 @@ export function healthSummary(iarc: IarcView[]): string {
   return animal + vegetal;
 }
 
-function scoreOf(category: RuleCategory, input: ScoreInput, basis: Basis): CategoryScoreView {
+function scoreOf(category: RuleCategory, input: ScoreInput, basis: Basis, exclude: string[] = []): CategoryScoreView {
   const rule: ScoreCategoryRule = {
     id: category.id,
-    indicators: category.indicators.map((i) => ({ id: i.id, direction: i.direction === "higher_is_better" ? "higher_is_better" : "lower_is_better" })),
+    indicators: category.indicators.filter((i) => !exclude.includes(i.id)).map((i) => ({ id: i.id, direction: i.direction === "higher_is_better" ? "higher_is_better" : "lower_is_better" })),
   };
   const score = scoreCategory(rule, values(category, input, basis), SCORE_OPTIONS);
   const labels = Object.fromEntries(category.indicators.map((i) => [i.id, i.label]));
@@ -172,8 +172,12 @@ function scoreOf(category: RuleCategory, input: ScoreInput, basis: Basis): Categ
   return { ...score, id: category.id as CategoryId, label: category.label, short: category.short, sentence: categorySentence(score, labels), summary };
 }
 
-export function scorePair(input: ScoreInput): PairScores {
-  const categories = CATEGORIES.map((c) => scoreOf(c, input, "perServing"));
+/**
+ * Scores of a pair. `exclude`: indicators not counted in this view (e.g. protein in the
+ * equal-protein view, equal by construction).
+ */
+export function scorePair(input: ScoreInput, exclude: string[] = []): PairScores {
+  const categories = CATEGORIES.map((c) => scoreOf(c, input, "perServing", exclude));
   const nutrition = CATEGORIES.find((c) => c.id === "nutrition")!;
   return {
     verdict: {
@@ -185,8 +189,8 @@ export function scorePair(input: ScoreInput): PairScores {
     },
     nutritionByBasis: {
       perServing: categories[0],
-      per100kcal: scoreOf(nutrition, input, "per100kcal"),
-      per10gProtein: scoreOf(nutrition, input, "per10gProtein"),
+      per100kcal: scoreOf(nutrition, input, "per100kcal", exclude),
+      per10gProtein: scoreOf(nutrition, input, "per10gProtein", exclude),
     },
   };
 }

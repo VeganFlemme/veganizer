@@ -1,7 +1,7 @@
 // Simple render test of each component of components/ui (docs/DESIGN.md § 3).
 import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it } from "vitest";
-import { AnimalBetterBox } from "@/components/ui/AnimalBetterBox";
+import { AnimalBetterBox, AnimalBetterSummary } from "@/components/ui/AnimalBetterBox";
 import { CategoryBanner } from "@/components/ui/CategoryBanner";
 import { CategoryCard } from "@/components/ui/CategoryCard";
 import { DataTable } from "@/components/ui/DataTable";
@@ -122,11 +122,19 @@ describe("components/ui", () => {
 
   it("AnimalBetterBox: advice and sources, or nothing to report", () => {
     const h = html(
-      <AnimalBetterBox items={[{ criterion: "vit_b12_ug", name: "Vitamine B12", partial: false, conseil: { id: "b12", criteria: [], titre: "B12", texte: "Complément.", sources: [{ sourceId: "anses", publisher: "ANSES", title: "t", url: "https://example.org", accessedOn: "2026-11-01" }] } }]} />,
+      <AnimalBetterBox items={[{ criterion: "vit_b12_ug", name: "Vitamine B12", partial: false, category: "nutrition", conseil: { id: "b12", criteria: [], titre: "B12", texte: "Complément.", sources: [{ sourceId: "anses", publisher: "ANSES", title: "t", url: "https://example.org", accessedOn: "2026-11-01" }] } }]} />,
     );
     expect(h).toContain("Vitamine B12.");
     expect(h).toContain("https://example.org");
-    expect(html(<AnimalBetterBox items={[]} />)).toContain("ne fait mieux sur aucun point");
+    expect(html(<AnimalBetterBox items={[]} />)).toBe(""); // nothing to report: no box, no sentence
+  });
+
+  it("AnimalBetterSummary: grouped by category, nothing when empty", () => {
+    const item = (criterion: string, category: "nutrition" | "economie") => ({ criterion, name: criterion, partial: false, category, conseil: null });
+    const h = html(<AnimalBetterSummary items={[item("price_eur", "economie"), item("vit_b12_ug", "nutrition")]} />);
+    expect(h.indexOf("En nutrition")).toBeLessThan(h.indexOf("En économie"));
+    expect(h).toContain("Là où le plat animal fait mieux");
+    expect(html(<AnimalBetterSummary items={[]} />)).toBe("");
   });
 
   it("MissingValue and MedicalNote", () => {
