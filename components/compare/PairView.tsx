@@ -3,7 +3,8 @@
 import Link from "next/link";
 import { useState, type ReactNode } from "react";
 import sante from "@/data/sante.json";
-import { AnimalBetterBox } from "@/components/ui/AnimalBetterBox";
+import { AnimalBetterBox, AnimalBetterSummary } from "@/components/ui/AnimalBetterBox";
+import { Segmented } from "@/components/ui/Segmented";
 import { CategoryBanner } from "@/components/ui/CategoryBanner";
 import { CategoryCard } from "@/components/ui/CategoryCard";
 import { DataTable, type DataTableRow } from "@/components/ui/DataTable";
@@ -17,7 +18,8 @@ import { panelId, TabBar, tabId, type TabDef } from "@/components/ui/TabBar";
 import { UNIT_OPTIONS, UnitSwitch } from "@/components/ui/UnitSwitch";
 import { VariantSwitch, type VariantId } from "@/components/ui/VariantSwitch";
 import { VerdictPanel } from "@/components/ui/VerdictPanel";
-import { CLIMATE_MAIN, COVERAGE_WARNING } from "@/lib/compare/config";
+import { animalBetterTitle, CLIMATE_MAIN, COVERAGE_WARNING } from "@/lib/compare/config";
+import { co2Summary, isViewId, scaleSentence, VIEWS, type ViewId } from "@/lib/compare/views";
 import type { CategoryId, CategoryScoreView } from "@/lib/compare/scores";
 import type { CriterionRow, DishView, IngredientPrice, PairPageModel, PriceSide, SideValue, VariantView } from "@/lib/compare/view";
 import type { Basis } from "@/lib/scoring";
@@ -267,6 +269,7 @@ function Overview({ model, v, open, base }: { model: PairPageModel; v: VariantVi
           animalsCounted={animals?.animal != null}
         />
       </div>
+      <AnimalBetterSummary items={v.animalBetter} />
       <Panel title="Les recettes comparées" className="mt-3">
         {v.rationale && (
           <p className="m-0 text-[14px] leading-normal text-ink-2">
@@ -536,12 +539,15 @@ export function PairView({
   badge,
   headingAs = "h1",
   useUrl = true,
+  viewInUrl = useUrl,
   base = "comparaison",
 }: {
   model: PairPageModel;
   badge: ReactNode;
   headingAs?: "h1" | "h2";
   useUrl?: boolean;
+  /** Keep the view (?vue=) in the URL, even when the tab is not (/recette). */
+  viewInUrl?: boolean;
   base?: string;
 }) {
   const available = (["maison", "commerce"] as VariantId[]).filter((x) => model.variants[x]);
@@ -549,6 +555,10 @@ export function PairView({
   const [basis, setBasis] = useState<Basis>("perServing");
   const [urlTab, setUrlTab] = useQueryParam("onglet", useUrl);
   const [localTab, setLocalTab] = useState<TabIdT>("apercu");
+  const [urlView, setUrlView] = useQueryParam("vue", viewInUrl);
+  const [localView, setLocalView] = useState<ViewId>("portion");
+  const view: ViewId = viewInUrl ? (isViewId(urlView) ? urlView : "portion") : localView;
+  const setView = (x: ViewId) => (viewInUrl ? setUrlView(x === "portion" ? null : x) : setLocalView(x));
   const tab: TabIdT = useUrl ? (isTab(urlTab) ? urlTab : "apercu") : localTab;
   const setTab = (t: TabIdT) => (useUrl ? setUrlTab(t === "apercu" ? null : t) : setLocalTab(t));
   const open = (t: TabIdT) => {
@@ -556,8 +566,14 @@ export function PairView({
     document.getElementById(tabId(base, t))?.scrollIntoView({ block: "nearest" });
     document.getElementById(tabId(base, t))?.focus({ preventScroll: true });
   };
-  const v = model.variants[variant];
-  if (!v) return <p className="px-5">Alternative indisponible.</p>;
+  const realistic = model.variants[variant];
+  const scaled = model.equalProtein[variant];
+  // « À protéines égales »: the whole page (tabs, scores, simulator) uses the scaled plant version.
+  const v = view === "proteines" && scaled ? scaled.view : realistic;
+  if (!v || !realistic) return <p className="px-5">Alternative indisponible.</p>;
+  const co2Of = (x: VariantView | undefined) => x?.rows.perServing.find((r) => r.id === CLIMATE_MAIN)?.reductionPercent ?? null;
+  const co2Line = co2Summary(co2Of(realistic), co2Of(scaled?.view));
+  const animalProtein = realistic.rows.perServing.find((r) => r.id === "protein_g")?.animal?.value ?? null;
   const score = v.scores.verdict.categories.find((c) => c.id === tab);
   const banner = score && (tab === "nutrition" ? v.scores.nutritionByBasis[basis] : score);
   const bannerUnit = tab === "nutrition" ? UNIT_OPTIONS.find((u) => u.id === basis)?.long.toLowerCase() : "par portion";
@@ -579,8 +595,11 @@ export function PairView({
                 Attention : l’énergie, les protéines ou les émissions ne sont connues que pour {pct(v.keyCoverage)} de la masse d’un des plats. À lire avec prudence.
               </p>
             )}
-            <div className="md:self-start">
+            <div className="flex flex-col gap-2 md:self-start">
               <VariantSwitch value={variant} available={available} onChange={setVariant} />
+              {scaled && <Segmented tone="dark" label="Base de comparaison" options={VIEWS} value={view} onChange={setView} />}
+              {view === "proteines" && scaled && <p className="m-0 text-[14px] leading-normal text-on-dark-1">{scaleSentence(scaled, animalProtein)} Protéines non comptées dans le score (égales par construction).</p>}
+              {co2Line && <p className="m-0 text-[14px] font-semibold text-on-dark-1">{co2Line}</p>}
             </div>
           </div>
           <VerdictPanel verdict={v.scores.verdict} className="hidden md:flex" />
@@ -615,7 +634,7 @@ export function PairView({
                           <CategoryBanner score={banner} unitLabel={bannerUnit} />
                         </div>
                       )}
-                      <AnimalBetterBox items={v.animalBetter} />
+                      <AnimalBetterBox items={v.animalBetter.filter((x) => x.category === t.id)} title={animalBetterTitle(t.id)} />
                       <MedicalNote />
                     </aside>
                   </div>

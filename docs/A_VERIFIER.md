@@ -9,41 +9,41 @@ Points à contrôler avant de considérer une étape comme validée. Cocher quan
 
 ## Étape B — 10 paires de plats
 
-Chiffres par portion (4 portions par recette). **Mis à jour le 2026-11-01 après la relecture des recettes par Matt** : calculés hors ligne à partir de `pipeline/pairs.csv` avec la formule des vues (`dish_nutrients`, `dish_impacts`, mêmes valeurs Ciqual et Agribalyse lues dans la base), car l'import dans Supabase reste à faire (voir « Relecture du lot C-D »). Les plats animaux n'ont pas changé et retrouvent exactement leurs anciennes valeurs. Pourcentage entre parenthèses : protéines de l'alternative rapportées au plat animal (70 % = objectif, plus un critère bloquant) ; « −x % » : écart de CO2e.
+Chiffres par portion (4 portions par recette). **Mis à jour le 2026-11-01 après la relecture des recettes par Matt, puis après la session S22 (protéines végétales plus denses, `pairs.py` importé)** : calculés hors ligne à partir de `pipeline/pairs.csv` avec la formule des vues (`dish_nutrients`, `dish_impacts`, mêmes valeurs Ciqual et Agribalyse lues dans la base), car l'import dans Supabase reste à faire (voir « Relecture du lot C-D »). Les plats animaux n'ont pas changé et retrouvent exactement leurs anciennes valeurs. Pourcentage entre parenthèses : protéines de l'alternative rapportées au plat animal (70 % = objectif, plus un critère bloquant) ; « −x % » : écart de CO2e.
 
 | Paire | Plat | g/portion | Protéines g | kcal | kg CO2e (fourchette) | DQR max | Couverture | Critères |
 |---|---|---|---|---|---|---|---|---|
 | boeuf-bourguignon | Bœuf bourguignon (animal) | 405 | 48.6 | 483 | 5.03 (5.03–5.03) | 2.87 | 1.00 | OK |
-| boeuf-bourguignon | Bourguignon de tempeh et lentilles (maison) | 432 | 27.3 (56%, objectif 70 % non atteint) | 464 | 0.57 (0.57–0.57), −89 % | 3.01 | 1.00 | OK |
+| boeuf-bourguignon | Bourguignon de protéines de soja et tofu fumé (maison) | 432 | 34.5 (71%) | 474 | 0.52 (0.52–0.52), −90 % | 2.87 | 1.00 | OK |
 | boeuf-bourguignon | Bourguignon de seitan (commerce) | 422 | 36.6 (75%) | 430 | 0.57 (0.57–0.57), −89 % | 2.87 | 1.00 | OK |
 | blanquette-de-veau | Blanquette de veau (animal) | 425 | 48.2 | 652 | 3.07 (3.07–3.07) | 3.73 | 1.00 | OK |
-| blanquette-de-veau | Blanquette de tofu et pois chiches (maison) | 438 | 22.2 (46%, objectif 70 % non atteint) | 532 | 0.36 (0.36–0.36), −88 % | 3.73 | 1.00 | OK |
+| blanquette-de-veau | Blanquette de protéines de soja (maison) | 438 | 31.0 (64%, objectif 70 % non atteint) | 535 | 0.42 (0.42–0.42), −86 % | 3.73 | 1.00 | OK |
 | blanquette-de-veau | Blanquette de seitan (commerce) | 438 | 33.7 (70%) | 514 | 0.48 (0.48–0.48), −84 % | 3.73 | 1.00 | OK |
 | poulet-roti-haricots-verts | Poulet rôti et haricots verts (animal) | 355 | 47.4 | 402 | 1.20 (1.20–1.20) | 2.31 | 1.00 | OK |
-| poulet-roti-haricots-verts | Tofu et tempeh rôtis et haricots verts (maison) | 388 | 30.6 (65%, objectif 70 % non atteint) | 400 | 0.56 (0.56–0.56), −54 % | 2.78 | 1.00 | OK |
+| poulet-roti-haricots-verts | Protéines de soja rôties et haricots verts (maison) | 388 | 37.5 (79%) | 396 | 0.49 (0.49–0.49), −59 % | 2.23 | 1.00 | OK |
 | poulet-roti-haricots-verts | Seitan rôti et haricots verts (commerce) | 358 | 34.9 (74%) | 327 | 0.53 (0.53–0.53), −56 % | 2.23 | 1.00 | OK |
 | lasagnes-bolognaise | Lasagnes à la bolognaise (animal) | 429 | 40.1 | 663 | 5.01 (5.01–5.01) | 3.12 | 1.00 | OK |
-| lasagnes-bolognaise | Lasagnes aux lentilles et tofu (maison) | 428 | 24.6 (61%, objectif 70 % non atteint) | 509 | 0.34 (0.34–0.34), −93 % | 3.12 | 1.00 | OK |
-| lasagnes-bolognaise | Lasagnes au haché végétal (commerce) | 428 | 22.4 (56%, objectif 70 % non atteint) | 545 | 0.51 (0.51–0.51), −90 % | 3.12 | 1.00 | OK |
+| lasagnes-bolognaise | Lasagnes aux protéines de soja texturées (maison) | 428 | 33.2 (83%) | 528 | 0.41 (0.41–0.41), −92 % | 3.12 | 1.00 | OK |
+| lasagnes-bolognaise | Lasagnes au haché végétal (commerce) | 448 | 24.7 (62%, objectif 70 % non atteint) | 574 | 0.55 (0.55–0.55), −89 % | 3.12 | 1.00 | OK |
 | quiche-lorraine | Quiche lorraine et salade verte (animal) | 336 | 20.6 | 776 | 1.00 (1.00–1.00) | 2.92 | 1.00 | OK |
 | quiche-lorraine | Quiche au tofu fumé et salade verte (maison) | 354 | 23.7 (115%) | 710 | 0.41 (0.41–0.41), −59 % | 3.48 | 1.00 | OK |
 | quiche-lorraine | Quiche au tofu fumé (pâte filo du commerce) et salade verte (commerce) | 334 | 22.2 (108%) | 497 | 0.41 (0.41–0.41), −59 % | 3.48 | 1.00 | OK |
 | hachis-parmentier | Hachis parmentier (animal) | 419 | 32.4 | 569 | 4.79 (4.79–4.79) | 2.9 | 1.00 | OK |
-| hachis-parmentier | Parmentier de lentilles (maison) | 420 | 17.5 (54%, objectif 70 % non atteint) | 421 | 0.40 (0.40–0.40), −92 % | 3.01 | 1.00 | OK |
-| hachis-parmentier | Parmentier au haché végétal (commerce) | 416 | 16.9 (52%, objectif 70 % non atteint) | 455 | 0.57 (0.57–0.57), −88 % | 2.48 | 1.00 | OK |
+| hachis-parmentier | Parmentier aux protéines de soja texturées (maison) | 420 | 27.0 (83%) | 449 | 0.49 (0.49–0.49), −90 % | 2.48 | 1.00 | OK |
+| hachis-parmentier | Parmentier au haché végétal (commerce) | 435 | 19.1 (59%, objectif 70 % non atteint) | 482 | 0.61 (0.61–0.61), −87 % | 2.48 | 1.00 | OK |
 | saumon-riz | Saumon et riz (animal) | 319 | 33.3 | 583 | 1.08 (1.08–1.08) | 3.73 | 1.00 | OK |
 | saumon-riz | Tofu rôti et riz (maison) | 344 | 25.8 (77%) | 536 | 0.37 (0.37–0.37), −66 % | 3.73 | 1.00 | OK |
 | saumon-riz | Pavé de soja et riz (commerce) | 319 | 25.1 (75%) | 630 | 0.49 (0.49–0.49), −54 % | 3.73 | 1.00 | OK |
 | omelette | Omelette et pommes de terre rôties (animal) | 368 | 23.7 | 483 | 0.52 (0.52–0.52) | 2.92 | 1.00 | OK |
 | omelette | Omelette à la farine de pois chiche et pommes de terre rôties (maison) | 368 | 17.9 (76%) | 495 | 0.26 (0.26–0.26), −49 % | 3.91 | 1.00 | OK |
 | burger | Burger et frites (animal) | 395 | 41.3 | 892 | 4.93 (4.93–4.93) | 2.9 | 1.00 | OK |
-| burger | Burger aux haricots rouges et tofu et frites (maison) | 418 | 29.3 (71%) | 856 | 0.41 (0.41–0.41), −92 % | 3.93 | 1.00 | OK |
+| burger | Burger aux protéines de soja texturées et frites (maison) | 410 | 36.6 (88%) | 856 | 0.46 (0.46–0.46), −91 % | 3.93 | 1.00 | OK |
 | burger | Burger à la galette végétale et frites (commerce) | 405 | 30.4 (74%) | 864 | 0.56 (0.56–0.56), −89 % | 2.9 | 1.00 | OK |
 | croque-monsieur | Croque-monsieur et salade verte (animal) | 302 | 27.8 | 560 | 0.83 (0.83–0.83) | 2.97 | 1.00 | OK |
 | croque-monsieur | Croque au tofu fumé et salade verte (maison) | 300 | 21.3 (77%) | 525 | 0.35 (0.35–0.35), −57 % | 2.92 | 1.00 | OK |
 | croque-monsieur | Croque aux tranches végétales et salade verte (commerce) | 302 | 24.6 (89%) | 600 | 0.37 (0.37–0.37), −55 % | 2.92 | 1.00 | OK |
 
-Critères bloquants (portion 300-500 g, couverture ≥ 0,95, règles de recette de `pairs.py`) respectés ; objectif de 70 % des protéines non atteint pour 19 versions végétales (affiché sur le site).
+Critères bloquants (portion 300-500 g, couverture ≥ 0,95, règles de recette de `pairs.py`) respectés ; objectif de 70 % des protéines non atteint pour 7 versions végétales après S22 (affiché sur le site).
 
 À contrôler :
 - [ ] **Recettes** : proportions réalistes pour la cuisine française courante (fichier `pipeline/pairs.csv`, colonne `note`). En particulier : 500 g de bœuf cuit pour 4 (≈ 750 g cru) ; 450 g de veau cuit pour 4 ; 12 œufs pour 4 dans l'omelette. Les versions végétales ont été revues le 2026-11-01 (règles de Matt, voir « Relecture du lot C-D ») : par exemple bourguignon maison 450 g de tempeh + 240 g de lentilles (au lieu de 550 + 400).
@@ -174,36 +174,36 @@ Chiffres clés par portion (nouvelles paires, mis à jour le 2026-11-01 après l
 | gratin-dauphinois | Gratin de pommes de terre à la crème de soja, salade verte (maison) | 412 | 9.0 (71%) | 353 | 0.43 (0.43–0.43), −40 % | 2.92 | 1.00 | OK |
 | gratin-dauphinois | Gratin de pommes de terre au fromage végétal à tartiner, salade verte (commerce) | 438 | 11.9 (94%) | 397 | 0.48 (0.48–0.48), −34 % | 2.92 | 1.00 | OK |
 | nuggets-frites | Nuggets de poulet maison et frites (animal) | 315 | 40.3 | 670 | 1.02 (1.02–1.02) | 2.9 | 1.00 | OK |
-| nuggets-frites | Nuggets de tofu maison et frites (maison) | 335 | 24.8 (62%, objectif 70 % non atteint) | 691 | 0.37 (0.37–0.37), −64 % | 2.9 | 1.00 | OK |
+| nuggets-frites | Nuggets de protéines de soja maison et frites (maison) | 335 | 31.1 (77%) | 694 | 0.41 (0.41–0.41), −60 % | 2.9 | 1.00 | OK |
 | nuggets-frites | Nuggets soja et blé et frites (commerce) | 315 | 29.1 (72%) | 712 | 0.47 (0.47–0.47), −54 % | 2.9 | 1.00 | OK |
 | sandwich-jambon-beurre | Sandwich jambon-beurre, carottes râpées et pomme (animal) | 445 | 20.9 | 677 | 0.71 (0.71–0.71) | 2.97 | 1.00 | OK |
 | sandwich-jambon-beurre | Sandwich au tofu fumé, carottes râpées et pomme (maison) | 442 | 19.3 (92%) | 659 | 0.34 (0.34–0.34), −52 % | 2.72 | 1.00 | OK |
 | sandwich-jambon-beurre | Sandwich aux tranches végétales, carottes râpées et pomme (commerce) | 450 | 28.3 (135%) | 658 | 0.36 (0.36–0.36), −50 % | 2.72 | 1.00 | OK |
 | boulettes-tomate-spaghetti | Boulettes de bœuf à la tomate et spaghetti (animal) | 412 | 40.8 | 679 | 4.89 (4.89–4.89) | 3.12 | 1.00 | OK |
-| boulettes-tomate-spaghetti | Boulettes de lentilles et tofu à la tomate, spaghetti (maison) | 420 | 28.5 (70%, objectif 70 % non atteint) | 578 | 0.38 (0.38–0.38), −92 % | 3.91 | 1.00 | OK |
+| boulettes-tomate-spaghetti | Boulettes de protéines de soja à la tomate, spaghetti (maison) | 420 | 37.0 (91%) | 597 | 0.45 (0.45–0.45), −91 % | 3.91 | 1.00 | OK |
 | boulettes-tomate-spaghetti | Boulettes végétales à la tomate, spaghetti (commerce) | 402 | 31.4 (77%) | 614 | 0.55 (0.55–0.55), −89 % | 3.12 | 1.00 | OK |
 | tortilla-espagnole | Tortilla espagnole et salade verte (animal) | 389 | 19.9 | 505 | 0.55 (0.55–0.55) | 2.92 | 1.00 | OK |
 | tortilla-espagnole | Tortilla à la farine de pois chiche et salade verte (maison) | 401 | 16.2 (81%) | 528 | 0.37 (0.37–0.37), −33 % | 3.91 | 1.00 | OK |
 | tartiflette | Tartiflette et salade verte (animal) | 461 | 24.0 | 639 | 1.16 (1.16–1.16) | 2.92 | 1.00 | OK |
-| tartiflette | Tartiflette au tofu fumé, salade verte (maison) | 416 | 14.2 (59%, objectif 70 % non atteint) | 391 | 0.55 (0.55–0.55), −53 % | 2.92 | 1.00 | OK |
-| tartiflette | Tartiflette au fromage végétal et tofu fumé, salade verte (commerce) | 449 | 11.7 (49%, objectif 70 % non atteint) | 498 | 0.63 (0.63–0.63), −45 % | 2.92 | 1.00 | OK |
+| tartiflette | Tartiflette au tofu fumé, salade verte (maison) | 449 | 19.1 (79%) | 444 | 0.62 (0.62–0.62), −47 % | 2.92 | 1.00 | OK |
+| tartiflette | Tartiflette au fromage végétal et tofu fumé, salade verte (commerce) | 481 | 16.6 (69%, objectif 70 % non atteint) | 551 | 0.70 (0.70–0.70), −40 % | 2.92 | 1.00 | OK |
 | paella | Paëlla au poulet, chorizo et crevettes (animal) | 422 | 42.0 | 642 | 2.37 (2.37–2.37) | 3.73 | 1.00 | OK |
-| paella | Paëlla aux pois chiches, tofu fumé et tempeh (maison) | 450 | 29.9 (71%) | 651 | 0.62 (0.62–0.62), −74 % | 3.73 | 1.00 | OK |
+| paella | Paëlla aux protéines de soja, tofu fumé et tofu (maison) | 438 | 33.2 (79%) | 628 | 0.58 (0.58–0.58), −75 % | 3.73 | 1.00 | OK |
 | paella | Paëlla au seitan et saucisse végétale (commerce) | 382 | 32.0 (76%) | 558 | 0.56 (0.56–0.56), −76 % | 3.73 | 1.00 | OK |
 | chili-con-carne | Chili con carne et riz (animal) | 481 | 39.0 | 625 | 4.93 (4.93–4.93) | 3.89 | 1.00 | OK |
-| chili-con-carne | Chili aux haricots rouges, lentilles et tofu, riz (maison) | 499 | 28.9 (74%) | 544 | 0.49 (0.49–0.49), −90 % | 3.89 | 1.00 | OK |
-| chili-con-carne | Chili aux protéines de soja texturées, riz (commerce) | 481 | 34.0 (87%) | 536 | 0.54 (0.54–0.54), −89 % | 3.89 | 1.00 | OK |
+| chili-con-carne | Chili aux protéines de soja texturées, riz (maison) | 499 | 37.2 (96%) | 562 | 0.56 (0.56–0.56), −89 % | 3.89 | 1.00 | OK |
+| chili-con-carne | Chili au haché végétal, riz (commerce) | 499 | 28.9 (74%) | 554 | 0.65 (0.65–0.65), −87 % | 3.89 | 1.00 | OK |
 | endives-au-jambon | Endives au jambon et pommes de terre (animal) | 465 | 23.7 | 404 | 1.00 (1.00–1.00) | 2.97 | 1.00 | OK |
 | endives-au-jambon | Endives au tofu fumé, béchamel au soja et pommes de terre (maison) | 452 | 17.2 (73%) | 355 | 0.47 (0.47–0.47), −53 % | 2.92 | 1.00 | OK |
 | endives-au-jambon | Endives aux tranches végétales et râpé végétal, pommes de terre (commerce) | 462 | 23.2 (98%) | 432 | 0.50 (0.50–0.50), −50 % | 2.92 | 1.00 | OK |
 | tomates-farcies | Tomates farcies et riz (animal) | 436 | 21.1 | 599 | 1.08 (1.08–1.08) | 3.73 | 1.00 | OK |
-| tomates-farcies | Tomates farcies aux lentilles et riz (maison) | 436 | 17.8 (84%) | 410 | 0.53 (0.53–0.53), −51 % | 3.73 | 1.00 | OK |
-| tomates-farcies | Tomates farcies aux protéines de soja et riz (commerce) | 424 | 22.7 (107%) | 408 | 0.57 (0.57–0.57), −47 % | 3.73 | 1.00 | OK |
+| tomates-farcies | Tomates farcies aux protéines de soja et riz (maison) | 436 | 25.0 (118%) | 426 | 0.59 (0.59–0.59), −45 % | 3.73 | 1.00 | OK |
+| tomates-farcies | Tomates farcies au haché végétal et riz (commerce) | 436 | 17.9 (85%) | 419 | 0.67 (0.67–0.67), −39 % | 3.73 | 1.00 | OK |
 | steak-frites | Steak frites et salade verte (animal) | 386 | 48.1 | 592 | 5.75 (5.75–5.75) | 2.92 | 1.00 | OK |
-| steak-frites | Tempeh et tofu fumé grillés, frites et salade verte (maison) | 416 | 34.0 (71%) | 725 | 0.67 (0.67–0.67), −88 % | 2.92 | 1.00 | OK |
+| steak-frites | Protéines de soja grillées, frites et salade verte (maison) | 416 | 39.3 (82%) | 708 | 0.50 (0.50–0.50), −91 % | 2.92 | 1.00 | OK |
 | steak-frites | Galettes végétales, frites et salade verte (commerce) | 411 | 34.7 (72%) | 777 | 0.64 (0.64–0.64), −89 % | 2.92 | 1.00 | OK |
 | escalope-poulet-creme-riz | Escalope de poulet à la crème, riz et haricots verts (animal) | 416 | 45.2 | 579 | 1.38 (1.38–1.38) | 3.73 | 1.00 | OK |
-| escalope-poulet-creme-riz | Tempeh et tofu à la crème de soja, riz et haricots verts (maison) | 441 | 30.1 (67%, objectif 70 % non atteint) | 581 | 0.60 (0.60–0.60), −57 % | 3.73 | 1.00 | OK |
+| escalope-poulet-creme-riz | Protéines de soja à la crème de soja, riz et haricots verts (maison) | 441 | 35.9 (79%) | 578 | 0.54 (0.54–0.54), −61 % | 3.73 | 1.00 | OK |
 | escalope-poulet-creme-riz | Seitan à la crème de soja, riz et haricots verts (commerce) | 441 | 38.9 (86%) | 554 | 0.62 (0.62–0.62), −55 % | 3.73 | 1.00 | OK |
 | saucisse-lentilles | Saucisses de Toulouse aux lentilles (animal) | 328 | 34.7 | 513 | 1.35 (1.35–1.35) | 3.01 | 1.00 | OK |
 | saucisse-lentilles | Tofu fumé aux lentilles (maison) | 328 | 30.8 (89%) | 398 | 0.34 (0.34–0.34), −75 % | 3.01 | 1.00 | OK |
@@ -227,32 +227,32 @@ Chiffres clés par portion (nouvelles paires, mis à jour le 2026-11-01 après l
 | risotto-petits-pois | Risotto aux petits pois (maison) | 352 | 11.8 (65%, objectif 70 % non atteint) | 483 | 0.44 (0.44–0.44), −30 % | 3.73 | 1.00 | OK |
 | risotto-petits-pois | Risotto aux petits pois et râpé végétal (commerce) | 372 | 11.8 (66%, objectif 70 % non atteint) | 537 | 0.49 (0.49–0.49), −23 % | 3.73 | 1.00 | OK |
 | couscous-poulet-merguez | Couscous poulet et merguez (animal) | 445 | 45.5 | 611 | 2.66 (2.66–2.66) | 3.11 | 1.00 | OK |
-| couscous-poulet-merguez | Couscous au tempeh et pois chiches (maison) | 459 | 32.0 (70%) | 557 | 0.53 (0.53–0.53), −80 % | 3.11 | 1.00 | OK |
+| couscous-poulet-merguez | Couscous aux protéines de soja (maison) | 449 | 37.8 (83%) | 536 | 0.45 (0.45–0.45), −83 % | 3.11 | 1.00 | OK |
 | couscous-poulet-merguez | Couscous au seitan et saucisses végétales (commerce) | 420 | 38.0 (83%) | 493 | 0.50 (0.50–0.50), −81 % | 3.11 | 1.00 | OK |
 | poulet-curry-coco | Poulet au curry et lait de coco, riz (animal) | 369 | 40.7 | 590 | 1.13 (1.13–1.13) | 4.21 | 1.00 | OK |
-| poulet-curry-coco | Curry de tempeh et pois chiches au lait de coco, riz (maison) | 391 | 23.9 (59%, objectif 70 % non atteint) | 638 | 0.50 (0.50–0.50), −56 % | 4.21 | 1.00 | OK |
+| poulet-curry-coco | Curry de protéines de soja au lait de coco, riz (maison) | 391 | 32.0 (79%) | 634 | 0.46 (0.46–0.46), −59 % | 4.21 | 1.00 | OK |
 | poulet-curry-coco | Curry de seitan au lait de coco, riz (commerce) | 391 | 34.7 (85%) | 613 | 0.53 (0.53–0.53), −53 % | 4.21 | 1.00 | OK |
 | pot-au-feu | Pot-au-feu (animal) | 392 | 42.2 | 332 | 4.37 (4.37–4.37) | 2.86 | 1.00 | OK |
-| pot-au-feu | Pot-au-feu au tempeh (maison) | 415 | 25.7 (61%, objectif 70 % non atteint) | 351 | 0.57 (0.57–0.57), −87 % | 2.78 | 1.00 | OK |
+| pot-au-feu | Pot-au-feu aux protéines de soja (maison) | 415 | 29.0 (69%, objectif 70 % non atteint) | 341 | 0.43 (0.43–0.43), −90 % | 2.64 | 1.00 | OK |
 | pot-au-feu | Pot-au-feu au seitan (commerce) | 415 | 31.7 (75%) | 320 | 0.50 (0.50–0.50), −89 % | 2.64 | 1.00 | OK |
 | pates-saumon-epinards | Pâtes au saumon, crème et épinards (animal) | 355 | 30.0 | 606 | 0.95 (0.95–0.95) | 3.12 | 1.00 | OK |
 | pates-saumon-epinards | Pâtes au tofu fumé, crème de soja et épinards (maison) | 355 | 25.1 (84%) | 502 | 0.46 (0.46–0.46), −52 % | 3.12 | 1.00 | OK |
 | pates-saumon-epinards | Pâtes aux lanières végétales, crème de soja et épinards (commerce) | 330 | 28.8 (96%) | 500 | 0.41 (0.41–0.41), −57 % | 3.12 | 1.00 | OK |
 | salade-cesar | Salade César au poulet (animal) | 345 | 39.1 | 466 | 1.01 (1.01–1.01) | 3.16 | 1.00 | OK |
-| salade-cesar | Salade César au tempeh et tofu grillés (maison) | 342 | 23.8 (61%, objectif 70 % non atteint) | 440 | 0.44 (0.44–0.44), −57 % | 3.16 | 1.00 | OK |
+| salade-cesar | Salade César aux protéines de soja et tofu grillés (maison) | 352 | 27.9 (71%) | 448 | 0.36 (0.36–0.36), −65 % | 3.16 | 1.00 | OK |
 | salade-cesar | Salade César au seitan (commerce) | 355 | 30.5 (78%) | 448 | 0.45 (0.45–0.45), −55 % | 3.16 | 1.00 | OK |
 | oeufs-brouilles-tartines | Petit-déjeuner : œufs brouillés, tartines et jus d'orange (animal) | 375 | 23.5 | 507 | 0.61 (0.61–0.61) | 2.44 | 1.00 | OK |
 | oeufs-brouilles-tartines | Petit-déjeuner : tofu brouillé, tartines et jus d'orange (maison) | 360 | 23.8 (101%) | 498 | 0.44 (0.44–0.44), −29 % | 2.37 | 1.00 | OK |
 | crepes-compote | Goûter : crêpes et compote (animal) | 358 | 17.3 | 568 | 0.51 (0.51–0.51) | 3.09 | 1.00 | OK |
 | crepes-compote | Goûter : crêpes à la boisson au soja et compote (maison) | 342 | 14.4 (83%) | 542 | 0.27 (0.27–0.27), −47 % | 3.91 | 1.00 | OK |
 | cordon-bleu-puree | Cordon bleu maison et purée (animal) | 425 | 52.0 | 646 | 1.58 (1.58–1.58) | 2.97 | 1.00 | OK |
-| cordon-bleu-puree | « Cordon bleu » de tempeh au tofu fumé et purée (maison) | 450 | 36.8 (71%) | 669 | 0.73 (0.73–0.73), −54 % | 2.87 | 1.00 | OK |
+| cordon-bleu-puree | « Cordon bleu » de protéines de soja au tofu fumé et purée (maison) | 450 | 40.6 (78%) | 659 | 0.57 (0.57–0.57), −64 % | 2.87 | 1.00 | OK |
 | cordon-bleu-puree | « Cordon bleu » de seitan aux tranches végétales et purée (commerce) | 428 | 38.8 (75%) | 642 | 0.62 (0.62–0.62), −61 % | 2.87 | 1.00 | OK |
 | roti-porc-pommes-de-terre | Rôti de porc, pommes de terre rôties et haricots verts (animal) | 380 | 43.9 | 415 | 1.31 (1.31–1.31) | 2.86 | 1.00 | OK |
-| roti-porc-pommes-de-terre | Tempeh et tofu rôtis, pommes de terre rôties et haricots verts (maison) | 405 | 28.6 (65%, objectif 70 % non atteint) | 442 | 0.54 (0.54–0.54), −58 % | 2.78 | 1.00 | OK |
+| roti-porc-pommes-de-terre | Protéines de soja rôties, pommes de terre rôties et haricots verts (maison) | 405 | 33.7 (77%) | 436 | 0.45 (0.45–0.45), −65 % | 2.55 | 1.00 | OK |
 | roti-porc-pommes-de-terre | Seitan rôti, pommes de terre rôties et haricots verts (commerce) | 405 | 36.7 (84%) | 412 | 0.53 (0.53–0.53), −59 % | 2.55 | 1.00 | OK |
 | cabillaud-pommes-vapeur | Cabillaud, pommes de terre vapeur et épinards (animal) | 422 | 39.2 | 377 | 2.61 (2.61–2.61) | 3.68 | 1.00 | OK |
-| cabillaud-pommes-vapeur | Tofu au citron, haricots blancs, pommes de terre vapeur et épinards (maison) | 450 | 26.5 (68%, objectif 70 % non atteint) | 474 | 0.48 (0.48–0.48), −82 % | 3.68 | 1.00 | OK |
+| cabillaud-pommes-vapeur | Tofu au citron, pommes de terre vapeur et épinards (maison) | 450 | 29.8 (76%) | 492 | 0.51 (0.51–0.51), −81 % | 3.68 | 1.00 | OK |
 | cabillaud-pommes-vapeur | Pavé de soja, pommes de terre vapeur et épinards (commerce) | 418 | 28.9 (74%) | 583 | 0.65 (0.65–0.65), −75 % | 3.68 | 1.00 | OK |
 
 ## Lot B — S17b Rendements de cuisson
@@ -338,3 +338,11 @@ Recettes (règles appliquées à **toutes** les paires, y compris les 10 premiè
 - [ ] **Objectif de 70 % des protéines** non atteint pour 19 versions végétales (la suite V1, étape 1, revoit les recettes avec des protéines plus denses) (de 46 % pour la blanquette maison à un peu moins de 70 % pour les boulettes maison) : l'écart apparaît dans « Là où le plat animal fait mieux » et dans le score Nutrition.
 - [ ] **Substitutions** : le ratio est calculé dans le navigateur (`lib/compare/recipe.ts`) avec les lipides Ciqual de l'aliment réellement saisi (beurre doux, demi-sel…) et le rendement USDA du produit cru ; une seule correspondance de rendement existe aujourd'hui (steak haché 15 % cru, 73 %). Pour les autres viandes crues : même masse, écrit dans la justification.
 
+
+## S22 — Protéines denses et vue « à protéines égales »
+
+- [ ] **PST partout** : la plupart des versions maison reposent maintenant sur les protéines de soja texturées réhydratées (code unique 20591_2, sans distinction haché ou gros morceaux). Les recettes deviennent plus uniformes ; le tempeh n'est plus utilisé. Alternative : alterner PST et tempeh selon le plat.
+- [ ] **Objectif de 70 % non atteint** pour 7 versions : blanquette maison (64 %, au plafond), lasagnes et parmentier du commerce (haché végétal 30181 à 11,5 g/100 g, au plafond), tartiflette du commerce (69 %), risotto maison et du commerce (plat sans viande), pot-au-feu maison (69 %, au plafond).
+- [ ] **Vue « à protéines égales »** : le prix suit le facteur (linéaire) ; la couverture ne change pas. Les fourchettes « < x » sont multipliées aussi. Sur `/recette`, la vue est gardée dans l'URL mais pas l'onglet.
+- [ ] **Sources ANSES citées** sur `/methodologie` : page « Protéines » (mise à jour le 22/12/2025, 0,83 g/kg/j ; « les apports énergétiques et protéiques atteignent les références nutritionnelles ») ; rapport « Actualisation des repères du PNNS », 2016, p. 22 du PDF (AS de 30 g de fibres par jour) ; dossier de presse INCA 3, 2017, p. 11 du PDF (20 g/j de fibres chez les adultes). Numéros de page du PDF, pas de la pagination imprimée.
+- [ ] **Encadrés par catégorie** : les avantages santé et économie (CIRC, prix, coût climat) viennent des scores, sans conseil sourcé pour l'instant (« Pas encore de conseil sourcé pour ce point »).

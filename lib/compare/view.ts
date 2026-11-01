@@ -15,12 +15,14 @@ import {
   type MonetizationFactor,
   type MonetizationRule,
   amountBounds,
+  equalProteinFactor,
   type Range,
   type ScoringData,
   verdictTotals,
 } from "@/lib/scoring";
 import {
   BASES,
+  categoryOf,
   CLIMATE_INDICATORS,
   CLIMATE_MAIN,
   COVERAGE_WARNING,
@@ -37,7 +39,9 @@ import {
   PNNS_LEGUME_SUBGROUP,
   PNNS_MEAT_CATEGORIES,
   VEGAN_WORD,
+  type ScoreCategoryId,
 } from "./config";
+import scoreRules from "@/data/score_rules.json";
 import { scorePair, type PairScores } from "./scores";
 
 // ---------------------------------------------------------------------------
@@ -260,6 +264,8 @@ export interface AdvantageView {
   /** true when the comparison rests on partial data (coverage < COVERAGE_WARNING). */
   partial: boolean;
   conseil: Conseil | null;
+  /** Category of the score the criterion belongs to: the box of each tab shows its own. */
+  category: ScoreCategoryId | null;
 }
 
 export interface ClimateCostView {
@@ -369,10 +375,23 @@ export interface VariantView {
   scores: PairScores;
 }
 
+/** The plant version scaled to the protein of the animal dish (« À protéines égales »). */
+export interface ScaledVariantView {
+  view: VariantView;
+  /** Animal protein / plant protein per serving, from the data. */
+  factor: number;
+  gramsPerServing: number;
+  /** Grams per serving of the realistic portion. */
+  baseGramsPerServing: number;
+}
+
 export interface PairPageModel {
   slug: string;
   animal: DishView;
+  /** Realistic portions (default view). */
   variants: Partial<Record<Variant, VariantView>>;
+  /** Same variants at equal protein; absent when a protein total is unknown. */
+  equalProtein: Partial<Record<Variant, ScaledVariantView>>;
   sources: Record<string, SourceRow>;
   monetizationFactors: MonetizationFactor[];
   monetizationRules: MonetizationRule[];
@@ -583,6 +602,12 @@ export function rowsFor(animal: DishTotals, vegetal: DishTotals, raw: RawPairDat
 /** Options of dishTotals for every page: derived nutrients (EPA + DHA). */
 export const TOTALS_OPTIONS = { nutrientSums: Object.fromEntries(Object.entries(NUTRIENT_SUMS).map(([id, d]) => [id, d.parts])) };
 
+/** Label of a counted indicator (data/score_rules.json). */
+function labelOf(id: string): string {
+  for (const c of scoreRules.categories) for (const i of c.indicators) if (i.id === id) return i.label;
+  return id;
+}
+
 /** Meta of the derived nutrients (sums of Ciqual constituents, e.g. EPA + DHA). */
 function derivedMeta(): MetaRow[] {
   return Object.entries(NUTRIENT_SUMS).map(([id, d]) => ({ id, name_fr: d.label, unit: d.unit }));
@@ -595,8 +620,30 @@ function simTotals(t: DishTotals): DishTotals {
   return { ...t, nutrients: {}, impacts: pick(t.impacts, [CLIMATE_MAIN]), animalImpacts: pick(t.animalImpacts) };
 }
 
+export interface BuildOptions {
+  /** Indicators not counted in the scores of this view. */
+  excludeFromScore?: string[];
+  /** false: only the realistic portions (used to build the derived views). */
+  withViews?: boolean;
+}
+
+// Protein is equal by construction in the equal-protein view: not counted.
+const EQUAL_PROTEIN_EXCLUDED = ["protein_g"];
+
+/** Raw data with one plant dish scaled (ingredients and the dish price, which is linear in grams). */
+function scaledRaw(raw: RawPairData, dishId: string, factor: number): RawPairData {
+  const k = (x: number | null) => (x == null ? null : x * factor);
+  return {
+    ...raw,
+    ingredients: raw.ingredients.map((i) => (i.dish_id === dishId ? { ...i, grams: Number(i.grams) * factor } : i)),
+    dishPrices: raw.dishPrices.map((p) =>
+      p.dish_id === dishId ? { ...p, per_serving: Number(p.per_serving) * factor, low_per_serving: k(num(p.low_per_serving)), high_per_serving: k(num(p.high_per_serving)) } : p,
+    ),
+  };
+}
+
 /** Builds the page model; variants without data are simply absent. */
-export function buildPairPage(raw: RawPairData): PairPageModel {
+export function buildPairPage(raw: RawPairData, options: BuildOptions = {}): PairPageModel {
   const data = scoringData(raw);
   const totalsOptions = TOTALS_OPTIONS;
   const dishOf = (d: DishRow) => ({
@@ -626,6 +673,7 @@ export function buildPairPage(raw: RawPairData): PairPageModel {
         name: r.name,
         partial: r.winner !== "animal",
         conseil: raw.conseils.find((c) => c.criteria.includes(r.id)) ?? null,
+        category: categoryOf(r.id),
       }));
     for (const x of animalBetter) x.conseil?.sources.forEach((s) => usedSources.add(s.sourceId));
 
@@ -777,6 +825,18 @@ export function buildPairPage(raw: RawPairData): PairPageModel {
       }
     }
 
+    const scores = scorePair({ rows, iarc, price, climateCost }, options.excludeFromScore);
+    // Health and economy are not rows: their advantages come from the scores (IARC grams, price, climate cost).
+    for (const c of scores.verdict.categories) {
+      if (c.id !== "sante" && c.id !== "economie") continue;
+      for (const i of c.indicators) {
+        if (i.outcome !== "animal") continue;
+        const conseil = raw.conseils.find((x) => x.criteria.includes(i.id)) ?? null;
+        conseil?.sources.forEach((s) => usedSources.add(s.sourceId));
+        animalBetter.push({ criterion: i.id, name: labelOf(i.id), partial: false, conseil, category: c.id });
+      }
+    }
+
     variants[p.variant] = {
       variant: p.variant,
       dish: dishView(dish, raw),
@@ -794,14 +854,32 @@ export function buildPairPage(raw: RawPairData): PairPageModel {
       pnns,
       eatLancet,
       sim: { animal: simTotals(animalTotals), vegetal: simTotals(vegTotals) },
-      scores: scorePair({ rows, iarc, price, climateCost }),
+      scores,
     };
+  }
+
+  // « À protéines égales »: each plant version scaled by animal protein / plant protein.
+  const equalProtein: PairPageModel["equalProtein"] = {};
+  if (options.withViews !== false) {
+    for (const p of raw.pairs) {
+      if (p.variant !== "maison" && p.variant !== "commerce") continue;
+      const dish = raw.vegetal.find((d) => d.id === p.vegan_dish_id);
+      if (!dish || !variants[p.variant]) continue;
+      const factor = equalProteinFactor(animalTotals, totalsOf(dish));
+      if (factor == null) continue;
+      const page = buildPairPage(scaledRaw({ ...raw, pairs: [p] }, dish.id, factor), { excludeFromScore: EQUAL_PROTEIN_EXCLUDED, withViews: false });
+      const view = page.variants[p.variant];
+      if (!view) continue;
+      Object.keys(page.sources).forEach((s) => usedSources.add(s));
+      equalProtein[p.variant] = { view, factor, gramsPerServing: view.dish.gramsPerServing, baseGramsPerServing: variants[p.variant]!.dish.gramsPerServing };
+    }
   }
 
   return {
     slug: raw.animal.slug,
     animal: dishView(raw.animal, raw),
     variants,
+    equalProtein,
     sources: Object.fromEntries(raw.sources.filter((s) => usedSources.has(s.id)).map((s) => [s.id, s])),
     monetizationFactors: raw.monetizationFactors,
     monetizationRules: raw.monetizationRules,

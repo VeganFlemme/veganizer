@@ -13,8 +13,8 @@ boeuf-bourguignon,bourguignon-vegetal-maison,vegetal,maison,20035,150,oignons cu
 boeuf-bourguignon,bourguignon-vegetal-maison,vegetal,maison,9435,20,farine pour lier la sauce,,,
 boeuf-bourguignon,bourguignon-vegetal-maison,vegetal,maison,17440,20,huile de tournesol pour saisir,,,
 boeuf-bourguignon,bourguignon-vegetal-maison,vegetal,maison,4003,350,pommes de terre à l'eau en accompagnement,,,
-boeuf-bourguignon,bourguignon-vegetal-maison,vegetal,maison,20917,450,tempeh en cubes,,1,6230 28725
-boeuf-bourguignon,bourguignon-vegetal-maison,vegetal,maison,20587,240,lentilles vertes cuites,,1,6230 28725
+boeuf-bourguignon,bourguignon-vegetal-maison,vegetal,maison,20591_2,610,protéines de soja texturées réhydratées en gros morceaux,,1,6230
+boeuf-bourguignon,bourguignon-vegetal-maison,vegetal,maison,20912,80,tofu fumé en dés (à la place des lardons),,1,28725
 boeuf-bourguignon,bourguignon-seitan-commerce,vegetal,commerce,5214,250,vin rouge de cuisson,,,
 boeuf-bourguignon,bourguignon-seitan-commerce,vegetal,commerce,20009,250,carottes (code cru : pas de code cuit avec nutriments et impacts),,,
 boeuf-bourguignon,bourguignon-seitan-commerce,vegetal,commerce,20035,150,oignons cuits,,,
@@ -36,8 +36,7 @@ blanquette-de-veau,blanquette-vegetale-maison,vegetal,maison,20035,100,oignons c
 blanquette-de-veau,blanquette-vegetale-maison,vegetal,maison,9435,30,farine du roux,,,
 blanquette-de-veau,blanquette-vegetale-maison,vegetal,maison,18066,250,eau de cuisson restant dans la sauce,,,
 blanquette-de-veau,blanquette-vegetale-maison,vegetal,maison,9104,400,riz blanc cuit en accompagnement,,,
-blanquette-de-veau,blanquette-vegetale-maison,vegetal,maison,20904,400,tofu ferme en cubes,,1,6563
-blanquette-de-veau,blanquette-vegetale-maison,vegetal,maison,20507,140,pois chiches cuits,,1,6563
+blanquette-de-veau,blanquette-vegetale-maison,vegetal,maison,20591_2,540,protéines de soja texturées réhydratées en morceaux,,1,6563
 blanquette-de-veau,blanquette-vegetale-maison,vegetal,maison,11214,150,crème de soja,,,19410
 blanquette-de-veau,blanquette-vegetale-maison,vegetal,maison,17130,30,huile de colza du roux,,,16400
 blanquette-de-veau,blanquette-seitan-commerce,vegetal,commerce,20009,250,carottes (code cru : pas de code cuit avec nutriments et impacts),,,
@@ -52,8 +51,7 @@ poulet-roti-haricots-verts,poulet-roti-haricots-verts,animal,,36005,600,"poulet 
 poulet-roti-haricots-verts,poulet-roti-haricots-verts,animal,,20030,800,haricots verts cuits,,,
 poulet-roti-haricots-verts,poulet-roti-haricots-verts,animal,,16400,20,beurre sur les haricots,,,
 poulet-roti-haricots-verts,tofu-tempeh-rotis-haricots-verts-maison,vegetal,maison,20030,800,haricots verts cuits,,,
-poulet-roti-haricots-verts,tofu-tempeh-rotis-haricots-verts-maison,vegetal,maison,20917,360,tempeh rôti au four,,1,36005
-poulet-roti-haricots-verts,tofu-tempeh-rotis-haricots-verts-maison,vegetal,maison,20904,360,tofu ferme rôti au four,,1,36005
+poulet-roti-haricots-verts,tofu-tempeh-rotis-haricots-verts-maison,vegetal,maison,20591_2,720,"protéines de soja texturées réhydratées en gros morceaux, rôties au four",,1,36005
 poulet-roti-haricots-verts,tofu-tempeh-rotis-haricots-verts-maison,vegetal,maison,17270,30,huile d'olive (à la place du beurre),,,16400
 poulet-roti-haricots-verts,seitan-roti-haricots-verts-commerce,vegetal,commerce,20030,800,haricots verts cuits,,,
 poulet-roti-haricots-verts,seitan-roti-haricots-verts-commerce,vegetal,commerce,25598,600,seitan préemballé rôti,,1,36005
@@ -74,8 +72,7 @@ lasagnes-bolognaise,lasagnes-vegetales-maison,vegetal,maison,20035,80,oignons cu
 lasagnes-bolognaise,lasagnes-vegetales-maison,vegetal,maison,20009,80,carottes (code cru : pas de code cuit avec nutriments et impacts),,,
 lasagnes-bolognaise,lasagnes-vegetales-maison,vegetal,maison,17270,15,huile d'olive,,,
 lasagnes-bolognaise,lasagnes-vegetales-maison,vegetal,maison,9435,30,farine de la béchamel,,,
-lasagnes-bolognaise,lasagnes-vegetales-maison,vegetal,maison,20587,280,lentilles vertes cuites,,1,6255
-lasagnes-bolognaise,lasagnes-vegetales-maison,vegetal,maison,20904,200,tofu ferme émietté,,1,6255
+lasagnes-bolognaise,lasagnes-vegetales-maison,vegetal,maison,20591_2,480,protéines de soja texturées réhydratées (à la place du bœuf haché),,1,6255
 lasagnes-bolognaise,lasagnes-vegetales-maison,vegetal,maison,18901,300,boisson au soja enrichie en calcium de la béchamel,,,19041
 lasagnes-bolognaise,lasagnes-vegetales-maison,vegetal,maison,17130,25,huile de colza de la béchamel,,,16400
 lasagnes-bolognaise,lasagnes-hache-vegetal-commerce,vegetal,commerce,9811,350,feuilles de lasagne cuites (pâtes sans œuf),,,
@@ -84,7 +81,7 @@ lasagnes-bolognaise,lasagnes-hache-vegetal-commerce,vegetal,commerce,20035,80,oi
 lasagnes-bolognaise,lasagnes-hache-vegetal-commerce,vegetal,commerce,20009,80,carottes (code cru : pas de code cuit avec nutriments et impacts),,,
 lasagnes-bolognaise,lasagnes-hache-vegetal-commerce,vegetal,commerce,17270,15,huile d'olive,,,
 lasagnes-bolognaise,lasagnes-hache-vegetal-commerce,vegetal,commerce,9435,30,farine de la béchamel,,,
-lasagnes-bolognaise,lasagnes-hache-vegetal-commerce,vegetal,commerce,30181,400,haché végétal au soja préemballé,"plat composé Ciqual admis (exception règle 9) : détail Agribalyse 3.2 sans ingrédient animal, vérifié le 2026-11-01",1,6255
+lasagnes-bolognaise,lasagnes-hache-vegetal-commerce,vegetal,commerce,30181,480,haché végétal au soja préemballé,"plat composé Ciqual admis (exception règle 9) : détail Agribalyse 3.2 sans ingrédient animal, vérifié le 2026-11-01",1,6255
 lasagnes-bolognaise,lasagnes-hache-vegetal-commerce,vegetal,commerce,18901,300,boisson au soja enrichie en calcium de la béchamel,,,19041
 lasagnes-bolognaise,lasagnes-hache-vegetal-commerce,vegetal,commerce,17130,25,huile de colza de la béchamel,,,16400
 lasagnes-bolognaise,lasagnes-hache-vegetal-commerce,vegetal,commerce,1029_2,80,spécialité végétale type fromage râpé,,,12118
@@ -126,12 +123,12 @@ hachis-parmentier,hachis-parmentier,animal,,20035,100,oignons cuits,,,
 hachis-parmentier,hachis-parmentier,animal,,12118,60,emmental râpé,,,
 hachis-parmentier,parmentier-lentilles-maison,vegetal,maison,4003,900,pommes de terre à l'eau (purée),,,
 hachis-parmentier,parmentier-lentilles-maison,vegetal,maison,20035,100,oignons cuits,,,
-hachis-parmentier,parmentier-lentilles-maison,vegetal,maison,20587,450,lentilles vertes cuites,,1,6255
+hachis-parmentier,parmentier-lentilles-maison,vegetal,maison,20591_2,450,protéines de soja texturées réhydratées (à la place du bœuf haché),,1,6255
 hachis-parmentier,parmentier-lentilles-maison,vegetal,maison,18901,200,boisson au soja enrichie en calcium (purée),,,19041
 hachis-parmentier,parmentier-lentilles-maison,vegetal,maison,17270,30,huile d'olive (purée),,,16400
 hachis-parmentier,parmentier-hache-vegetal-commerce,vegetal,commerce,4003,900,pommes de terre à l'eau (purée),,,
 hachis-parmentier,parmentier-hache-vegetal-commerce,vegetal,commerce,20035,100,oignons cuits,,,
-hachis-parmentier,parmentier-hache-vegetal-commerce,vegetal,commerce,30181,375,haché végétal au soja préemballé,"plat composé Ciqual admis (exception règle 9) : détail Agribalyse 3.2 sans ingrédient animal, vérifié le 2026-11-01",1,6255
+hachis-parmentier,parmentier-hache-vegetal-commerce,vegetal,commerce,30181,450,haché végétal au soja préemballé,"plat composé Ciqual admis (exception règle 9) : détail Agribalyse 3.2 sans ingrédient animal, vérifié le 2026-11-01",1,6255
 hachis-parmentier,parmentier-hache-vegetal-commerce,vegetal,commerce,18901,200,boisson au soja enrichie en calcium (purée),,,19041
 hachis-parmentier,parmentier-hache-vegetal-commerce,vegetal,commerce,17270,30,huile d'olive (purée),,,16400
 hachis-parmentier,parmentier-hache-vegetal-commerce,vegetal,commerce,1029_2,60,spécialité végétale type fromage râpé,,,12118
@@ -173,10 +170,9 @@ burger,burger-haricots-tofu-maison,vegetal,maison,20031,60,salade,,,
 burger,burger-haricots-tofu-maison,vegetal,maison,20034,60,oignon cru,,,
 burger,burger-haricots-tofu-maison,vegetal,maison,11008,60,ketchup,,,
 burger,burger-haricots-tofu-maison,vegetal,maison,4030,600,frites cuites au four,,,
-burger,burger-haricots-tofu-maison,vegetal,maison,20503,250,haricots rouges cuits écrasés (galette),,1,6255
-burger,burger-haricots-tofu-maison,vegetal,maison,20904,200,tofu ferme émietté (galette),,1,6255
-burger,burger-haricots-tofu-maison,vegetal,maison,32140,60,flocons d'avoine (galette),,,6255
-burger,burger-haricots-tofu-maison,vegetal,maison,9580,40,farine de pois chiche (galette),,1,6255
+burger,burger-haricots-tofu-maison,vegetal,maison,20591_2,440,protéines de soja texturées réhydratées (galette),,1,6255
+burger,burger-haricots-tofu-maison,vegetal,maison,32140,40,flocons d'avoine (liant de la galette),,,6255
+burger,burger-haricots-tofu-maison,vegetal,maison,9580,40,farine de pois chiche (liant de la galette),,,6255
 burger,burger-haricots-tofu-maison,vegetal,maison,17130,20,huile de colza de cuisson,,,6255
 burger,burger-galette-vegetale-commerce,vegetal,commerce,7001,320,pain blanc (petits pains ronds sans lait),,,
 burger,burger-galette-vegetale-commerce,vegetal,commerce,20031,60,salade,,,
@@ -275,7 +271,7 @@ nuggets-frites,nuggets-tofu-frites-maison,vegetal,maison,7004,60,pain grillé mi
 nuggets-frites,nuggets-tofu-frites-maison,vegetal,maison,17440,40,huile de tournesol,,,
 nuggets-frites,nuggets-tofu-frites-maison,vegetal,maison,4030,600,frites au four,,,
 nuggets-frites,nuggets-tofu-frites-maison,vegetal,maison,11008,60,ketchup,,,
-nuggets-frites,nuggets-tofu-frites-maison,vegetal,maison,20904,480,tofu ferme pané,,1,36018
+nuggets-frites,nuggets-tofu-frites-maison,vegetal,maison,20591_2,480,protéines de soja texturées réhydratées panées,,1,36018
 nuggets-frites,nuggets-tofu-frites-maison,vegetal,maison,18901,60,boisson au soja enrichie en calcium (panure),,,22000
 nuggets-frites,nuggets-soja-ble-frites-commerce,vegetal,commerce,4030,600,frites au four,,,
 nuggets-frites,nuggets-soja-ble-frites-commerce,vegetal,commerce,11008,60,ketchup,,,
@@ -314,8 +310,7 @@ boulettes-tomate-spaghetti,boulettes-lentilles-tofu-maison,vegetal,maison,20260,
 boulettes-tomate-spaghetti,boulettes-lentilles-tofu-maison,vegetal,maison,20035,100,oignons cuits,,,
 boulettes-tomate-spaghetti,boulettes-lentilles-tofu-maison,vegetal,maison,17270,20,huile d'olive,,,
 boulettes-tomate-spaghetti,boulettes-lentilles-tofu-maison,vegetal,maison,9811,600,spaghetti cuits,,,
-boulettes-tomate-spaghetti,boulettes-lentilles-tofu-maison,vegetal,maison,20587,280,lentilles vertes cuites,,1,6255
-boulettes-tomate-spaghetti,boulettes-lentilles-tofu-maison,vegetal,maison,20904,200,tofu ferme émietté,,1,6255
+boulettes-tomate-spaghetti,boulettes-lentilles-tofu-maison,vegetal,maison,20591_2,480,protéines de soja texturées réhydratées en boulettes,,1,6255
 boulettes-tomate-spaghetti,boulettes-lentilles-tofu-maison,vegetal,maison,9580,40,farine de pois chiche (liant),,,22000
 boulettes-tomate-spaghetti,boulettes-vegetales-spaghetti-commerce,vegetal,commerce,20260,400,coulis de tomate,,,
 boulettes-tomate-spaghetti,boulettes-vegetales-spaghetti-commerce,vegetal,commerce,20035,100,oignons cuits,,,
@@ -357,7 +352,7 @@ tartiflette,tartiflette-tofu-fume-maison,vegetal,maison,20031,300,salade verte e
 tartiflette,tartiflette-tofu-fume-maison,vegetal,maison,17130,30,huile de colza de la vinaigrette,,,
 tartiflette,tartiflette-tofu-fume-maison,vegetal,maison,11018,10,vinaigre de la vinaigrette,,,
 tartiflette,tartiflette-tofu-fume-maison,vegetal,maison,11013,5,moutarde de la vinaigrette,,,
-tartiflette,tartiflette-tofu-fume-maison,vegetal,maison,20912,220,tofu fumé en dés,,1,28725
+tartiflette,tartiflette-tofu-fume-maison,vegetal,maison,20912,350,tofu fumé en dés (à la place des lardons et du reblochon),,1,28725 12045
 tartiflette,tartiflette-tofu-fume-maison,vegetal,maison,11214,100,crème de soja,,,19410
 tartiflette,tartiflette-vegetale-commerce,vegetal,commerce,4003,800,pommes de terre cuites,,,
 tartiflette,tartiflette-vegetale-commerce,vegetal,commerce,20035,150,oignons cuits,,,
@@ -367,7 +362,7 @@ tartiflette,tartiflette-vegetale-commerce,vegetal,commerce,17130,30,huile de col
 tartiflette,tartiflette-vegetale-commerce,vegetal,commerce,11018,10,vinaigre de la vinaigrette,,,
 tartiflette,tartiflette-vegetale-commerce,vegetal,commerce,11013,5,moutarde de la vinaigrette,,,
 tartiflette,tartiflette-vegetale-commerce,vegetal,commerce,1029_1,200,spécialité végétale type fromage en tranche,,1,12045
-tartiflette,tartiflette-vegetale-commerce,vegetal,commerce,20912,150,tofu fumé en dés,,1,28725
+tartiflette,tartiflette-vegetale-commerce,vegetal,commerce,20912,280,tofu fumé en dés,,1,28725
 tartiflette,tartiflette-vegetale-commerce,vegetal,commerce,11214,100,crème de soja,,,19410
 paella,paella,animal,,9104,700,riz cuit,,,
 paella,paella,animal,,36006,300,cuisse de poulet cuite,,1,
@@ -382,9 +377,9 @@ paella,paella-vegetale-maison,vegetal,maison,20088,150,poivron cuit,,,
 paella,paella-vegetale-maison,vegetal,maison,20037,150,petits pois cuits,,,
 paella,paella-vegetale-maison,vegetal,maison,17270,30,huile d'olive,,,
 paella,paella-vegetale-maison,vegetal,maison,20035,80,oignons cuits,,,
-paella,paella-vegetale-maison,vegetal,maison,20917,200,tempeh en dés,,1,36006
+paella,paella-vegetale-maison,vegetal,maison,20591_2,200,protéines de soja texturées réhydratées en morceaux (à la place du poulet),,1,36006
+paella,paella-vegetale-maison,vegetal,maison,20904,240,tofu ferme en dés (à la place des crevettes),,1,10007
 paella,paella-vegetale-maison,vegetal,maison,20912,200,tofu fumé en dés,,1,30315
-paella,paella-vegetale-maison,vegetal,maison,20507,290,pois chiches cuits,,1,10007
 paella,paella-seitan-commerce,vegetal,commerce,9104,700,riz cuit,,,
 paella,paella-seitan-commerce,vegetal,commerce,20088,150,poivron cuit,,,
 paella,paella-seitan-commerce,vegetal,commerce,20037,150,petits pois cuits,,,
@@ -407,8 +402,7 @@ chili-con-carne,chili-sin-carne-maison,vegetal,maison,20088,150,poivron cuit,,,
 chili-con-carne,chili-sin-carne-maison,vegetal,maison,17270,20,huile d'olive,,,
 chili-con-carne,chili-sin-carne-maison,vegetal,maison,9104,450,riz cuit,,,
 chili-con-carne,chili-sin-carne-maison,vegetal,maison,11042,5,cumin,,,
-chili-con-carne,chili-sin-carne-maison,vegetal,maison,20587,270,lentilles vertes cuites,,1,6255
-chili-con-carne,chili-sin-carne-maison,vegetal,maison,20904,200,tofu ferme émietté,,1,6255
+chili-con-carne,chili-sin-carne-maison,vegetal,maison,20591_2,470,protéines de soja texturées réhydratées (à la place du bœuf haché),,1,6255
 chili-con-carne,chili-proteines-soja-commerce,vegetal,commerce,20503,400,haricots rouges cuits,,,
 chili-con-carne,chili-proteines-soja-commerce,vegetal,commerce,20169,400,tomates en morceaux,,,
 chili-con-carne,chili-proteines-soja-commerce,vegetal,commerce,20035,100,oignons cuits,,,
@@ -416,7 +410,7 @@ chili-con-carne,chili-proteines-soja-commerce,vegetal,commerce,20088,150,poivron
 chili-con-carne,chili-proteines-soja-commerce,vegetal,commerce,17270,20,huile d'olive,,,
 chili-con-carne,chili-proteines-soja-commerce,vegetal,commerce,9104,450,riz cuit,,,
 chili-con-carne,chili-proteines-soja-commerce,vegetal,commerce,11042,5,cumin,,,
-chili-con-carne,chili-proteines-soja-commerce,vegetal,commerce,20591_2,400,protéines de soja texturées réhydratées,,1,6255
+chili-con-carne,chili-proteines-soja-commerce,vegetal,commerce,30181,470,haché végétal au soja préemballé,"plat composé Ciqual admis (exception règle 9) : détail Agribalyse 3.2 sans ingrédient animal, vérifié le 2026-11-01",1,6255
 endives-au-jambon,endives-au-jambon,animal,,20026,700,endives (code cru : cuites dans le plat),,,
 endives-au-jambon,endives-au-jambon,animal,,28910,200,jambon cuit,,1,
 endives-au-jambon,endives-au-jambon,animal,,19041,400,lait demi-écrémé (béchamel),,,
@@ -450,15 +444,14 @@ tomates-farcies,tomates-farcies-lentilles-maison,vegetal,maison,20035,80,oignons
 tomates-farcies,tomates-farcies-lentilles-maison,vegetal,maison,11014,10,persil,,,
 tomates-farcies,tomates-farcies-lentilles-maison,vegetal,maison,17270,15,huile d'olive,,,
 tomates-farcies,tomates-farcies-lentilles-maison,vegetal,maison,9104,400,riz cuit,,,
-tomates-farcies,tomates-farcies-lentilles-maison,vegetal,maison,20587,250,lentilles vertes cuites,,1,30050
-tomates-farcies,tomates-farcies-lentilles-maison,vegetal,maison,20904,150,tofu ferme émietté,,1,30050
+tomates-farcies,tomates-farcies-lentilles-maison,vegetal,maison,20591_2,400,protéines de soja texturées réhydratées (farce),,1,30050
 tomates-farcies,tomates-farcies-soja-commerce,vegetal,commerce,20289,800,tomates cuites au four,,,
 tomates-farcies,tomates-farcies-soja-commerce,vegetal,commerce,7004,40,pain grillé mixé,,,
 tomates-farcies,tomates-farcies-soja-commerce,vegetal,commerce,20035,80,oignons cuits,,,
 tomates-farcies,tomates-farcies-soja-commerce,vegetal,commerce,11014,10,persil,,,
 tomates-farcies,tomates-farcies-soja-commerce,vegetal,commerce,17270,15,huile d'olive,,,
 tomates-farcies,tomates-farcies-soja-commerce,vegetal,commerce,9104,400,riz cuit,,,
-tomates-farcies,tomates-farcies-soja-commerce,vegetal,commerce,20591_2,350,protéines de soja texturées réhydratées,,1,30050
+tomates-farcies,tomates-farcies-soja-commerce,vegetal,commerce,30181,400,haché végétal au soja préemballé (farce),"plat composé Ciqual admis (exception règle 9) : détail Agribalyse 3.2 sans ingrédient animal, vérifié le 2026-11-01",1,30050
 steak-frites,steak-frites,animal,,6200,600,steak de bœuf grillé,,1,
 steak-frites,steak-frites,animal,,4030,600,frites au four,,,
 steak-frites,steak-frites,animal,,20031,300,salade verte en accompagnement,,,
@@ -470,8 +463,7 @@ steak-frites,steak-tempeh-frites-maison,vegetal,maison,20031,300,salade verte en
 steak-frites,steak-tempeh-frites-maison,vegetal,maison,17130,30,huile de colza de la vinaigrette,,,
 steak-frites,steak-tempeh-frites-maison,vegetal,maison,11018,10,vinaigre de la vinaigrette,,,
 steak-frites,steak-tempeh-frites-maison,vegetal,maison,11013,5,moutarde de la vinaigrette,,,
-steak-frites,steak-tempeh-frites-maison,vegetal,maison,20917,400,tempeh grillé,,1,6200
-steak-frites,steak-tempeh-frites-maison,vegetal,maison,20912,300,tofu fumé grillé,,1,6200
+steak-frites,steak-tempeh-frites-maison,vegetal,maison,20591_2,700,"protéines de soja texturées réhydratées en gros morceaux, grillées",,1,6200
 steak-frites,steak-tempeh-frites-maison,vegetal,maison,17270,20,huile d'olive (cuisson du tempeh et du tofu),,,6200
 steak-frites,steak-vegetal-frites-commerce,vegetal,commerce,4030,600,frites au four,,,
 steak-frites,steak-vegetal-frites-commerce,vegetal,commerce,20031,300,salade verte en accompagnement,,,
@@ -487,8 +479,7 @@ escalope-poulet-creme-riz,escalope-poulet-creme-riz,animal,,20030,400,haricots v
 escalope-poulet-creme-riz,tempeh-tofu-creme-riz-maison,vegetal,maison,9104,600,riz cuit,,,
 escalope-poulet-creme-riz,tempeh-tofu-creme-riz-maison,vegetal,maison,17270,15,huile d'olive,,,
 escalope-poulet-creme-riz,tempeh-tofu-creme-riz-maison,vegetal,maison,20030,400,haricots verts cuits,,,
-escalope-poulet-creme-riz,tempeh-tofu-creme-riz-maison,vegetal,maison,20917,300,tempeh poêlé,,1,36018
-escalope-poulet-creme-riz,tempeh-tofu-creme-riz-maison,vegetal,maison,20904,300,tofu ferme poêlé,,1,36018
+escalope-poulet-creme-riz,tempeh-tofu-creme-riz-maison,vegetal,maison,20591_2,600,"protéines de soja texturées réhydratées en morceaux, poêlées",,1,36018
 escalope-poulet-creme-riz,tempeh-tofu-creme-riz-maison,vegetal,maison,11214,150,crème de soja,,,19410
 escalope-poulet-creme-riz,seitan-creme-riz-commerce,vegetal,commerce,9104,600,riz cuit,,,
 escalope-poulet-creme-riz,seitan-creme-riz-commerce,vegetal,commerce,17270,15,huile d'olive,,,
@@ -646,8 +637,8 @@ couscous-poulet-merguez,couscous-tempeh-maison,vegetal,maison,20009,150,carottes
 couscous-poulet-merguez,couscous-tempeh-maison,vegetal,maison,20021,200,courgettes cuites,,,
 couscous-poulet-merguez,couscous-tempeh-maison,vegetal,maison,20033,100,navets cuits,,,
 couscous-poulet-merguez,couscous-tempeh-maison,vegetal,maison,20169,120,tomates en morceaux,,,
-couscous-poulet-merguez,couscous-tempeh-maison,vegetal,maison,20917,400,tempeh en cubes,,1,36004
-couscous-poulet-merguez,couscous-tempeh-maison,vegetal,maison,20507,350,pois chiches cuits (150 g du plat d'origine + 200 g à la place des merguez),,1,20507 30155
+couscous-poulet-merguez,couscous-tempeh-maison,vegetal,maison,20591_2,560,protéines de soja texturées réhydratées en morceaux (à la place du poulet et des merguez),,1,36004 30155
+couscous-poulet-merguez,couscous-tempeh-maison,vegetal,maison,20507,150,pois chiches cuits,,,
 couscous-poulet-merguez,couscous-tempeh-maison,vegetal,maison,17270,15,huile d'olive (cuisson du tempeh),,,36004
 couscous-poulet-merguez,couscous-seitan-commerce,vegetal,commerce,9683,500,semoule cuite,,,
 couscous-poulet-merguez,couscous-seitan-commerce,vegetal,commerce,20507,150,pois chiches cuits,,,
@@ -668,8 +659,7 @@ poulet-curry-coco,curry-tempeh-pois-chiches-maison,vegetal,maison,20035,100,oign
 poulet-curry-coco,curry-tempeh-pois-chiches-maison,vegetal,maison,11005,10,curry,,,
 poulet-curry-coco,curry-tempeh-pois-chiches-maison,vegetal,maison,9104,600,riz cuit,,,
 poulet-curry-coco,curry-tempeh-pois-chiches-maison,vegetal,maison,17270,15,huile d'olive,,,
-poulet-curry-coco,curry-tempeh-pois-chiches-maison,vegetal,maison,20917,300,tempeh en cubes,,1,36018
-poulet-curry-coco,curry-tempeh-pois-chiches-maison,vegetal,maison,20507,240,pois chiches cuits,,1,36018
+poulet-curry-coco,curry-tempeh-pois-chiches-maison,vegetal,maison,20591_2,540,protéines de soja texturées réhydratées en morceaux,,1,36018
 poulet-curry-coco,curry-seitan-commerce,vegetal,commerce,18041,300,lait de coco,,,
 poulet-curry-coco,curry-seitan-commerce,vegetal,commerce,20035,100,oignons cuits,,,
 poulet-curry-coco,curry-seitan-commerce,vegetal,commerce,11005,10,curry,,,
@@ -687,7 +677,7 @@ pot-au-feu,pot-au-feu-tempeh-maison,vegetal,maison,20033,200,navets cuits,,,
 pot-au-feu,pot-au-feu-tempeh-maison,vegetal,maison,20039,200,poireaux (code cru : cuits dans le bouillon),,,
 pot-au-feu,pot-au-feu-tempeh-maison,vegetal,maison,4003,400,pommes de terre cuites,,,
 pot-au-feu,pot-au-feu-tempeh-maison,vegetal,maison,11013,20,moutarde,,,
-pot-au-feu,pot-au-feu-tempeh-maison,vegetal,maison,20917,540,tempeh en morceaux,,1,6230
+pot-au-feu,pot-au-feu-tempeh-maison,vegetal,maison,20591_2,540,protéines de soja texturées réhydratées en gros morceaux,,1,6230
 pot-au-feu,pot-au-feu-seitan-commerce,vegetal,commerce,20009,300,carottes (code cru : pas de code cuit avec nutriments et impacts),,,
 pot-au-feu,pot-au-feu-seitan-commerce,vegetal,commerce,20033,200,navets cuits,,,
 pot-au-feu,pot-au-feu-seitan-commerce,vegetal,commerce,20039,200,poireaux (code cru : cuits dans le bouillon),,,
@@ -724,8 +714,8 @@ salade-cesar,salade-cesar-tempeh-maison,vegetal,maison,20172,200,tomates cerises
 salade-cesar,salade-cesar-tempeh-maison,vegetal,maison,17270,40,huile d'olive,,,
 salade-cesar,salade-cesar-tempeh-maison,vegetal,maison,13009,20,citron,,,
 salade-cesar,salade-cesar-tempeh-maison,vegetal,maison,11013,10,moutarde,,,
-salade-cesar,salade-cesar-tempeh-maison,vegetal,maison,20917,350,tempeh grillé,,1,36018 22010
-salade-cesar,salade-cesar-tempeh-maison,vegetal,maison,20904,150,tofu ferme grillé,,1,36018 22010
+salade-cesar,salade-cesar-tempeh-maison,vegetal,maison,20591_2,390,protéines de soja texturées réhydratées grillées (à la place du poulet),,1,36018
+salade-cesar,salade-cesar-tempeh-maison,vegetal,maison,20904,150,tofu ferme grillé (à la place des œufs durs),,1,22010
 salade-cesar,salade-cesar-seitan-commerce,vegetal,commerce,20171,500,laitue romaine,,,
 salade-cesar,salade-cesar-seitan-commerce,vegetal,commerce,7432,100,croûtons,,,
 salade-cesar,salade-cesar-seitan-commerce,vegetal,commerce,20172,200,tomates cerises,,,
@@ -769,7 +759,7 @@ cordon-bleu-puree,cordon-bleu-tempeh-maison,vegetal,maison,9435,30,farine (panur
 cordon-bleu-puree,cordon-bleu-tempeh-maison,vegetal,maison,7004,60,pain grillé mixé (chapelure),,,
 cordon-bleu-puree,cordon-bleu-tempeh-maison,vegetal,maison,17440,40,huile de tournesol,,,
 cordon-bleu-puree,cordon-bleu-tempeh-maison,vegetal,maison,4003,700,pommes de terre à l'eau (purée),,,
-cordon-bleu-puree,cordon-bleu-tempeh-maison,vegetal,maison,20917,600,tempeh en tranches,,1,36306
+cordon-bleu-puree,cordon-bleu-tempeh-maison,vegetal,maison,20591_2,600,protéines de soja texturées réhydratées en escalopes,,1,36306
 cordon-bleu-puree,cordon-bleu-tempeh-maison,vegetal,maison,20912,150,tofu fumé en tranches fines,,1,28910 12115
 cordon-bleu-puree,cordon-bleu-tempeh-maison,vegetal,maison,17270,20,huile d'olive (purée),,,16400
 cordon-bleu-puree,cordon-bleu-tempeh-maison,vegetal,maison,18901,200,boisson au soja enrichie en calcium (panure et purée),,,22000 19041
@@ -789,8 +779,7 @@ roti-porc-pommes-de-terre,roti-porc-pommes-de-terre,animal,,17270,20,huile d'oli
 roti-porc-pommes-de-terre,roti-tempeh-tofu-maison,vegetal,maison,4026,600,pommes de terre rôties,,,
 roti-porc-pommes-de-terre,roti-tempeh-tofu-maison,vegetal,maison,20030,400,haricots verts cuits,,,
 roti-porc-pommes-de-terre,roti-tempeh-tofu-maison,vegetal,maison,17270,20,huile d'olive,,,
-roti-porc-pommes-de-terre,roti-tempeh-tofu-maison,vegetal,maison,20917,400,tempeh rôti,,1,28301
-roti-porc-pommes-de-terre,roti-tempeh-tofu-maison,vegetal,maison,20904,200,tofu ferme rôti,,1,28301
+roti-porc-pommes-de-terre,roti-tempeh-tofu-maison,vegetal,maison,20591_2,600,"protéines de soja texturées réhydratées en gros morceaux, rôties",,1,28301
 roti-porc-pommes-de-terre,roti-seitan-commerce,vegetal,commerce,4026,600,pommes de terre rôties,,,
 roti-porc-pommes-de-terre,roti-seitan-commerce,vegetal,commerce,20030,400,haricots verts cuits,,,
 roti-porc-pommes-de-terre,roti-seitan-commerce,vegetal,commerce,17270,20,huile d'olive,,,
@@ -805,8 +794,7 @@ cabillaud-pommes-vapeur,tofu-haricots-pommes-vapeur-maison,vegetal,maison,4003,7
 cabillaud-pommes-vapeur,tofu-haricots-pommes-vapeur-maison,vegetal,maison,13009,40,citron,,,
 cabillaud-pommes-vapeur,tofu-haricots-pommes-vapeur-maison,vegetal,maison,11014,10,persil,,,
 cabillaud-pommes-vapeur,tofu-haricots-pommes-vapeur-maison,vegetal,maison,20027,300,épinards cuits,,,
-cabillaud-pommes-vapeur,tofu-haricots-pommes-vapeur-maison,vegetal,maison,20904,520,tofu ferme rôti,,1,26023
-cabillaud-pommes-vapeur,tofu-haricots-pommes-vapeur-maison,vegetal,maison,20502,200,haricots blancs cuits,,1,26023
+cabillaud-pommes-vapeur,tofu-haricots-pommes-vapeur-maison,vegetal,maison,20904,720,tofu ferme rôti à l'huile citronnée,,1,26023
 cabillaud-pommes-vapeur,tofu-haricots-pommes-vapeur-maison,vegetal,maison,17270,30,huile d'olive,,,16400
 cabillaud-pommes-vapeur,pave-soja-pommes-vapeur-commerce,vegetal,commerce,4003,700,pommes de terre cuites,,,
 cabillaud-pommes-vapeur,pave-soja-pommes-vapeur-commerce,vegetal,commerce,13009,40,citron,,,

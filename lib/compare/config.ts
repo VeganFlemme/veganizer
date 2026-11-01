@@ -125,3 +125,24 @@ export const EAT_SEAFOOD_CATEGORIES = [
   "céphalopodes",
 ];
 export const EGG_SUBGROUP = "oeufs";
+
+/** Categories of the score, in the order of the tabs (data/score_rules.json). */
+export type ScoreCategoryId = "nutrition" | "sante" | "environnement" | "animaux" | "economie";
+const CATEGORY_ORDER = scoreRules.categories.map((c) => c.id as ScoreCategoryId);
+const CATEGORY_LABEL = new Map(scoreRules.categories.map((c) => [c.id, c.label]));
+const CATEGORY_OF = new Map(scoreRules.categories.flatMap((c) => c.indicators.map((i) => [i.id, c.id as ScoreCategoryId] as const)));
+
+/** Category of a counted indicator; null for one shown without a verdict (e.g. energy). */
+export function categoryOf(id: string): ScoreCategoryId | null {
+  return CATEGORY_OF.get(id) ?? null;
+}
+
+/** « Là où le plat animal fait mieux en nutrition » (subject: « l’aliment d’origine » on /aliment). */
+export function animalBetterTitle(category: ScoreCategoryId, subject = "le plat animal"): string {
+  return `Là où ${subject} fait mieux en ${(CATEGORY_LABEL.get(category) ?? category).toLowerCase()}`;
+}
+
+/** Advantages grouped by category, in the order of the tabs; empty categories are dropped. */
+export function advantagesByCategory<T extends { category: ScoreCategoryId | null }>(items: T[]): { category: ScoreCategoryId; items: T[] }[] {
+  return CATEGORY_ORDER.map((category) => ({ category, items: items.filter((x) => x.category === category) })).filter((g) => g.items.length > 0);
+}
