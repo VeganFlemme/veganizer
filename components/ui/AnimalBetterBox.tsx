@@ -47,7 +47,7 @@ function Values({ x, per }: { x: AdvantageView; per: string }) {
   const unit = x.unit ?? "";
   return (
     <span className="num">
-      Plat animal : {amount(x.animal, unit)} {per} ; version végétale : {amount(x.vegetal, unit)}.{" "}
+      Plat animal : {amount(x.animal, unit)} {per} ; version végétale : {amount(x.vegetal, unit).replace(/\.$/, "")}.{" "}
     </span>
   );
 }

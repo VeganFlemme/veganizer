@@ -24,7 +24,7 @@ for (const width of WIDTHS) {
       await expect(page.getByRole("link", { name: /Bœuf bourguignon/ }).first()).toBeVisible();
     });
 
-    test("every tab, a protein change, the completed version and the simulator", async ({ page }) => {
+    test("every tab, a protein change, the adjusted version and the simulator", async ({ page }) => {
       await page.goto("/compare/boeuf-bourguignon", { waitUntil: "networkidle" });
       for (const t of TABS) {
         await openTab(page, t);
@@ -34,10 +34,10 @@ for (const width of WIDTHS) {
       await page.getByRole("button", { name: /changer de protéine/ }).click();
       await page.getByRole("list", { name: /Protéines végétales/ }).getByRole("button", { name: /Lentille verte/ }).click();
       await expect(page).toHaveURL(/proteine=20587/);
-      await page.getByRole("button", { name: "Version complétée" }).click();
-      await expect(page).toHaveURL(/vue=complete/);
       await openTab(page, "Nutrition");
-      await expect(page.getByText("Version complétée : exemple d’ajouts possibles")).toBeVisible();
+      await page.getByRole("button", { name: "Tout combler" }).click();
+      await expect(page).toHaveURL(/ajuste=tout/);
+      await expect(page.getByText(/Version ajustée :/).first()).toBeVisible();
       // Simulator (overview).
       await page.goto("/compare/boeuf-bourguignon", { waitUntil: "networkidle" });
       const sim = page.locator("section").filter({ hasText: "Et si je change ?" }).first();

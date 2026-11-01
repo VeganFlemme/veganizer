@@ -1,5 +1,5 @@
 {
-  "version": "1.2",
+  "version": "1.3",
   "date": "2026-11-01",
   "status": "Provisoire : sens à valider par un·e diététicien·ne et une personne experte en ACV (docs/A_VERIFIER.md).",
   "method": {
@@ -468,7 +468,7 @@
         },
         {
           "id": "water_scarcity_m3",
-          "label": "Eau (raréfaction)",
+          "label": "Eau : risque de privation (AWARE)",
           "group": "impacts",
           "direction": "lower_is_better",
           "justification": "Indicateur d'impact de la méthode Environmental Footprint utilisée par Agribalyse : moins = mieux.",
@@ -625,21 +625,14 @@
             "publisher": "RNM (FranceAgriMer), Open Prices",
             "note": "prix affiché seulement si les relevés couvrent au moins 95 % de la masse"
           }
-        },
-        {
-          "id": "climate_cost_eur",
-          "label": "Coût climat pour la société, par portion",
-          "group": "climateCost",
-          "direction": "lower_is_better",
-          "justification": "Dommage climatique évalué à la valeur de l'action pour le climat de l'année de référence.",
-          "source": {
-            "publisher": "France Stratégie",
-            "title": "Valeur de l'action pour le climat (rapport de mars 2025)",
-            "sourceId": "vac-2025"
-          }
         }
       ],
-      "displayedNotCounted": []
+      "displayedNotCounted": [
+        {
+          "id": "climate_cost_eur",
+          "reason": "Coût climat (CO₂e × valeur de l'action pour le climat) : affiché, non compté, car ce serait compter deux fois le CO₂e, déjà compté en Environnement (relectures de l'étape 4)."
+        }
+      ]
     }
   ]
 }

@@ -2,6 +2,8 @@ import Link from "next/link";
 import { publicLicense } from "@/lib/format";
 import type { SourceRow } from "@/lib/compare/view";
 
+import { DataLink } from "./DataLink";
+
 /** Sources of the page + Méthodologie, Signaler une erreur, Télécharger les données. */
 export function SourcesFooter({ sources, reportHref = "#signaler", dataHref, indent = false }: { sources: SourceRow[]; reportHref?: string; dataHref?: string; /** Aligned on the content column, right of the category nav (xl). */ indent?: boolean }) {
   return (
@@ -34,9 +36,7 @@ export function SourcesFooter({ sources, reportHref = "#signaler", dataHref, ind
           Signaler une erreur
         </a>
         {dataHref && (
-          <a href={dataHref} className="inline-flex min-h-11 items-center" download>
-            Télécharger les données
-          </a>
+          <DataLink href={dataHref} />
         )}
       </nav>
     </footer>

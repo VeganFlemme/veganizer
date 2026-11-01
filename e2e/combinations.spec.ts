@@ -1,5 +1,5 @@
 // Every combination of choices (suite V1, step 4, point 4 ter): 5 dishes and 2 foods, the 3 first
-// proteins of the list, base and completed version, every tab, at 375, 1 440 and 1 920 px.
+// proteins of the list, base and adjusted (?ajuste=tout) version, every tab, at 375, 1 440 and 1 920 px.
 // Checks: never « NaN », « undefined », « null » nor an empty card; the score of a category is the
 // same everywhere (verdict, left column, overview card); the state survives a reload.
 //   BASE_URL=http://localhost:3000 npx playwright test e2e/combinations.spec.ts
@@ -41,27 +41,23 @@ for (const width of WIDTHS) {
   test.describe(`${width} px`, () => {
     test.use({ viewport: { width, height: width < 768 ? 812 : 900 } });
     for (const path of PAGES) {
-      test(`${path}: 3 proteins × base/completed × every tab`, async ({ page }) => {
-        test.setTimeout(240_000);
-        await page.goto(path, { waitUntil: "networkidle" });
-        await page.getByRole("button", { name: /changer de protéine/ }).click();
-        const items = page.getByRole("list", { name: /Protéines végétales/ }).getByRole("button");
-        const n = Math.min(3, await items.count());
-        const urls: string[] = [];
-        for (let i = 0; i < n; i++) {
-          if (i > 0) await page.getByRole("button", { name: /changer de protéine/ }).click();
-          await page.getByRole("list", { name: /Protéines végétales/ }).getByRole("button").nth(i).click();
-          urls.push(page.url());
-        }
-        for (const u of urls) {
-          for (const vue of ["", "complete"]) {
+      for (const rank of [0, 1, 2]) {
+        test(`${path}: protein n° ${rank + 1} × base/adjusted × every tab`, async ({ page }) => {
+          test.setTimeout(180_000);
+          await page.goto(path, { waitUntil: "load" });
+          await page.getByRole("button", { name: /changer de protéine/ }).click();
+          const items = page.getByRole("list", { name: /Protéines végétales/ }).getByRole("button");
+          test.skip(rank >= (await items.count()), "fewer proteins");
+          await items.nth(rank).click();
+          const chosen = page.url();
+          for (const ajuste of ["", "tout"]) {
             for (const tab of TABS) {
-              const url = new URL(u);
-              if (vue) url.searchParams.set("vue", vue);
-              else url.searchParams.delete("vue");
+              const url = new URL(chosen);
+              if (ajuste) url.searchParams.set("ajuste", ajuste);
+              else url.searchParams.delete("ajuste");
               if (tab) url.searchParams.set("onglet", tab);
               else url.searchParams.delete("onglet");
-              await page.goto(url.toString(), { waitUntil: "networkidle" });
+              await page.goto(url.toString(), { waitUntil: "load" });
               const where = `${url.pathname}${url.search} @${width}`;
               await clean(page, where);
               if (!tab) {
@@ -71,14 +67,14 @@ for (const width of WIDTHS) {
               }
             }
           }
-        }
-        // The state survives a reload.
-        const last = page.url();
-        const title = await page.locator("main").getByText(/^Version végétale :/).first().textContent();
-        await page.reload({ waitUntil: "networkidle" });
-        expect(page.url()).toBe(last);
-        await expect(page.locator("main").getByText(/^Version végétale :/).first()).toHaveText(title ?? "");
-      });
+          // The state survives a reload.
+          const last = page.url();
+          const title = await page.locator("main").getByText(/^Version végétale :/).first().textContent();
+          await page.reload({ waitUntil: "load" });
+          expect(page.url()).toBe(last);
+          await expect(page.locator("main").getByText(/^Version végétale :/).first()).toHaveText(title ?? "");
+        });
+      }
     }
   });
 }

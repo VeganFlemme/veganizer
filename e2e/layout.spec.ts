@@ -4,7 +4,7 @@
 import { expect, test } from "@playwright/test";
 
 const TABS = ["", "nutrition", "sante", "environnement", "animaux", "economie"];
-const PAGES = ["/", ...TABS.map((t) => `/compare/boeuf-bourguignon${t ? `?onglet=${t}` : ""}`), "/aliment/36004", "/recette", "/methodologie", "/sources"];
+const PAGES = ["/", ...TABS.map((t) => `/compare/boeuf-bourguignon${t ? `?onglet=${t}` : ""}`), "/compare/boeuf-bourguignon?ajuste=tout", "/aliment/36004", "/recette", "/methodologie", "/sources"];
 const WIDTHS = [375, 768, 1280, 1440, 1920, 2560];
 
 for (const width of WIDTHS) {

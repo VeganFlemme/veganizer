@@ -1,6 +1,6 @@
 # Suite V1 — à exécuter d'une traite (décisions de Matt, 2026-11-01)
 
-Lis d'abord CLAUDE.md, docs/ROADMAP.md, docs/DESIGN.md, docs/DECISIONS.md et docs/A_VERIFIER.md. Exécute les étapes 0 à 5 (V1), puis 6 à 9 (V2, décision de Matt, 19 h 43) et 10 (recette finale), sans attendre Matt entre les étapes, dans cet ordre (ordre mis à jour le 1er novembre à 16 h 50) : 0, 1, 2, 3, **3 quater (affichage sur ordinateur, prioritaire)**, 3 bis, 3 ter, **3 quinquies (une seule version végétale ajustable, décision de Matt, 19 h 31)**, 4, 5, puis la V2 : 6, 7, 8, 9, puis 10 (recette finale de tout le site). La décision de Matt de 17 h 25 (section suivante) s'applique à toutes les étapes restantes.
+Lis d'abord CLAUDE.md, docs/ROADMAP.md, docs/DESIGN.md, docs/DECISIONS.md et docs/A_VERIFIER.md. Exécute les étapes 0 à 5 (V1), puis 6 à 9 avec 8 bis et 8 ter (V2, décisions de Matt, 19 h 43 et 20 h 54) et 10 (recette finale), sans attendre Matt entre les étapes, dans cet ordre (ordre mis à jour le 1er novembre à 16 h 50) : 0, 1, 2, 3, **3 quater (affichage sur ordinateur, prioritaire)**, 3 bis, 3 ter, **3 quinquies (une seule version végétale ajustable, décision de Matt, 19 h 31)**, 4, 5, puis la V2 : 6, 7, 8, 8 bis, 8 ter, 9, puis 10 (recette finale de tout le site). La décision de Matt de 17 h 25 (section suivante) s'applique à toutes les étapes restantes.
 
 ## Autorisations données par Matt pour toute cette suite
 
@@ -328,6 +328,17 @@ Règles pour toute la V2 :
 
 ## Étape 6 — V2a : tout indicateur réglable
 
+0. **Réglage directement dans le tableau (décision de Matt, 20 h 57) : il remplace le panneau « Ajuster la version végétale » de l'étape 3 quinquies et toute section ou menu au-dessus du tableau.**
+   - Dans la colonne « Végétal » du tableau Nutrition, chaque valeur que le moteur peut faire varier a deux **petites flèches discrètes de part et d'autre du nombre** (‹ 34,5 ›) : ‹ diminue, › augmente.
+   - Sur téléphone, les flèches apparaissent quand on touche la valeur. Zone tactile d'au moins 24 × 24 px. Libellés accessibles, par exemple « Augmenter les protéines de la version végétale ».
+   - Le pas est adapté à l'indicateur. En passant la valeur du plat animal, le réglage **s'arrête dessus** et affiche « = plat animal » : c'est l'égalisation, sans bouton séparé. Monter un manque jusqu'au plat animal revient à le combler.
+   - Pas de flèches sur les lignes que les aliments ne peuvent pas changer (B12, EPA + DHA, vitamine D) : à la place, une petite note « complément ou aliment enrichi » au survol ou au toucher.
+   - Si un réglage est impossible avec les autres, la ligne l'indique sur place (« impossible avec les calories réglées ») sans rien casser.
+   - Seuls ajouts visibles hors du tableau : la carte d'équivalence en haut (point 4 bis de l'étape 3 quinquies, dès qu'un réglage est actif), et dans l'en-tête du tableau deux petits liens texte, « Tout combler » et « Revenir à la recette de base ». Rien d'autre au-dessus du tableau.
+   - Même principe sur `/repas` et `/journee`. Les objectifs du visiteur se règlent avec les flèches de la ligne Total, ou en tapant directement la valeur.
+   - **Manques, directement dans leur liste (décision de Matt, 20 h 57)** : dans « Ce qui reste à couvrir », chaque manque a sa petite flèche › au bout de sa ligne (« Zinc : 5,3 mg contre 12,7 mg › »). Un toucher le comble (même calcul qu'en montant la valeur dans le tableau), et la ligne affiche alors ce qui a été ajouté, avec un petit ‹ pour annuler. Plus d'interrupteurs « Combler » séparés. Les manques qu'aucun aliment ne comble n'ont pas de flèche.
+
+
 1. Dans l'onglet Nutrition, chaque ligne du tableau peut recevoir une contrainte : « = plat animal », « au moins », « au plus » ou une valeur choisie. Lipides, glucides, sucres, fibres, sel, acides gras saturés, vitamines, minéraux… La fonction générique de contraintes de l'étape 3 quinquies (point 8 bis) les résout avec le programme linéaire existant.
 2. **Ingrédients que le moteur peut ajouter ou doser** : la liste blanche élargie de façon traçable. Pour chaque aliment courant végétal (légumineuses, céréales complètes, oléagineux, graines, légumes, fruits, boissons enrichies), il faut nutriments et impacts, et respecter les règles 9 à 11. Chaque aliment a une quantité maximale par portion : celle de l'enquête INCA3 s'il y en a une, sinon un maximum éditorial écrit dans le fichier et sur `/methodologie`. Au plus 4 ajouts par recette. Jamais de dose de complément.
 3. Les ingrédients de base de la recette peuvent varier de ±50 % au plus. Le plat animal ne change jamais.
@@ -346,9 +357,28 @@ Règles pour toute la V2 :
 
 Sur l'accueil, une rangée « Comparaisons du quotidien » : lait et boisson d'avoine ou de soja, beurre et margarine ou huile, steak haché et galette végétale, yaourt et dessert au soja, fromage râpé et alternative, œufs et tofu brouillé. Ce sont des pages d'aliments existantes, choisies par une règle écrite (les aliments animaux les plus consommés selon INCA3 si les données le permettent, sinon une liste éditoriale annoncée comme telle).
 
+## Étape 8 bis — V2e : comparer un repas complet (décision de Matt, 20 h 54)
+
+1. Nouvelle page `/repas` : le visiteur compose un repas (entrée, plat, dessert, accompagnements : pain, fromage, boisson…) en cherchant dans le catalogue (nos plats, les plats Agribalyse, les aliments).
+   - Chaque élément a sa portion : la portion de la page de l'élément, ou 100 g pour un aliment, modifiable.
+   - Face au repas animal : le repas végétal, où chaque élément animal est remplacé par sa version végétale (protéine choisie, règles de l'étape 3 ter) ; les éléments déjà végétaux restent tels quels.
+2. Totaux du repas, mêmes 5 catégories, mêmes scores, verdict et « Ce qui reste à couvrir », avec la même règle d'honnêteté que partout.
+3. Même panneau d'ajustement que les plats, au niveau du repas : égaliser les protéines ou les calories du repas, combler un manque, réglages avancés de la V2.
+4. Le repas se partage par l'URL. Le site démarre sur un repas vide avec une recherche, plus au plus 2 exemples composés d'éléments du catalogue et marqués « exemple ». Aucune recette nouvelle écrite par l'IA.
+
+## Étape 8 ter — V2f : une journée, avec les objectifs choisis par le visiteur (décision de Matt, 20 h 54)
+
+1. Nouvelle page `/journee` : 3 à 5 repas (petit-déjeuner, déjeuner, collation, dîner…) composés comme sur `/repas`. Totaux de la journée animale et végétale, mêmes 5 catégories.
+2. **Objectifs entrés par le visiteur lui-même** : calories par jour, protéines par jour, et, s'il le souhaite, par repas. Le moteur ajuste la journée végétale pour les tenir (contraintes de la V2) et dit ce qui est impossible.
+   - **Aucun calculateur, aucune recommandation chiffrée personnalisée, aucun IMC, aucun objectif de perte ou de prise de poids** : le site ne propose pas de cible, il applique celle que le visiteur tape.
+   - Une mention : « Ces objectifs sont les vôtres ; pour des besoins personnels, parlez-en à un professionnel de santé. »
+3. **Aliments à éviter** : le visiteur peut exclure des aliments ou des familles (soja, blé, fruits à coque, sésame…) des alternatives proposées et des ajouts. Mention visible à côté : « Préférences seulement : le site ne garantit pas l'absence d'allergènes ; vérifiez toujours les étiquettes. » Jamais de mention « sans allergène ».
+4. **Aucune donnée personnelle enregistrée** : tout reste dans l'URL de la page, rien n'est envoyé à Supabase.
+5. Ne fais pas : objectifs de poids, calcul d'IMC, plans garantis sans allergène, similarité de goût, acides aminés (décision de Matt : idées écartées pour l'instant).
+
 ## Étape 9 — V2d : relecture de la V2
 
-1. e2e : les réglages avancés et le changement d'alternative, sur téléphone et sur ordinateur, avec l'URL qui garde l'état.
+1. e2e : les réglages avancés, le changement d'alternative, `/repas` et `/journee` (objectifs, aliments à éviter), sur téléphone et sur ordinateur, avec l'URL qui garde l'état.
 2. 3 visiteurs simulés (omnivore sceptique, personne de 70 ans, étudiant pressé), avec des tâches et des questions à réponse connue sur le panneau d'ajustement. Corrige ce qui n'est pas compris.
 3. Un sous-agent diététicienne relit 10 scénarios d'ajustement : quantités plausibles, ajouts sensés, aucune dose, mentions de prudence.
 4. Audit : recalcule indépendamment 10 scénarios et compare.

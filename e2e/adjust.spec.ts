@@ -28,6 +28,19 @@ for (const width of [375, 1440]) {
       await expect.poll(() => protein.innerText()).toBe(before);
     });
 
+    test("an active adjustment shows the equivalence card and both scores (points 4 and 4 bis)", async ({ page }) => {
+      await page.goto("/compare/boeuf-bourguignon", { waitUntil: "load" });
+      await expect(page.getByRole("region", { name: "Carte d’équivalence" })).toHaveCount(0);
+      await page.goto("/compare/boeuf-bourguignon?ajuste=tout", { waitUntil: "load" });
+      const card = page.getByRole("region", { name: "Carte d’équivalence" });
+      await expect(card).toBeVisible();
+      await expect(card.getByText(/^Équivalent (sur|en tout point)/)).toBeVisible();
+      await expect(card.getByRole("button", { name: "Copier la recette" })).toBeVisible();
+      await expect(page.getByText(/^Recette de base : \d sur 5 → ta version ajustée : \d sur 5$/).filter({ visible: true }).first()).toBeVisible();
+      await page.goto("/aliment/36018?ajuste=proteines", { waitUntil: "load" });
+      await expect(page.getByRole("region", { name: "Carte d’équivalence" }).getByText(/^100\sg de .+ ≈ /)).toBeVisible();
+    });
+
     test("?vue=complete becomes ?ajuste=tout, and other tabs show one line", async ({ page }) => {
       await page.goto("/compare/boeuf-bourguignon?vue=complete&onglet=environnement", { waitUntil: "networkidle" });
       await expect(page).toHaveURL(/ajuste=tout/);

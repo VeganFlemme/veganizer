@@ -5,6 +5,7 @@ import type { ReactNode } from "react";
 import complementsFile from "@/data/complements.json";
 import { PageHero, Prose } from "@/components/ui/PageHero";
 import { ScoreMethod } from "@/components/methodology/ScoreMethod";
+import { RecipesCrosscheck } from "@/components/methodology/RecipesCrosscheck";
 import { getMethodologyStats, type MethodologyStats } from "@/lib/methodology/data";
 
 export const metadata: Metadata = {
@@ -92,6 +93,7 @@ const SECTIONS = [
   ["principe", "Le principe : comparer à fonction égale"],
   ["paires", "Les plats et leur version végétale"],
   ["recettes-types", "Recettes types et recettes officielles"],
+  ["controle-recettes", "Nos recettes comparées aux plats moyens d’Agribalyse"],
   ["version-complete", "Une version végétale, ajustable"],
   ["choix-proteine", "La protéine au choix"],
   ["ta-recette", "« Analyse ta recette »"],
@@ -219,12 +221,14 @@ function Negatives({ stats }: { stats: MethodologyStats }) {
         ))}
       </ul>
       <p>
-        Une valeur négative signifie que la méthode de calcul attribue au produit un effet net
-        favorable sur cet indicateur. Pour les émissions liées au <em>changement d’affectation des
-        sols</em>, il s’agit d’un stockage de carbone dans les sols ou la végétation plutôt que d’un
-        déstockage. L’<em>utilisation des sols</em>, elle, n’est pas une surface : c’est un indice de
-        qualité des sols (méthode européenne EF 3.1), qui peut être négatif lorsque la méthode estime
-        que le produit améliore cet indice.
+        Une valeur négative vient de la méthode de calcul, pas d’une mesure. L’<em>utilisation des
+        sols</em> n’est pas une surface : c’est un indice de qualité des sols (méthode européenne EF
+        3.1), dont certains flux d’occupation ou de transformation des sols ont un facteur négatif ;
+        cet indicateur est classé peu robuste (niveau III) par le Centre commun de recherche de la
+        Commission européenne. Pour les émissions liées au <em>changement d’affectation des sols</em>,
+        Agribalyse ne documente pas la cause d’une valeur négative ; la méthode européenne PEF exclut
+        des résultats le stockage de carbone dans les sols agricoles, et Agribalyse cite le carbone des
+        sols parmi les limites à améliorer.
       </p>
       <p>
         Nous affichons ces valeurs <strong>telles que publiées</strong>, sans les ramener à zéro : les
@@ -235,6 +239,21 @@ function Negatives({ stats }: { stats: MethodologyStats }) {
           documentation officielle d’Agribalyse
         </a>
         .
+      </p>
+      <p>
+        <strong>Lire les indicateurs d’Agribalyse.</strong> L’indicateur <em>Eau</em> n’est pas un volume d’eau consommé : c’est un risque de
+        privation d’eau pondéré par la rareté locale (méthode AWARE, en m³ équivalent monde). Les indicateurs de <em>toxicité</em> mesurent une
+        exposition via l’environnement (air, eau, sol), pas les résidus présents dans l’aliment mangé ; Agribalyse les dit encore peu robustes.
+        Nous comptons les 16 indicateurs à égalité, ce qui n’est pas la méthode européenne : le score unique EF les pondère (le climat pèse
+        environ 21 %, la toxicité humaine non cancérogène environ 2 %) en tenant compte de leur robustesse ; nous l’affichons sans le compter.
+        Enfin, l’ADEME déconseille d’utiliser seuls les indicateurs Agribalyse pour informer le consommateur et rappelle qu’une comparaison de
+        produits demande une revue critique externe : notre méthode n’en a pas eu.
+      </p>
+      <p className="text-sm">
+        Sources : Zampori et Pant, « Suggestions for updating the Product Environmental Footprint (PEF) method », JRC, 2019, tableau 2 et
+        § 4.4.10.3 ; Sala, Cerutti et Pant, « Development of a weighting approach for the Environmental Footprint », JRC, 2018, p. 5 ;
+        doc.agribalyse.fr, pages « Méthodologie ACV », « Périmètre des données » et « Information des consommateurs » (consultées le 1er
+        novembre 2026).
       </p>
     </Section>
   );
@@ -271,7 +290,7 @@ function MissingData({ stats }: { stats: MethodologyStats }) {
         <li><strong>Prix</strong> de la plupart des ingrédients cuits (pâtes, riz, légumineuses, pommes de terre, légumes cuits) : il faudrait un rendement de cuisson officiel et ouvert ; et de nombreux produits n’ont pas assez de relevés publics. Le prix d’un plat n’est affiché que si 95 % de sa masse est couverte.</li>
         <li><strong>CALNUT</strong> (ANSES), qui comblerait des nutriments manquants de Ciqual : site ciqual.anses.fr en maintenance.</li>
         <li><strong>Minutes de vie en bonne santé (HENI)</strong> : données non publiées sous licence ouverte.</li>
-        <li><strong>Article complet EAT-Lancet 2025</strong> (The Lancet) : inaccessible depuis notre environnement ; le résumé d’EAT Forum sert de source provisoire.</li>
+        <li><strong>Article complet EAT-Lancet 2025</strong> (The Lancet) : pas encore consulté en entier ; le résumé d’EAT Forum sert de source provisoire.</li>
       </ul>
     </Section>
 
@@ -353,6 +372,11 @@ export default async function MethodologiePage() {
           Veganizer compare un plat contenant des produits animaux et sa version végétale sur cinq catégories : nutrition, santé, environnement, protection
           animale, économie. Chaque chiffre vient d’une source publique citée. Quand une donnée manque, nous l’écrivons.
         </p>
+        <p className="m-0">
+          Relu par des vérifications automatisées et des agents IA indépendants ; pas encore relu par un professionnel de santé. Audit du 1er novembre
+          2026 : 50 valeurs tirées au hasard (25 nutriments Ciqual, 25 impacts Agribalyse) et 5 plats recalculés à partir des fichiers officiels, 80
+          contrôles identiques sur 80 (<a href="https://github.com/VeganFlemme/veganizer/blob/main/pipeline/audit.py" rel="noopener noreferrer">pipeline/audit.py</a>).
+        </p>
       </PageHero>
       <Prose
         toc={
@@ -409,7 +433,8 @@ export default async function MethodologiePage() {
           disponible que dans les logiciels d’ACV ».
         </p>
         <p>
-          La version précédente, <strong>Agribalyse 3.0</strong>, est en revanche rediffusée en entier sur data.gouv.fr sous Licence Ouverte. Elle
+          La version précédente, <strong>Agribalyse 3.0</strong>, est en revanche rediffusée en entier par un tiers sur data.gouv.fr (export openLCA, Licence Ouverte) ; nous n’en utilisons que les recettes des
+          plats, pas les données d’arrière-plan (sous licence ecoinvent). Elle
           donne la masse de chaque ingrédient de chaque plat composé. Nous n’en reprenons une recette que si sa liste d’ingrédients est la même que
           celle du détail par ingrédient de la version 3.2, si au moins 95 % de sa masse correspond à un aliment Ciqual, si le plat n’est pas
           « approché par une autre recette » (annexe 10 du rapport : la carbonara y est modélisée avec la recette des lasagnes à la bolognaise),
@@ -420,15 +445,21 @@ export default async function MethodologiePage() {
           <strong>Pour ces plats, l’impact publié est gardé.</strong> Le détail par ingrédient d’Agribalyse 3.2 donne la part de chaque ingrédient
           dans l’impact du plat, plus une ligne « Autres étapes » (transformation, emballage, transport, cuisson). L’impact du plat animal est
           l’impact publié. Celui de la version végétale est l’impact publié, moins les parts des ingrédients animaux remplacés, plus la masse de
-          chaque remplaçant multipliée par son propre impact par kilo. Les « Autres étapes » restent ainsi identiques des deux côtés. Vérifié sur
+          chaque remplaçant multipliée par son propre impact par kilo. Les « Autres étapes » restent ainsi identiques des deux côtés. Limite connue :
+          l’impact par kilo d’un remplaçant inclut déjà son propre emballage, sa distribution et sa préparation, qui s’ajoutent aux « Autres
+          étapes » du plat ; la version végétale est donc un peu surestimée (biais défavorable au végétal, à corriger avec le détail par étape). Vérifié sur
           trois plats : pour 100 g, le hachis parmentier affiche 1,20 kg CO₂e, le croissant au jambon 0,46 et les endives au jambon 0,39, soit les
-          valeurs publiées. Le détail par ingrédient ne couvre pas les trois sous-parties du changement climatique (émissions fossiles,
-          biogéniques, liées au changement d’affectation des sols) : elles sont affichées « donnée manquante » pour ces plats, sans être comptées.
+          valeurs publiées. Le fichier du détail par ingrédient que nous importons ne contient pas les trois sous-parties du changement climatique
+          (émissions fossiles, biogéniques, liées au changement d’affectation des sols ; le tableur complet de l’ADEME les contient) : elles sont
+          affichées « donnée manquante » pour ces plats, sans être comptées.
         </p>
         <p>
-          <strong>Pour nos recettes types</strong>, qui n’ont pas d’impact publié, l’impact est la somme des ingrédients. Les étapes propres au plat
-          (cuisson, emballage, transport du plat) ne sont pas comptées : sur les plats où l’on peut comparer, cette somme donne en médiane 81 % de
-          l’impact publié. Une même part manquant des deux côtés, <strong>l’écart en % entre les deux plats est un peu surestimé</strong>.
+          <strong>Pour nos recettes types</strong>, qui n’ont pas d’impact publié, l’impact est la somme des ingrédients. Chaque ingrédient est compté
+          avec son impact « chez le consommateur » : il inclut déjà son agriculture, sa transformation, son emballage, son transport jusqu’au magasin,
+          la distribution et, pour un aliment cuit, sa cuisson. Seul le transport du magasin au domicile n’est pas compté (comme dans Agribalyse). La
+          part de l’emballage dans le changement climatique varie beaucoup d’un aliment à l’autre (environ 1 % pour le bœuf, 48 % pour le tofu nature,
+          d’après le détail par étape d’Agribalyse 3.2) : l’écart affiché entre
+          deux recettes n’est donc pas le même que celui de deux plats industriels, et nous ne savons pas dire s’il est plus grand ou plus petit.
         </p>
         <p className="text-sm">
           Sources : ADEME, AGRIBALYSE 3.2, rapport méthodologique « Alimentation » et ses annexes, 
@@ -436,6 +467,10 @@ export default async function MethodologiePage() {
           <a href="https://www.data.gouv.fr/fr/datasets/agribalyse/" rel="noopener noreferrer">rediffusion sur data.gouv.fr</a> (Licence
           Ouverte 2.0), consultées le 1er novembre 2026.
         </p>
+      </Section>
+
+      <Section id="controle-recettes" title="Nos recettes comparées aux plats moyens d’Agribalyse">
+        <RecipesCrosscheck />
       </Section>
 
       <Section id="version-complete" title="Une version végétale, ajustable">
@@ -454,8 +489,10 @@ export default async function MethodologiePage() {
           protéine ; combler un manque, un par un ou tous (« Tout combler »). Un manque est comblé par les plus petites quantités d’aliments d’une liste
           blanche relue (aliments courants d’abord, aliments enrichis seulement s’il le faut), sans jamais dépasser une limite de sécurité de l’ANSES
           (calcium, fer, zinc, iode, vitamine D, par jour, appliquées au total de la portion). Tous les onglets, le climat, les animaux, le prix et le
-          simulateur sont recalculés aussitôt. <strong>Équité du score</strong> : un indicateur comblé par un ajustement est marqué « comblé » et n’est plus
-          compté dans le score Nutrition ; les autres sont comptés normalement. La vitamine B12, l’EPA + DHA et la vitamine D, qu’aucun aliment de la liste
+          simulateur sont recalculés aussitôt. <strong>Le score suit l’ajustement</strong> : il compare toujours le plat animal, qui ne change pas, et la version
+          végétale telle qu’elle est affichée ; un indicateur comblé est marqué « comblé » et compté. Pour rester transparent, le verdict affiche les deux
+          scores (« Recette de base : 3 sur 5 → ta version ajustée : 4 sur 5 ») et une carte sous le titre donne la recette végétale ajustée, en grammes, ce
+          sur quoi elle est équivalente et ce qui reste à couvrir. Les scores partagés et la description de la page restent ceux de la recette de base. La vitamine B12, l’EPA + DHA et la vitamine D, qu’aucun aliment de la liste
           ne comble, ne se comblent pas avec des aliments : complément ou aliment enrichi, sans dose, avec un professionnel de santé. L’ajustement est gardé
           dans l’adresse de la page (<code>?ajuste=proteines,zn_mg</code>, <code>?ajuste=calories</code> ou <code>?ajuste=tout</code>), pour le partage.
         </p>

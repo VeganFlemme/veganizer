@@ -49,6 +49,8 @@ export interface VerdictView {
   total: number;
   categories: CategoryScoreView[];
   sentence: string;
+  /** Short notes under the verdict (« Protection animale gagnée d’office… »), in small type. */
+  notes: string[];
 }
 
 export interface PairScores {
@@ -118,6 +120,11 @@ export function verdictSentence(all: CategoryScoreView[]): string {
   const built = all.filter((c) => c.constructed).map((c) => c.label);
   if (built.length) parts.push(`${list(built)} : écarts comblés par construction, non comptée.`);
   return parts.join(" ");
+}
+
+/** Notes under the verdict, next to the score (step 4 reviews). */
+export function verdictNotes(all: CategoryScoreView[]): string[] {
+  return all.some((c) => c.vegetalCannotBeWorse) ? ["Protection animale gagnée d’office : la version végétale ne contient aucun ingrédient animal identifié."] : [];
 }
 
 function values(category: RuleCategory, input: ScoreInput, basis: Basis): Record<string, IndicatorValues | undefined> {
@@ -209,6 +216,7 @@ export function scorePair(input: ScoreInput, exclude: string[] = [], constructed
       total: counted.length,
       categories,
       sentence: verdictSentence(categories),
+      notes: verdictNotes(categories),
     },
     nutritionByBasis: {
       perServing: categories[0],

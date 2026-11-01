@@ -33,7 +33,9 @@ export function AutoPairView({
   if (!built) return <p className="px-5">Comparaison indisponible.</p>;
   const names = new Map(input.raw.foods.map((f) => [f.code, f.name_fr]));
   const unmatched = built.unmatched.filter((c) => !c.startsWith(NO_CODE_PREFIX)).map((c) => names.get(c) ?? c);
-  const sentence = wins && wins.total > 0 ? `Sur le climat, la version végétale fait mieux avec ${wins.wins} protéine${wins.wins > 1 ? "s" : ""} sur ${wins.total}.` : undefined;
+  const sentence = wins && wins.total > 0 ? wins.wins === wins.total
+        ? `Sur le climat, la version végétale fait mieux quelle que soit la protéine végétale choisie (${wins.total} au choix dans la liste).`
+        : `Sur le climat, la version végétale fait mieux avec ${wins.wins} des ${wins.total} protéines végétales de la liste.` : undefined;
   return (
     <PairView
       model={built.model}

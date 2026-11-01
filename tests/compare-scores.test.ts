@@ -58,11 +58,12 @@ describe("scorePair", () => {
     expect(cat("environnement").provisional).toBe(true);
   });
 
-  it("never counts a missing price, and counts the climate cost", () => {
+  it("never counts a missing price, and never the climate cost (the CO2e already counted in Environnement, step 4 reviews)", () => {
     const e = cat("economie");
     expect(e.indicators.find((i) => i.id === "price_eur")?.outcome).toBe("manquant");
-    expect(e.winner).toBe("vegetal");
-    expect(e.compared).toBe(1);
+    expect(e.indicators.map((i) => i.id)).not.toContain("climate_cost_eur");
+    expect(e.winner).toBe("insuffisant");
+    expect(e.compared).toBe(0);
   });
 
   it("does not count a price that covers less than 95 % of the mass", () => {
@@ -77,8 +78,10 @@ describe("scorePair", () => {
   });
 
   it("counts the categories won (verdict 'X sur 5')", () => {
-    expect([s.verdict.vegetalWins, s.verdict.animalWins, s.verdict.total]).toEqual([4, 0, 5]);
+    // economy: no price -> insufficient data (the climate cost is no longer counted)
+    expect([s.verdict.vegetalWins, s.verdict.animalWins, s.verdict.total]).toEqual([3, 0, 5]);
     expect(s.verdict.sentence).toContain("Égalité en nutrition");
+    expect(s.verdict.sentence).toContain("Données insuffisantes en économie");
   });
 
   it("counts a verdict on the ingredients that differ even when the displayed coverage is low", () => {
@@ -110,6 +113,9 @@ describe("animal welfare when the plant dish has no identified animal ingredient
     expect(a.sentence).not.toMatch(/vegan|végétalien/i);
     expect(a.indicators.find((i) => i.id === "life_days_farmed")?.outcome).not.toBe("vegetal");
     expect(a.compared).toBe(scorePair(input()).verdict.categories.find((c) => c.id === "animaux")!.compared);
+  });
+  it("says it in the verdict sentence, next to the score (step 4 reviews)", () => {
+    expect(scorePair(input({ vegetalAnimalFree: true })).verdict.notes.join(" ")).toContain("Protection animale gagnée d’office : la version végétale ne contient aucun ingrédient animal identifié.");
   });
   it("is not applied otherwise", () => {
     const a = scorePair(input()).verdict.categories.find((c) => c.id === "animaux")!;

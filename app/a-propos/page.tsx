@@ -29,6 +29,10 @@ export default function AboutPage() {
             <li>Les valeurs nutritionnelles viennent de la table Ciqual (ANSES), les impacts environnementaux d’Agribalyse (ADEME, INRAE).</li>
             <li>Quand une donnée manque, nous l’écrivons : jamais de zéro par défaut.</li>
             <li>Le code est ouvert et chaque chiffre est relié à sa source.</li>
+            <li>
+              Relu par des vérifications automatisées et des agents IA indépendants ; pas encore relu par un professionnel de santé. Le 1er novembre 2026, 80
+              valeurs tirées au hasard (nutriments, impacts, plats recalculés) étaient identiques aux fichiers officiels.
+            </li>
           </ul>
           <p className="m-0">
             Détails : <Link href="/methodologie">méthodologie</Link> et <Link href="/sources">sources</Link>.

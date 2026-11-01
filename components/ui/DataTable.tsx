@@ -72,7 +72,7 @@ export function DataTable({ caption, unitLabel, rows, footer, rich = false }: { 
                   <span className="sr-only">Barres face-à-face</span>
                 </th>
                 <th scope="col" className={`${x} py-[10px] pl-3 text-left font-bold`}>
-                  Fiabilité
+                  <abbr title="Masse couverte par les données (plat animal · version végétale) ; DQR = qualité des données Agribalyse, de 1 (très bonne) à 5 (très mauvaise), prudence au-delà de 3">Fiabilité</abbr>
                 </th>
                 {showSource && <th scope="col" className={`${x} py-[10px] pl-3 text-left font-bold`}>Source</th>}
               </>

@@ -25,9 +25,9 @@ import { VerdictPanel } from "@/components/ui/VerdictPanel";
 import { animalBetterTitle, CLIMATE_MAIN, COVERAGE_WARNING } from "@/lib/compare/config";
 import { alignRecipes } from "@/lib/compare/align";
 import { NUTRIENT_REASON } from "@/lib/compare/views";
-import { additionLine, adjustSummary, boostLine, boostReason, co2Summary, ingredientsText, openLine, scaleLine } from "@/lib/compare/views";
+import { additionLine, adjustSummary, boostLine, boostReason, co2Summary, equivalence, ingredientsText, openLine, scaleLine } from "@/lib/compare/views";
 import type { AdjustRequest } from "@/lib/scoring";
-import type { CategoryId, CategoryScoreView } from "@/lib/compare/scores";
+import type { CategoryId, CategoryScoreView, VerdictView } from "@/lib/compare/scores";
 import type { CompletedVariantView, CriterionRow, DishView, IngredientPrice, PairPageModel, PriceSide, SideValue, VariantView } from "@/lib/compare/view";
 import type { Basis } from "@/lib/scoring";
 import { formatEur, formatForUnit, formatInt, formatPerServing, formatPercent, formatValue, MISSING, NBSP, signedGap } from "@/lib/format";
@@ -115,7 +115,7 @@ function Cell({ v, unit, range = true, servings = false, compact = false }: { v:
 function rowNote(r: CriterionRow): ReactNode {
   const notes: string[] = [];
   // Step 3 quinquies: reached by an adjustment of the plant version, not scored.
-  if (r.filled) notes.push("Comblé par l’ajustement, non compté dans le score");
+  if (r.filled) notes.push("Comblé par l’ajustement");
   const known = (s: SideValue | null) => !!s && (s.value != null || s.low != null);
   const partial = (s: SideValue | null) => known(s) && s!.coverage < COVERAGE_WARNING;
   const coverage = `${r.animal ? pct(r.animal.coverage) : MISSING} et ${r.vegetal ? pct(r.vegetal.coverage) : MISSING} de la masse`;
@@ -318,7 +318,7 @@ function IngredientPrices({ title, items, series }: { title: string; items: Ingr
 }
 
 // ---------------------------------------------------------------------------
-function Overview({ model, v, open, base, completed }: { model: PairPageModel; v: VariantView; open: (t: TabIdT) => void; base: string; completed?: CompletedVariantView }) {
+function Overview({ model, v, open, base, completed, baseVerdict }: { model: PairPageModel; v: VariantView; open: (t: TabIdT) => void; base: string; completed?: CompletedVariantView; baseVerdict?: VerdictView }) {
   const cats = Object.fromEntries(v.scores.verdict.categories.map((c) => [c.id, c])) as Record<CategoryId, CategoryScoreView>;
   const rows = v.rows.perServing;
   const protein = find(rows, "protein_g");
@@ -360,7 +360,7 @@ function Overview({ model, v, open, base, completed }: { model: PairPageModel; v
 
   return (
     <div className="flex flex-col gap-3">
-      <VerdictPanel verdict={v.scores.verdict} className="md:hidden" />
+      <VerdictPanel verdict={v.scores.verdict} base={baseVerdict} className="md:hidden" />
       <p className="m-0 mt-[6px] text-[15px] leading-normal text-ink-2 xl:hidden">Touche une catégorie pour voir toutes ses données.</p>
       <div className="grid gap-3 md:grid-cols-[repeat(auto-fit,minmax(340px,1fr))] md:gap-[18px] xl:grid-cols-3 xl:gap-4">
         {card(
@@ -496,7 +496,7 @@ function ThreeBasisTable({ v, ids, caption }: { v: VariantView; ids: string[]; c
             </th>
           ))}
           <th scope="col" className="hidden pb-1 pl-3 text-left font-bold min-[1440px]:table-cell" rowSpan={2}>
-            Fiabilité
+            <abbr title="Masse couverte par les données (plat animal · version végétale) ; DQR = qualité des données Agribalyse, de 1 (très bonne) à 5 (très mauvaise), prudence au-delà de 3">Fiabilité</abbr>
           </th>
         </tr>
         <tr className="border-b border-line text-[12px] font-bold text-ink-2">
@@ -536,7 +536,7 @@ function ThreeBasisTable({ v, ids, caption }: { v: VariantView; ids: string[]; c
                   <Fragment key={BASIS_ORDER[i]}>
                     <td className="num border-l border-line-soft py-[6px] pl-3 text-right">
                       {r ? (
-                        <WinnerValue side="animal" winner={r.direction !== "none" ? r.winner : null}>
+                        <WinnerValue side="animal" winner={r.direction !== "none" && BASIS_ORDER[i] === "perServing" ? r.winner : null}>
                           <Cell v={r.animal} unit={r.unit} compact />
                         </WinnerValue>
                       ) : (
@@ -545,7 +545,7 @@ function ThreeBasisTable({ v, ids, caption }: { v: VariantView; ids: string[]; c
                     </td>
                     <td className="num py-[6px] pl-2 text-right">
                       {r ? (
-                        <WinnerValue side="vegetal" winner={r.direction !== "none" ? r.winner : null}>
+                        <WinnerValue side="vegetal" winner={r.direction !== "none" && BASIS_ORDER[i] === "perServing" ? r.winner : null}>
                           <Cell v={r.vegetal} unit={r.unit} compact />
                         </WinnerValue>
                       ) : (
@@ -575,7 +575,7 @@ function NutritionTab({ v, basis, setBasis, servingLabel }: { v: VariantView; ba
   const unitLabel = basis === "perServing" ? servingLabel : unit.long;
   const footer = (
     <>
-      Ciqual 2025 (ANSES). En gras : indicateurs comptés dans le score. Une valeur publiée « &lt; x » par Ciqual est comptée comme une fourchette de 0 à x ;
+      Ciqual 2025 (ANSES). Nom en gras : indicateur compté dans le score ; « ✓ » : meilleure valeur par portion (verdict établi), la seule comptée. Une valeur publiée « &lt; x » par Ciqual est comptée comme une fourchette de 0 à x ;
       une valeur absente ou « traces » n’est jamais remplacée par 0. Un point n’est donné que si les fourchettes des deux plats ne se chevauchent pas.
     </>
   );
@@ -756,7 +756,7 @@ function EnvironmentTab({ v }: { v: VariantView }) {
           footer={
             <>
               Agribalyse 3.2 (ADEME). En gras : les 16 indicateurs comptés dans le score ; le score unique EF (qui les agrège) et les sous-parties du
-              changement climatique sont affichés sans être comptés. Qualité des données (DQR, de 1 à 5, plus bas = plus fiable) pour le CO₂e :{" "}
+              changement climatique sont affichés sans être comptés. Qualité des données (DQR, de 1 = très bonne à 5 = très mauvaise ; la Commission européenne recommande la prudence au-delà de 3) pour le CO₂e :{" "}
               {formatValue(co2?.animal?.dqr)} (plat animal) et {formatValue(co2?.vegetal?.dqr)} (végétal). Les valeurs négatives publiées par Agribalyse sont
               affichées telles quelles : <Link href="/methodologie#valeurs-negatives">pourquoi</Link>.
             </>
@@ -888,7 +888,7 @@ function EconomyTab({ v, animalName }: { v: VariantView; animalName: string }) {
 /**
  * Step 3 quinquies: « Ajuster la version végétale » (Nutrition tab). One plant version, adjusted by
  * the visitor: equalise protein or calories, set the main protein, close a gap. Everything is
- * recomputed in the browser; the animal dish never changes; filled indicators are not scored.
+ * recomputed in the browser; the animal dish never changes; the score follows the version shown.
  */
 function AdjustPanel({
   c,
@@ -926,8 +926,8 @@ function AdjustPanel({
   return (
     <Panel title="Ajuster la version végétale" className="mt-3">
       <p className="m-0 text-[14px] leading-normal text-ink-2">
-        Le plat animal ne change pas. Vous ajustez la version végétale : tous les chiffres se recalculent. Un indicateur comblé par un ajustement n’est plus compté
-        dans le score Nutrition. C’est un exemple, pas un conseil. <Link href="/methodologie#version-complete">Pourquoi ?</Link>
+        Le plat animal ne change pas. Vous ajustez la version végétale : tous les chiffres et le score se recalculent ; le verdict garde aussi le score de la
+        recette de base. C’est un exemple, pas un conseil. <Link href="/methodologie#version-complete">Pourquoi ?</Link>
       </p>
       <div role="group" aria-label="Égaliser avec le plat animal" className="flex flex-wrap items-center gap-[6px]">
         <span className="mr-1 text-[14px] font-semibold">Égaliser avec le plat animal :</span>
@@ -1029,18 +1029,18 @@ function CompletedRecipe({ c, animal }: { c: CompletedVariantView; animal: DishV
   const ing = (i: DishView["ingredients"][number] | null, servings: number, mark: string | null) =>
     i ? (
       // Grid: a long name wraps under itself, not under the grams (designer review, 2nd pass).
-      <span className="grid grid-cols-[64px_64px_minmax(0,1fr)] items-baseline">
+      <span className="grid grid-cols-[56px_minmax(0,1fr)] items-baseline md:grid-cols-[64px_64px_minmax(0,1fr)]">
         <span className="num pr-2 text-right whitespace-nowrap">
           {formatInt(i.grams)}
           {NBSP}g
         </span>
-        <span className="num pr-3 text-right text-[12px] whitespace-nowrap text-ink-2">
+        <span className="num hidden pr-3 text-right text-[12px] whitespace-nowrap text-ink-2 md:block">
           {formatInt(i.grams / servings)}
           {NBSP}g/port.
         </span>
         <span>
           {i.label}
-          {mark && <span className="ml-2 text-[12px] font-semibold text-action">{mark}</span>}
+          {mark && <span className="block text-[12px] font-semibold text-action md:ml-2 md:inline">{mark}</span>}
         </span>
       </span>
     ) : (
@@ -1048,8 +1048,8 @@ function CompletedRecipe({ c, animal }: { c: CompletedVariantView; animal: DishV
     );
   return (
     <div className="flex flex-col gap-3">
-      <table className="w-full border-collapse text-[14px]">
-        <caption className="sr-only">Recette végétale complétée, à côté du plat animal</caption>
+      <table className="w-full table-fixed border-collapse text-[14px]">
+        <caption className="sr-only">Recette végétale ajustée, à côté du plat animal</caption>
         <thead>
           <tr>
             {[
@@ -1059,7 +1059,7 @@ function CompletedRecipe({ c, animal }: { c: CompletedVariantView; animal: DishV
               <th key={series as string} scope="col" className="w-1/2 pb-2 text-left align-bottom">
                 <span className="flex items-center gap-2 text-[15px] font-extrabold">
                   <Dot series={series as "animal" | "plant"} /> {(d as DishView).name}
-                  {series === "plant" && " (complétée)"}
+                  {series === "plant" && " (ajustée)"}
                 </span>
                 <span className="block text-[13px] font-normal text-ink-2">
                   Pour {(d as DishView).servings} portion{(d as DishView).servings > 1 ? "s" : ""}, environ {formatInt((d as DishView).gramsPerServing)}
@@ -1072,8 +1072,8 @@ function CompletedRecipe({ c, animal }: { c: CompletedVariantView; animal: DishV
         <tbody>
           {lines.map((l, k) => (
             <tr key={k} className={`border-t border-line-soft align-top ${l.same ? "" : "bg-win-plant/50"}`}>
-              <td className="py-[6px] pr-3">{ing(l.animal, animal.servings, null)}</td>
-              <td className="py-[6px] pr-3">{ing(l.vegetal, dish.servings, l.vegetal ? why(l.vegetal.code) : null)}</td>
+              <td className="py-[6px] pr-3 [overflow-wrap:anywhere]">{ing(l.animal, animal.servings, null)}</td>
+              <td className="py-[6px] pr-3 [overflow-wrap:anywhere]">{ing(l.vegetal, dish.servings, l.vegetal ? why(l.vegetal.code) : null)}</td>
             </tr>
           ))}
         </tbody>
@@ -1088,6 +1088,81 @@ function CompletedRecipe({ c, animal }: { c: CompletedVariantView; animal: DishV
         <span className="text-[13px] text-ink-3">Pas d’étapes de préparation : nous n’avons pas de source pour les écrire.</span>
       </div>
     </div>
+  );
+}
+
+/**
+ * Step 3 quinquies, point 4 bis (decision of Matt, 19 h 50): under the title, as soon as an
+ * adjustment is active, the balanced plant recipe facing the animal dish. An example, not advice.
+ */
+function EquivalenceCard({ c, animal, onEdit }: { c: CompletedVariantView; animal: DishView; onEdit: () => void }) {
+  const dish = c.view.dish;
+  const e = equivalence({
+    animal: { name: animal.name, servings: animal.servings, gramsPerServing: animal.gramsPerServing },
+    plant: dish.ingredients.map((i) => ({ label: i.label, grams: i.grams })),
+    servings: dish.servings,
+    filled: c.filled ?? [],
+    scale: c.scale ?? null,
+    indicators: c.view.scores.verdict.categories.find((x) => x.id === "nutrition")?.indicators ?? [],
+    open: c.open,
+    names: Object.fromEntries(c.view.rows.perServing.map((r) => [r.id, r.name])),
+  });
+  const [copied, setCopied] = useState(false);
+  const copy = async () => {
+    try {
+      await navigator.clipboard.writeText(e.text);
+      setCopied(true);
+    } catch {
+      setCopied(false);
+    }
+  };
+  return (
+    <section aria-label="Carte d’équivalence" className="mx-auto mt-4 w-full max-w-[1440px] px-5 md:px-8 min-[1440px]:px-12">
+      <div className="flex flex-col gap-2 rounded-panel border-2 border-plant bg-surface p-4 md:p-5">
+        <h2 className="m-0 flex items-center gap-2 text-[17px] font-extrabold md:text-[19px]">
+          <Dot series="plant" /> Version végétale équilibrée
+        </h2>
+        {e.headline ? (
+          <p className="m-0 text-[16px] font-bold leading-snug md:text-[18px]">{e.headline}</p>
+        ) : (
+          <>
+            <p className="m-0 text-[14px] text-ink-2">
+              Face à : {animal.name}, {animal.servings} portions. Pour la recette (par portion) :
+            </p>
+            <ul className="m-0 grid list-none gap-x-6 gap-y-1 p-0 text-[15px] md:grid-cols-2 xl:grid-cols-3">
+              {e.items.map((i) => (
+                <li key={i.label}>
+                  <span className="num font-bold">
+                    {formatInt(i.grams)}
+                    {NBSP}g
+                  </span>{" "}
+                  <span className="num text-ink-2">
+                    ({formatInt(i.gramsPerServing)}
+                    {NBSP}g)
+                  </span>{" "}
+                  {i.label}
+                </li>
+              ))}
+            </ul>
+          </>
+        )}
+        <p className="m-0 text-[15px] font-semibold">{e.on}.</p>
+        {e.notYet.length > 0 && <p className="m-0 text-[14px]">Pas encore à égalité : {e.notYet.join(", ")}.</p>}
+        {e.outside && <p className="m-0 text-[14px]">{e.outside}</p>}
+        <div className="flex flex-wrap items-center gap-3">
+          <button type="button" onClick={copy} className="min-h-11 cursor-pointer rounded-btn border border-action bg-surface px-4 text-[14px] font-bold text-action">
+            Copier la recette
+          </button>
+          <button type="button" onClick={onEdit} className="min-h-11 cursor-pointer text-[14px] font-bold text-action underline">
+            Modifier l’ajustement
+          </button>
+          <span role="status" className="text-[13px] text-ink-2">
+            {copied ? "Recette copiée." : ""}
+          </span>
+          <span className="text-[13px] text-ink-3">Un exemple calculé, pas un conseil : demandez l’avis d’un professionnel de santé.</span>
+        </div>
+      </div>
+    </section>
   );
 }
 
@@ -1168,6 +1243,14 @@ export function PairView({
               <span>{badge}</span>
             </span>
             <DishTitle animal={model.animal.name} vegetal={v.dish.name} as={headingAs} />
+            {/* Phones: the verdict in the first screen (step 4, comprehension test Q5). */}
+            <p className="m-0 text-[16px] leading-snug text-on-dark-1 md:hidden">
+              <strong className="text-[20px] font-extrabold text-white">
+                Verdict : {v.scores.verdict.vegetalWins} sur {v.scores.verdict.total}
+              </strong>{" "}
+              {v.scores.verdict.sentence}
+              {co2Line && <strong className="mt-1 block text-[17px] font-extrabold text-white">{co2Line}</strong>}
+            </p>
             {v.keyCoverage != null && v.keyCoverage < COVERAGE_WARNING && (
               <p role="note" className="m-0 rounded-btn bg-white/8 px-3 py-2 text-[14px] text-on-dark-1">
                 Attention : l’énergie, les protéines ou les émissions ne sont connues que pour {pct(v.keyCoverage)} de la masse d’un des plats. À lire avec prudence.
@@ -1194,12 +1277,13 @@ export function PairView({
               )}
               {choiceSentence && <p className="m-0 text-[14px] leading-normal text-on-dark-2">{choiceSentence}</p>}
               {notice && <div className="m-0 text-[14px] leading-normal text-on-dark-1">{notice}</div>}
-              {co2Line && <p className="m-0 text-[14px] font-semibold text-on-dark-1">{co2Line}</p>}
+              {co2Line && <p className="m-0 hidden text-[14px] font-semibold text-on-dark-1 md:block">{co2Line}</p>}
             </div>
           </div>
-          <VerdictPanel verdict={v.scores.verdict} className="hidden md:flex" />
+          <VerdictPanel verdict={v.scores.verdict} base={isComplete ? realistic.scores.verdict : undefined} className="hidden md:flex" />
         </div>
       </section>
+      {isComplete && <EquivalenceCard c={completed!} animal={model.animal} onEdit={() => open("nutrition")} />}
       <div className="xl:hidden">
         <TabBar tabs={TABS} active={tab} onChange={setTab} base={base} label="Catégories de la comparaison" />
       </div>
@@ -1239,7 +1323,7 @@ export function PairView({
           <div key={t.id} role="tabpanel" id={panelId(base, t.id)} aria-labelledby={tabId(base, t.id)} hidden={t.id !== tab} tabIndex={-1} className="pt-3">
             {t.id === tab &&
               (t.id === "apercu" ? (
-                <Overview model={model} v={v} open={open} base={base} completed={isComplete ? completed : undefined} />
+                <Overview model={model} v={v} open={open} base={base} completed={isComplete ? completed : undefined} baseVerdict={isComplete ? realistic.scores.verdict : undefined} />
               ) : (
                 <div className="flex flex-col gap-[14px]">
                   {banner && (

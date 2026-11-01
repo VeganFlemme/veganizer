@@ -1,7 +1,7 @@
 {
   "version": "1.0",
   "date": "2026-11-01",
-  "status": "Liste blanche relue (suite V1, S24). Quantités maximales par portion : choix éditoriaux réalistes (une cuillère à soupe de graines, un verre de boisson), à valider par un·e diététicien·ne (docs/A_VERIFIER.md). Ajout (suite V1, 5 ter) : tofu ferme, lentilles et pois chiches cuits, pour combler un écart de protéines au-delà de la portion plausible ; quantités maximales = une portion courante, choix éditorial à valider.",
+  "status": "Liste blanche relue (suite V1, S24). Quantités maximales par portion : choix éditoriaux réalistes (une cuillère à soupe de graines, un verre de boisson), à valider par un·e diététicien·ne (docs/A_VERIFIER.md). Ajout (suite V1, 5 ter) : tofu ferme, lentilles et pois chiches cuits, pour combler un écart de protéines au-delà de la portion plausible ; quantités maximales = une portion courante, choix éditorial à valider. Sel iodé retiré (relecture de l'étape 4) : l'ajouter augmentait le sel du plat ; le message de santé publique est de remplacer le sel par du sel iodé, pas d'en ajouter.",
   "dailyNeeds": {
     "text": "Les références nutritionnelles de l'ANSES sont des apports par jour (mg/j, µg/j) et la limite supérieure de sécurité est « l'apport journalier chronique maximal » ; pour les protéines, l'ANSES indique que varier les sources sur la journée suffit. Nous en concluons qu'un plat isolé n'a pas à couvrir à lui seul ces références : compléter un plat est une illustration, pas une recommandation.",
     "source": {
@@ -129,19 +129,6 @@
       "conseils": [
         "calcium",
         "vitamine-d"
-      ]
-    },
-    {
-      "code": "11058",
-      "label": "sel iodé",
-      "kind": "enrichi",
-      "maxGramsPerServing": 1,
-      "targets": [
-        "i_ug"
-      ],
-      "justification": "Le sel iodé fait partie des principales sources d'iode (ANSES). Ajouter du sel augmente la teneur en sel du plat, affichée et comptée dans le score.",
-      "conseils": [
-        "iode"
       ]
     },
     {

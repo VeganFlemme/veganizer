@@ -420,4 +420,14 @@ Recettes (règles appliquées à **toutes** les paires, y compris les 10 premiè
 - [ ] **Calories égalisées** : toute la portion végétale est mise à l'échelle, accompagnements compris (pas seulement la protéine). Alternative : n'ajuster que la protéine.
 - [ ] **Manques proposés à « Combler »** : nutriments « plus = mieux » où la recette de départ a moins que le plat animal (fourchettes comparées) ; B12, vitamine D et EPA + DHA y figurent même si aucun aliment de la liste ne les comble (le panneau le dit alors).
 - [ ] **Réglage à la main** : pas de 10 g par portion ; le réglage annule l'égalisation des protéines.
-- [ ] **Rapprochement avec l'étape 4 en cours** (branche `roadmap/s25`) : les remarques des relectures (docs/RETOURS.md) ont porté sur l'interface d'avant cette étape ; les points sur la « version complétée » (V4, V12) sont à revoir sur la nouvelle interface.
+- [x] **Rapprochement avec l'étape 4** : V4 et V12 revus sur la nouvelle interface (corrigés).
+
+## Étape 4 (S25) : remarques reportées (détail dans `docs/RETOURS.md`)
+
+- [ ] **Recettes à revoir en priorité (contrôle croisé, R3)** : lasagnes, saucisses aux lentilles, paëlla, couscous ont un CO₂e par kg bien au-dessus du plat moyen d'Agribalyse ; l'avantage végétal pourrait y être surestimé. Décider : reprendre les proportions d'une source, ou passer à la recette officielle quand elle existe.
+- [ ] **Sel de cuisson (R1)** : absent de nos recettes types ; trouver une source de quantité par plat.
+- [ ] **Masse des recettes officielles (A15, R5)** : masses avant cuisson ; « pour 100 g » = 100 g d'ingrédients. Corriger avec le rapport masse d'ingrédients / kg de produit fini.
+- [ ] **Protéine par défaut (V5, D1)** : rôle culinaire par sous-groupe Ciqual et sel dans le classement.
+- [ ] **Nutrition (D2, D3, D5, D6, D9, D10, D11, D13, D14)** : remplaçant riche en calcium pour le fromage, spécialités type fromage, « plus = mieux » pour les protéines, DIAAS, absorption du fer et du zinc, lactose, cumul de soja, pain sans sel des recettes officielles, lin entier.
+- [ ] **ACV (A1, A2, A5, A6, A12)** : emballage des remplaçants des plats officiels, incertitude, DQR des plats officiels, masses 3.0/3.2, avertissement œufs complet.
+- [ ] **Interface (V6, V10 reste, V11, V14–V18, V19 reste, V20–V22)** : vue d'ensemble des protéines, jargon restant, petits nombres, bases sur `/aliment`, barres des cartes, lignes vides, ordre Environnement, suggestions de `/recette`, longueur de `/methodologie`, accueil, petits caractères, couleurs. Q5 : la ligne CO₂e déplacée sous le verdict n'a pas été retestée.

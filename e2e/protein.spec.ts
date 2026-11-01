@@ -22,7 +22,7 @@ test("changing the protein recomputes the page and keeps the choice in the URL",
 
 test("the climate sentence and the official recipe mention are shown", async ({ page }) => {
   await page.goto("/compare/hachis-parmentier", { waitUntil: "networkidle" });
-  await expect(page.getByText(/Sur le climat, la version végétale fait mieux avec \d+ protéines? sur \d+/)).toBeVisible();
+  await expect(page.getByText(/Sur le climat, la version végétale fait mieux (quelle que soit la protéine végétale choisie \(\d+ au choix dans la liste\)|avec \d+ des \d+ protéines végétales de la liste)/)).toBeVisible();
   await expect(page.getByText(/recette officielle Agribalyse/)).toBeVisible();
   await expect(page.getByRole("link", { name: "Modifier cette recette" })).toHaveAttribute("href", /\/recette\?recette=/);
 });

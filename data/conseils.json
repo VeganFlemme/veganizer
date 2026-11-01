@@ -58,7 +58,7 @@
         "fa_epa_dha_g"
       ],
       "titre": "Oméga-3 (EPA, DHA) : huiles riches en ALA, complément si besoin",
-      "texte": "Les plats végétaux n'apportent pas d'EPA ni de DHA. L'ANSES recommande qu'environ la moitié des huiles soit riche en acide alpha-linolénique (colza, noix, soja, lin), mais note que les besoins en EPA+DHA restent difficiles à couvrir : à l'échelle individuelle, une supplémentation peut être envisagée.",
+      "texte": "Les plats végétaux n'apportent pas d'EPA ni de DHA. L'ANSES recommande qu'au moins la moitié des huiles soit riche en acide alpha-linolénique (colza, noix, soja, lin), mais note que les besoins en EPA+DHA restent difficiles à couvrir : à l'échelle individuelle, une supplémentation peut être envisagée.",
       "sources": [
         {
           "sourceId": "anses-2019-sa-0118",
@@ -121,7 +121,7 @@
         "diaas"
       ],
       "titre": "Protéines : varier les sources végétales",
-      "texte": "Les céréales sont pauvres en lysine, les légumineuses en acides aminés soufrés : varier les sources de protéines sur la journée suffit, l'ANSES ne recommande pas de les associer systématiquement. Les légumes secs (repère ANSES : environ 120 g/j pour les végétaliens) et les analogues de viande riches en protéines sont de bons contributeurs.",
+      "texte": "Les céréales sont pauvres en lysine, les légumineuses en acides aminés soufrés : varier les sources de protéines sur la journée suffit, l'ANSES ne recommande pas de les associer systématiquement. Les légumes secs (repère ANSES : environ 120 g/j pour les végétaliens) sont de forts contributeurs en protéines ; les analogues de viande le sont chez les lacto-ovovégétariens (repère ANSES : 100 g/j).",
       "sources": [
         {
           "sourceId": "anses-proteines",
