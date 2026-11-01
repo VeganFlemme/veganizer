@@ -41,6 +41,13 @@ PRODUCTION = "Production"
 # Unit conversions (the only constants allowed)
 HEADS = {"An": 1, "1000 An": 1000}
 KG = {"t": 1000}
+DAYS_PER_YEAR = 365
+YIELD_KG = {"kg/An": 1, "g/An": 0.001}
+
+# Days of life per kg: 365 / annual yield per animal (lactation only; heifers and calves excluded).
+# Eggs: FAOSTAT's recent yield is in eggs per hen (No/An); a kg yield would need an egg weight,
+# which is not a unit conversion -> no value (see TODO_SOURCES.md).
+DAIRY = [{"animal_category": "vache laitière", "item_code_cpc": "02211", "item": "Raw milk of cattle", "element": "Yield/Carcass Weight"}]
 
 
 def download() -> str:
@@ -102,8 +109,35 @@ def compute_factors(rows: list[dict[str, str]], mapping: list[dict[str, str]], y
         out.append({
             "category": m["animal_category"], "indicator_id": INDICATOR,
             "value": per_kg[latest], "low": min(per_kg.values()), "high": max(per_kg.values()),
-            "unit_basis": "par kg de carcasse (FAOSTAT, France)", "source_id": SOURCE_ID, "notes": notes,
+            "unit_basis": "par kg de carcasse (FAOSTAT, France)", "per": "kg", "source_id": SOURCE_ID, "notes": notes,
             "_year": latest,
+        })
+    return out
+
+
+def compute_dairy(rows: list[dict[str, str]], items: list[dict[str, str]] = DAIRY) -> list[dict]:
+    """Pure: life_days_farmed per kg of milk = 365 / official yield (kg per milk animal per year)."""
+    out = []
+    for m in items:
+        cpc = "'" + m["item_code_cpc"]
+        years = {}
+        for r in rows:
+            if r["Item Code (CPC)"] == cpc and r["Element"] == m["element"] and r["Flag"] == "A" and r["Value"]:
+                if r["Unit"] not in YIELD_KG:
+                    raise ValueError(f"unknown yield unit {r['Unit']!r} for {m['item']}")
+                years[int(r["Year"])] = float(r["Value"]) * YIELD_KG[r["Unit"]]
+        if not years:
+            print(f"  no official yield for {m['item']}")
+            continue
+        latest = max(years)
+        kg = years[latest]
+        out.append({
+            "category": m["animal_category"], "indicator_id": "life_days_farmed", "value": DAYS_PER_YEAR / kg,
+            "low": None, "high": None, "per": "kg", "unit_basis": "par kg de lait cru (FAOSTAT, France)",
+            "source_id": SOURCE_ID, "_year": latest,
+            "notes": (f"FAOSTAT QCL, France, {m['item']}, rendement {kg:g} kg par vache et par an ({latest}) : 365 / rendement. "
+                      "Seule la lactation est comptée (élevage des génisses et veaux exclus). Appliqué aux produits laitiers au "
+                      "poids du produit : estimation basse (un fromage demande plusieurs kg de lait)."),
         })
     return out
 
@@ -119,11 +153,15 @@ def main() -> None:
         sys.exit(f"{path} missing: run with --download.")
     with open(MAPPING, newline="", encoding="utf-8") as fh:
         mapping = list(csv.DictReader(fh))
-    factors = compute_factors(read_france(path), mapping)
+    france = read_france(path)
+    factors = compute_factors(france, mapping) + compute_dairy(france)
     print(f"FAOSTAT: {len(factors)} categories")
     for f in factors:
-        print(f"  {f['category']:16} {f['value'] * 1000:10.3f} animals per tonne of carcass "
-              f"({f['low'] * 1000:.3f}–{f['high'] * 1000:.3f}), year {f['_year']}")
+        if f["indicator_id"] == INDICATOR:
+            print(f"  {f['category']:16} {f['value'] * 1000:10.3f} animals per tonne of carcass "
+                  f"({f['low'] * 1000:.3f}–{f['high'] * 1000:.3f}), year {f['_year']}")
+        else:
+            print(f"  {f['category']:16} {f['value']:.6g} days of life per kg ({f['indicator_id']}), year {f['_year']}")
     if args.dry_run:
         print("Dry run: nothing written.")
         return
@@ -133,7 +171,7 @@ def main() -> None:
     require_source(client, SOURCE_ID, version)
     upsert(client, "category_factors", [{k: v for k, v in f.items() if not k.startswith("_")} for f in factors],
            "category,indicator_id,source_id")
-    res = client.table("category_factors").select("category,value").eq("source_id", SOURCE_ID).execute().data
+    res = client.table("category_factors").select("category,value").eq("source_id", SOURCE_ID).eq("indicator_id", INDICATOR).execute().data
     print(f"In database: {len(res)} FAOSTAT factors")
     # Hand check: cattle 2024 = 3 986 140 heads / 1 298 540 t → about 3.07 animals per tonne.
     for r in res:

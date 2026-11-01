@@ -89,3 +89,15 @@ Tous les critères sont respectés.
 - [ ] **Ajouter le secret** `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` (clé publique, déjà visible dans le navigateur) : `gh secret set NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` puis coller la clé. Sans lui, la CI saute l'étape de construction (avertissement). Ne **jamais** y mettre `SUPABASE_SECRET_KEY`.
 - [ ] Lancer une fois la veille à la main (onglet Actions → « Sources watch » → *Run workflow*) pour vérifier les droits d'écriture des issues.
 - [ ] Quand une issue de veille s'ouvre : vérifier la source, relancer le script du pipeline, mettre à jour `/sources`, puis `python pipeline/sources_watch.py --update`.
+
+## Pilier Animaux — facteurs manquants (session 11)
+
+- [ ] **Calcul à la main, poulet rôti** (150 g de poulet par portion) : animaux 0,150 × 0,625801 = 0,0939 ; jours de vie 0,0939 × 38 = 3,57 jours (+ 0,00023 jour pour 5 g de beurre) ; douleur atroce 0,0939 × 30 s = 2,8 s par portion. Vérifié dans la vue `dish_animal_impacts` le 2026-11-01.
+- [ ] **Poulet, douleur** : seules les secondes de douleur atroce sont publiées en unité utilisable par OWID ; les trois autres intensités sont « donnée manquante ». Chercher les heures dans le livre Welfare Footprint (page exacte) si on veut les afficher.
+- [ ] **Poules** : valeurs par poule importées (volière sans cage : 2 077 h gênante, 1 742 h pénible, 156 h invalidante, 0,04 h atroce ; borne haute = cages aménagées), phase de ponte seulement. **Question** : quelle durée de ponte sourcer pour rapporter au kg d'œufs ? welfarefootprint.org indique une phase de ponte supposée de 40 à 60 semaines (page « laying hens ») : suffisant ?
+- [ ] **Question** : faut-il un facteur `animals_killed_land` pour les œufs et le lait (poules et vaches de réforme, poussins mâles, veaux) ? Rien n'a été créé.
+- [ ] **Âges d'abattage** : poulet 38 jours (LA 07/85, p. 3/11), porc 6 mois = 182,6 jours (fiche du ministère, p. 1 ; données 2017), lapin 70 jours (LA 13/97, p. 4/30). Vérifier que ces « produits courants » représentent bien la moyenne française.
+- [ ] **Veau** : 994 169 têtes et 142 497 tec en 2024 (Agreste SAA, PRA, ligne 18) = 6,977 veaux par tonne de carcasse. Ce sont des veaux « finis produits » dans l'année, pas des abattages : acceptable ? Sens du `STATUT_QUALITE` = 1 à vérifier dans la note méthodologique Agreste.
+- [ ] **Lait** : 365 / 7 871 kg = 0,0464 jour de vie par kg (FAOSTAT 2024), appliqué aussi au beurre et aux fromages au poids du produit (sous-estimation forte pour un fromage).
+- [ ] **Licences** : `commercial_use` à vérifier pour `dir-1999-74-ce`, `label-rouge-la-07-85`, `label-rouge-la-13-97`, `agri-bien-etre-porcs`, `agreste-saa`. Welfare Footprint : CC BY 4.0 « unless otherwise stated » (pied de page de welfarefootprint.org), citation affichée.
+- [ ] **Fishcount** : toujours HTTP 401 depuis l'environnement de travail ; accessible depuis GitHub (issue #11).

@@ -1,4 +1,4 @@
-import type { Amount, Dish, DishTotals, FoodData, ScoringData } from "./types";
+import type { Amount, CategoryFactor, Dish, DishTotals, FoodData, ScoringData } from "./types";
 
 // Unit conversions: the only constants allowed in code.
 const GRAMS_PER_KG = 1000;
@@ -62,6 +62,29 @@ function finite(x: number | null | undefined): x is number {
   return typeof x === "number" && Number.isFinite(x);
 }
 
+const ANIMALS_KILLED = "animals_killed_land";
+
+/**
+ * Factor per kg of product for one category and indicator. A per-animal factor is
+ * multiplied by animals killed per kg of the same category (bounds × bounds);
+ * without that factor it is missing data (null), never 0.
+ */
+function perKg(
+  byIndicator: Record<string, CategoryFactor | undefined> | undefined,
+  id: string,
+): { value: number; low: number; high: number; sourceIds: string[] } | null {
+  const f = byIndicator?.[id];
+  if (!f || !finite(f.value)) return null;
+  const low = finite(f.low) ? f.low : f.value;
+  const high = finite(f.high) ? f.high : f.value;
+  if ((f.per ?? "kg") === "kg") return { value: f.value, low, high, sourceIds: [f.sourceId] };
+  const k = byIndicator?.[ANIMALS_KILLED];
+  if (!k || !finite(k.value) || (k.per ?? "kg") !== "kg") return null;
+  const kl = finite(k.low) ? k.low : k.value;
+  const kh = finite(k.high) ? k.high : k.value;
+  return { value: f.value * k.value, low: low * kl, high: high * kh, sourceIds: [f.sourceId, k.sourceId] };
+}
+
 /**
  * Totals of a dish per serving, per 100 kcal and per 10 g of protein.
  *
@@ -120,16 +143,12 @@ export function dishTotals(dish: Dish, data: ScoringData, options: TotalsOptions
         add(animal, id, grams, { value: 0, low: 0, high: 0, dqr: null, sourceId: null });
         continue;
       }
-      const f = food.animalCategory ? data.categoryFactors[food.animalCategory]?.[id] : undefined;
-      if (!f || !finite(f.value)) continue;
+      const byIndicator = food.animalCategory ? data.categoryFactors[food.animalCategory] : undefined;
+      const f = perKg(byIndicator, id);
+      if (!f) continue;
       const kg = grams / GRAMS_PER_KG;
-      add(animal, id, grams, {
-        value: kg * f.value,
-        low: kg * (finite(f.low) ? f.low : f.value),
-        high: kg * (finite(f.high) ? f.high : f.value),
-        dqr: null,
-        sourceId: f.sourceId,
-      });
+      add(animal, id, grams, { value: kg * f.value, low: kg * f.low, high: kg * f.high, dqr: null, sourceId: f.sourceIds[0] });
+      for (const extra of f.sourceIds.slice(1)) animal.get(id)?.sourceIds.add(extra);
     }
   }
 

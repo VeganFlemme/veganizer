@@ -73,6 +73,7 @@ export interface CategoryFactorRow {
   source_id: string;
   unit_basis?: string;
   notes?: string | null;
+  per?: string;
 }
 export interface DishPriceRow {
   dish_id: string;
@@ -214,6 +215,7 @@ export interface IarcView {
 export interface AnimalFactorNote {
   category: string;
   indicatorId: string;
+  per: "kg" | "animal";
   unitBasis: string | null;
   notes: string | null;
   sourceId: string;
@@ -294,7 +296,13 @@ function scoringData(raw: RawPairData): ScoringData {
   const categoryFactors: ScoringData["categoryFactors"] = {};
   for (const c of raw.categoryFactors) {
     const byIndicator: Record<string, CategoryFactor> = (categoryFactors[c.category] ??= {}) as Record<string, CategoryFactor>;
-    byIndicator[c.indicator_id] = { value: Number(c.value), low: num(c.low), high: num(c.high), sourceId: c.source_id };
+    byIndicator[c.indicator_id] = {
+      value: Number(c.value),
+      low: num(c.low),
+      high: num(c.high),
+      sourceId: c.source_id,
+      per: c.per === "animal" ? "animal" : "kg",
+    };
   }
   return { foods, categoryFactors };
 }
@@ -395,7 +403,12 @@ function rowsFor(animal: DishTotals, vegetal: DishTotals, raw: RawPairData, basi
     push(id, "impacts", dirs[id]?.higherIsBetter ? "up" : "down");
   }
   const animalIds = new Set([...Object.keys(animal.animalImpacts), ...Object.keys(vegetal.animalImpacts)]);
-  for (const id of [...animalIds].sort()) push(id, "animalImpacts", dirs[id]?.higherIsBetter ? "up" : "down");
+  // Display order: animals, days of life, then pain by increasing intensity (never summed).
+  const ORDER = ["animals_killed_land", "fish_killed", "life_days_farmed", "pain_hours_annoying", "pain_hours_hurtful", "pain_hours_disabling", "pain_hours_excruciating"];
+  const rank = (id: string) => (ORDER.includes(id) ? ORDER.indexOf(id) : ORDER.length);
+  for (const id of [...animalIds].sort((x, y) => rank(x) - rank(y) || x.localeCompare(y))) {
+    push(id, "animalImpacts", dirs[id]?.higherIsBetter ? "up" : "down");
+  }
   return rows;
 }
 
@@ -497,21 +510,28 @@ export function buildPairPage(raw: RawPairData): PairPageModel {
       if (factors.length === 0) animalWithoutFactor.push(f.name_fr);
       for (const c of factors) {
         if (!animalFactorNotes.some((n) => n.category === c.category && n.indicatorId === c.indicator_id)) {
-          animalFactorNotes.push({ category: c.category, indicatorId: c.indicator_id, unitBasis: c.unit_basis ?? null, notes: c.notes ?? null, sourceId: c.source_id });
+          animalFactorNotes.push({ category: c.category, indicatorId: c.indicator_id, per: c.per === "animal" ? "animal" : "kg", unitBasis: c.unit_basis ?? null, notes: c.notes ?? null, sourceId: c.source_id });
         }
       }
     }
-    // An animal dish whose animal ingredients have no factor at all has no animal figure (never 0).
-    if (animalFoods.length > 0 && animalWithoutFactor.length === animalFoods.length) {
-      for (const b of BASES) {
-        for (const r of rows[b.id]) {
-          if (r.group !== "animalImpacts") continue;
-          r.animal = null;
-          r.reductionPercent = null;
-          r.winner = null;
-          r.indicativeWinner = null;
-          r.lowCoverage = true;
-        }
+    // Per indicator: when none of the animal ingredients of the animal dish has a usable factor
+    // (per kg, or per animal with animals_killed_land), the animal dish has no figure: never 0.
+    const usable = (category: string | null, id: string) => {
+      const fs = raw.categoryFactors.filter((c) => c.category === category);
+      const f = fs.find((c) => c.indicator_id === id);
+      if (!f) return false;
+      if (f.per !== "animal") return true;
+      return fs.some((c) => c.indicator_id === "animals_killed_land" && c.per !== "animal");
+    };
+    for (const b of BASES) {
+      for (const r of rows[b.id]) {
+        if (r.group !== "animalImpacts" || animalFoods.length === 0) continue;
+        if (animalFoods.some((f) => usable(f.animal_category, r.id))) continue;
+        r.animal = null;
+        r.reductionPercent = null;
+        r.winner = null;
+        r.indicativeWinner = null;
+        r.lowCoverage = true;
       }
     }
 

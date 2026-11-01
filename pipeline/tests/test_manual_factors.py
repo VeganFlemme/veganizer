@@ -4,10 +4,10 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
-from manual_factors import CSV_PATH, validate  # noqa: E402
+from manual_factors import CSV_PATH, to_value, validate  # noqa: E402
 import csv  # noqa: E402
 
-OK = {"category": "saumon d'élevage", "indicator_id": "fish_killed", "value": "0.2", "low": "", "high": "",
+OK = {"category": "saumon d'élevage", "indicator_id": "fish_killed", "value": "0.2", "unit": "animaux", "per": "kg", "low": "", "high": "",
       "unit_basis": "par kg", "source_id": "fishcount", "source_url": "https://example.org/p", "page": "tableau 3",
       "quote": "4.5 kg", "accessed_on": "2026-11-01"}
 
@@ -19,6 +19,14 @@ class Validate(unittest.TestCase):
     def test_page_and_quote_are_mandatory(self):
         self.assertTrue(validate([{**OK, "page": ""}]))
         self.assertTrue(validate([{**OK, "quote": " "}]))
+
+    def test_months_converted_with_365_25_over_12(self):
+        r = {**OK, "indicator_id": "life_days_farmed", "value": "6", "unit": "mois", "per": "animal"}
+        self.assertEqual(validate([r]), [])
+        self.assertAlmostEqual(to_value(r, "value"), 182.625)
+
+    def test_life_days_need_a_time_unit(self):
+        self.assertTrue(validate([{**OK, "indicator_id": "life_days_farmed", "unit": "animaux"}]))
 
     def test_repository_file_is_valid(self):
         with open(CSV_PATH, newline="", encoding="utf-8") as fh:

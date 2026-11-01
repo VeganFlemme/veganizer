@@ -92,7 +92,7 @@ export async function getPairPage(slug: string): Promise<PairPageModel | null> {
   const [nutrientValues, impacts, categoryFactors, nutrients, indicators, sources, factors, rules, prices] = await Promise.all([
     db.from("food_nutrients").select("food_code, nutrient_id, value_per_100g, source_id").in("food_code", nutrientCodes).in("nutrient_id", nutrientIds).eq("source_id", CIQUAL_SOURCE),
     db.from("food_impacts").select("food_code, indicator_id, value_per_kg, low_per_kg, high_per_kg, dqr, source_id").in("food_code", codes).in("indicator_id", CLIMATE_INDICATORS),
-    db.from("category_factors").select("category, indicator_id, value, low, high, source_id, unit_basis, notes"),
+    db.from("category_factors").select("category, indicator_id, value, low, high, source_id, unit_basis, notes, per"),
     db.from("nutrients").select("id, name_fr, unit").in("id", nutrientIds),
     db.from("indicators").select("id, name_fr, unit, higher_is_better, pillar"),
     db.from("sources").select("id, name, publisher, version, license, commercial_use, url"),

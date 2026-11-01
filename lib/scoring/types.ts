@@ -36,12 +36,18 @@ export interface FoodData {
   animalCategory: string | null;
 }
 
-/** One category_factors row, per kg of edible product. */
+/** One category_factors row. */
 export interface CategoryFactor {
   value: number;
   low: number | null;
   high: number | null;
   sourceId: string;
+  /**
+   * Basis of the value: "kg" (default) = per kg of product; "animal" = per animal
+   * (pain hours, days of life), converted to per kg with the animals_killed_land
+   * factor of the same category (missing data when that factor is absent).
+   */
+  per?: "kg" | "animal";
 }
 
 export interface ScoringData {

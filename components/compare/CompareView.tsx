@@ -10,6 +10,8 @@ import type { Basis } from "@/lib/scoring";
 import { formatEur, formatInt, formatPercent, formatValue, gapSentence, MISSING } from "@/lib/format";
 
 const IARC_READING = sante.lecture;
+// Citation required by the CC BY 4.0 licence of the pain estimates.
+const WELFARE_CITATION = "Welfare Footprint Institute — Schuck-Paim & Alonso, CC BY 4.0";
 
 const VARIANT_LABEL: Record<Variant, string> = { maison: "Fait maison", commerce: "Du commerce" };
 
@@ -103,6 +105,11 @@ const SOURCE_LABELS: Record<string, string> = {
   "open-prices": "Open Prices",
   "vac-2025": "Valeur carbone 2025",
   "iarc-114": "CIRC vol. 114",
+  "welfare-footprint": "Welfare Footprint",
+  "agreste-saa": "Agreste SAA",
+  "label-rouge-la-07-85": "Label rouge LA 07/85",
+  "label-rouge-la-13-97": "Label rouge LA 13/97",
+  "agri-bien-etre-porcs": "Ministère de l’Agriculture",
 };
 
 function sourceLabel(id: string): string {
@@ -133,7 +140,7 @@ function Rows({
             <div>
               <dt className="text-xs text-zinc-700">{animalName}</dt>
               <dd>
-                <Value v={r.animal} unit={r.unit} perAnimal={perAnimal} />
+                <Value v={r.animal} unit={r.unit} perAnimal={perAnimal && r.id === "animals_killed_land"} />
               </dd>
             </div>
             <div>
@@ -298,9 +305,20 @@ function VariantPanel({ model, v, basis }: { model: PairPageModel; v: VariantVie
             <>
               <Rows rows={animals} sources={model.sources} animalName={a} vegetalName="Version végétale" perAnimal={basis === "perServing"} />
               <p className="text-xs text-zinc-700">
-                Estimation basse : les statistiques de la FAO donnent les animaux abattus par kg de carcasse ; un kg de viande cuite et désossée
-                vient de plus d’un kg de carcasse.
+                Estimation basse : les statistiques (FAO, Agreste) donnent les animaux abattus par kg de carcasse ; un kg de viande cuite et
+                désossée vient de plus d’un kg de carcasse.
               </p>
+              {animals.some((r) => r.id.startsWith("pain_hours")) && (
+                <p className="text-xs text-zinc-700">
+                  Douleur : estimation minimale, une ligne par intensité (jamais additionnées). Source : {WELFARE_CITATION}.
+                </p>
+              )}
+              {animals.some((r) => r.id === "life_days_farmed") && (
+                <p className="text-xs text-zinc-700">
+                  Jours de vie en élevage : âge d’abattage du produit courant × animaux par kg ; pour le lait, jours de lactation par kg (élevage
+                  des génisses et des veaux non compté). Estimation basse.
+                </p>
+              )}
               {v.animalFactorNotes.length > 0 && (
                 <details className="text-xs text-zinc-700">
                   <summary className="cursor-pointer underline">Facteurs utilisés et hypothèses</summary>
@@ -315,8 +333,8 @@ function VariantPanel({ model, v, basis }: { model: PairPageModel; v: VariantVie
               )}
               {v.animalWithoutFactor.length > 0 && (
                 <p className="text-xs text-amber-800">
-                  Pas encore de donnée pour : {[...new Set(v.animalWithoutFactor)].join(", ")} (donnée manquante, jamais 0). Les poissons, les œufs,
-                  les produits laitiers et le veau seront ajoutés avec leurs sources.
+                  Pas encore de donnée pour : {[...new Set(v.animalWithoutFactor)].join(", ")} (donnée manquante, jamais 0). Les poissons et les œufs seront
+                  ajoutés avec leurs sources.
                 </p>
               )}
             </>
