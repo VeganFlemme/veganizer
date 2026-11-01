@@ -60,3 +60,6 @@ export const MEDICAL_DISCLAIMER =
 
 /** Rule 10: the site never displays "vegan" / "végétalien" about a food, even quoted from a source name. */
 export const VEGAN_WORD = /v[eé]gan|v[eé]g[eé]talien/i;
+
+/** Years of the climate cost shown: first published year of the official carbon value and 2050 (also published). */
+export const CLIMATE_COST_YEARS = [2025, 2050];

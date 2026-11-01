@@ -135,6 +135,13 @@ export type Database = {
             foreignKeyName: "dish_ingredients_dish_id_fkey"
             columns: ["dish_id"]
             isOneToOne: false
+            referencedRelation: "dish_prices"
+            referencedColumns: ["dish_id"]
+          },
+          {
+            foreignKeyName: "dish_ingredients_dish_id_fkey"
+            columns: ["dish_id"]
+            isOneToOne: false
             referencedRelation: "dishes"
             referencedColumns: ["id"]
           },
@@ -198,6 +205,13 @@ export type Database = {
             foreignKeyName: "dish_pairs_animal_dish_id_fkey"
             columns: ["animal_dish_id"]
             isOneToOne: false
+            referencedRelation: "dish_prices"
+            referencedColumns: ["dish_id"]
+          },
+          {
+            foreignKeyName: "dish_pairs_animal_dish_id_fkey"
+            columns: ["animal_dish_id"]
+            isOneToOne: false
             referencedRelation: "dishes"
             referencedColumns: ["id"]
           },
@@ -220,6 +234,13 @@ export type Database = {
             columns: ["vegan_dish_id"]
             isOneToOne: false
             referencedRelation: "dish_nutrients"
+            referencedColumns: ["dish_id"]
+          },
+          {
+            foreignKeyName: "dish_pairs_vegan_dish_id_fkey"
+            columns: ["vegan_dish_id"]
+            isOneToOne: false
+            referencedRelation: "dish_prices"
             referencedColumns: ["dish_id"]
           },
           {
@@ -448,6 +469,7 @@ export type Database = {
           code: string
           food_group: string | null
           food_subgroup: string | null
+          iarc_meat: string | null
           is_animal: boolean
           name_en: string | null
           name_fr: string
@@ -461,6 +483,7 @@ export type Database = {
           code: string
           food_group?: string | null
           food_subgroup?: string | null
+          iarc_meat?: string | null
           is_animal?: boolean
           name_en?: string | null
           name_fr: string
@@ -474,6 +497,7 @@ export type Database = {
           code?: string
           food_group?: string | null
           food_subgroup?: string | null
+          iarc_meat?: string | null
           is_animal?: boolean
           name_en?: string | null
           name_fr?: string
@@ -680,6 +704,7 @@ export type Database = {
       }
       prices: {
         Row: {
+          external_id: string | null
           food_code: string | null
           id: number
           observed_on: string | null
@@ -690,6 +715,7 @@ export type Database = {
           source_id: string
         }
         Insert: {
+          external_id?: string | null
           food_code?: string | null
           id?: never
           observed_on?: string | null
@@ -700,6 +726,7 @@ export type Database = {
           source_id: string
         }
         Update: {
+          external_id?: string | null
           food_code?: string | null
           id?: never
           observed_on?: string | null
@@ -874,6 +901,54 @@ export type Database = {
           },
           {
             foreignKeyName: "food_nutrients_source_id_fkey"
+            columns: ["source_id"]
+            isOneToOne: false
+            referencedRelation: "sources"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      dish_prices: {
+        Row: {
+          dish_id: string | null
+          high_per_serving: number | null
+          low_per_serving: number | null
+          mass_coverage: number | null
+          per_serving: number | null
+          slug: string | null
+          source_id: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "prices_source_id_fkey"
+            columns: ["source_id"]
+            isOneToOne: false
+            referencedRelation: "sources"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      food_prices: {
+        Row: {
+          first_observed_on: string | null
+          food_code: string | null
+          last_observed_on: string | null
+          max_eur_per_kg: number | null
+          median_eur_per_kg: number | null
+          min_eur_per_kg: number | null
+          observations: number | null
+          source_id: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "prices_food_code_fkey"
+            columns: ["food_code"]
+            isOneToOne: false
+            referencedRelation: "foods"
+            referencedColumns: ["code"]
+          },
+          {
+            foreignKeyName: "prices_source_id_fkey"
             columns: ["source_id"]
             isOneToOne: false
             referencedRelation: "sources"

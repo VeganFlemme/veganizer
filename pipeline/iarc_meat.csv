@@ -1,0 +1,319 @@
+code,name_fr,iarc_meat,evidence
+21508,"Agneau, collier braisé ou bouilli",rouge,"sous-groupe « viandes cuites », catégorie « agneau »"
+21514,"Agneau, collier cru",rouge,"sous-groupe « viandes crues », catégorie « agneau »"
+21525,"Agneau, côte découverte crue",rouge,"sous-groupe « viandes crues », catégorie « agneau »"
+21516,"Agneau, côte filet crue",rouge,"sous-groupe « viandes crues », catégorie « agneau »"
+21509,"Agneau, côte filet grillée/poêlée",rouge,"sous-groupe « viandes cuites », catégorie « agneau »"
+21521,"Agneau, côte ou côtelette, crue (aliment moyen)",rouge,"sous-groupe « viandes crues », catégorie « agneau »"
+21522,"Agneau, côte ou côtelette, cuite (aliment moyen)",rouge,"sous-groupe « viandes cuites », catégorie « agneau »"
+21524,"Agneau, côte ou côtelette, grillée/poêlée (aliment moyen)",rouge,"sous-groupe « viandes cuites », catégorie « agneau »"
+21517,"Agneau, côte première crue",rouge,"sous-groupe « viandes crues », catégorie « agneau »"
+21512,"Agneau, côte première grillée/poêlée",rouge,"sous-groupe « viandes cuites », catégorie « agneau »"
+21500,"Agneau, côtelette crue",rouge,"sous-groupe « viandes crues », catégorie « agneau »"
+21501,"Agneau, côtelette grillée/poêlée",rouge,"sous-groupe « viandes cuites », catégorie « agneau »"
+21519,"Agneau, gigot braisé",rouge,"sous-groupe « viandes cuites », catégorie « agneau »"
+21502,"Agneau, gigot cru",rouge,"sous-groupe « viandes crues », catégorie « agneau »"
+21518,"Agneau, gigot grillé/poêlé",rouge,"sous-groupe « viandes cuites », catégorie « agneau »"
+21503,"Agneau, gigot rôti/cuit au four",rouge,"sous-groupe « viandes cuites », catégorie « agneau »"
+21515,"Agneau, selle crue",rouge,"sous-groupe « viandes crues », catégorie « agneau »"
+21520,"Agneau, selle, partie maigre grillée/poêlée",rouge,"sous-groupe « viandes cuites », catégorie « agneau »"
+21513,"Agneau, selle, partie maigre rôtie/cuite au four",rouge,"sous-groupe « viandes cuites », catégorie « agneau »"
+21523,"Agneau, viande, cuite (aliment moyen)",rouge,"sous-groupe « viandes cuites », catégorie « agneau »"
+21504,"Agneau, épaule crue",rouge,"sous-groupe « viandes crues », catégorie « agneau »"
+21505,"Agneau, épaule maigre crue",rouge,"sous-groupe « viandes crues », catégorie « agneau »"
+21507,"Agneau, épaule maigre rôtie/cuite au four",rouge,"sous-groupe « viandes cuites », catégorie « agneau »"
+21506,"Agneau, épaule rôtie/cuite au four",rouge,"sous-groupe « viandes cuites », catégorie « agneau »"
+6101,Boeuf braisé,rouge,"sous-groupe « viandes cuites », catégorie « bovin »"
+6003,"Boeuf, basse-côte crue",rouge,"sous-groupe « viandes crues », catégorie « bovin »"
+6212,"Boeuf, bavette d'aloyau crue",rouge,"sous-groupe « viandes crues », catégorie « bovin »"
+6211,"Boeuf, bavette d'aloyau grillée/poêlée",rouge,"sous-groupe « viandes cuites », catégorie « bovin »"
+6202,"Boeuf, boule de macreuse crue",rouge,"sous-groupe « viandes crues », catégorie « bovin »"
+6208,"Boeuf, boule de macreuse grillée/poêlée",rouge,"sous-groupe « viandes cuites », catégorie « bovin »"
+6214,"Boeuf, boule de macreuse rôtie/cuite au four",rouge,"sous-groupe « viandes cuites », catégorie « bovin »"
+6241,"Boeuf, collier braisé",rouge,"sous-groupe « viandes cuites », catégorie « bovin »"
+6240,"Boeuf, collier cru",rouge,"sous-groupe « viandes crues », catégorie « bovin »"
+6001,"Boeuf, côte crue",rouge,"sous-groupe « viandes crues », catégorie « bovin »"
+6103,"Boeuf, entrecôte crue",rouge,"sous-groupe « viandes crues », catégorie « bovin »"
+6100,"Boeuf, entrecôte, partie maigre grillée/poêlée",rouge,"sous-groupe « viandes cuites », catégorie « bovin »"
+6111,"Boeuf, faux-filet cru",rouge,"sous-groupe « viandes crues », catégorie « bovin »"
+6110,"Boeuf, faux-filet grillé/poêlé",rouge,"sous-groupe « viandes cuites », catégorie « bovin »"
+6105,"Boeuf, faux-filet rôti/cuit au four",rouge,"sous-groupe « viandes cuites », catégorie « bovin »"
+6116,"Boeuf, filet cru",rouge,"sous-groupe « viandes crues », catégorie « bovin »"
+6102,"Boeuf, gîte à la noix cru",rouge,"sous-groupe « viandes crues », catégorie « bovin »"
+6104,"Boeuf, gîte à la noix cuit",rouge,"sous-groupe « viandes cuites », catégorie « bovin »"
+6130,"Boeuf, hampe crue",rouge,"sous-groupe « viandes crues », catégorie « bovin »"
+6131,"Boeuf, hampe grillée/poêlée",rouge,"sous-groupe « viandes cuites », catégorie « bovin »"
+6151,"Boeuf, jarret bouilli/cuit à l'eau",rouge,"sous-groupe « viandes cuites », catégorie « bovin »"
+6150,"Boeuf, jarret cru",rouge,"sous-groupe « viandes crues », catégorie « bovin »"
+6140,"Boeuf, joue crue",rouge,"sous-groupe « viandes crues », catégorie « bovin »"
+6141,"Boeuf, joue, braisée ou bouillie/cuite à l'eau",rouge,"sous-groupe « viandes cuites », catégorie « bovin »"
+6204,"Boeuf, onglet cru",rouge,"sous-groupe « viandes crues », catégorie « bovin »"
+6205,"Boeuf, onglet grillé/poêlé",rouge,"sous-groupe « viandes cuites », catégorie « bovin »"
+6270,"Boeuf, paleron cru",rouge,"sous-groupe « viandes crues », catégorie « bovin »"
+6271,"Boeuf, paleron, braisé ou bouilli/cuit à l'eau",rouge,"sous-groupe « viandes cuites », catégorie « bovin »"
+6123,"Boeuf, plat de côtes braisé ou bouilli/cuit à l'eau",rouge,"sous-groupe « viandes cuites », catégorie « bovin »"
+6122,"Boeuf, plat de côtes cru",rouge,"sous-groupe « viandes crues », catégorie « bovin »"
+6310,"Boeuf, queue bouillie/cuite à l'eau",rouge,"sous-groupe « viandes cuites », catégorie « bovin »"
+6311,"Boeuf, queue crue",rouge,"sous-groupe « viandes crues », catégorie « bovin »"
+6106,"Boeuf, rond de gîte cru",rouge,"sous-groupe « viandes crues », catégorie « bovin »"
+6210,"Boeuf, rosbif rôti/cuit au four",rouge,"sous-groupe « viandes cuites », catégorie « bovin »"
+6206,"Boeuf, rumsteck cru",rouge,"sous-groupe « viandes crues », catégorie « bovin »"
+6207,"Boeuf, rumsteck grillé/poêlé",rouge,"sous-groupe « viandes cuites », catégorie « bovin »"
+6252,"Boeuf, steak haché 10% MG cru",rouge,"sous-groupe « viandes crues », catégorie « bovin »"
+6253,"Boeuf, steak haché 10% MG cuit",rouge,"sous-groupe « viandes cuites », catégorie « bovin »"
+6254,"Boeuf, steak haché 15% MG cru",rouge,"sous-groupe « viandes crues », catégorie « bovin »"
+6255,"Boeuf, steak haché 15% MG cuit",rouge,"sous-groupe « viandes cuites », catégorie « bovin »"
+6256,"Boeuf, steak haché 20% MG cru",rouge,"sous-groupe « viandes crues », catégorie « bovin »"
+6257,"Boeuf, steak haché 20% MG cuit",rouge,"sous-groupe « viandes cuites », catégorie « bovin »"
+6250,"Boeuf, steak haché 5% MG cru",rouge,"sous-groupe « viandes crues », catégorie « bovin »"
+6251,"Boeuf, steak haché 5% MG cuit",rouge,"sous-groupe « viandes cuites », catégorie « bovin »"
+6259,"Boeuf, steak haché, cuit (aliment moyen)",rouge,"sous-groupe « viandes cuites », catégorie « bovin »"
+6201,"Boeuf, steak ou bifteck cru",rouge,"sous-groupe « viandes crues », catégorie « bovin »"
+6200,"Boeuf, steak ou bifteck grillé/poêlé",rouge,"sous-groupe « viandes cuites », catégorie « bovin »"
+6160,"Boeuf, tende de tranche crue",rouge,"sous-groupe « viandes crues », catégorie « bovin »"
+6161,"Boeuf, tende de tranche grillée/poêlée",rouge,"sous-groupe « viandes cuites », catégorie « bovin »"
+6162,"Boeuf, tende de tranche rôtie/cuite au four",rouge,"sous-groupe « viandes cuites », catégorie « bovin »"
+6231,"Boeuf, à bourguignon ou pot-au-feu, cru",rouge,"sous-groupe « viandes crues », catégorie « bovin »"
+6230,"Boeuf, à bourguignon ou pot-au-feu, cuit",rouge,"sous-groupe « viandes cuites », catégorie « bovin »"
+6002,"Boeuf, épaule crue",rouge,"sous-groupe « viandes crues », catégorie « bovin »"
+6905,"Cheval, entrecôte crue",rouge,"sous-groupe « viandes crues », catégorie « cheval »"
+6908,"Cheval, entrecôte grillée/poêlée",rouge,"sous-groupe « viandes cuites », catégorie « cheval »"
+6904,"Cheval, faux-filet cru",rouge,"sous-groupe « viandes crues », catégorie « cheval »"
+6907,"Cheval, faux-filet grillé/poêlé",rouge,"sous-groupe « viandes cuites », catégorie « cheval »"
+6909,"Cheval, faux-filet rôti/cuit au four",rouge,"sous-groupe « viandes cuites », catégorie « cheval »"
+6901,"Cheval, steak ou bifteck cru",rouge,"sous-groupe « viandes crues », catégorie « cheval »"
+6903,"Cheval, tende de tranche crue",rouge,"sous-groupe « viandes crues », catégorie « cheval »"
+6906,"Cheval, tende de tranche grillée/poêlée",rouge,"sous-groupe « viandes cuites », catégorie « cheval »"
+6910,"Cheval, tende de tranche rôtie/cuite au four",rouge,"sous-groupe « viandes cuites », catégorie « cheval »"
+6900,"Cheval, viande crue",rouge,"sous-groupe « viandes crues », catégorie « cheval »"
+6902,"Cheval, viande rôtie/cuite au four",rouge,"sous-groupe « viandes cuites », catégorie « cheval »"
+6260,"Haché à base de bœuf ou Préparation de viande hachée de boeuf, 15% MG, cru",rouge,"sous-groupe « autres produits à base de viande », catégorie « bovin »"
+21006,"Mouton, gigot cru",rouge,"sous-groupe « viandes crues », catégorie « agneau »"
+21007,"Mouton, gigot rôti/cuit au four",rouge,"sous-groupe « viandes cuites », catégorie « agneau »"
+21001,"Mouton, viande crue",rouge,"sous-groupe « viandes crues », catégorie « agneau »"
+21003,"Mouton, épaule crue",rouge,"sous-groupe « viandes crues », catégorie « agneau »"
+28470,"Porc, bardière découennée crue",rouge,"sous-groupe « viandes crues », catégorie « porc »"
+28104,"Porc, carré cru",rouge,"sous-groupe « viandes crues », catégorie « porc »"
+28105,"Porc, carré cuit",rouge,"sous-groupe « viandes cuites », catégorie « porc »"
+28100,"Porc, côte crue",rouge,"sous-groupe « viandes crues », catégorie « porc »"
+28101,"Porc, côte grillée/poêlée",rouge,"sous-groupe « viandes cuites », catégorie « porc »"
+28460,"Porc, escalope de jambon crue",rouge,"sous-groupe « viandes crues », catégorie « porc »"
+28461,"Porc, escalope de jambon cuite",rouge,"sous-groupe « viandes cuites », catégorie « porc »"
+28202,"Porc, filet maigre, en rôti, cuit",rouge,"sous-groupe « viandes cuites », catégorie « porc »"
+28204,"Porc, filet mignon cru",rouge,"sous-groupe « viandes crues », catégorie « porc »"
+28203,"Porc, filet mignon cuit",rouge,"sous-groupe « viandes cuites », catégorie « porc »"
+28201,"Porc, filet, maigre, cru",rouge,"sous-groupe « viandes crues », catégorie « porc »"
+28471,"Porc, gorge découennée crue",rouge,"sous-groupe « viandes crues », catégorie « porc »"
+28472,"Porc, hachage sans jarret, sans bateau, découenné, dégraissé, désossé, cru",rouge,"sous-groupe « viandes crues », catégorie « porc »"
+28473,"Porc, jambon sans jarret, sans bateau, découenné, dégraissé, désossé, cru",rouge,"sous-groupe « viandes crues », catégorie « porc »"
+28474,"Porc, jambonneau arrière, découenné, dégraisssé, désossé, cru",rouge,"sous-groupe « viandes crues », catégorie « porc »"
+28004,"Porc, jarret, cru",rouge,"sous-groupe « viandes crues », catégorie « porc »"
+28003,"Porc, longe, crue",rouge,"sous-groupe « viandes crues », catégorie « porc »"
+28007,"Porc, longe, cuite",rouge,"sous-groupe « viandes cuites », catégorie « porc »"
+28476,"Porc, maigre 80/20 cru",rouge,"sous-groupe « viandes crues », catégorie « porc »"
+28475,"Porc, maigre 90/10 cru",rouge,"sous-groupe « viandes crues », catégorie « porc »"
+28009,"Porc, palette crue",rouge,"sous-groupe « viandes crues », catégorie « porc »"
+28477,"Porc, palette, découennée, dégraissée, désossée, crue",rouge,"sous-groupe « viandes crues », catégorie « porc »"
+28002,"Porc, poitrine crue",rouge,"sous-groupe « viandes crues », catégorie « porc »"
+28479,"Porc, poitrine cutter, sans mouille, crue",rouge,"sous-groupe « viandes crues », catégorie « porc »"
+28102,"Porc, rouelle de jambon crue",rouge,"sous-groupe « viandes crues », catégorie « porc »"
+28103,"Porc, rouelle de jambon cuite",rouge,"sous-groupe « viandes cuites », catégorie « porc »"
+28300,"Porc, rôti cru",rouge,"sous-groupe « viandes crues », catégorie « porc »"
+28301,"Porc, rôti cuit",rouge,"sous-groupe « viandes cuites », catégorie « porc »"
+28480,"Porc, rôti filet avec chaînette, cru",rouge,"sous-groupe « viandes crues », catégorie « porc »"
+28401,"Porc, travers braisé",rouge,"sous-groupe « viandes cuites », catégorie « porc »"
+28400,"Porc, travers cru",rouge,"sous-groupe « viandes crues », catégorie « porc »"
+28205,"Porc, viande, cuite (aliment moyen)",rouge,"sous-groupe « viandes cuites », catégorie « porc »"
+28302,"Porc, échine crue",rouge,"sous-groupe « viandes crues », catégorie « porc »"
+28451,"Porc, échine rôtie/cuite au four",rouge,"sous-groupe « viandes cuites », catégorie « porc »"
+28001,"Porc, épaule crue",rouge,"sous-groupe « viandes crues », catégorie « porc »"
+28010,"Porc, épaule cuite",rouge,"sous-groupe « viandes cuites », catégorie « porc »"
+40600,"Sang, boeuf, cru",rouge,"sous-groupe « viandes crues », catégorie « bovin »"
+6513,"Veau, carré cru",rouge,"sous-groupe « viandes crues », catégorie « veau »"
+6512,"Veau, carré grillé/poêlé",rouge,"sous-groupe « viandes cuites », catégorie « veau »"
+6591,"Veau, collier braisé ou bouilli",rouge,"sous-groupe « viandes cuites », catégorie « veau »"
+6590,"Veau, collier cru",rouge,"sous-groupe « viandes crues », catégorie « veau »"
+6510,"Veau, côte crue",rouge,"sous-groupe « viandes crues », catégorie « veau »"
+6511,"Veau, côte grillée/poêlée",rouge,"sous-groupe « viandes cuites », catégorie « veau »"
+6521,"Veau, escalope crue",rouge,"sous-groupe « viandes crues », catégorie « veau »"
+6520,"Veau, escalope cuite",rouge,"sous-groupe « viandes cuites », catégorie « veau »"
+6530,"Veau, filet cru",rouge,"sous-groupe « viandes crues », catégorie « veau »"
+6531,"Veau, filet rôti/cuit au four",rouge,"sous-groupe « viandes cuites », catégorie « veau »"
+6581,"Veau, jarret braisé ou bouilli",rouge,"sous-groupe « viandes cuites », catégorie « veau »"
+6583,"Veau, jarret cru",rouge,"sous-groupe « viandes crues », catégorie « veau »"
+6523,"Veau, noix grillée/poêlée",rouge,"sous-groupe « viandes cuites », catégorie « veau »"
+6524,"Veau, noix rôtie/cuite au four",rouge,"sous-groupe « viandes cuites », catégorie « veau »"
+6522,"Veau, noix,crue",rouge,"sous-groupe « viandes crues », catégorie « veau »"
+6540,"Veau, poitrine crue",rouge,"sous-groupe « viandes crues », catégorie « veau »"
+6550,"Veau, rôti cru",rouge,"sous-groupe « viandes crues », catégorie « veau »"
+6551,"Veau, rôti cuit",rouge,"sous-groupe « viandes cuites », catégorie « veau »"
+6536,"Veau, steak haché 15% MG cru",rouge,"sous-groupe « viandes crues », catégorie « veau »"
+6535,"Veau, steak haché 20% MG cru",rouge,"sous-groupe « viandes crues », catégorie « veau »"
+6564,"Veau, viande, cuite (aliment moyen)",rouge,"sous-groupe « viandes cuites », catégorie « veau »"
+6563,"Veau, épaule braisée ou bouillie",rouge,"sous-groupe « viandes cuites », catégorie « veau »"
+6560,"Veau, épaule crue",rouge,"sous-groupe « viandes crues », catégorie « veau »"
+6562,"Veau, épaule grillée/poêlée",rouge,"sous-groupe « viandes cuites », catégorie « veau »"
+8500,Andouille,transformée,sous-groupe Ciqual « charcuteries et alternatives végétales »
+8501,Andouille de Guéméné,transformée,sous-groupe Ciqual « charcuteries et alternatives végétales »
+8512,Andouille de Vire,transformée,sous-groupe Ciqual « charcuteries et alternatives végétales »
+8504,"Andouille, réchauffée à la poêle",transformée,sous-groupe Ciqual « charcuteries et alternatives végétales »
+8552,"Andouillette de Troyes, à cuire",transformée,sous-groupe Ciqual « charcuteries et alternatives végétales »
+8551,"Andouillette, grillée/poêlée",transformée,sous-groupe Ciqual « charcuteries et alternatives végétales »
+8550,"Andouillette, à cuire",transformée,sous-groupe Ciqual « charcuteries et alternatives végétales »
+8742,"Boudin antillais, à cuire",transformée,sous-groupe Ciqual « charcuteries et alternatives végétales »
+8803,"Boudin blanc truffé, à cuire",transformée,sous-groupe Ciqual « charcuteries et alternatives végétales »
+8800,"Boudin blanc, grillé/poêlé",transformée,sous-groupe Ciqual « charcuteries et alternatives végétales »
+8801,"Boudin blanc, à cuire",transformée,sous-groupe Ciqual « charcuteries et alternatives végétales »
+8704,"Boudin noir, grillé/poêlé",transformée,sous-groupe Ciqual « charcuteries et alternatives végétales »
+8703,"Boudin noir, à cuire",transformée,sous-groupe Ciqual « charcuteries et alternatives végétales »
+8705,"Boudin, grillé/poêlé (aliment moyen)",transformée,sous-groupe Ciqual « charcuteries et alternatives végétales »
+28503,Bresaola,transformée,sous-groupe Ciqual « charcuteries et alternatives végétales »
+8111,"Canard, magret fumé",transformée,sous-groupe Ciqual « charcuteries et alternatives végétales »
+30730,Cervelas,transformée,sous-groupe Ciqual « charcuteries et alternatives végétales »
+30731,Cervelas obernois,transformée,sous-groupe Ciqual « charcuteries et alternatives végétales »
+30732,"Cervelas à l'ail, pur porc",transformée,sous-groupe Ciqual « charcuteries et alternatives végétales »
+30050,Chair à saucisse crue,transformée,sous-groupe Ciqual « charcuteries et alternatives végétales »
+30051,"Chair à saucisse, pur porc, crue",transformée,sous-groupe Ciqual « charcuteries et alternatives végétales »
+30900,Charcuterie (aliment moyen),transformée,sous-groupe Ciqual « charcuteries et alternatives végétales »
+30115,Chipolata crue,transformée,sous-groupe Ciqual « charcuteries et alternatives végétales »
+30005,Chipolata cuite,transformée,sous-groupe Ciqual « charcuteries et alternatives végétales »
+30315,Chorizo,transformée,sous-groupe Ciqual « charcuteries et alternatives végétales »
+30317,"Chorizo supérieur, doux ou fort, type charcuterie en tranches",transformée,sous-groupe Ciqual « charcuteries et alternatives végétales »
+30316,"Chorizo supérieur, doux ou fort, type saucisse sèche",transformée,sous-groupe Ciqual « charcuteries et alternatives végétales »
+8110,"Confit de canard, appertisé",transformée,sous-groupe Ciqual « charcuteries et alternatives végétales »
+8109,"Confit de canard, viande (cuisse), sans peau, appertisé, réchauffé",transformée,sous-groupe Ciqual « charcuteries et alternatives végétales »
+8120,Confit de foie de porc,transformée,sous-groupe Ciqual « charcuteries et alternatives végétales »
+8125,Confit de foie de volaille,transformée,sous-groupe Ciqual « charcuteries et alternatives végétales »
+28850,Coppa,transformée,sous-groupe Ciqual « charcuteries et alternatives végétales »
+28505,"Corned-beef, appertisé",transformée,sous-groupe Ciqual « charcuteries et alternatives végétales »
+30177,Diot cru,transformée,sous-groupe Ciqual « charcuteries et alternatives végétales »
+28922,"Dés, allumettes, râpé ou haché de jambon",transformée,sous-groupe Ciqual « charcuteries et alternatives végétales »
+28929,"Dés, allumettes, râpé ou haché de jambon de volaille",transformée,sous-groupe Ciqual « charcuteries et alternatives végétales »
+30052,Farce porc et boeuf crue,transformée,sous-groupe Ciqual « charcuteries et alternatives végétales »
+28727,Filet de bacon,transformée,sous-groupe Ciqual « charcuteries et alternatives végétales »
+8331,"Foie gras, canard, bloc (aliment moyen)",transformée,sous-groupe Ciqual « charcuteries et alternatives végétales »
+8324,"Foie gras, canard, bloc, 30% de morceaux",transformée,sous-groupe Ciqual « charcuteries et alternatives végétales »
+8325,"Foie gras, canard, bloc, 50% de morceaux",transformée,sous-groupe Ciqual « charcuteries et alternatives végétales »
+8323,"Foie gras, canard, bloc, sans morceaux",transformée,sous-groupe Ciqual « charcuteries et alternatives végétales »
+8328,"Foie gras, canard, cru",transformée,sous-groupe Ciqual « charcuteries et alternatives végétales »
+8321,"Foie gras, canard, entier, cuit",transformée,sous-groupe Ciqual « charcuteries et alternatives végétales »
+8400,Fromage de tête,transformée,sous-groupe Ciqual « charcuteries et alternatives végétales »
+8350,Galantine,transformée,sous-groupe Ciqual « charcuteries et alternatives végétales »
+28927,Haché de volaille,transformée,sous-groupe Ciqual « charcuteries et alternatives végétales »
+28800,Jambon cru,transformée,sous-groupe Ciqual « charcuteries et alternatives végétales »
+28801,Jambon cru fumé,transformée,sous-groupe Ciqual « charcuteries et alternatives végétales »
+28804,"Jambon cru fumé, allégé en matière grasse",transformée,sous-groupe Ciqual « charcuteries et alternatives végétales »
+28910,"Jambon cuit, choix",transformée,sous-groupe Ciqual « charcuteries et alternatives végétales »
+28912,"Jambon cuit, choix, avec couenne",transformée,sous-groupe Ciqual « charcuteries et alternatives végétales »
+28913,"Jambon cuit, choix, découenné dégraissé",transformée,sous-groupe Ciqual « charcuteries et alternatives végétales »
+28925,"Jambon cuit, de Paris, découenné dégraissé",transformée,sous-groupe Ciqual « charcuteries et alternatives végétales »
+28803,"Jambon cuit, fumé",transformée,sous-groupe Ciqual « charcuteries et alternatives végétales »
+28900,"Jambon cuit, supérieur",transformée,sous-groupe Ciqual « charcuteries et alternatives végétales »
+28901,"Jambon cuit, supérieur, avec couenne",transformée,sous-groupe Ciqual « charcuteries et alternatives végétales »
+28902,"Jambon cuit, supérieur, découenné",transformée,sous-groupe Ciqual « charcuteries et alternatives végétales »
+28906,"Jambon cuit, supérieur, découenné dégraissé",transformée,sous-groupe Ciqual « charcuteries et alternatives végétales »
+28907,"Jambon cuit, supérieur, dégraissé découenne, à teneur réduite en sel",transformée,sous-groupe Ciqual « charcuteries et alternatives végétales »
+28811,Jambon de Bayonne,transformée,sous-groupe Ciqual « charcuteries et alternatives végétales »
+28964,Jambon de dinde ou blanc de dinde en tranche,transformée,sous-groupe Ciqual « charcuteries et alternatives végétales »
+28700,Jambon de porc à cuire ou jambon à rôtir/cuire au four,transformée,sous-groupe Ciqual « charcuteries et alternatives végétales »
+28963,Jambon de poulet ou blanc de poulet en tranche,transformée,sous-groupe Ciqual « charcuteries et alternatives végétales »
+28965,"Jambon de volaille ou blanc de volaille, à teneur réduite en sel, en tranche",transformée,sous-groupe Ciqual « charcuteries et alternatives végétales »
+8429,Jambon persillé en gelée,transformée,sous-groupe Ciqual « charcuteries et alternatives végétales »
+28812,Jambon sec,transformée,sous-groupe Ciqual « charcuteries et alternatives végétales »
+28845,Jambon sec Serrano,transformée,sous-groupe Ciqual « charcuteries et alternatives végétales »
+28844,Jambon sec de Parme,transformée,sous-groupe Ciqual « charcuteries et alternatives végétales »
+28802,"Jambon sec, découenné, dégraissé",transformée,sous-groupe Ciqual « charcuteries »
+28905,Jambon à l'os braisé,transformée,sous-groupe Ciqual « charcuteries et alternatives végétales »
+28960,"Jambonneau, cuit",transformée,sous-groupe Ciqual « charcuteries et alternatives végétales »
+28720,"Lardon fumé, cru",transformée,sous-groupe Ciqual « charcuteries et alternatives végétales »
+28725,"Lardon fumé, cuit",transformée,sous-groupe Ciqual « charcuteries et alternatives végétales »
+28501,"Lardon nature, cru",transformée,sous-groupe Ciqual « charcuteries et alternatives végétales »
+28504,"Lardon nature, cuit",transformée,sous-groupe Ciqual « charcuteries et alternatives végétales »
+28723,"Lardon, cru, à teneur réduite en sel",transformée,sous-groupe Ciqual « charcuteries et alternatives végétales »
+30150,Merguez crue,transformée,sous-groupe Ciqual « charcuteries et alternatives végétales »
+30151,Merguez crue (aliment moyen),transformée,sous-groupe Ciqual « charcuteries et alternatives végétales »
+30156,"Merguez, boeuf et mouton, crue",transformée,sous-groupe Ciqual « charcuteries et alternatives végétales »
+30155,"Merguez, boeuf et mouton, cuite",transformée,sous-groupe Ciqual « charcuteries et alternatives végétales »
+30153,"Merguez, boeuf et porc, crue",transformée,sous-groupe Ciqual « charcuteries et alternatives végétales »
+30154,"Merguez, boeuf, mouton et porc, crue",transformée,sous-groupe Ciqual « charcuteries et alternatives végétales »
+30152,"Merguez, pur boeuf, crue",transformée,sous-groupe Ciqual « charcuteries et alternatives végétales »
+30789,Mortadelle,transformée,sous-groupe Ciqual « charcuteries et alternatives végétales »
+30797,Mortadelle pistachée pur porc,transformée,sous-groupe Ciqual « charcuteries et alternatives végétales »
+30791,"Mortadelle, porc et boeuf",transformée,sous-groupe Ciqual « charcuteries et alternatives végétales »
+30790,"Mortadelle, pur porc",transformée,sous-groupe Ciqual « charcuteries et alternatives végétales »
+8313,Mousse de foie de porc,transformée,sous-groupe Ciqual « charcuteries et alternatives végétales »
+8312,Mousse de foie de porc supérieure ou crème de foie,transformée,sous-groupe Ciqual « charcuteries et alternatives végétales »
+8450,Museau de boeuf,transformée,sous-groupe Ciqual « charcuteries et alternatives végétales »
+28530,Oreille de porc demi-sel,transformée,sous-groupe Ciqual « charcuteries et alternatives végétales »
+28858,Pancetta ou poitrine roulée sèche,transformée,sous-groupe Ciqual « charcuteries et alternatives végétales »
+30312,Pavé au poivre (charcuterie),transformée,sous-groupe Ciqual « charcuteries et alternatives végétales »
+28540,Pied de porc demi-sel,transformée,sous-groupe Ciqual « charcuteries et alternatives végétales »
+28550,Poitrine de porc demi-sel,transformée,sous-groupe Ciqual « charcuteries et alternatives végétales »
+28502,"Poitrine de porc en salaison, fumée, crue",transformée,sous-groupe Ciqual « charcuteries et alternatives végétales »
+28507,"Poitrine de porc en salaison, nature, crue",transformée,sous-groupe Ciqual « charcuteries et alternatives végétales »
+8332,Pâté (aliment moyen),transformée,sous-groupe Ciqual « charcuteries et alternatives végétales »
+8206,Pâté au jambon,transformée,sous-groupe Ciqual « charcuteries et alternatives végétales »
+8201,Pâté au poivre vert,transformée,sous-groupe Ciqual « charcuteries et alternatives végétales »
+8214,Pâté breton,transformée,sous-groupe Ciqual « charcuteries et alternatives végétales »
+8326,Pâté de foie d'oie,transformée,sous-groupe Ciqual « charcuteries et alternatives végétales »
+8305,Pâté de foie de porc,transformée,sous-groupe Ciqual « charcuteries et alternatives végétales »
+8300,"Pâté de foie de porc, supérieur",transformée,sous-groupe Ciqual « charcuteries et alternatives végétales »
+8316,Pâté de foie de volaille,transformée,sous-groupe Ciqual « charcuteries et alternatives végétales »
+8245,Pâté de gibier,transformée,sous-groupe Ciqual « charcuteries et alternatives végétales »
+8240,Pâté de lapin,transformée,sous-groupe Ciqual « charcuteries et alternatives végétales »
+8391,Pâté en croûte,transformée,sous-groupe Ciqual « charcuteries et alternatives végétales »
+8250,Pâté ou terrine aux champignons (forestier),transformée,sous-groupe Ciqual « charcuteries et alternatives végétales »
+8211,Pâté ou terrine de campagne,transformée,sous-groupe Ciqual « charcuteries et alternatives végétales »
+8212,"Pâté ou terrine de campagne, à teneur réduite en sel",transformée,sous-groupe Ciqual « charcuteries et alternatives végétales »
+8030,Rillettes d'oie,transformée,sous-groupe Ciqual « charcuteries et alternatives végétales »
+8010,Rillettes de Tours (porc),transformée,sous-groupe Ciqual « charcuteries et alternatives végétales »
+8026,Rillettes de canard,transformée,sous-groupe Ciqual « charcuteries et alternatives végétales »
+8040,Rillettes de poulet,transformée,sous-groupe Ciqual « charcuteries et alternatives végétales »
+8015,Rillettes du Mans (porc),transformée,sous-groupe Ciqual « charcuteries et alternatives végétales »
+8025,Rillettes pur oie,transformée,sous-groupe Ciqual « charcuteries et alternatives végétales »
+8001,Rillettes pur porc,transformée,sous-groupe Ciqual « charcuteries et alternatives végétales »
+8002,Rillettes supérieures de porc,transformée,sous-groupe Ciqual « charcuteries et alternatives végétales »
+8000,Rillettes traditionnelles de porc,transformée,sous-groupe Ciqual « charcuteries et alternatives végétales »
+28917,Rond de jambon cuit,transformée,sous-groupe Ciqual « charcuteries et alternatives végétales »
+30304,Rosette ou fuseau,transformée,sous-groupe Ciqual « charcuteries et alternatives végétales »
+8373,Roulade de porc pistachée,transformée,sous-groupe Ciqual « charcuteries et alternatives végétales »
+28976,"Rôti de volaille en salaison, cuit",transformée,sous-groupe Ciqual « charcuteries et alternatives végétales »
+30350,Salami,transformée,sous-groupe Ciqual « charcuteries et alternatives végétales »
+30352,Salami porc et boeuf,transformée,sous-groupe Ciqual « charcuteries »
+30351,Salami pur porc,transformée,sous-groupe Ciqual « charcuteries et alternatives végétales »
+30366,Salami type danois,transformée,sous-groupe Ciqual « charcuteries et alternatives végétales »
+30780,Saucisse (aliment moyen),transformée,sous-groupe Ciqual « charcuteries et alternatives végétales »
+30125,Saucisse alsacienne fumée ou gendarme,transformée,sous-groupe Ciqual « charcuteries et alternatives végétales »
+30746,Saucisse cocktail,transformée,sous-groupe Ciqual « charcuteries et alternatives végétales »
+30134,Saucisse de Francfort,transformée,sous-groupe Ciqual « charcuteries et alternatives végétales »
+30105,"Saucisse de Montbéliard, à cuire",transformée,sous-groupe Ciqual « charcuteries et alternatives végétales »
+30104,Saucisse de Morteau,transformée,sous-groupe Ciqual « charcuteries et alternatives végétales »
+30108,Saucisse de Morteau bouillie/cuite à l'eau,transformée,sous-groupe Ciqual « charcuteries et alternatives végétales »
+30742,"Saucisse de Strasbourg ou knack, à cuire",transformée,sous-groupe Ciqual « charcuteries et alternatives végétales »
+30743,"Saucisse de Strasbourg ou knack, à teneur réduite en sel, à cuire",transformée,sous-groupe Ciqual « charcuteries et alternatives végétales »
+30110,Saucisse de Toulouse crue,transformée,sous-groupe Ciqual « charcuteries et alternatives végétales »
+30011,Saucisse de Toulouse cuite,transformée,sous-groupe Ciqual « charcuteries et alternatives végétales »
+30766,Saucisse de bière,transformée,sous-groupe Ciqual « charcuteries et alternatives végétales »
+30176,Saucisse de foie,transformée,sous-groupe Ciqual « charcuteries et alternatives végétales »
+30764,Saucisse de jambon pur porc,transformée,sous-groupe Ciqual « charcuteries et alternatives végétales »
+30778,Saucisse de langue à la pistache,transformée,sous-groupe Ciqual « charcuteries et alternatives végétales »
+30130,Saucisse de volaille façon charcutière,transformée,sous-groupe Ciqual « charcuteries et alternatives végétales »
+30131,Saucisse de volaille type knack,transformée,sous-groupe Ciqual « charcuteries et alternatives végétales »
+30102,Saucisse fumée à cuire,transformée,sous-groupe Ciqual « charcuteries et alternatives végétales »
+30309,Saucisse sèche,transformée,sous-groupe Ciqual « charcuteries et alternatives végétales »
+30750,Saucisse viennoise crue,transformée,sous-groupe Ciqual « charcuteries et alternatives végétales »
+30705,Saucisson de Paris,transformée,sous-groupe Ciqual « charcuteries »
+30706,"Saucisson de Paris, fumé",transformée,sous-groupe Ciqual « charcuteries »
+30801,Saucisson de cheval type cervelas,transformée,sous-groupe Ciqual « charcuteries et alternatives végétales »
+30701,Saucisson pur porc cuit,transformée,sous-groupe Ciqual « charcuteries et alternatives végétales »
+30300,Saucisson sec,transformée,sous-groupe Ciqual « charcuteries et alternatives végétales »
+30314,Saucisson sec allégé en matière grasse,transformée,sous-groupe Ciqual « charcuteries et alternatives végétales »
+30311,Saucisson sec aux noix et/ou noisettes,transformée,sous-groupe Ciqual « charcuteries et alternatives végétales »
+30308,Saucisson sec de Lyon pur porc,transformée,sous-groupe Ciqual « charcuteries et alternatives végétales »
+30301,Saucisson sec pur porc,transformée,sous-groupe Ciqual « charcuteries et alternatives végétales »
+30302,"Saucisson sec pur porc, qualité supérieure",transformée,sous-groupe Ciqual « charcuteries et alternatives végétales »
+30700,Saucisson à l'ail,transformée,sous-groupe Ciqual « charcuteries et alternatives végétales »
+8242,Terrine de lapin,transformée,sous-groupe Ciqual « charcuteries et alternatives végétales »
+28860,Viande des Grisons,transformée,sous-groupe Ciqual « charcuteries et alternatives végétales »
+28911,"Épaule de porc, cuite, choix, découennée dégraissée",transformée,sous-groupe Ciqual « charcuteries et alternatives végétales »
+28924,"Épaule de porc, cuite, standard, découennée dégraissée",transformée,sous-groupe Ciqual « charcuteries et alternatives végétales »

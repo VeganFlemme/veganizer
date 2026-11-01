@@ -49,6 +49,9 @@ const SECTIONS = [
   ["paires", "Les paires de plats : maison et du commerce"],
   ["formule", "La formule de calcul"],
   ["cout-climat", "Le coût climat"],
+  ["animaux", "Animaux : une estimation basse"],
+  ["sante-circ", "Santé : le classement du CIRC"],
+  ["prix", "Prix : quand nous les affichons"],
   ["sources", "Les sources"],
   ["hypotheses", "Catégories animales et hypothèses par défaut"],
   ["aucun-ingredient-animal", "« Aucun ingrédient animal identifié »"],
@@ -361,6 +364,40 @@ export default async function MethodologiePage() {
         <p>
           C’est un coût pour la collectivité (dommages climatiques évités ou causés), pas un prix
           payé en caisse.
+        </p>
+      </Section>
+
+      <Section id="animaux" title="Animaux : une estimation basse">
+        <p>
+          Pour la viande, nous divisons le nombre d’animaux abattus en France par la production de viande
+          en poids de carcasse (FAOSTAT, chiffres officiels, dernière année disponible ; la fourchette
+          couvre les cinq dernières années). Nous appliquons ce facteur au poids de viande consommée :
+          comme un kilo de viande cuite et désossée vient de plus d’un kilo de carcasse, le résultat
+          est une <strong>estimation basse</strong>.
+        </p>
+        <p>
+          Les bovins sont une moyenne tous âges (veaux compris), les ovins aussi. Le veau, les œufs,
+          les produits laitiers et les poissons n’ont pas encore de facteur sourcé : ils apparaissent
+          comme « donnée manquante ».
+        </p>
+      </Section>
+
+      <Section id="sante-circ" title="Santé : le classement du CIRC">
+        <p>
+          Le Centre international de recherche sur le cancer (monographie n° 114, 2018) classe la
+          viande transformée comme cancérogène pour l’humain (groupe 1) et la viande rouge comme
+          probablement cancérogène (groupe 2A). Nous indiquons combien de grammes de chacune contient
+          une portion, selon les définitions du CIRC (p. 37). Le groupe indique la solidité des
+          preuves, pas l’ampleur du risque.
+        </p>
+      </Section>
+
+      <Section id="prix" title="Prix : quand nous les affichons">
+        <p>
+          Les prix viennent des relevés citoyens Open Prices (licence ODbL) : prix au kilo en France,
+          hors promotions, médiane sur 12 mois, avec au moins 5 relevés par aliment. Le prix d’un plat
+          n’est affiché que si ces prix couvrent au moins 95 % de sa masse ; sinon nous indiquons la
+          part couverte.
         </p>
       </Section>
 
