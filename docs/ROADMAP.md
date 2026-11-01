@@ -60,6 +60,7 @@ Objectif : la recherche ne doit plus se limiter aux paires publiées. Trois nive
 ### S16 — Page `/recette` : « Analyse ta recette »
 - L'utilisateur ajoute ses ingrédients (autocomplétion sur les aliments **purs** de `animal_categories.csv`, règle 9), grammes et nombre de portions. Le moteur `lib/scoring` calcule les 5 piliers, avec couverture et fourchettes.
 - Bouton « Version végétale » : propose des remplacements ingrédient par ingrédient (viande hachée → lentilles/protéines de soja, crème → crème végétale, etc.) depuis une table de substitutions relue (`pipeline/substitutions.csv`, avec justification nutritionnelle), puis recalcule.
+- Même présentation que `/compare` (onglets, scores, vainqueurs) dès que le lot C est fait.
 - Fonctionne sans compte ; sauvegarde possible avec un compte (tables `dishes` / `dish_ingredients` existantes, RLS).
 - Aucun appel à une IA payante côté serveur.
 
@@ -69,38 +70,47 @@ Objectif : la recherche ne doit plus se limiter aux paires publiées. Trois nive
 - Pour chaque plat : version animale + version végétale maison + version commerce si possible, ingrédients purs, portions réalistes, justification dans `pair_dishes.csv`. Les recettes générées sont marquées « à relire » dans `A_VERIFIER.md` tant qu'un humain ne les a pas validées.
 - Ajouter une source à `public.sources` (avec licence) pour chaque base de recettes utilisée, et l'afficher sur `/sources`.
 
----
-
-## Lot C — Design et expérience utilisateur (sessions 18 et 19)
-
-**Prérequis humain :** maquettes et charte validées par Matt (fichier `docs/DESIGN.md` + liens des maquettes). Si `docs/DESIGN.md` n'existe pas, ne commence pas le lot C : passe au lot D et signale-le.
-
-### S18 — Système de design
-- Traduire `docs/DESIGN.md` en jetons Tailwind (couleurs, typographie, espacements, rayons, ombres) dans `app/globals.css`, et en composants réutilisables dans `components/ui/` (bouton, carte, badge source, badge fiabilité « paire vérifiée / comparaison simplifiée / ta recette », badge incertitude, jauge d'écart, onglets, encadré « le plat animal fait mieux », mention « donnée manquante »).
-- Logo et favicon originaux (fournis dans `DESIGN.md`) ; supprimer les SVG par défaut de Next.js dans `public/`.
-- Contrastes WCAG AA vérifiés pour chaque paire texte/fond ; `prefers-reduced-motion` respecté.
-
-### S19 — Refonte des pages
-- **Mobile d'abord** (largeur 375 px), puis tablette et ordinateur.
-- `/compare/[slug]` : le verdict se lit en 5 secondes (un chiffre clé par pilier, en clair), puis le détail à la demande (divulgation progressive), puis les sources. L'alternative maison toujours en premier.
-- Accueil : recherche d'un plat en premier (résultats groupés par niveau de fiabilité), puis exemples de paires, puis « Analyse ta recette ».
-- `/recette` : saisie rapide au pouce, résultat compréhensible sans lire la méthodologie.
-- Graphiques cohérents entre pages, avec fourchettes d'incertitude visibles et lisibles sans couleur.
-- `/methodologie` et `/sources` : sommaire, ancres, lecture facile.
-- Vérification visuelle : captures Playwright de chaque page en 375 px et 1280 px jointes à la PR.
+### S17b — Rendements de cuisson (décision de Matt, 2026-11-01)
+- Les recettes restent en poids cuits (état consommé) : **ne convertir aucune recette en cru**.
+- Viandes et volailles : USDA *Table of Cooking Yields for Meat and Poultry*, Release 2 (2014, domaine public, CSV sur catalog.data.gov). Chaque rendement cité avec sa ligne et la version du fichier.
+- Autres aliments : USDA *Agriculture Handbook No. 102* (Food Yields) seulement s'il est exploitable (fichier lisible, rendement cuit/cru explicite) ; sinon « donnée manquante ».
+- Usage : prix d'un ingrédient cuit = prix au kg du produit cru ÷ rendement de cuisson, uniquement quand le produit cru et la cuisson correspondent au code Ciqual cuit.
+- Méthode expliquée sur `/methodologie`.
 
 ---
 
-## Lot D — Finitions et lancement (sessions 20 et 21)
+## Lot C — Scores, design et expérience utilisateur (sessions 18 à 20)
 
-### S20 — Finitions techniques et légales
+**Référence :** `docs/DESIGN.md` (direction validée par Matt le 2026-11-01) et les maquettes de `docs/design/maquettes/`. Suivre DESIGN.md à la lettre ; en cas de doute, la maquette fait foi pour la mise en page, CLAUDE.md pour les données.
+
+### S18 — Scores et vainqueurs par catégorie (moteur)
+- `data/score_rules.json` : catégories, indicateurs, sens (↑/↓) et source de chaque sens, comme dans DESIGN.md § 5. Ne citer une page que si elle a été ouverte (règle d'or).
+- `lib/scoring/score.ts` : points par indicateur, vainqueur par catégorie (« Version végétale », « Plat animal », « Égalité », « Données insuffisantes »), mention « provisoire », verdict global « X sur 5 », nombre d'indicateurs comparés sur le total. Tests Vitest d'abord : égalité, valeur manquante, tout manquant, changement d'unité, variante maison/commerce.
+- La méthode est expliquée sur `/methodologie` (section « Comment on désigne un vainqueur »).
+- Ajouter dans `A_VERIFIER.md` : validation des sens par un·e diététicien·ne et une personne experte en ACV.
+
+### S19 — Système de design
+- Jetons de DESIGN.md § 2 dans `app/globals.css` (Tailwind `@theme`), police Schibsted Grotesk via `next/font/google`.
+- Composants de DESIGN.md § 3 dans `components/ui/`, chacun avec un test de rendu simple. Logo SVG, favicon et image de partage ; supprimer les SVG par défaut de Next.js dans `public/`.
+- Contrastes vérifiés pour chaque couple texte/fond ; focus visible ; `prefers-reduced-motion`.
+
+### S20 — Refonte des pages
+- `/compare/[slug]` selon DESIGN.md § 4 : bandeau, onglets (Vue d'ensemble, Nutrition, Santé, Environnement, Protection animale, Économie), cartes de synthèse cliquables, onglets détaillés avec **toutes** les données de la base, variante maison/commerce, simulateur. Onglet dans l'URL (`?onglet=`), pages toujours générées statiquement.
+- Accueil, `/recette`, `/aliment/[code]`, `/methodologie`, `/sources` avec les mêmes composants.
+- Mobile d'abord (375 px), puis ordinateur (1 280 px). Captures Playwright des deux largeurs et de chaque onglet jointes à la PR.
+
+---
+
+## Lot D — Finitions et lancement (sessions 21 et 22)
+
+### S21 — Finitions techniques et légales
 - Performances (Lighthouse ≥ 90 sur mobile), accessibilité (axe sans erreur), référencement (titres, descriptions, sitemap, données structurées, images de partage).
 - Pages légales : mentions légales (éditeur : **à compléter par Matt**, ne rien inventer), politique de confidentialité (Supabase Auth, signalements d'erreur, recettes enregistrées), conditions d'utilisation, mention « pas de conseil médical ».
 - Bandeau cookies seulement si un traceur non exempté est ajouté (sinon aucun).
 - Vérifier la taille de la base Supabase (plan Free : 500 Mo) après les imports du lot B ; alerter si > 60 %.
 
-### S21 — Retours des tests et des experts
-- Intégrer les retours notés par Matt dans `docs/RETOURS.md` (tests utilisateurs et relecture d'experts). Chaque retour = corrigé, refusé avec raison, ou reporté.
+### S22 — Retours des tests et des experts
+- Intégrer les retours notés par Matt dans `docs/RETOURS.md` (tests utilisateurs, relecture d'experts, validation des sens des scores). Chaque retour = corrigé, refusé avec raison, ou reporté.
 
 ---
 

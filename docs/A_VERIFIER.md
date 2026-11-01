@@ -70,7 +70,7 @@ Tous les critères sont respectés.
 
 - [ ] **Condition d'arrêt rencontrée** : les sources officielles PNNS (Santé publique France, mangerbouger.fr), Fishcount (HTTP 401) et HENI (Nature Food) étaient inaccessibles. Rien n'a été inventé ; décider s'il faut les remplacer ou réessayer plus tard (`TODO_SOURCES.md`).
 - [ ] **FAOSTAT** : vérifier à la main un facteur, ex. porc 2024 = 21 936 820 têtes ÷ 2 094 250 t = 10,475 animaux par tonne de carcasse ; bovins 2024 = 3 986 140 ÷ 1 298 540 t = 3,070 par tonne. Licence FAOSTAT (`sources.faostat-qcl.commercial_use` = null) à vérifier.
-- [ ] **Lecture « 1 animal pour N portions »** (ex. bœuf bourguignon : environ 1 animal pour 1 686 portions, estimation basse) : formulation à valider.
+- [x] **Lecture « 1 animal pour N portions »** (→ décision de Matt du 2026-11-01, formulation « Au moins 1 animal tué pour N portions (estimation basse) ») (ex. bœuf bourguignon : environ 1 animal pour 1 686 portions, estimation basse) : formulation à valider.
 - [ ] **Classement CIRC** (`pipeline/iarc_meat.csv`, 318 aliments) : relire, en particulier 28700 « Jambon de porc à cuire » (classé « transformée » par son sous-groupe Ciqual alors qu'il peut être frais), les pâtés, et l'exclusion des abats et du gibier.
 - [ ] **Texte santé** : « Le groupe du CIRC indique la solidité des preuves qu'un aliment peut causer un cancer, pas l'ampleur du risque » (`data/sante.json`) — phrase de lecture habituelle du CIRC, à confirmer avec la page Q&R du CIRC.
 - [ ] **Open Prices** : médianes 2026 — carotte 2,15 €/kg (60 relevés), oignon 2,83 €/kg (55), citron 3,99 €/kg (38). Le citron est appliqué à la chair (prix du fruit entier). Rappel ODbL : la table `prices` dérivée doit rester sous ODbL et citer Open Prices.
@@ -108,14 +108,15 @@ Tous les critères sont respectés.
 - [ ] **Classement pour les repères** (`lib/compare/config.ts`) : viande = bovin, veau, porc, agneau, cheval, hors charcuterie (le PNNS inclut les abats et, p. 49, chèvre, sanglier, biche : le gibier n'est pas compté) ; poisson = catégories poissons (fruits de mer non comptés, alors que le tableau p. 49 dit « Poisson et fruits de mer ») ; légumes secs = sous-groupe Ciqual « légumineuses » hors aliments « frais/fraîche » (la farine de pois chiche et le quinoa, cité p. 49, ne sont pas comptés). Alternative : une liste d'aliments relue à la main.
 - [ ] **Poisson et légumes secs** : affichés en grammes par portion, sans pourcentage (le repère est une fréquence, pas une quantité). Alternative : « compte pour 1 des 2 fois par semaine », mais le PNNS ne définit pas de portion minimale.
 - [ ] **Licence du PDF PNNS** : non indiquée dans le document ; `commercial_use = null`.
-- [ ] **EAT-Lancet 2025** : The Lancet inaccessible (403). Faut-il accepter le *Summary Report 2025* d'EAT Forum comme source (document de la Commission, mais pas l'article du Lancet) ?
+- [x] **EAT-Lancet 2025** : The Lancet inaccessible (403). Faut-il accepter le *Summary Report 2025* d'EAT Forum comme source ? → **Décision de Matt (2026-11-01)** : accepté comme source provisoire, chaque chiffre cité avec sa page, `commercial_use = null`.
+- [ ] **EAT-Lancet** : à recouper avec l'article du Lancet.
 - [ ] **HENI** : non intégré (pas de licence ouverte). Le badge du simulateur dit désormais « HENI · usage non commercial » et la valeur reste « donnée manquante ». Demander une autorisation aux auteurs ?
 
 ## Lot A — S13 Prix réels
 
 - [ ] **Médianes importées** (12 derniers mois) : carotte 1,95 €/kg, oignon 2,28 €/kg, steak haché 15 % cru 17,53 €/kg (RNM, moyennes mensuelles) ; tofu nature 10,36 €/kg (47 relevés), tofu fumé 17,25 (25), tempeh 22,58 (10), seitan 23,61 (9), beurre doux 11,94 (286), flocons d'avoine 3,98 (61), ketchup 4,80 (235) (Open Prices). Vérifier quelques relevés à la main.
 - [ ] **Correspondances catégories** : « en:plain-tofu » ↔ 20904 tofu nature, « en:unsalted-butters » ↔ 16400 beurre 80 % doux (inclut-il des beurres allégés ?), « en:ketchup » ↔ 11008. Alternative : liste de codes-barres relue.
-- [ ] **Prix total des plats** : jamais affiché (couverture de 0 à 53 %). Le blocage principal est l'absence de rendement de cuisson sourcé pour les ingrédients cuits. Décider d'une source (ex. USDA, domaine public) ou d'utiliser des codes crus dans les recettes.
+- [x] **Prix total des plats** (→ **décision de Matt** : recettes en poids cuits ; rendements de cuisson USDA en session S17b, sinon donnée manquante) : jamais affiché (couverture de 0 à 53 %). Le blocage principal est l'absence de rendement de cuisson sourcé pour les ingrédients cuits. Décider d'une source (ex. USDA, domaine public) ou d'utiliser des codes crus dans les recettes.
 - [ ] **Ordre des sources** RNM > Open Prices : à valider. Alternative : médiane commune.
 - [ ] **ODbL** : la table `prices` contient maintenant des prix Open Prices dérivés (prix au kg calculés) ; elle doit être partagée sous ODbL si elle est rediffusée.
 
@@ -123,10 +124,16 @@ Tous les critères sont respectés.
 
 - [ ] **404** : `/compare/xxx` renvoie maintenant 404 (HTML de `/introuvable`, `noindex`). La page `/introuvable` elle-même répond 200 si on la visite directement. Alternative : `global-not-found` (expérimental).
 - [ ] **Valeur carbone** : année de référence unique 2025 (0,256 €/kg) partout, y compris pour 10 ans dans le simulateur. Alternative : valeur de chaque année (plus élevée dans le temps). Ancien point « l'année affichée est 2026 » (étape C) : caduc.
-- [ ] **Conseil B2** (`data/conseils.json`, version 0.3) : à revalider. Texte : « statut en vitamine B2 plus faible chez les végétariens comparés aux individus qui consomment de la chair animale » (p. 30) ; « Parmi les lacto-ovovégétariens, ceux qui limitent leur consommation de lait et de produits laitiers frais, ont un apport plus faible en vitamine B2 » (p. 23) ; groupe « levures et autres » ≈ 15 g/j pour les végétaliens (p. 24).
+- [x] **Conseil B2** (`data/conseils.json`, version 0.3) : **validé par Matt le 2026-11-01**. Texte : « statut en vitamine B2 plus faible chez les végétariens comparés aux individus qui consomment de la chair animale » (p. 30) ; « Parmi les lacto-ovovégétariens, ceux qui limitent leur consommation de lait et de produits laitiers frais, ont un apport plus faible en vitamine B2 » (p. 23) ; groupe « levures et autres » ≈ 15 g/j pour les végétaliens (p. 24).
 - [ ] **Reclassements** : 24048 (sablé « autre que pur beurre ») et 23399 (pâte brisée, aliment moyen) passés en `mixte` sur présomption ; alternative : les laisser `is_animal = false` avec une note. Les 8 autres sont prouvés par le détail Agribalyse.
-- [ ] **Quiche du commerce** : désormais à la pâte filo (316 g par portion, 22,0 g de protéines, −60 % de CO₂e). Recette réaliste ?
-- [ ] **Formulations** : « soit 1 animal pour N portions au plus (le nombre d'animaux est une estimation basse) » et, dans le simulateur, « Abattages évités, en moyenne (au moins) — moyenne statistique, pas un animal précis épargné ». Alternative : « contribue à l'abattage d'environ 1 animal toutes les N portions ».
+- [x] **Quiche du commerce** (**acceptée par Matt le 2026-11-01**) : désormais à la pâte filo (316 g par portion, 22,0 g de protéines, −60 % de CO₂e). Recette réaliste ?
+- [x] **Formulations** (→ **décision de Matt** : « Au moins 1 animal tué pour N portions (estimation basse) » partout) : « soit 1 animal pour N portions au plus (le nombre d'animaux est une estimation basse) » et, dans le simulateur, « Abattages évités, en moyenne (au moins) — moyenne statistique, pas un animal précis épargné ». Alternative : « contribue à l'abattage d'environ 1 animal toutes les N portions ».
 - [ ] **Lait** : le facteur jours de vie ne s'applique plus qu'à 64 aliments (lait liquide hors poudre et lait concentré, yaourts et laits fermentés). Poulet rôti : 3,567 jours par portion (le beurre ne compte plus) ; lasagnes : 75 g de lait × 0,04637 = 0,0035 jour.
 - [ ] **Douleur du poulet** (gênante, pénible, invalidante) : toujours « donnée manquante » ; le livre n'a pas pu être consulté (voir `TODO_SOURCES.md`).
 - [ ] **CALNUT** : ciqual.anses.fr toujours en maintenance (503).
+
+## Lot B — EAT-Lancet (suite de S12, décision de Matt)
+
+- [ ] **EAT-Lancet 2025** : repères recopiés de la figure 01, p. 11 du *Summary Report* (EAT Forum), lus par position dans le PDF (pas de rendu image disponible) : bœuf, porc ou agneau 15 g/j (0-30), volaille 30 (0-60), poisson et fruits de mer 30 (0-100), œufs 15 (0-25). Vérifier sur la figure. À recouper avec l'article du Lancet.
+- [ ] **Non comparés** : produits laitiers 250 g/j (0-500) et légumineuses 75 g/j (0-150), car le résumé ne dit pas s'il s'agit d'équivalent lait / de poids sec ou cuit. Alternative : les afficher avec cette réserve.
+- [ ] **Correspondances** : « bœuf, porc ou agneau » inclut le veau et la charcuterie de ces espèces (lardons, jambon) ; volaille hors œufs ; poisson et fruits de mer = poissons, crustacés, mollusques, céphalopodes.
