@@ -79,7 +79,7 @@ def main() -> None:
         "unit_basis": r["unit_basis"], "source_id": r["source_id"],
         "notes": f"{r['page']} — « {r['quote']} » ({r['source_url']}, consulté le {r['accessed_on']})"
                  + (f" ; {r['value']} {r['unit']} convertis en jours (× 365,25/12)" if r["unit"] == "mois" else ""),
-    } for r in rows], "category,indicator_id,source_id")
+    } for r in rows], "category,indicator_id,source_id,scope")
 
 
 if __name__ == "__main__":

@@ -102,7 +102,7 @@ def main() -> None:
         return
     client = get_client()
     require_source(client, SOURCE_ID, "30/03/2026")
-    upsert(client, "category_factors", [{k: v for k, v in f.items() if not k.startswith("_")}], "category,indicator_id,source_id")
+    upsert(client, "category_factors", [{k: v for k, v in f.items() if not k.startswith("_")}], "category,indicator_id,source_id,scope")
 
 
 if __name__ == "__main__":

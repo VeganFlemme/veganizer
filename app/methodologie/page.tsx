@@ -97,6 +97,7 @@ const SECTIONS = [
   ["hypotheses", "Catégories animales et hypothèses par défaut"],
   ["aucun-ingredient-animal", "« Aucun ingrédient animal identifié »"],
   ["valeurs-negatives", "Pourquoi certaines valeurs sont négatives"],
+  ["liste-donnees-manquantes", "Données manquantes : ce qui manque et pourquoi"],
   ["donnees-manquantes", "Pourquoi il manque des données, et pourquoi jamais 0"],
   ["sante", "Santé : pas de conseil médical"],
 ] as const;
@@ -233,6 +234,22 @@ function Negatives({ stats }: { stats: MethodologyStats }) {
 function MissingData({ stats }: { stats: MethodologyStats }) {
   const b12 = stats.nutrients.find((n) => n.id === "vit_b12_ug");
   return (
+    <>
+    <Section id="liste-donnees-manquantes" title="Données manquantes : ce qui manque et pourquoi">
+      <p>Ces données ne sont pas encore affichées. Elles restent « donnée manquante », jamais 0, tant qu’une source officielle ne peut pas être citée à la page près.</p>
+      <ul className="list-disc space-y-1 pl-5">
+        <li><strong>Âges d’abattage</strong> des bovins, des vaches de réforme, des veaux, des agneaux, des dindes et des canards : aucun âge du « produit courant » trouvé dans une publication officielle française citable (seuls les cahiers des charges label rouge donnent des minimums, non représentatifs).</li>
+        <li><strong>Animaux tués pour les œufs et le lait</strong> (poules et vaches de réforme, poussins mâles, veaux) : choix de ne pas créer ce facteur pour l’instant.</li>
+        <li><strong>Jours de vie pour le beurre et la crème</strong> : coproduits du lait écrémé, pas de règle de répartition sourcée.</li>
+        <li><strong>Douleur</strong> des porcs, des bovins et des poissons, et douleurs gênante, pénible et invalidante du poulet : pas de valeurs publiées en heures dans une source ouverte (le Welfare Footprint Institute publie certaines valeurs en jours de 16 h, que nous n’utilisons pas).</li>
+        <li><strong>Poissons et crustacés</strong> autres que le saumon d’élevage, le cabillaud et le lieu noir : pas encore de correspondance relue avec les tableaux de Mood et al.</li>
+        <li><strong>Prix</strong> de la plupart des ingrédients cuits (pâtes, riz, légumineuses, pommes de terre, légumes cuits) : il faudrait un rendement de cuisson officiel et ouvert ; et de nombreux produits n’ont pas assez de relevés publics. Le prix d’un plat n’est affiché que si 95 % de sa masse est couverte.</li>
+        <li><strong>CALNUT</strong> (ANSES), qui comblerait des nutriments manquants de Ciqual : site ciqual.anses.fr en maintenance.</li>
+        <li><strong>Minutes de vie en bonne santé (HENI)</strong> : données non publiées sous licence ouverte.</li>
+        <li><strong>Article complet EAT-Lancet 2025</strong> (The Lancet) : inaccessible depuis notre environnement ; le résumé d’EAT Forum sert de source provisoire.</li>
+      </ul>
+    </Section>
+
     <Section id="donnees-manquantes" title="Pourquoi il manque des données, et pourquoi jamais 0">
       <p>
         La table Ciqual rassemble des résultats d’analyses en laboratoire. Tous les constituants n’ont
@@ -297,6 +314,7 @@ function MissingData({ stats }: { stats: MethodologyStats }) {
         avec la table CALNUT de l’ANSES), ces valeurs seront signalées comme estimées.
       </p>
     </Section>
+    </>
   );
 }
 
@@ -545,8 +563,14 @@ export default async function MethodologiePage() {
           laitière n’est pas abattue pour un kilo d’œufs ou de lait ; les rapporter au kilo
           demanderait de répartir les poules et vaches de réforme, les poussins mâles et les veaux.
           Nous avons décidé de ne pas créer ce facteur pour l’instant : le nombre d’animaux tués est
-          « donnée manquante » pour les œufs et les produits laitiers, sans être compté comme 0. Les
-          poissons n’ont pas non plus de facteur sourcé.
+          « donnée manquante » pour les œufs et les produits laitiers, sans être compté comme 0.
+        </p>
+        <p>
+          <strong>Poissons tués.</strong> Nombre de poissons par kg = 1 000 ÷ poids moyen estimé d’un poisson de l’espèce (en grammes), d’après
+          Mood et al. (<em>Animal Welfare</em>, 2023 pour les poissons d’élevage, 2024 pour les poissons sauvages, licence CC BY 4.0), avec leur
+          fourchette basse et haute : saumon d’élevage, cabillaud et lieu noir à ce jour. Le poids est celui du poisson entier, alors que les
+          recettes pèsent du filet cuit : c’est une estimation basse. Les autres espèces, les crevettes et les autres crustacés sont « donnée
+          manquante ».
         </p>
         <p>
           <strong>Douleur.</strong> Les heures de douleur par animal viennent du Welfare Footprint
@@ -559,9 +583,9 @@ export default async function MethodologiePage() {
           information dans le tableau ci-dessus. Pour les poules, les cages conventionnelles sont
           interdites dans l’Union européenne (directive 1999/74/CE, article 5, paragraphe 2) : nous
           retenons la volière sans cage, avec les cages aménagées comme borne haute ; ces chiffres ne
-          couvrent que la période de ponte. Ils ne sont pas rapportés au kg d’œufs : il faudrait la
-          durée de ponte et le nombre (ou la masse) d’œufs par poule, tous deux sourcés à la page près ;
-          en attendant, la douleur par kg d’œufs est « donnée manquante ». Pour le poulet, seules les
+          couvrent que la période de ponte. Ils sont rapportés au kg d’œufs avec le cycle de ponte publié par le ministère de l’Agriculture
+          (environ 300 œufs en 12 à 13 mois, fiche « Le bien-être et la protection des poules pondeuses », p. 1) et le poids moyen d’un œuf en
+          France (60 g, FAO, <em>Technical Conversion Factors</em>) : 18 kg d’œufs par poule. Pour le poulet, seules les
           secondes de douleur atroce sont publiées dans une unité utilisable ; les douleurs gênante,
           pénible et invalidante, publiées en jours, sont « donnée manquante ».
         </p>
@@ -570,9 +594,10 @@ export default async function MethodologiePage() {
           (cahiers des charges label rouge, ministère de l’Agriculture) multiplié par le nombre
           d’animaux par kg. Pour le lait : 365 jours divisés par le rendement annuel d’une vache
           (FAOSTAT) ; seule la lactation est comptée (élevage des génisses et des veaux exclu). Ce facteur s’applique au lait liquide et aux
-          yaourts seulement. Pour les fromages, le beurre et la crème, il faudrait un coefficient
-          officiel d’équivalent lait (kilos de lait par kilo de produit) : faute de coefficient publié
-          et cité à la page près, la valeur est « donnée manquante ».
+          yaourts. Pour les fromages au lait de vache, il est multiplié par 7,7 kg de lait par kg de fromage (coefficient d’extraction de
+          13 % publié par la FAO pour la France) ; tout le lait est attribué au fromage. Pour le beurre et la crème, coproduits du lait écrémé,
+          ce calcul attribuerait au beurre les jours de vie de tout le lait écrémé : faute de règle de répartition sourcée, la valeur est
+          « donnée manquante ». Pour les œufs : 365 jours ÷ (257 œufs par poule et par an, FAOSTAT 2023 × 60 g), phase de ponte seulement.
         </p>
       </Section>
 

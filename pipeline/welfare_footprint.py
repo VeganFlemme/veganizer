@@ -129,7 +129,7 @@ def main() -> None:
         return
     client = get_client()
     require_source(client, SOURCE_ID, "OWID")
-    upsert(client, "category_factors", rows, "category,indicator_id,source_id")
+    upsert(client, "category_factors", rows, "category,indicator_id,source_id,scope")
 
 
 if __name__ == "__main__":

@@ -1,0 +1,6 @@
+food_code,density_g_per_ml,fao_name,fao_row,biblio,notes
+17130,0.92,"Oil, rapeseed (at 20 C)",254,CSG,"Densité relative (specific gravity) à 20 °C, prise comme g/ml (eau ≈ 1 g/ml : écart < 0,3 %)"
+17270,0.918,"Oil, vegetable, olive",259,TB,Densité en g/ml
+17440,0.96,"Oil, sunflower",256,RC,"Densité en g/ml telle que publiée (plus élevée que celle des autres huiles de la table)"
+5214,0.998,"Wine, red",151,UK 6th,"Densité relative, prise comme g/ml"
+11104,1.12,"Sauce, soy",553,FNDDS 4.1,Densité en g/ml

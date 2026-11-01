@@ -103,3 +103,16 @@ export function publicLicense(license: string | null | undefined): string | null
   if (!s || /^à vérifier/i.test(s)) return null;
   return s;
 }
+
+/** Counts of animals: below one per serving, written for 1 000 servings (conversion only). */
+const COUNT_UNITS = new Set(["animaux", "poissons"]);
+const THOUSAND = 1000;
+const thousandFr = new Intl.NumberFormat("fr-FR");
+
+/** A value per serving with the rule of its unit; small animal counts « pour 1 000 portions ». */
+export function formatPerServing(x: number | null | undefined, unit: string): string {
+  if (x != null && Number.isFinite(x) && COUNT_UNITS.has(unit) && x !== 0 && Math.abs(x) < 1) {
+    return `${formatValue(x * THOUSAND)} pour ${thousandFr.format(THOUSAND)}${NBSP}portions`;
+  }
+  return formatForUnit(x, unit);
+}

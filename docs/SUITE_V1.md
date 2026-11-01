@@ -1,6 +1,6 @@
 # Suite V1 — à exécuter d'une traite (décisions de Matt, 2026-11-01)
 
-Lis d'abord CLAUDE.md, docs/ROADMAP.md, docs/DESIGN.md, docs/DECISIONS.md et docs/A_VERIFIER.md. Exécute les étapes 0 à 4 dans l'ordre, sans attendre Matt entre les étapes.
+Lis d'abord CLAUDE.md, docs/ROADMAP.md, docs/DESIGN.md, docs/DECISIONS.md et docs/A_VERIFIER.md. Exécute les étapes 0 à 4 (y compris 3 bis) dans l'ordre, sans attendre Matt entre les étapes.
 
 ## Autorisations données par Matt pour toute cette suite
 
@@ -66,8 +66,11 @@ Lis d'abord CLAUDE.md, docs/ROADMAP.md, docs/DESIGN.md, docs/DECISIONS.md et doc
    - **Masse d'un œuf** : catégories de poids réglementaires de l'UE (règlement (CE) n° 589/2008 : S, M, L, XL), utilisées comme **fourchette** et non comme valeur unique. Combinée au nombre d'œufs par poule de FAOSTAT, elle donne les kg d'œufs par poule, donc les jours de vie et la douleur des poules par kg d'œufs (seulement si la durée de ponte est aussi sourcée).
    - **Liquides vendus au litre** (huiles, lait, boissons végétales, vin, sauce soja) : masses volumiques de la *FAO/INFOODS Density Database* pour convertir les prix au litre en prix au kg.
    - **Rendements de cuisson des pâtes, du riz, des légumineuses et des pommes de terre** : cherche une table officielle ouverte (FAO/INFOODS, EuroFIR). À défaut, propose dans `docs/A_VERIFIER.md` (sans l'appliquer) une méthode par bilan de matière sèche à partir des teneurs en eau Ciqual cru/cuit.
+   - **Prix** : « Prix moyens de vente de détail » de l'INSEE (data.gouv.fr, calculés à partir des relevés de l'indice des prix à la consommation, Licence Ouverte), à vérifier produit par produit (beaucoup de séries sont arrêtées : n'utiliser que les séries récentes, en citant le mois). À ajouter aux prix de FranceAgriMer (RNM) et d'Open Prices. **Pas de collecte automatique sur les sites des supermarchés** : leurs conditions d'utilisation l'interdisent, ils bloquent les robots et un magasin n'est pas représentatif.
+   - **CALNUT** : si ciqual.anses.fr est toujours en maintenance, cherche CALNUT sur recherche.data.gouv.fr, où l'ANSES publie désormais la table Ciqual (miroir officiel, pas un contournement).
+   - **Fichiers téléchargés par Matt** : s'il y en a dans `~/Downloads` (articles de Mood et al. sur les poissons et leurs suppléments, rapport EAT-Lancet 2025), déplace-les dans `pipeline/raw/fishcount/` et `pipeline/raw/eat-lancet/`, vérifie la licence indiquée dans chaque document, puis importe.
    - **Âges d'abattage** : publications de l'Idele (« chiffres clés »), de l'Institut de l'élevage, de l'ITAVI et d'INRAE, en plus des cahiers des charges.
-   - **EAT-Lancet et Fishcount** : si la page bloque l'environnement de travail, essaie le téléchargement par un workflow GitHub Actions manuel (comme pour Fishcount).
+   - **EAT-Lancet et Fishcount** : ne contourne jamais un blocage anti-robots (pas de workflow ni d'autre réseau). Si Matt dépose les fichiers dans `pipeline/raw/fishcount/` ou `pipeline/raw/eat-lancet/`, importe-les ; sinon la donnée reste manquante ou provisoire.
 
 ## Étape 3 — S24 : version végétale complétée (compensation automatique des écarts)
 
@@ -84,6 +87,15 @@ Objectif de Matt : montrer que chaque écart où le plat animal fait mieux peut 
    - La vue par défaut reste la recette réelle.
 6. **`/methodologie`** : la méthode, la liste blanche et ses limites. Selon l'ANSES, les besoins se couvrent sur la journée, pas plat par plat : cite la page.
 
+## Étape 3 bis — S24b : recettes issues des plats officiels (ajout de Matt, 16 h 25)
+
+Objectif : remplacer autant que possible les recettes écrites par l'IA par des compositions officielles.
+
+1. **Recherche** : vérifie si l'ADEME (Agribalyse) ou l'ANSES (Ciqual) publient les recettes, c'est-à-dire les masses d'ingrédients, de leurs plats composés (documentation méthodologique, annexes, Dataverse Agribalyse, data.gouv.fr). Cite la page.
+2. **Sinon, faisabilité d'un calcul inverse** : vérifie si le « détail par ingrédient » d'Agribalyse permet de retrouver la masse de chaque ingrédient par kg de plat (contribution de l'ingrédient ÷ impact par kg de cet ingrédient dans Agribalyse, au même périmètre). Teste-le sur 3 plats dont on connaît une recette publiée. Ne l'applique que si l'erreur est faible et documentée ; sinon écris le résultat dans `docs/A_VERIFIER.md` et passe.
+3. **Si une composition officielle est disponible** pour un plat animal de nos paires : remplace notre recette animale par cette composition (mise à l'échelle de nos portions), puis dérive les versions végétales par les règles de substitution relues (`pipeline/substitutions.csv` et règles de la S22), en ne remplaçant que les ingrédients animaux. Marque ces paires « recette d'après Agribalyse » sur le site.
+4. **Pour les plats sans composition officielle**, garde nos recettes, marquées « recette Veganizer, comparée au plat moyen Agribalyse » (contrôle croisé de l'étape 4).
+
 ## Étape 4 — S25 : relecture automatisée (en dernier, pour relire aussi la version complétée) (remplace les tests humains et la relecture d'experts)
 
 1. **Tests de parcours** : fais tourner `npm run test:e2e` dans la CI, avec un serveur lancé dans le workflow. Parcours, en 375 et 1 280 px : chercher un plat avec une faute de frappe, ouvrir chaque onglet, passer de maison à commerce, changer de vue (portion / protéines / avec compléments), utiliser le simulateur, analyser une recette, signaler une erreur.
@@ -93,6 +105,7 @@ Objectif de Matt : montrer que chaque écart où le plat animal fait mieux peut 
    - Le second joue un expert en analyse de cycle de vie : il relit l'usage d'Agribalyse, des variantes et du DQR, puis `/methodologie`.
    - Chaque remarque doit citer une source ouverte et vérifiée, sinon elle est rejetée.
 4. **Audit des chiffres** : tire au hasard 50 valeurs affichées et compare-les aux fichiers officiels Ciqual et Agribalyse ; recalcule indépendamment 5 plats.
+4 bis. **Contrôle croisé des recettes (ajout de Matt, 16 h 21)** : pour chaque plat de nos paires qui existe aussi comme plat composé dans Ciqual/Agribalyse (bœuf bourguignon, lasagnes, hachis parmentier, blanquette, quiche, paella, couscous, chili, tartiflette…), compare notre recette, ramenée à 1 kg et à 100 g, aux valeurs officielles : kg CO₂e/kg, énergie, protéines, lipides et sel pour 100 g. Fais de même pour les versions végétales quand un équivalent végétarien existe. Un écart supérieur à 25 % signale une recette à revoir ; écris le tableau complet dans `docs/RETOURS.md` et affiche-le sur `/methodologie` (« Nos recettes comparées aux plats moyens d'Agribalyse »).
 5. Corrige ce qui est justifié. Note chaque remarque dans `docs/RETOURS.md` : corrigée, refusée avec la raison, ou reportée.
 6. Sur `/methodologie` et `/a-propos`, écris honnêtement : « relu par des vérifications automatisées et des agents IA indépendants ; pas encore relu par un professionnel de santé ». Retire la mention « bêta » seulement si l'audit des chiffres ne trouve aucune erreur.
 

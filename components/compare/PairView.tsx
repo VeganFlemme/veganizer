@@ -23,7 +23,7 @@ import { co2Summary, isViewId, scaleSentence, VIEWS, type ViewId } from "@/lib/c
 import type { CategoryId, CategoryScoreView } from "@/lib/compare/scores";
 import type { CriterionRow, DishView, IngredientPrice, PairPageModel, PriceSide, SideValue, VariantView } from "@/lib/compare/view";
 import type { Basis } from "@/lib/scoring";
-import { formatEur, formatForUnit, formatInt, formatPercent, formatValue, MISSING, NBSP, signedGap } from "@/lib/format";
+import { formatEur, formatForUnit, formatInt, formatPerServing, formatPercent, formatValue, MISSING, NBSP, signedGap } from "@/lib/format";
 import { useQueryParam } from "./useQueryParam";
 
 type TabIdT = "apercu" | CategoryId;
@@ -54,24 +54,25 @@ export function animalsSentence(perServing: number | null): string | null {
 const CO2_UNIT = "kg CO2e";
 const kg = (x: number) => `${formatForUnit(x, CO2_UNIT)}${NBSP}kg`;
 
-function Cell({ v, unit, range = true }: { v: SideValue | null; unit: string; range?: boolean }) {
+function Cell({ v, unit, range = true, servings = false }: { v: SideValue | null; unit: string; range?: boolean; servings?: boolean }) {
+  const fmt = (x: number | null) => (servings ? formatPerServing(x, unit) : formatForUnit(x, unit));
   if (!v) return <MissingValue />;
   // Only a range is known when an ingredient is published « < x » by Ciqual (never x/2, never 0).
   if (v.value == null) {
     if (v.low == null || v.high == null) return <MissingValue />;
     return (
       <>
-        {formatForUnit(v.low, unit)} à {formatForUnit(v.high, unit)}
+        {fmt(v.low)} à {fmt(v.high)}
         <span className="block text-[12px] text-ink-3">fourchette</span>
       </>
     );
   }
   return (
     <>
-      {formatForUnit(v.value, unit)}
+      {fmt(v.value)}
       {range && v.rangePublished && (
         <span className="block text-[12px] text-ink-3">
-          {formatForUnit(v.low, unit)} à {formatForUnit(v.high, unit)}
+          {fmt(v.low)} à {fmt(v.high)}
         </span>
       )}
     </>
@@ -95,7 +96,8 @@ function rowNote(r: CriterionRow): ReactNode {
   return notes.length ? notes.join(". ") : undefined;
 }
 
-export function tableRows(rows: CriterionRow[]): DataTableRow[] {
+/** Table rows; `servings`: values are per serving (small animal counts « pour 1 000 portions »). */
+export function tableRows(rows: CriterionRow[], servings = false): DataTableRow[] {
   return rows.map((r) => ({
     id: r.id,
     name: (
@@ -104,8 +106,8 @@ export function tableRows(rows: CriterionRow[]): DataTableRow[] {
         {unitOf(r)}
       </span>
     ),
-    animal: <Cell v={r.animal} unit={r.unit} />,
-    vegetal: <Cell v={r.vegetal} unit={r.unit} />,
+    animal: <Cell v={r.animal} unit={r.unit} servings={servings} />,
+    vegetal: <Cell v={r.vegetal} unit={r.unit} servings={servings} />,
     note: rowNote(r),
     strong: r.direction !== "none",
   }));
@@ -455,7 +457,7 @@ function AnimalsTab({ v }: { v: VariantView }) {
       </Panel>
       <Panel>
         {rows.length > 0 ? (
-          <DataTable caption="Protection animale, par portion" unitLabel="Par portion" rows={tableRows(rows)} />
+          <DataTable caption="Protection animale, par portion" unitLabel="Par portion" rows={tableRows(rows, true)} />
         ) : (
           <p className="m-0 text-[14px]">
             <MissingValue label="Aucun facteur animal sourcé pour les ingrédients de ce plat (donnée manquante, jamais 0)." />

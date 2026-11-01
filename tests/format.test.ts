@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { animalsSpared, formatEur, formatForUnit, formatValue, gapSentence, MISSING, publicLicense, signedGap, withUnit } from "@/lib/format";
+import { animalsSpared, formatEur, formatForUnit, formatPerServing, formatValue, gapSentence, MISSING, publicLicense, signedGap, withUnit } from "@/lib/format";
 
 // Intl uses narrow no-break spaces in fr-FR; normalise them for readable assertions.
 const n = (s: string) => s.replace(/[  ]/g, " ");
@@ -79,5 +79,18 @@ describe("publicLicense", () => {
     expect(publicLicense("À vérifier (document public, conditions de réutilisation non lues)")).toBeNull();
     expect(publicLicense("à vérifier")).toBeNull();
     expect(publicLicense("")).toBeNull();
+  });
+});
+
+describe("per 1 000 servings (suite V1, S23)", () => {
+  it("writes a small number of animals per serving for 1 000 servings", () => {
+    expect(n(formatPerServing(0.00771, "animaux"))).toBe("7,71 pour 1 000 portions");
+    expect(n(formatPerServing(0.0000938, "poissons"))).toBe("0,0938 pour 1 000 portions");
+  });
+  it("keeps other values and units as they are", () => {
+    expect(formatPerServing(2, "animaux")).toBe("2");
+    expect(formatPerServing(0, "animaux")).toBe("0");
+    expect(formatPerServing(0.65, "kg CO2e")).toBe("0,65");
+    expect(formatPerServing(null, "animaux")).toBe(MISSING);
   });
 });

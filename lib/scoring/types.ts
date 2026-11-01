@@ -60,8 +60,11 @@ export interface CategoryFactor {
 
 export interface ScoringData {
   foods: Record<string, FoodData | undefined>;
-  /** category -> indicator id -> factor per kg. */
-  categoryFactors: Record<string, Record<string, CategoryFactor | undefined> | undefined>;
+  /**
+   * category -> indicator id -> factor per kg, or several factors with disjoint `foodCodes`
+   * (e.g. per kg of milk for liquid milks, per kg of cheese for cheeses).
+   */
+  categoryFactors: Record<string, Record<string, CategoryFactor | CategoryFactor[] | undefined> | undefined>;
 }
 
 /** A value for the dish, per serving and normalised. null = donnée manquante. */
