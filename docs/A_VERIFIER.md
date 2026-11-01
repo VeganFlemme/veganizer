@@ -146,3 +146,10 @@ Tous les critères sont respectés.
 - [ ] **Portion type** : non sourcée, la page aliment compare pour 100 g. À ajouter si une source (INCA 3) est intégrée.
 - [ ] **Libellé du verdict** sur `/aliment` : « le plat animal fait mieux » est réutilisé pour un aliment ; alternative : « l'aliment d'origine fait mieux ».
 - [ ] **Correction de `fetch_all`** (pipeline) : les scripts déjà exécutés ont été revérifiés (CIRC, lait, classement animal : identiques).
+
+## Lot B — S16 « Analyse ta recette »
+
+- [ ] **Table de substitutions** (`pipeline/substitutions.csv`) : relire chaque remplacement et sa justification (viande hachée → lentilles vertes cuites, viande → seitan, poisson et œuf → tofu ferme, charcuterie → tofu fumé, lait → boisson soja enrichie, crème → crème de soja, beurre → huile de colza, fromage → spécialités végétales, yaourt → dessert au soja nature). Ratio 1 (même masse) partout : à ajuster ?
+- [ ] **Vérification faite** : bolognaise de test (400 g de bœuf haché 15 % cuit, 100 g de lardons fumés cuits, 350 g de pâtes cuites, 350 g de coulis, 4 portions) : 4,908 kg CO₂e et 34,4 g de protéines par portion ; version végétale 0,261 kg CO₂e et 21,0 g de protéines. Identique au calcul à la main.
+- [ ] **Connexion par e-mail** : à tester en production. Il faut que `https://veganizer.vercel.app/recette` soit dans les « Redirect URLs » de Supabase Auth (tableau de bord, non vérifiable d'ici) et que l'envoi d'e-mails soit configuré (le service par défaut de Supabase est très limité en volume).
+- [ ] **Ingrédients sans remplacement** (ex. miel) : gardés et signalés. Faut-il des règles supplémentaires ?

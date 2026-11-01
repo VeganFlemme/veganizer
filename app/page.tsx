@@ -18,6 +18,15 @@ export default async function Home() {
           <Link href="/sources" className="underline">Sources et licences</Link>
         </p>
       </section>
+      <section className="flex flex-col gap-2 rounded-xl bg-sky-50 p-4">
+        <h2 className="text-xl font-semibold text-sky-950">Votre propre recette ?</h2>
+        <p className="text-sky-950">
+          Saisissez ses ingrédients : nutrition, climat, animaux et coût, puis une version végétale ingrédient par ingrédient.
+        </p>
+        <Link href="/recette" className="self-start font-medium text-sky-950 underline">
+          Analyse ta recette
+        </Link>
+      </section>
       <section aria-labelledby="plats" className="flex flex-col gap-4">
         <h2 id="plats" className="text-xl font-semibold">
           Les plats comparés

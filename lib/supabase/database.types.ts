@@ -624,6 +624,41 @@ export type Database = {
         }
         Relationships: []
       }
+      ingredient_substitutions: {
+        Row: {
+          justification: string
+          match_type: string
+          match_value: string
+          priority: number
+          ratio: number
+          to_code: string
+        }
+        Insert: {
+          justification: string
+          match_type: string
+          match_value: string
+          priority: number
+          ratio: number
+          to_code: string
+        }
+        Update: {
+          justification?: string
+          match_type?: string
+          match_value?: string
+          priority?: number
+          ratio?: number
+          to_code?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ingredient_substitutions_to_code_fkey"
+            columns: ["to_code"]
+            isOneToOne: false
+            referencedRelation: "foods"
+            referencedColumns: ["code"]
+          },
+        ]
+      }
       monetization_factors: {
         Row: {
           eur_per_unit: number
@@ -1105,6 +1140,17 @@ export type Database = {
           kind: string
           name_fr: string
           ref: string
+          score: number
+        }[]
+      }
+      search_ingredients: {
+        Args: { max_results?: number; q: string }
+        Returns: {
+          animal_category: string
+          code: string
+          food_subgroup: string
+          is_animal: boolean
+          name_fr: string
           score: number
         }[]
       }

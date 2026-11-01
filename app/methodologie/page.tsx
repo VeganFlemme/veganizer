@@ -82,6 +82,7 @@ const SECTIONS = [
   ["principe", "Le principe : comparer à fonction égale"],
   ["paires", "Les paires de plats : maison et du commerce"],
   ["comparaison-simplifiee", "Paires vérifiées et comparaisons simplifiées"],
+  ["ta-recette", "« Analyse ta recette »"],
   ["formule", "La formule de calcul"],
   ["cout-climat", "Le coût climat"],
   ["animaux", "Animaux : une estimation basse"],
@@ -373,6 +374,25 @@ export default async function MethodologiePage() {
         <p>
           La recherche tolère les accents, les fautes légères et quelques abréviations courantes
           (« bolo », « croque »…).
+        </p>
+      </Section>
+
+      <Section id="ta-recette" title="« Analyse ta recette »">
+        <p>
+          Sur la page Recette, vous choisissez des aliments simples du catalogue (jamais un plat
+          préparé, pour que les impacts par espèce animale restent calculables), avec leur poids tel
+          que mangé. Le calcul utilise le même moteur que les paires vérifiées, dans votre navigateur.
+        </p>
+        <p>
+          La version végétale remplace chaque ingrédient animal selon une table de substitutions relue
+          (fichier <code>pipeline/substitutions.csv</code>) : par exemple viande hachée → lentilles
+          vertes cuites, charcuterie → tofu fumé, lait → boisson au soja enrichie en calcium. La
+          justification de chaque remplacement est affichée ; la masse reste la même sauf mention.
+          Les ingrédients sans remplacement prévu sont gardés et signalés.
+        </p>
+        <p>
+          Sans compte, la recette reste dans votre navigateur. Avec un compte (lien de connexion par
+          e-mail), elle est enregistrée de façon privée : vous seul·e pouvez la voir.
         </p>
       </Section>
 
