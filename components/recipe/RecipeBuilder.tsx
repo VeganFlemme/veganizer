@@ -12,7 +12,6 @@ import {
   type SubstitutionRule,
 } from "@/lib/compare/recipe";
 import { formatInt } from "@/lib/format";
-import { RecipeAccount } from "./RecipeAccount";
 
 export interface DraftIngredient {
   code: string;
@@ -223,7 +222,9 @@ export function RecipeBuilder() {
           )}
         </div>
         {status === "error" && <p role="alert" className="text-red-800">Le calcul a échoué. Réessayez plus tard.</p>}
-        <RecipeAccount draft={draft} onLoad={setDraft} />
+        <p className="text-sm text-zinc-700">
+          <strong>Enregistrer mes recettes en ligne : bientôt.</strong> Pour l’instant, ta recette reste enregistrée dans ce navigateur.
+        </p>
       </section>
 
       {result && (

@@ -4,7 +4,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
-from pairs import DISHES_CSV, PAIRS_CSV, PairError, load_animal_composition, read_csv, validate  # noqa: E402
+from pairs import COMPOSED_GROUP, DISHES_CSV, PAIRS_CSV, PairError, composed_dish_error, load_animal_composition, read_csv, validate  # noqa: E402
 
 
 def dish(slug, kind, variant="", pair="p", rationale="même rôle"):
@@ -70,3 +70,33 @@ class RepositoryFiles(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class ComposedDishException(unittest.TestCase):
+    FOOD = {"code": "25593", "name_fr": "Galette", "is_animal": False, "food_group": COMPOSED_GROUP}
+
+    def row(self, kind="vegetal", check="détail Agribalyse vérifié"):
+        r = ing("c", kind, "25593", variant="commerce" if kind == "vegetal" else "")
+        r["rule9_check"] = check
+        return r
+
+    def test_checked_plant_product_is_accepted(self):
+        self.assertIsNone(composed_dish_error(self.row(), self.FOOD))
+
+    def test_missing_check_is_refused(self):
+        self.assertRegex(composed_dish_error(self.row(check=""), self.FOOD), "rule9_check")
+
+    def test_animal_composed_dish_is_refused(self):
+        self.assertRegex(composed_dish_error(self.row(), {**self.FOOD, "is_animal": True}), "only a plant product")
+
+    def test_composed_dish_in_animal_recipe_is_refused(self):
+        self.assertRegex(composed_dish_error(self.row(kind="animal"), self.FOOD), "only a plant product")
+
+    def test_other_groups_are_not_concerned(self):
+        self.assertIsNone(composed_dish_error(self.row(check=""), {**self.FOOD, "food_group": "viandes"}))
+
+    def test_every_composed_product_of_the_csv_is_checked(self):
+        rows = read_csv(PAIRS_CSV)
+        checked = {r["food_code"] for r in rows if r["rule9_check"].strip()}
+        self.assertEqual(checked, {"25593", "25227_1", "25589_1", "25229", "30181", "20914"})
+        self.assertTrue(all(r["kind"] == "vegetal" for r in rows if r["rule9_check"].strip()))

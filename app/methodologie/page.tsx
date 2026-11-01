@@ -391,8 +391,8 @@ export default async function MethodologiePage() {
           Les ingrédients sans remplacement prévu sont gardés et signalés.
         </p>
         <p>
-          Sans compte, la recette reste dans votre navigateur. Avec un compte (lien de connexion par
-          e-mail), elle est enregistrée de façon privée : vous seul·e pouvez la voir.
+          Aucun compte n’est nécessaire : la recette reste enregistrée dans votre navigateur. L’enregistrement
+          en ligne (avec un compte) viendra plus tard.
         </p>
       </Section>
 
