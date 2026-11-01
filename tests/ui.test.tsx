@@ -148,7 +148,16 @@ describe("components/ui", () => {
     const h = html(<Simulator sim={{ animal: t(5), vegetal: t(1) }} dishName="A" plantName="V" factors={[]} rules={[]} animalsCounted={false} />);
     expect(h).toContain("1×/mois");
     expect(h).toContain("10 ans");
-    expect(h).toContain(">208<"); // (5 − 1) × 52 servings
+    expect(h).toContain(">208,00<"); // (5 − 1) × 52 servings, kg CO2e with 2 decimals
     expect(h).toContain("donnée manquante");
+  });
+
+  it("Simulator: animals spared written as a low estimate", () => {
+    const amount = (v: number): Amount => ({ perServing: v, lowPerServing: v, highPerServing: v, per100kcal: null, per10gProtein: null, massCoverage: 1, worstDqr: null, sourceIds: [] });
+    const t = (co2: number, animals: number): DishTotals => ({ totalGrams: 400, servings: 1, kcalPerServing: null, proteinPerServing: null, nutrients: {}, impacts: { ghg_100y_kgco2e: amount(co2) }, animalImpacts: { animals_killed_land: amount(animals) } });
+    const h = html(<Simulator sim={{ animal: t(5, 0.000593), vegetal: t(1, 0) }} dishName="A" plantName="V" factors={[]} rules={[]} animalsCounted />);
+    expect(h).toContain("au moins 0,03"); // 0.000593 × 52 = 0.0308
+    expect(h).toContain("animal épargné");
+    expect(h).not.toContain("abattages");
   });
 });

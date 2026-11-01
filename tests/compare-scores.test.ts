@@ -1,15 +1,19 @@
 // Scores on the page model: values gathered from the rows, sentences of the basis.
 import { describe, expect, it } from "vitest";
-import { categorySentence, categorySummary, scorePair, type ScoreInput } from "@/lib/compare/scores";
+import { categorySentence, categorySummary, healthSummary, scorePair, type ScoreInput } from "@/lib/compare/scores";
 import type { CriterionRow, SideValue } from "@/lib/compare/view";
 import { scoreCategory } from "@/lib/scoring";
 
-const side = (value: number | null, coverage = 1): SideValue => ({ value, low: value, high: value, rangePublished: false, coverage, dqr: null });
-const row = (id: string, group: CriterionRow["group"], a: number | null, v: number | null, lowCoverage = false): CriterionRow => ({
+const side = (value: number | null, coverage = 1): SideValue => ({ value, low: value, high: value, rangePublished: false, censored: false, coverage, dqr: null });
+const point = (x: number | null) => (x == null ? null : { low: x, high: x });
+const row = (id: string, group: CriterionRow["group"], a: number | null, v: number | null, lowCoverage = false, verdictPartial = lowCoverage): CriterionRow => ({
   id, name: id, sourceName: id, unit: "", group, direction: "down",
   animal: a == null ? null : side(a), vegetal: v == null ? null : side(v),
   reductionPercent: null, winner: null, indicativeWinner: null, sourceIds: [], worstDqr: null, lowCoverage,
+  verdictCoverage: verdictPartial ? 0.5 : 1, verdictPartial, verdictRanges: { animal: point(a), vegetal: point(v) }, featured: false,
 });
+const ROUGE = { id: "rouge", groupe: "2A", libelle: "Viande rouge", classement: "probablement cancérogène", definition: "…", source: { sourceId: "iarc-114", publisher: "CIRC", title: "t", url: "https://example.org", accessedOn: "2026-11-01" } };
+const TRANSFORMEE = { ...ROUGE, id: "transformée", groupe: "1", libelle: "Viande transformée", classement: "cancérogène" };
 
 function input(over: Partial<ScoreInput> = {}): ScoreInput {
   const rows = [
@@ -23,7 +27,7 @@ function input(over: Partial<ScoreInput> = {}): ScoreInput {
   ];
   return {
     rows: { perServing: rows, per100kcal: rows, per10gProtein: rows.map((r) => (r.id === "protein_g" ? row("protein_g", "nutrients", 10, 10) : r)) },
-    iarc: [{ entry: { id: "rouge" } as never, animalGrams: 125, vegetalGrams: 0, animalFoods: ["bœuf"], vegetalFoods: [] }],
+    iarc: [{ entry: ROUGE, animalGrams: 125, vegetalGrams: 0, animalFoods: ["bœuf"], vegetalFoods: [], animalItems: [{ name: "bœuf", grams: 125 }], vegetalItems: [] }],
     price: { animal: null, vegetal: null, sourceIds: [], animalIngredients: [], vegetalIngredients: [] },
     climateCost: [{ year: 2025, animalEur: 1.29, vegetalEur: 0.17, eurPerKg: 0.256, derived: false, sourceId: "vac-2025" }],
     ...over,
@@ -77,6 +81,18 @@ describe("scorePair", () => {
     expect(s.verdict.sentence).toContain("Égalité en nutrition");
   });
 
+  it("counts a verdict on the ingredients that differ even when the displayed coverage is low", () => {
+    const rows = [row("fiber_g", "nutrients", 2, 9, true, false)];
+    const p = scorePair(input({ rows: { perServing: rows, per100kcal: rows, per10gProtein: rows } }));
+    expect(p.verdict.categories[0].indicators.find((i) => i.id === "fiber_g")?.outcome).toBe("vegetal");
+  });
+
+  it("gives no point when the ranges overlap (« < x » values)", () => {
+    const r = { ...row("salt_g", "nutrients", null, 0.4), verdictRanges: { animal: { low: 0.2, high: 1.5 }, vegetal: { low: 0.4, high: 0.4 } } };
+    const p = scorePair(input({ rows: { perServing: [r], per100kcal: [r], per10gProtein: [r] } }));
+    expect(p.verdict.categories[0].indicators.find((i) => i.id === "salt_g")?.outcome).toBe("egal");
+  });
+
   it("follows the unit of the Nutrition tab", () => {
     expect(s.nutritionByBasis.perServing.animalPoints).toBe(1);
     expect(s.nutritionByBasis.per10gProtein.animalPoints).toBe(0);
@@ -115,5 +131,20 @@ describe("categorySummary", () => {
     const v = { animal: 2, vegetal: 1 };
     const c = scoreCategory(rule, { a: v, b: v, c: v, d: { animal: 1, vegetal: 2 } }, opts);
     expect(categorySummary(c, {})).toBe("4 indicateurs comparés : végétal mieux sur 3, plat animal sur 1.");
+  });
+});
+
+describe("healthSummary", () => {
+  it("writes the real grams with the food names, group by group", () => {
+    const iarc = [
+      { entry: TRANSFORMEE, animalGrams: 20, vegetalGrams: 0, animalFoods: ["lardons fumés cuits"], vegetalFoods: [], animalItems: [{ name: "lardon fumé", grams: 20 }], vegetalItems: [] },
+      { entry: ROUGE, animalGrams: 125, vegetalGrams: 0, animalFoods: ["bœuf cuit (environ 750 g cru)"], vegetalFoods: [], animalItems: [{ name: "bœuf", grams: 125 }], vegetalItems: [] },
+    ];
+    expect(healthSummary(iarc)).toBe(
+      "Plat animal : 20\u00a0g de lardon fumé (viande transformée, groupe 1) et 125\u00a0g de bœuf (viande rouge, groupe 2A) par portion. Version végétale : aucun ingrédient classé.",
+    );
+  });
+  it("says when nothing is classified", () => {
+    expect(healthSummary([{ entry: ROUGE, animalGrams: 0, vegetalGrams: 0, animalFoods: [], vegetalFoods: [], animalItems: [], vegetalItems: [] }])).toMatch(/^Plat animal : aucun ingrédient classé/);
   });
 });

@@ -21,7 +21,7 @@ import { CLIMATE_MAIN, COVERAGE_WARNING } from "@/lib/compare/config";
 import type { CategoryId, CategoryScoreView } from "@/lib/compare/scores";
 import type { CriterionRow, DishView, IngredientPrice, PairPageModel, PriceSide, SideValue, VariantView } from "@/lib/compare/view";
 import type { Basis } from "@/lib/scoring";
-import { formatEur, formatInt, formatPercent, formatValue, MISSING, NBSP, signedGap, withUnit } from "@/lib/format";
+import { formatEur, formatForUnit, formatInt, formatPercent, formatValue, MISSING, NBSP, signedGap } from "@/lib/format";
 import { useQueryParam } from "./useQueryParam";
 
 type TabIdT = "apercu" | CategoryId;
@@ -49,14 +49,27 @@ export function animalsSentence(perServing: number | null): string | null {
   return `Au moins 1 animal tué pour ${formatInt(1 / perServing)} portions (estimation basse)`;
 }
 
-function Cell({ v, range = true }: { v: SideValue | null; range?: boolean }) {
-  if (!v || v.value == null) return <MissingValue />;
+const CO2_UNIT = "kg CO2e";
+const kg = (x: number) => `${formatForUnit(x, CO2_UNIT)}${NBSP}kg`;
+
+function Cell({ v, unit, range = true }: { v: SideValue | null; unit: string; range?: boolean }) {
+  if (!v) return <MissingValue />;
+  // Only a range is known when an ingredient is published « < x » by Ciqual (never x/2, never 0).
+  if (v.value == null) {
+    if (v.low == null || v.high == null) return <MissingValue />;
+    return (
+      <>
+        {formatForUnit(v.low, unit)} à {formatForUnit(v.high, unit)}
+        <span className="block text-[12px] text-ink-3">fourchette</span>
+      </>
+    );
+  }
   return (
     <>
-      {formatValue(v.value)}
+      {formatForUnit(v.value, unit)}
       {range && v.rangePublished && (
         <span className="block text-[12px] text-ink-3">
-          {formatValue(v.low)} à {formatValue(v.high)}
+          {formatForUnit(v.low, unit)} à {formatForUnit(v.high, unit)}
         </span>
       )}
     </>
@@ -66,9 +79,15 @@ function Cell({ v, range = true }: { v: SideValue | null; range?: boolean }) {
 /** Note under a table row: partial data, advantage to the animal dish (rule 3), negative values. */
 function rowNote(r: CriterionRow): ReactNode {
   const notes: string[] = [];
-  const partial = (s: SideValue | null) => !!s && s.value != null && s.coverage < COVERAGE_WARNING;
-  if (partial(r.animal) || partial(r.vegetal))
-    notes.push(`Données partielles : ${r.animal ? pct(r.animal.coverage) : MISSING} et ${r.vegetal ? pct(r.vegetal.coverage) : MISSING} de la masse, pas de verdict`);
+  const known = (s: SideValue | null) => !!s && (s.value != null || s.low != null);
+  const partial = (s: SideValue | null) => known(s) && s!.coverage < COVERAGE_WARNING;
+  const coverage = `${r.animal ? pct(r.animal.coverage) : MISSING} et ${r.vegetal ? pct(r.vegetal.coverage) : MISSING} de la masse`;
+  if (partial(r.animal) || partial(r.vegetal)) {
+    // Identical ingredients on both sides cancel out: the verdict may rest on what differs only.
+    if (r.direction !== "none" && !r.verdictPartial) notes.push(`Données connues pour ${coverage} ; verdict établi sur les ingrédients qui diffèrent`);
+    else notes.push(`Données partielles : ${coverage}${r.direction === "none" ? "" : ", pas de verdict"}`);
+  }
+  if (r.winner === "egal" && (r.animal?.rangePublished || r.vegetal?.rangePublished)) notes.push("Fourchettes qui se chevauchent : égalité");
   if (r.winner === "animal") notes.push("Avantage au plat animal");
   if ((r.animal?.value ?? 0) < 0 || (r.vegetal?.value ?? 0) < 0) notes.push("Valeur négative publiée telle quelle");
   return notes.length ? notes.join(". ") : undefined;
@@ -83,8 +102,8 @@ export function tableRows(rows: CriterionRow[]): DataTableRow[] {
         {unitOf(r)}
       </span>
     ),
-    animal: <Cell v={r.animal} />,
-    vegetal: <Cell v={r.vegetal} />,
+    animal: <Cell v={r.animal} unit={r.unit} />,
+    vegetal: <Cell v={r.vegetal} unit={r.unit} />,
     note: rowNote(r),
     strong: r.direction !== "none",
   }));
@@ -177,8 +196,6 @@ function Overview({ model, v, open, base }: { model: PairPageModel; v: VariantVi
   const animals = find(rows, ANIMALS);
   const cost = v.climateCost[0];
   const priceOk = v.price.animal && v.price.vegetal && v.price.animal.coverage >= COVERAGE_WARNING && v.price.vegetal.coverage >= COVERAGE_WARNING;
-  const classified = (side: "animal" | "vegetal") =>
-    v.iarc.filter((x) => (side === "animal" ? x.animalGrams : x.vegetalGrams) > 0).map((x) => `${(side === "animal" ? x.animalFoods : x.vegetalFoods).join(", ")} : groupe ${x.entry.groupe}`);
   const card = (id: CategoryId, title: string, children: ReactNode) => (
     <CategoryCard key={id} score={cats[id]} title={title} onOpen={() => open(id)} controls={panelId(base, id)}>
       {children}
@@ -190,7 +207,7 @@ function Overview({ model, v, open, base }: { model: PairPageModel; v: VariantVi
       <span className="num text-right">{value}</span>
     </span>
   );
-  const pair = (a: number | null | undefined, b: number | null | undefined, unit: string, f = formatValue) => (
+  const pair = (a: number | null | undefined, b: number | null | undefined, unit: string, f: (x: number) => string = (x) => formatForUnit(x, unit)) => (
     <>
       {a == null ? MISSING : f(a)} · {b == null ? MISSING : f(b)}
       {unit ? `${NBSP}${unit}` : ""}
@@ -211,20 +228,7 @@ function Overview({ model, v, open, base }: { model: PairPageModel; v: VariantVi
             {line("Énergie", pair(energy?.animal?.value, energy?.vegetal?.value, "kcal", formatInt))}
           </span>,
         )}
-        {card(
-          "sante",
-          "Santé",
-          <span className="flex flex-col gap-[6px] text-[14px] leading-snug">
-            <span className="flex gap-2">
-              <Dot series="animal" className="mt-[5px]" />
-              <span>{classified("animal").length ? `Classés par le CIRC : ${classified("animal").join(" ; ")}` : "Aucun ingrédient classé par le CIRC"}</span>
-            </span>
-            <span className="flex gap-2">
-              <Dot series="plant" className="mt-[5px]" />
-              <span>{classified("vegetal").length ? `Classés par le CIRC : ${classified("vegetal").join(" ; ")}` : "Aucun ingrédient classé"}</span>
-            </span>
-          </span>,
-        )}
+        {card("sante", "Santé", null)}
         {card(
           "environnement",
           "Environnement",
@@ -233,7 +237,7 @@ function Overview({ model, v, open, base }: { model: PairPageModel; v: VariantVi
               <span className="text-[40px] font-extrabold leading-none tracking-[-0.04em]">{signedGap(co2?.reductionPercent ?? null)}</span>
               <span className="text-[15px] text-ink-2">de CO₂e par portion</span>
             </span>
-            <FaceToFaceBar rows={[{ id: "co2", label: "", animal: co2?.animal?.value ?? null, vegetal: co2?.vegetal?.value ?? null, format: (x) => withUnit(x, "kg") }]} />
+            <FaceToFaceBar rows={[{ id: "co2", label: "", animal: co2?.animal?.value ?? null, vegetal: co2?.vegetal?.value ?? null, format: kg }]} />
           </span>,
         )}
         {card(
@@ -279,7 +283,10 @@ function Overview({ model, v, open, base }: { model: PairPageModel; v: VariantVi
 }
 
 function NutritionTab({ v, basis, setBasis, servingLabel }: { v: VariantView; basis: Basis; setBasis: (b: Basis) => void; servingLabel: string }) {
-  const rows = v.rows[basis].filter((r) => r.group === "nutrients");
+  const all = v.rows[basis].filter((r) => r.group === "nutrients");
+  const featured = all.filter((r) => r.featured);
+  // Every Ciqual constituent (the derived EPA + DHA sum is not one of them).
+  const ciqual = all.filter((r) => !r.id.startsWith("fa_epa_dha"));
   const unit = UNIT_OPTIONS.find((u) => u.id === basis)!;
   const unitLabel = basis === "perServing" ? servingLabel : unit.long;
   return (
@@ -291,16 +298,20 @@ function NutritionTab({ v, basis, setBasis, servingLabel }: { v: VariantView; ba
         </div>
       </div>
       <DataTable
-        caption={`Composition nutritionnelle, ${unitLabel.toLowerCase()}`}
+        caption={`Composition nutritionnelle, nutriments principaux, ${unitLabel.toLowerCase()}`}
         unitLabel={unitLabel}
-        rows={tableRows(rows)}
+        rows={tableRows(featured)}
         footer={
           <>
-            Ciqual 2025 (ANSES), {rows.length} constituants. En gras : indicateurs comptés dans le score. Une couverture inférieure à 95{NBSP}% de la
-            masse est signalée et n’est jamais comptée ; une valeur absente n’est jamais remplacée par 0.
+            Ciqual 2025 (ANSES). En gras : indicateurs comptés dans le score. Une valeur publiée « &lt; x » par Ciqual est comptée comme une fourchette de 0 à x ;
+            une valeur absente ou « traces » n’est jamais remplacée par 0. Un point n’est donné que si les fourchettes des deux plats ne se chevauchent pas.
           </>
         }
       />
+      <details className="flex flex-col gap-2">
+        <summary className="cursor-pointer py-2 text-[15px] font-bold text-action underline">Tous les constituants Ciqual ({ciqual.length})</summary>
+        <DataTable caption={`Tous les constituants Ciqual, ${unitLabel.toLowerCase()}`} unitLabel={unitLabel} rows={tableRows(ciqual)} />
+      </details>
     </Panel>
   );
 }
@@ -327,8 +338,7 @@ function SanteTab({ v }: { v: VariantView }) {
                   Groupe {x.entry.groupe}, {x.entry.classement}
                 </span>
                 <span className="text-[16px] font-bold md:text-[17px]">
-                  {x.animalFoods.join(", ")} ({x.entry.libelle.toLowerCase()}), {formatInt(x.animalGrams)}
-                  {NBSP}g par portion
+                  {x.animalItems.map((i) => `${formatInt(i.grams)}${NBSP}g de ${i.name}`).join(" et ")} ({x.entry.libelle.toLowerCase()}) par portion
                 </span>
               </div>
             ))}
@@ -338,7 +348,7 @@ function SanteTab({ v }: { v: VariantView }) {
               .map((x) => (
                 <div key={`v-${x.entry.id}`} className="flex flex-col gap-1 rounded-select bg-win-animal p-[14px]">
                   <span className="text-[13px] font-bold text-animal-note">Version végétale, groupe {x.entry.groupe}</span>
-                  <span className="text-[16px] font-bold">{x.vegetalFoods.join(", ")}</span>
+                  <span className="text-[16px] font-bold">{x.vegetalItems.map((i) => `${formatInt(i.grams)}${NBSP}g de ${i.name}`).join(" et ")} par portion</span>
                 </div>
               ))
           ) : (
@@ -385,7 +395,7 @@ function EnvironmentTab({ v }: { v: VariantView }) {
   const co2 = find(v.rows.perServing, CLIMATE_MAIN);
   const norm = (["perServing", "per100kcal", "per10gProtein"] as Basis[]).map((b) => {
     const r = find(v.rows[b], CLIMATE_MAIN);
-    return { id: b, label: UNIT_OPTIONS.find((u) => u.id === b)!.long, aside: signedGap(r?.reductionPercent ?? null), animal: r?.animal?.value ?? null, vegetal: r?.vegetal?.value ?? null, format: (x: number) => formatValue(x) };
+    return { id: b, label: UNIT_OPTIONS.find((u) => u.id === b)!.long, aside: signedGap(r?.reductionPercent ?? null), animal: r?.animal?.value ?? null, vegetal: r?.vegetal?.value ?? null, format: (x: number) => formatForUnit(x, CO2_UNIT) };
   });
   const range = co2?.animal?.rangePublished || co2?.vegetal?.rangePublished;
   return (
@@ -394,7 +404,7 @@ function EnvironmentTab({ v }: { v: VariantView }) {
         <Panel>
           <span className="text-[15px] font-bold text-ink-2">Gaz à effet de serre, par portion</span>
           <span className="text-[64px] font-extrabold leading-[0.95] tracking-[-0.05em] md:text-[72px]">{signedGap(co2?.reductionPercent ?? null)}</span>
-          <FaceToFaceBar thickness="lg" rows={[{ id: "co2", label: "", animal: co2?.animal?.value ?? null, vegetal: co2?.vegetal?.value ?? null, format: (x) => withUnit(x, "kg") }]} />
+          <FaceToFaceBar thickness="lg" rows={[{ id: "co2", label: "", animal: co2?.animal?.value ?? null, vegetal: co2?.vegetal?.value ?? null, format: kg }]} />
           <span className="text-[13px] leading-normal text-ink-3">
             {range ? "Fourchette publiée affichée dans le tableau." : "Fourchette non publiée par la source."} Masse couverte par des données :{" "}
             {co2?.animal ? pct(co2.animal.coverage) : MISSING} (plat animal), {co2?.vegetal ? pct(co2.vegetal.coverage) : MISSING} (végétal).

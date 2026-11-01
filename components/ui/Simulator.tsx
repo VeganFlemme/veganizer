@@ -4,7 +4,7 @@ import { useId, useState } from "react";
 import { CLIMATE_MAIN, CLIMATE_REFERENCE_YEAR } from "@/lib/compare/config";
 import type { SimInput } from "@/lib/compare/view";
 import { avoidedClimateCost, simulate, type MonetizationFactor, type MonetizationRule } from "@/lib/scoring";
-import { formatEur, formatInt, formatValue, MISSING, NBSP } from "@/lib/format";
+import { animalsSparedParts, formatEur, formatForUnit, formatInt, MISSING, NBSP } from "@/lib/format";
 
 // Unit conversions only: 12 months and 52 weeks per year (simulate() counts per week).
 const MONTHS_PER_YEAR = 12;
@@ -61,8 +61,9 @@ export function Simulator({
   const co2 = s.impacts[CLIMATE_MAIN]?.avoided ?? null;
   const cost = avoidedClimateCost(s, CLIMATE_REFERENCE_YEAR, factors, { indicatorId: CLIMATE_MAIN, rules });
   const animals = animalsCounted ? (s.animalImpacts[ANIMALS]?.avoided ?? null) : null;
+  const spared = animalsSparedParts(animals);
 
-  const shareText = `En remplaçant « ${dishName} » par « ${plantName} » ${f.text} pendant ${years === 1 ? "1 an" : `${years} ans`}, j’éviterais environ ${formatValue(co2)}${NBSP}kg CO₂e (Agribalyse 3.2). Et toi ?`;
+  const shareText = `En remplaçant « ${dishName} » par « ${plantName} » ${f.text} pendant ${years === 1 ? "1 an" : `${years} ans`}, j’éviterais environ ${formatForUnit(co2, "kg CO2e")}${NBSP}kg CO₂e (Agribalyse 3.2). Et toi ?`;
   async function share() {
     try {
       if (navigator.share) await navigator.share({ title: "Veganizer", text: shareText, url: window.location.href });
@@ -86,15 +87,15 @@ export function Simulator({
       <dl aria-live="polite" className="m-0 grid grid-cols-3 gap-[10px] border-t border-white/15 pt-[10px]">
         <div className="flex flex-col-reverse justify-end gap-[2px]">
           <dt className="text-[12px] text-on-dark-3">kg CO₂e évités</dt>
-          <dd className={`m-0 ${big}`}>{co2 == null ? <span className="text-[15px] italic text-on-dark-3">{MISSING}</span> : formatInt(co2)}</dd>
+          <dd className={`m-0 ${big}`}>{co2 == null ? <span className="text-[15px] italic text-on-dark-3">{MISSING}</span> : formatForUnit(co2, "kg CO2e")}</dd>
         </div>
         <div className="flex flex-col-reverse justify-end gap-[2px]">
           <dt className="text-[12px] text-on-dark-3">coût climat évité (valeur {CLIMATE_REFERENCE_YEAR})</dt>
-          <dd className={`m-0 ${big}`}>{cost == null ? <span className="text-[15px] italic text-on-dark-3">{MISSING}</span> : `${formatInt(cost.eur)}${NBSP}€`}</dd>
+          <dd className={`m-0 ${big}`}>{cost == null ? <span className="text-[15px] italic text-on-dark-3">{MISSING}</span> : formatEur(cost.eur)}</dd>
         </div>
         <div className="flex flex-col-reverse justify-end gap-[2px]">
-          <dt className="text-[12px] text-on-dark-3">abattages évités, en moyenne (au moins)</dt>
-          <dd className={`m-0 ${big}`}>{animals == null ? <span className="text-[15px] italic text-on-dark-3">{MISSING}</span> : formatValue(animals)}</dd>
+          <dt className="text-[12px] text-on-dark-3">{spared?.noun ?? "animaux épargnés"} (estimation basse)</dt>
+          <dd className={`m-0 ${big}`}>{spared == null ? <span className="text-[15px] italic text-on-dark-3">{MISSING}</span> : `au moins ${spared.number}`}</dd>
         </div>
       </dl>
       <p className="m-0 text-[12px] leading-normal text-on-dark-3">

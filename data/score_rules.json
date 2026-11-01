@@ -1,10 +1,12 @@
 {
-  "version": "1.0",
+  "version": "1.1",
   "date": "2026-11-01",
   "status": "Provisoire : sens à valider par un·e diététicien·ne et une personne experte en ACV (docs/A_VERIFIER.md).",
   "method": {
-    "point": "Un point pour le plat qui fait strictement mieux, à l'unité affichée (par portion par défaut), après arrondi d'affichage (3 chiffres significatifs). Égalité après arrondi : aucun point.",
-    "missing": "Valeur manquante d'un côté ou de l'autre, ou données couvrant moins de 95 % de la masse d'un des plats : indicateur non compté (« x indicateurs comparés sur y »).",
+    "point": "Un point pour le plat qui fait mieux, à l'unité affichée (par portion par défaut), seulement si les fourchettes des deux plats ne se chevauchent pas. Les bornes sont arrondies comme à l'affichage : 2 décimales pour les kg CO₂e et les euros, 3 chiffres significatifs pour les autres unités. Fourchettes qui se chevauchent, ou valeurs égales après arrondi : égalité, aucun point.",
+    "ranges": "Une fourchette vient de la source (valeurs basse et haute publiées) ou d'une teneur publiée « < x » par Ciqual : elle compte de 0 à x, jamais x/2 ni 0. Sans fourchette, la valeur centrale sert de borne basse et haute.",
+    "shared": "Par portion, les ingrédients strictement identiques des deux côtés (même aliment, même quantité par portion) sont mis de côté pour le verdict : leur contribution s'annule dans la comparaison. Les totaux affichés, eux, gardent tous les ingrédients, leur couverture réelle et l'avertissement sous 95 %. Pour 100 kcal ou pour 10 g de protéines, ces ingrédients ne s'annulent plus : ils restent comptés.",
+    "missing": "Valeur manquante d'un côté ou de l'autre, ou données couvrant moins de 95 % de la masse d'un des plats (ingrédients identiques mis de côté, par portion) : indicateur non compté (« x indicateurs comparés sur y »).",
     "winner": "Plus de points = vainqueur de la catégorie ; autant de points = « Égalité » ; aucun indicateur comparé = « Données insuffisantes ».",
     "provisional": "« provisoire » quand moins de la moitié des indicateurs de la catégorie sont comparés.",
     "verdict": "Verdict global = nombre de catégories gagnées par chaque plat (« 4 sur 5 »). Pas de note pondérée en V1."
@@ -213,26 +215,11 @@
           }
         },
         {
-          "id": "fa_c20_5_n3_epa_g",
-          "label": "Oméga-3 EPA",
+          "id": "fa_epa_dha_g",
+          "label": "Oméga-3 EPA + DHA",
           "group": "nutrients",
           "direction": "higher_is_better",
-          "justification": "Référence nutritionnelle ANSES (250 mg par jour).",
-          "source": {
-            "publisher": "ANSES",
-            "title": "Les lipides",
-            "url": "https://www.anses.fr/fr/content/les-lipides",
-            "date": "15/03/2021",
-            "accessedOn": "2026-11-01",
-            "quote": "Références nutritionnelles en acides gras pour l'adulte consommant 2000 kcal par jour : acide α-linolénique 1 % AE ; DHA 250 mg ; EPA 250 mg"
-          }
-        },
-        {
-          "id": "fa_c22_6_n3_dha_g",
-          "label": "Oméga-3 DHA",
-          "group": "nutrients",
-          "direction": "higher_is_better",
-          "justification": "Référence nutritionnelle ANSES (250 mg par jour).",
+          "justification": "Références nutritionnelles ANSES (EPA 250 mg et DHA 250 mg par jour). Un seul indicateur pour EPA et DHA (somme ingrédient par ingrédient des valeurs Ciqual), l'ALA étant compté à part : l'ANSES traite l'ALA séparément de l'EPA et du DHA (décision de Matt, 2026-11-01).",
           "source": {
             "publisher": "ANSES",
             "title": "Les lipides",

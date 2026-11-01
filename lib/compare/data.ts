@@ -110,7 +110,7 @@ export async function getPairPage(slug: string): Promise<PairPageModel | null> {
 
   const [nutrientValues, impacts, categoryFactors, nutrients, indicators, sources, factors, rules, prices, foodPrices] = await Promise.all([
     paged("food_nutrients", (from, to) =>
-      db.from("food_nutrients").select("food_code, nutrient_id, value_per_100g, source_id").in("food_code", nutrientCodes).eq("source_id", CIQUAL_SOURCE)
+      db.from("food_nutrients").select("food_code, nutrient_id, value_per_100g, qualifier, source_id").in("food_code", nutrientCodes).eq("source_id", CIQUAL_SOURCE)
         .order("food_code").order("nutrient_id").range(from, to),
     ),
     db.from("food_impacts").select("food_code, indicator_id, value_per_kg, low_per_kg, high_per_kg, dqr, source_id").in("food_code", codes).in("indicator_id", CLIMATE_INDICATORS),
@@ -226,7 +226,7 @@ export async function getFoodPage(code: string): Promise<FoodPageModel | null> {
   const nutrientCodes = [...new Set(foods.map((f) => f.ciqual_code ?? f.code))];
   const [nutrientValues, impacts, categoryFactors, nutrients, indicators, sources] = await Promise.all([
     paged("food_nutrients", (from, to) =>
-      db.from("food_nutrients").select("food_code, nutrient_id, value_per_100g, source_id").in("food_code", nutrientCodes).eq("source_id", CIQUAL_SOURCE)
+      db.from("food_nutrients").select("food_code, nutrient_id, value_per_100g, qualifier, source_id").in("food_code", nutrientCodes).eq("source_id", CIQUAL_SOURCE)
         .order("food_code").order("nutrient_id").range(from, to),
     ),
     db.from("food_impacts").select("food_code, indicator_id, value_per_kg, low_per_kg, high_per_kg, dqr, source_id").in("food_code", codes).in("indicator_id", CLIMATE_INDICATORS),
@@ -290,16 +290,18 @@ export async function searchIngredients(q: string): Promise<IngredientHit[]> {
 const MAX_RECIPE_CODES = 40;
 
 /** Everything the browser needs to compute a recipe and its plant version with lib/scoring. */
-export async function getRecipeData(requested: string[]): Promise<(RecipeData & { substitutions: SubstitutionRule[]; recipeFoods: RecipeFood[] }) | null> {
+export async function getRecipeData(
+  requested: string[],
+): Promise<(RecipeData & { substitutions: SubstitutionRule[]; recipeFoods: RecipeFood[]; cookingYields: { raw_code: string; yield_pct: number }[] }) | null> {
   const db = createPublicClient();
-  const subs = rows(await db.from("ingredient_substitutions").select("priority, match_type, match_value, to_code, ratio, justification"), "ingredient_substitutions");
+  const subs = rows(await db.from("ingredient_substitutions").select("priority, match_type, match_value, to_code, ratio, ratio_basis, justification"), "ingredient_substitutions");
   const codes = [...new Set([...requested.slice(0, MAX_RECIPE_CODES), ...subs.map((s) => s.to_code)])];
   const foods = rows(await db.from("foods").select("code, name_fr, is_animal, animal_category, ciqual_code, iarc_meat, food_subgroup").in("code", codes), "foods");
   if (foods.length === 0) return null;
   const nutrientCodes = [...new Set(foods.map((f) => f.ciqual_code ?? f.code))];
-  const [nutrientValues, impacts, categoryFactors, nutrients, indicators, sources, factors, rules, foodPrices] = await Promise.all([
+  const [nutrientValues, impacts, categoryFactors, nutrients, indicators, sources, factors, rules, foodPrices, cookingYields] = await Promise.all([
     paged("food_nutrients", (from, to) =>
-      db.from("food_nutrients").select("food_code, nutrient_id, value_per_100g, source_id").in("food_code", nutrientCodes).eq("source_id", CIQUAL_SOURCE)
+      db.from("food_nutrients").select("food_code, nutrient_id, value_per_100g, qualifier, source_id").in("food_code", nutrientCodes).eq("source_id", CIQUAL_SOURCE)
         .order("food_code").order("nutrient_id").range(from, to),
     ),
     db.from("food_impacts").select("food_code, indicator_id, value_per_kg, low_per_kg, high_per_kg, dqr, source_id").in("food_code", codes).in("indicator_id", CLIMATE_INDICATORS),
@@ -310,11 +312,18 @@ export async function getRecipeData(requested: string[]): Promise<(RecipeData & 
     db.from("monetization_factors").select("indicator_id, year, eur_per_unit, method, source_id").eq("indicator_id", CLIMATE_MAIN),
     db.from("monetization_rules").select("indicator_id, method, growth_rate, start_year, cap_year, source_id").eq("indicator_id", CLIMATE_MAIN),
     db.from("food_prices_best").select("food_code, source_id, median_eur_per_kg, observations, first_observed_on, last_observed_on, place, derived_from, yield_pct").in("food_code", codes),
+    db.from("cooking_yields").select("raw_code, yield_pct").in("raw_code", codes),
   ]);
   return {
     foods,
     recipeFoods: foods.map((f) => ({ code: f.code, name_fr: displayName(f.name_fr), is_animal: f.is_animal, animal_category: f.animal_category, food_subgroup: f.food_subgroup, iarc_meat: f.iarc_meat })),
-    substitutions: subs.map((s) => ({ ...s, ratio: Number(s.ratio), match_type: s.match_type as SubstitutionRule["match_type"] })),
+    substitutions: subs.map((s) => ({
+      ...s,
+      ratio: Number(s.ratio),
+      ratio_basis: s.ratio_basis === "fat_g" || s.ratio_basis === "cooking_yield" ? s.ratio_basis : null,
+      match_type: s.match_type as SubstitutionRule["match_type"],
+    })),
+    cookingYields: rows(cookingYields, "cooking_yields").map((y) => ({ raw_code: y.raw_code, yield_pct: Number(y.yield_pct) })),
     nutrientValues,
     impacts: rows(impacts, "food_impacts"),
     categoryFactors: rows(categoryFactors, "category_factors"),

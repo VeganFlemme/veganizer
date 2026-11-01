@@ -26,6 +26,12 @@ export interface ImpactPerKg {
 export interface FoodData {
   /** Per 100 g. Absent key or null = missing data, never 0. */
   nutrients: Record<string, number | null | undefined>;
+  /**
+   * Per 100 g, values published by Ciqual as « < x »: known to lie between 0 and x (Ciqual 2025
+   * documentation, p. 21: « une valeur maximale »). Used only where `nutrients` has no number:
+   * low bound with 0, high bound with x, never x/2. « traces » is not here (missing data).
+   */
+  nutrientMax?: Record<string, number | undefined>;
   /** Source of the nutrient values (e.g. 'ciqual-2025'). */
   nutrientSourceId?: string;
   /** Per kg, keyed by indicator id. Absent key = missing data. */
@@ -60,6 +66,7 @@ export interface ScoringData {
 
 /** A value for the dish, per serving and normalised. null = donnée manquante. */
 export interface Amount {
+  /** Central value; null when only a range is known (an ingredient published as « < x »). */
   perServing: number | null;
   lowPerServing: number | null;
   highPerServing: number | null;
@@ -71,6 +78,8 @@ export interface Amount {
   worstDqr: number | null;
   /** Sources of the values actually used. */
   sourceIds: string[];
+  /** true when an ingredient value is published as « < x »: only [low, high] is known. */
+  censored?: boolean;
 }
 
 export interface DishTotals {

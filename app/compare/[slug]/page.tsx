@@ -5,7 +5,7 @@ import { ErrorReport } from "@/components/ErrorReport";
 import { SourcesFooter } from "@/components/ui/SourcesFooter";
 import { getPairPage, listPairs } from "@/lib/compare/data";
 import { CLIMATE_MAIN } from "@/lib/compare/config";
-import { signedGap } from "@/lib/format";
+import { publicLicense, signedGap } from "@/lib/format";
 
 // Static pages, regenerated at most once a day (cacheLife revalidate = 86 400 s in lib/compare/data.ts:
 // with Cache Components, `export const revalidate` is replaced by cacheLife). Unknown slugs are 404.
@@ -48,7 +48,7 @@ export default async function ComparePage({ params }: PageProps<"/compare/[slug]
     "@type": "WebPage",
     name: `${model.animal.name} face à sa version végétale`,
     inLanguage: "fr",
-    isBasedOn: Object.values(model.sources).map((s) => ({ "@type": "Dataset", name: s.name, version: s.version ?? undefined, license: s.license, url: s.url ?? undefined })),
+    isBasedOn: Object.values(model.sources).map((s) => ({ "@type": "Dataset", name: s.name, version: s.version ?? undefined, license: publicLicense(s.license) ?? undefined, url: s.url ?? undefined })),
     about: [{ "@type": "Recipe", name: model.animal.name }, ...(v ? [{ "@type": "Recipe", name: v.dish.name }] : [])],
   };
 

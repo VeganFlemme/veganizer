@@ -30,9 +30,17 @@ const FEATURED: { id: string; label: string }[] = [
   { id: "vit_d_ug", label: "Vitamine D" },
   { id: "vit_b2_mg", label: "Vitamine B2" },
   { id: "fa_c18_3_n3_ala_g", label: "Oméga-3 ALA" },
-  { id: "fa_c20_5_n3_epa_g", label: "Oméga-3 EPA" },
-  { id: "fa_c22_6_n3_dha_g", label: "Oméga-3 DHA" },
+  { id: "fa_epa_dha_g", label: "Oméga-3 EPA + DHA" },
 ];
+
+/**
+ * Nutrients derived from Ciqual constituents, summed ingredient by ingredient (an ingredient counts
+ * only when every part is known). EPA + DHA: one indicator of the score, as the ANSES references
+ * treat ALA apart from EPA and DHA (decision of Matt, 2026-11-01). Unit conversion only: none.
+ */
+export const NUTRIENT_SUMS: Record<string, { label: string; unit: string; parts: string[] }> = {
+  fa_epa_dha_g: { label: "Oméga-3 EPA + DHA (somme des valeurs Ciqual)", unit: "g", parts: ["fa_c20_5_n3_epa_g", "fa_c22_6_n3_dha_g"] },
+};
 
 const counted = new Map(
   scoreRules.categories.flatMap((c) => c.indicators.map((i) => [i.id, i.direction === "higher_is_better" ? "up" : "down"] as const)),

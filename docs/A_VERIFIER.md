@@ -9,45 +9,44 @@ Points à contrôler avant de considérer une étape comme validée. Cocher quan
 
 ## Étape B — 10 paires de plats
 
-Chiffres par portion (4 portions par recette), relus dans les vues `dish_nutrients` et `dish_impacts` après import. Pourcentage entre parenthèses : protéines de l'alternative rapportées au plat animal ; « −x % » : écart de CO2e.
+Chiffres par portion (4 portions par recette). **Mis à jour le 2026-11-01 après la relecture des recettes par Matt** : calculés hors ligne à partir de `pipeline/pairs.csv` avec la formule des vues (`dish_nutrients`, `dish_impacts`, mêmes valeurs Ciqual et Agribalyse lues dans la base), car l'import dans Supabase reste à faire (voir « Relecture du lot C-D »). Les plats animaux n'ont pas changé et retrouvent exactement leurs anciennes valeurs. Pourcentage entre parenthèses : protéines de l'alternative rapportées au plat animal (70 % = objectif, plus un critère bloquant) ; « −x % » : écart de CO2e.
 
 | Paire | Plat | g/portion | Protéines g | kcal | kg CO2e (fourchette) | DQR max | Couverture | Critères |
 |---|---|---|---|---|---|---|---|---|
 | boeuf-bourguignon | Bœuf bourguignon (animal) | 405 | 48.6 | 483 | 5.03 (5.03–5.03) | 2.87 | 1.00 | OK |
-| boeuf-bourguignon | Bourguignon de tempeh et lentilles (maison) | 498 | 35.4 (73%) | 553 | 0.65 (0.65–0.65), −87 % | 3.01 | 1.00 | OK |
+| boeuf-bourguignon | Bourguignon de tempeh et lentilles (maison) | 432 | 27.3 (56%, objectif 70 % non atteint) | 464 | 0.57 (0.57–0.57), −89 % | 3.01 | 1.00 | OK |
 | boeuf-bourguignon | Bourguignon de seitan (commerce) | 422 | 36.6 (75%) | 430 | 0.57 (0.57–0.57), −89 % | 2.87 | 1.00 | OK |
 | blanquette-de-veau | Blanquette de veau (animal) | 425 | 48.2 | 652 | 3.07 (3.07–3.07) | 3.73 | 1.00 | OK |
-| blanquette-de-veau | Blanquette de tofu et pois chiches (maison) | 490 | 34.2 (71%) | 626 | 0.47 (0.47–0.47), −85 % | 3.73 | 1.00 | OK |
-| blanquette-de-veau | Blanquette de seitan (commerce) | 415 | 35.6 (74%) | 493 | 0.48 (0.48–0.48), −84 % | 3.73 | 1.00 | OK |
+| blanquette-de-veau | Blanquette de tofu et pois chiches (maison) | 438 | 22.2 (46%, objectif 70 % non atteint) | 532 | 0.36 (0.36–0.36), −88 % | 3.73 | 1.00 | OK |
+| blanquette-de-veau | Blanquette de seitan (commerce) | 438 | 33.7 (70%) | 514 | 0.48 (0.48–0.48), −84 % | 3.73 | 1.00 | OK |
 | poulet-roti-haricots-verts | Poulet rôti et haricots verts (animal) | 355 | 47.4 | 402 | 1.20 (1.20–1.20) | 2.31 | 1.00 | OK |
-| poulet-roti-haricots-verts | Tofu et tempeh rôtis et haricots verts (maison) | 415 | 34.1 (72%) | 433 | 0.60 (0.60–0.60), −50 % | 2.78 | 1.00 | OK |
+| poulet-roti-haricots-verts | Tofu et tempeh rôtis et haricots verts (maison) | 388 | 30.6 (65%, objectif 70 % non atteint) | 400 | 0.56 (0.56–0.56), −54 % | 2.78 | 1.00 | OK |
 | poulet-roti-haricots-verts | Seitan rôti et haricots verts (commerce) | 358 | 34.9 (74%) | 327 | 0.53 (0.53–0.53), −56 % | 2.23 | 1.00 | OK |
 | lasagnes-bolognaise | Lasagnes à la bolognaise (animal) | 429 | 40.1 | 663 | 5.01 (5.01–5.01) | 3.12 | 1.00 | OK |
-| lasagnes-bolognaise | Lasagnes aux lentilles et tofu (maison) | 470 | 29.3 (73%) | 565 | 0.36 (0.36–0.36), −93 % | 3.12 | 1.00 | OK |
-| lasagnes-bolognaise | Lasagnes au haché végétal (commerce) | 490 | 29.2 (73%) | 616 | 0.53 (0.53–0.53), −89 % | 3.12 | 1.00 | OK |
+| lasagnes-bolognaise | Lasagnes aux lentilles et tofu (maison) | 428 | 24.6 (61%, objectif 70 % non atteint) | 509 | 0.34 (0.34–0.34), −93 % | 3.12 | 1.00 | OK |
+| lasagnes-bolognaise | Lasagnes au haché végétal (commerce) | 428 | 22.4 (56%, objectif 70 % non atteint) | 545 | 0.51 (0.51–0.51), −90 % | 3.12 | 1.00 | OK |
 | quiche-lorraine | Quiche lorraine et salade verte (animal) | 336 | 20.6 | 776 | 1.00 (1.00–1.00) | 2.92 | 1.00 | OK |
-| quiche-lorraine | Quiche au tofu fumé et salade verte (maison) | 334 | 25.1 (122%) | 642 | 0.37 (0.37–0.37), −63 % | 3.48 | 1.00 | OK |
-| quiche-lorraine | Quiche au tofu fumé (pâte du commerce) et salade verte (commerce) | 341 | 24.1 (117%) | 682 | 0.57 (0.57–0.57), −43 % | 3.48 | 1.00 | OK |
+| quiche-lorraine | Quiche au tofu fumé et salade verte (maison) | 354 | 23.7 (115%) | 710 | 0.41 (0.41–0.41), −59 % | 3.48 | 1.00 | OK |
+| quiche-lorraine | Quiche au tofu fumé (pâte filo du commerce) et salade verte (commerce) | 334 | 22.2 (108%) | 497 | 0.41 (0.41–0.41), −59 % | 3.48 | 1.00 | OK |
 | hachis-parmentier | Hachis parmentier (animal) | 419 | 32.4 | 569 | 4.79 (4.79–4.79) | 2.9 | 1.00 | OK |
-| hachis-parmentier | Parmentier de lentilles (maison) | 482 | 23.8 (73%) | 499 | 0.43 (0.43–0.43), −91 % | 3.01 | 1.00 | OK |
-| hachis-parmentier | Parmentier au haché végétal (commerce) | 479 | 23.2 (72%) | 533 | 0.60 (0.60–0.60), −87 % | 3.01 | 1.00 | OK |
+| hachis-parmentier | Parmentier de lentilles (maison) | 420 | 17.5 (54%, objectif 70 % non atteint) | 421 | 0.40 (0.40–0.40), −92 % | 3.01 | 1.00 | OK |
+| hachis-parmentier | Parmentier au haché végétal (commerce) | 416 | 16.9 (52%, objectif 70 % non atteint) | 455 | 0.57 (0.57–0.57), −88 % | 2.48 | 1.00 | OK |
 | saumon-riz | Saumon et riz (animal) | 319 | 33.3 | 583 | 1.08 (1.08–1.08) | 3.73 | 1.00 | OK |
-| saumon-riz | Tofu mariné et riz (maison) | 355 | 26.5 (80%) | 551 | 0.39 (0.39–0.39), −64 % | 3.73 | 1.00 | OK |
-| saumon-riz | Pavé de soja et riz (commerce) | 319 | 25.1 (75%) | 630 | 0.50 (0.50–0.50), −54 % | 3.73 | 1.00 | OK |
+| saumon-riz | Tofu rôti et riz (maison) | 344 | 25.8 (77%) | 536 | 0.37 (0.37–0.37), −66 % | 3.73 | 1.00 | OK |
+| saumon-riz | Pavé de soja et riz (commerce) | 319 | 25.1 (75%) | 630 | 0.49 (0.49–0.49), −54 % | 3.73 | 1.00 | OK |
 | omelette | Omelette et pommes de terre rôties (animal) | 368 | 23.7 | 483 | 0.52 (0.52–0.52) | 2.92 | 1.00 | OK |
 | omelette | Omelette à la farine de pois chiche et pommes de terre rôties (maison) | 368 | 17.9 (76%) | 495 | 0.26 (0.26–0.26), −49 % | 3.91 | 1.00 | OK |
-| omelette | Tofu brouillé et pommes de terre rôties (commerce) | 372 | 24.9 (105%) | 502 | 0.36 (0.36–0.36), −31 % | 2.92 | 1.00 | OK |
 | burger | Burger et frites (animal) | 395 | 41.3 | 892 | 4.93 (4.93–4.93) | 2.9 | 1.00 | OK |
 | burger | Burger aux haricots rouges et tofu et frites (maison) | 418 | 29.3 (71%) | 856 | 0.41 (0.41–0.41), −92 % | 3.93 | 1.00 | OK |
 | burger | Burger à la galette végétale et frites (commerce) | 405 | 30.4 (74%) | 864 | 0.56 (0.56–0.56), −89 % | 2.9 | 1.00 | OK |
 | croque-monsieur | Croque-monsieur et salade verte (animal) | 302 | 27.8 | 560 | 0.83 (0.83–0.83) | 2.97 | 1.00 | OK |
-| croque-monsieur | Croque au tofu fumé et salade verte (maison) | 315 | 20.5 (74%) | 524 | 0.34 (0.34–0.34), −59 % | 2.92 | 1.00 | OK |
-| croque-monsieur | Croque aux tranches végétales et salade verte (commerce) | 325 | 25.7 (93%) | 606 | 0.37 (0.37–0.37), −55 % | 2.92 | 1.00 | OK |
+| croque-monsieur | Croque au tofu fumé et salade verte (maison) | 300 | 21.3 (77%) | 525 | 0.35 (0.35–0.35), −57 % | 2.92 | 1.00 | OK |
+| croque-monsieur | Croque aux tranches végétales et salade verte (commerce) | 302 | 24.6 (89%) | 600 | 0.37 (0.37–0.37), −55 % | 2.92 | 1.00 | OK |
 
-Tous les critères sont respectés.
+Critères bloquants (portion 300-500 g, couverture ≥ 0,95, règles de recette de `pairs.py`) respectés ; objectif de 70 % des protéines non atteint pour 19 versions végétales (affiché sur le site).
 
 À contrôler :
-- [ ] **Recettes** : proportions réalistes pour la cuisine française courante (fichier `pipeline/pairs.csv`, colonne `note`). En particulier : 500 g de bœuf cuit pour 4 (≈ 750 g cru) ; 450 g de veau cuit pour 4 ; tempeh 550 g pour 4 dans le bourguignon (portion végétale de 498 g, proche de la limite de 500 g) ; 12 œufs pour 4 dans l'omelette.
+- [ ] **Recettes** : proportions réalistes pour la cuisine française courante (fichier `pipeline/pairs.csv`, colonne `note`). En particulier : 500 g de bœuf cuit pour 4 (≈ 750 g cru) ; 450 g de veau cuit pour 4 ; 12 œufs pour 4 dans l'omelette. Les versions végétales ont été revues le 2026-11-01 (règles de Matt, voir « Relecture du lot C-D ») : par exemple bourguignon maison 450 g de tempeh + 240 g de lentilles (au lieu de 550 + 400).
 - [ ] **Comparer 2 plats à la main** : par exemple bœuf bourguignon (48,6 g de protéines, 5,03 kg CO2e par portion) avec une calculatrice à partir des valeurs de `food_nutrients` et `food_impacts` des 8 codes.
 - [ ] **Fourchettes** : Agribalyse ne publie pas de borne basse/haute ; la fourchette affichée vaut donc la valeur centrale. L'interface doit le dire (« fourchette non publiée ») plutôt que suggérer une précision. Le DQR max par plat est entre 2,2 et 3,9.
 - [ ] **Hypothèses de code** (voir `docs/DECISIONS.md`) : carottes au code cru, œuf cru, vin compté à son poids (énergie surestimée des deux côtés), pain blanc pour le burger, pas de champignons ni de tomate crue.
@@ -149,7 +148,7 @@ Tous les critères sont respectés.
 
 ## Lot B — S16 « Analyse ta recette »
 
-- [ ] **Table de substitutions** (`pipeline/substitutions.csv`) : relire chaque remplacement et sa justification (viande hachée → lentilles vertes cuites, viande → seitan, poisson et œuf → tofu ferme, charcuterie → tofu fumé, lait → boisson soja enrichie, crème → crème de soja, beurre → huile de colza, fromage → spécialités végétales, yaourt → dessert au soja nature). Ratio 1 (même masse) partout : à ajuster ? *En cours de relecture par Matt (2026-11-01) : ne bloque pas les lots C et D.*
+- [x] **Table de substitutions** (→ **relecture de Matt appliquée le 2026-11-01** : beurre → huile à quantité de matière grasse égale, viande crue → seitan avec le rendement de cuisson USDA ; les 14 autres règles validées) (`pipeline/substitutions.csv`) : relire chaque remplacement et sa justification (viande hachée → lentilles vertes cuites, viande → seitan, poisson et œuf → tofu ferme, charcuterie → tofu fumé, lait → boisson soja enrichie, crème → crème de soja, beurre → huile de colza, fromage → spécialités végétales, yaourt → dessert au soja nature). Ratio 1 (même masse) partout : à ajuster ? *En cours de relecture par Matt (2026-11-01) : ne bloque pas les lots C et D.*
 - [ ] **Vérification faite** : bolognaise de test (400 g de bœuf haché 15 % cuit, 100 g de lardons fumés cuits, 350 g de pâtes cuites, 350 g de coulis, 4 portions) : 4,908 kg CO₂e et 34,4 g de protéines par portion ; version végétale 0,261 kg CO₂e et 21,0 g de protéines. Identique au calcul à la main.
 - [x] **Connexion par e-mail** : à tester en production. Il faut que `https://veganizer.vercel.app/recette` soit dans les « Redirect URLs » de Supabase Auth (tableau de bord, non vérifiable d'ici) et que l'envoi d'e-mails soit configuré (le service par défaut de Supabase est très limité en volume). **Décision de Matt (2026-11-01) : pas de compte en V1**, enregistrement masqué (« bientôt ») ; nom de domaine + SMTP personnalisé dans « Hors V1 ».
 - [ ] **Ingrédients sans remplacement** (ex. miel) : gardés et signalés. Faut-il des règles supplémentaires ?
@@ -159,59 +158,58 @@ Tous les critères sont respectés.
 
 30 nouvelles paires (40 au total), **toutes à relire** : recettes rédigées par Claude (aucune base de recettes externe utilisée), choisies parmi les plats les plus consommés d'INCA 3 (groupes « plats composés », œufs, sandwichs, pizzas…), pour tous les moments de repas (petit-déjeuner, déjeuner, dîner, goûter). Critères vérifiés automatiquement pour les 90 plats : portion 300-500 g, protéines ≥ 70 % du plat animal, couverture 1,00.
 
-- [ ] **Relire chaque recette** (`pipeline/pairs.csv`, colonne `note`) : réalisme des proportions et des portions. Cas à surveiller : gratin dauphinois végétal avec pois chiches dans la salade (pour atteindre 70 % des protéines) ; tartiflette végétale avec haricots blancs ; steak frites remplacé par 700 g de galettes pour 4 ; pot-au-feu au tempeh (650 g pour 4) ; « cordon bleu » de tempeh ; crêpes du commerce à la boisson au soja aromatisée. *En cours de relecture par Matt (2026-11-01) : ne bloque pas les lots C et D.*
+- [x] **Relire chaque recette** (→ **relecture de Matt appliquée le 2026-11-01**, `RELECTURE_RECETTES.md` ; voir « Relecture du lot C-D ») (`pipeline/pairs.csv`, colonne `note`) : réalisme des proportions et des portions. Cas à surveiller : gratin dauphinois végétal avec pois chiches dans la salade (pour atteindre 70 % des protéines) ; tartiflette végétale avec haricots blancs ; steak frites remplacé par 700 g de galettes pour 4 ; pot-au-feu au tempeh (650 g pour 4) ; « cordon bleu » de tempeh ; crêpes du commerce à la boisson au soja aromatisée. *En cours de relecture par Matt (2026-11-01) : ne bloque pas les lots C et D.*
 - [ ] **Conventions de codes** reprises des 10 premières paires : carottes, endives, poireaux et chair à saucisse au code cru (cuits dans le plat) ; œufs au code « œuf cru » ; pain grillé (7004) comme chapelure.
 - [x] **Règle 9 et produits du commerce** : des produits végétaux transformés classés « plats composés » par Ciqual sont utilisés comme ingrédients des versions « du commerce » (galette blé-soja 25593, nuggets 25227_1, boulettes 25589_1, bâtonnets panés 25229 ; déjà présents : haché végétal 30181, pavé de soja 20914). Interprétation retenue : la règle vise les ingrédients qui rendraient les impacts animaux incalculables (aliments `mixte`, plats contenant des produits animaux) ; un produit végétal transformé est admis. À valider, sinon ces versions doivent être réécrites. **Décision de Matt (2026-11-01) : exception acceptée**, vérification notée dans `pairs.csv` (colonne `rule9_check`) et règle ajoutée à `CLAUDE.md`.
 - [ ] **Objectif 100+ non atteint** : 40 paires. Prochaine série (60+) à prévoir, idéalement après relecture de celles-ci.
 
-Chiffres clés par portion (nouvelles paires) :
+Chiffres clés par portion (nouvelles paires, mis à jour le 2026-11-01 après la relecture : même méthode que le tableau de l'étape B) :
 
 | Paire | Plat | g/portion | Protéines g | kcal | kg CO2e (fourchette) | DQR max | Couverture | Critères |
-| boeuf-bourguignon | Bœuf bourguignon (animal) | 405 | 48.6 | 483 | 5.03 (5.03–5.03) | 2.87 | 1.00 | OK |
+|---|---|---|---|---|---|---|---|---|
 | pizza-jambon-fromage | Pizza jambon-fromage et salade verte (animal) | 328 | 25.4 | 619 | 0.80 (0.80–0.80) | 2.97 | 1.00 | OK |
-| pizza-jambon-fromage | Pizza au tofu fumé et pois chiches, salade verte (maison) | 330 | 20.5 (80%) | 618 | 0.41 (0.41–0.41), −49 % | 2.96 | 1.00 | OK |
+| pizza-jambon-fromage | Pizza au tofu fumé, salade verte (maison) | 302 | 19.2 (75%) | 561 | 0.41 (0.41–0.41), −49 % | 2.96 | 1.00 | OK |
 | pizza-jambon-fromage | Pizza aux tranches végétales et râpé végétal, salade verte (commerce) | 308 | 21.1 (83%) | 630 | 0.43 (0.43–0.43), −46 % | 2.96 | 1.00 | OK |
 | gratin-dauphinois | Gratin dauphinois et salade verte (animal) | 428 | 12.7 | 478 | 0.72 (0.72–0.72) | 2.92 | 1.00 | OK |
-| gratin-dauphinois | Gratin de pommes de terre à la crème de soja, salade aux pois chiches (maison) | 450 | 12.1 (95%) | 409 | 0.45 (0.45–0.45), −37 % | 2.92 | 1.00 | OK |
+| gratin-dauphinois | Gratin de pommes de terre à la crème de soja, salade verte (maison) | 412 | 9.0 (71%) | 353 | 0.43 (0.43–0.43), −40 % | 2.92 | 1.00 | OK |
 | gratin-dauphinois | Gratin de pommes de terre au fromage végétal à tartiner, salade verte (commerce) | 438 | 11.9 (94%) | 397 | 0.48 (0.48–0.48), −34 % | 2.92 | 1.00 | OK |
 | nuggets-frites | Nuggets de poulet maison et frites (animal) | 315 | 40.3 | 670 | 1.02 (1.02–1.02) | 2.9 | 1.00 | OK |
-| nuggets-frites | Nuggets de tofu maison et frites (maison) | 365 | 28.9 (72%) | 735 | 0.40 (0.40–0.40), −61 % | 2.9 | 1.00 | OK |
+| nuggets-frites | Nuggets de tofu maison et frites (maison) | 335 | 24.8 (62%, objectif 70 % non atteint) | 691 | 0.37 (0.37–0.37), −64 % | 2.9 | 1.00 | OK |
 | nuggets-frites | Nuggets soja et blé et frites (commerce) | 315 | 29.1 (72%) | 712 | 0.47 (0.47–0.47), −54 % | 2.9 | 1.00 | OK |
 | sandwich-jambon-beurre | Sandwich jambon-beurre, carottes râpées et pomme (animal) | 445 | 20.9 | 677 | 0.71 (0.71–0.71) | 2.97 | 1.00 | OK |
 | sandwich-jambon-beurre | Sandwich au tofu fumé, carottes râpées et pomme (maison) | 442 | 19.3 (92%) | 659 | 0.34 (0.34–0.34), −52 % | 2.72 | 1.00 | OK |
 | sandwich-jambon-beurre | Sandwich aux tranches végétales, carottes râpées et pomme (commerce) | 450 | 28.3 (135%) | 658 | 0.36 (0.36–0.36), −50 % | 2.72 | 1.00 | OK |
 | boulettes-tomate-spaghetti | Boulettes de bœuf à la tomate et spaghetti (animal) | 412 | 40.8 | 679 | 4.89 (4.89–4.89) | 3.12 | 1.00 | OK |
-| boulettes-tomate-spaghetti | Boulettes de lentilles et tofu à la tomate, spaghetti (maison) | 425 | 29.0 (71%) | 584 | 0.38 (0.38–0.38), −92 % | 3.91 | 1.00 | OK |
+| boulettes-tomate-spaghetti | Boulettes de lentilles et tofu à la tomate, spaghetti (maison) | 420 | 28.5 (70%, objectif 70 % non atteint) | 578 | 0.38 (0.38–0.38), −92 % | 3.91 | 1.00 | OK |
 | boulettes-tomate-spaghetti | Boulettes végétales à la tomate, spaghetti (commerce) | 402 | 31.4 (77%) | 614 | 0.55 (0.55–0.55), −89 % | 3.12 | 1.00 | OK |
 | tortilla-espagnole | Tortilla espagnole et salade verte (animal) | 389 | 19.9 | 505 | 0.55 (0.55–0.55) | 2.92 | 1.00 | OK |
 | tortilla-espagnole | Tortilla à la farine de pois chiche et salade verte (maison) | 401 | 16.2 (81%) | 528 | 0.37 (0.37–0.37), −33 % | 3.91 | 1.00 | OK |
-| tortilla-espagnole | Tortilla au tofu et salade verte (commerce) | 376 | 20.1 (101%) | 522 | 0.43 (0.43–0.43), −22 % | 3.91 | 1.00 | OK |
 | tartiflette | Tartiflette et salade verte (animal) | 461 | 24.0 | 639 | 1.16 (1.16–1.16) | 2.92 | 1.00 | OK |
-| tartiflette | Tartiflette au tofu fumé et haricots blancs, salade verte (maison) | 466 | 17.2 (72%) | 452 | 0.58 (0.58–0.58), −50 % | 3.26 | 1.00 | OK |
-| tartiflette | Tartiflette au fromage végétal et tofu fumé, salade verte (commerce) | 486 | 17.3 (72%) | 559 | 0.71 (0.71–0.71), −39 % | 2.92 | 1.00 | OK |
+| tartiflette | Tartiflette au tofu fumé, salade verte (maison) | 416 | 14.2 (59%, objectif 70 % non atteint) | 391 | 0.55 (0.55–0.55), −53 % | 2.92 | 1.00 | OK |
+| tartiflette | Tartiflette au fromage végétal et tofu fumé, salade verte (commerce) | 449 | 11.7 (49%, objectif 70 % non atteint) | 498 | 0.63 (0.63–0.63), −45 % | 2.92 | 1.00 | OK |
 | paella | Paëlla au poulet, chorizo et crevettes (animal) | 422 | 42.0 | 642 | 2.37 (2.37–2.37) | 3.73 | 1.00 | OK |
-| paella | Paëlla aux pois chiches, tofu fumé et tempeh (maison) | 466 | 32.0 (76%) | 680 | 0.66 (0.66–0.66), −72 % | 4.63 | 1.00 | OK |
+| paella | Paëlla aux pois chiches, tofu fumé et tempeh (maison) | 450 | 29.9 (71%) | 651 | 0.62 (0.62–0.62), −74 % | 3.73 | 1.00 | OK |
 | paella | Paëlla au seitan et saucisse végétale (commerce) | 382 | 32.0 (76%) | 558 | 0.56 (0.56–0.56), −76 % | 3.73 | 1.00 | OK |
 | chili-con-carne | Chili con carne et riz (animal) | 481 | 39.0 | 625 | 4.93 (4.93–4.93) | 3.89 | 1.00 | OK |
-| chili-con-carne | Chili aux haricots rouges, lentilles et tofu, riz (maison) | 494 | 27.9 (71%) | 533 | 0.48 (0.48–0.48), −90 % | 3.89 | 1.00 | OK |
+| chili-con-carne | Chili aux haricots rouges, lentilles et tofu, riz (maison) | 499 | 28.9 (74%) | 544 | 0.49 (0.49–0.49), −90 % | 3.89 | 1.00 | OK |
 | chili-con-carne | Chili aux protéines de soja texturées, riz (commerce) | 481 | 34.0 (87%) | 536 | 0.54 (0.54–0.54), −89 % | 3.89 | 1.00 | OK |
 | endives-au-jambon | Endives au jambon et pommes de terre (animal) | 465 | 23.7 | 404 | 1.00 (1.00–1.00) | 2.97 | 1.00 | OK |
-| endives-au-jambon | Endives au tofu fumé, béchamel au soja et pommes de terre (maison) | 455 | 17.6 (74%) | 359 | 0.48 (0.48–0.48), −52 % | 2.92 | 1.00 | OK |
+| endives-au-jambon | Endives au tofu fumé, béchamel au soja et pommes de terre (maison) | 452 | 17.2 (73%) | 355 | 0.47 (0.47–0.47), −53 % | 2.92 | 1.00 | OK |
 | endives-au-jambon | Endives aux tranches végétales et râpé végétal, pommes de terre (commerce) | 462 | 23.2 (98%) | 432 | 0.50 (0.50–0.50), −50 % | 2.92 | 1.00 | OK |
 | tomates-farcies | Tomates farcies et riz (animal) | 436 | 21.1 | 599 | 1.08 (1.08–1.08) | 3.73 | 1.00 | OK |
-| tomates-farcies | Tomates farcies aux lentilles et riz (maison) | 438 | 17.8 (84%) | 421 | 0.53 (0.53–0.53), −51 % | 3.73 | 1.00 | OK |
-| tomates-farcies | Tomates farcies aux protéines de soja et riz (commerce) | 425 | 22.7 (107%) | 419 | 0.58 (0.58–0.58), −47 % | 3.73 | 1.00 | OK |
+| tomates-farcies | Tomates farcies aux lentilles et riz (maison) | 436 | 17.8 (84%) | 410 | 0.53 (0.53–0.53), −51 % | 3.73 | 1.00 | OK |
+| tomates-farcies | Tomates farcies aux protéines de soja et riz (commerce) | 424 | 22.7 (107%) | 408 | 0.57 (0.57–0.57), −47 % | 3.73 | 1.00 | OK |
 | steak-frites | Steak frites et salade verte (animal) | 386 | 48.1 | 592 | 5.75 (5.75–5.75) | 2.92 | 1.00 | OK |
 | steak-frites | Tempeh et tofu fumé grillés, frites et salade verte (maison) | 416 | 34.0 (71%) | 725 | 0.67 (0.67–0.67), −88 % | 2.92 | 1.00 | OK |
 | steak-frites | Galettes végétales, frites et salade verte (commerce) | 411 | 34.7 (72%) | 777 | 0.64 (0.64–0.64), −89 % | 2.92 | 1.00 | OK |
 | escalope-poulet-creme-riz | Escalope de poulet à la crème, riz et haricots verts (animal) | 416 | 45.2 | 579 | 1.38 (1.38–1.38) | 3.73 | 1.00 | OK |
-| escalope-poulet-creme-riz | Tempeh et tofu à la crème de soja, riz et haricots verts (maison) | 466 | 34.1 (75%) | 620 | 0.66 (0.66–0.66), −52 % | 3.73 | 1.00 | OK |
-| escalope-poulet-creme-riz | Seitan à la crème de soja, riz et haricots verts (commerce) | 454 | 41.4 (92%) | 570 | 0.64 (0.64–0.64), −54 % | 3.73 | 1.00 | OK |
+| escalope-poulet-creme-riz | Tempeh et tofu à la crème de soja, riz et haricots verts (maison) | 441 | 30.1 (67%, objectif 70 % non atteint) | 581 | 0.60 (0.60–0.60), −57 % | 3.73 | 1.00 | OK |
+| escalope-poulet-creme-riz | Seitan à la crème de soja, riz et haricots verts (commerce) | 441 | 38.9 (86%) | 554 | 0.62 (0.62–0.62), −55 % | 3.73 | 1.00 | OK |
 | saucisse-lentilles | Saucisses de Toulouse aux lentilles (animal) | 328 | 34.7 | 513 | 1.35 (1.35–1.35) | 3.01 | 1.00 | OK |
-| saucisse-lentilles | Tofu fumé aux lentilles (maison) | 330 | 30.8 (89%) | 420 | 0.34 (0.34–0.34), −75 % | 3.01 | 1.00 | OK |
+| saucisse-lentilles | Tofu fumé aux lentilles (maison) | 328 | 30.8 (89%) | 398 | 0.34 (0.34–0.34), −75 % | 3.01 | 1.00 | OK |
 | saucisse-lentilles | Saucisses végétales aux lentilles (commerce) | 328 | 43.0 (124%) | 484 | 0.37 (0.37–0.37), −72 % | 3.01 | 1.00 | OK |
 | coquillettes-jambon | Coquillettes au jambon, emmental et petits pois (animal) | 358 | 33.2 | 591 | 0.91 (0.91–0.91) | 3.12 | 1.00 | OK |
-| coquillettes-jambon | Coquillettes au tofu fumé et petits pois (maison) | 345 | 25.9 (78%) | 550 | 0.46 (0.46–0.46), −50 % | 3.12 | 1.00 | OK |
+| coquillettes-jambon | Coquillettes au tofu fumé et petits pois (maison) | 342 | 25.5 (77%) | 546 | 0.45 (0.45–0.45), −50 % | 3.12 | 1.00 | OK |
 | coquillettes-jambon | Coquillettes aux tranches végétales, râpé végétal et petits pois (commerce) | 358 | 31.5 (95%) | 636 | 0.49 (0.49–0.49), −46 % | 3.12 | 1.00 | OK |
 | poisson-pane-puree | Poisson pané maison et purée (animal) | 398 | 37.9 | 546 | 1.68 (1.68–1.68) | 2.96 | 1.00 | OK |
 | poisson-pane-puree | Tofu pané maison et purée (maison) | 420 | 27.9 (74%) | 617 | 0.46 (0.46–0.46), −73 % | 2.87 | 1.00 | OK |
@@ -220,44 +218,42 @@ Chiffres clés par portion (nouvelles paires) :
 | galette-complete | Galette de sarrasin au tofu fumé et tofu brouillé, salade verte (maison) | 356 | 22.6 (72%) | 524 | 0.35 (0.35–0.35), −60 % | 3.38 | 1.00 | OK |
 | galette-complete | Galette de sarrasin aux tranches végétales et râpé végétal, salade verte (commerce) | 331 | 23.2 (74%) | 555 | 0.35 (0.35–0.35), −61 % | 3.38 | 1.00 | OK |
 | pates-carbonara | Pâtes à la carbonara (animal) | 310 | 28.1 | 675 | 0.90 (0.90–0.90) | 3.12 | 1.00 | OK |
-| pates-carbonara | Pâtes « carbonara » au tofu fumé (maison) | 313 | 24.5 (87%) | 567 | 0.40 (0.40–0.40), −56 % | 3.91 | 1.00 | OK |
+| pates-carbonara | Pâtes « carbonara » au tofu fumé (maison) | 310 | 24.1 (86%) | 563 | 0.40 (0.40–0.40), −56 % | 3.91 | 1.00 | OK |
 | pates-carbonara | Pâtes « carbonara » aux tranches végétales (commerce) | 308 | 28.4 (101%) | 599 | 0.41 (0.41–0.41), −55 % | 3.12 | 1.00 | OK |
 | flammekueche | Flammekueche et salade verte (animal) | 361 | 18.8 | 663 | 0.86 (0.86–0.86) | 2.92 | 1.00 | OK |
-| flammekueche | Flammekueche au tofu fumé et salade verte (maison) | 374 | 19.7 (105%) | 593 | 0.50 (0.50–0.50), −42 % | 2.92 | 1.00 | OK |
+| flammekueche | Flammekueche au tofu fumé et salade verte (maison) | 369 | 18.9 (101%) | 585 | 0.49 (0.49–0.49), −44 % | 2.92 | 1.00 | OK |
 | flammekueche | Flammekueche aux tranches végétales et salade verte (commerce) | 361 | 26.4 (141%) | 637 | 0.50 (0.50–0.50), −42 % | 2.92 | 1.00 | OK |
 | risotto-petits-pois | Risotto aux petits pois et parmesan (animal) | 375 | 18.0 | 573 | 0.63 (0.63–0.63) | 3.73 | 1.00 | OK |
-| risotto-petits-pois | Risotto aux petits pois et tofu fumé (maison) | 382 | 16.2 (90%) | 532 | 0.51 (0.51–0.51), −20 % | 3.73 | 1.00 | OK |
-| risotto-petits-pois | Risotto aux petits pois et saucisse végétale (commerce) | 405 | 22.0 (122%) | 617 | 0.57 (0.57–0.57), −10 % | 3.73 | 1.00 | OK |
+| risotto-petits-pois | Risotto aux petits pois (maison) | 352 | 11.8 (65%, objectif 70 % non atteint) | 483 | 0.44 (0.44–0.44), −30 % | 3.73 | 1.00 | OK |
+| risotto-petits-pois | Risotto aux petits pois et râpé végétal (commerce) | 372 | 11.8 (66%, objectif 70 % non atteint) | 537 | 0.49 (0.49–0.49), −23 % | 3.73 | 1.00 | OK |
 | couscous-poulet-merguez | Couscous poulet et merguez (animal) | 445 | 45.5 | 611 | 2.66 (2.66–2.66) | 3.11 | 1.00 | OK |
 | couscous-poulet-merguez | Couscous au tempeh et pois chiches (maison) | 459 | 32.0 (70%) | 557 | 0.53 (0.53–0.53), −80 % | 3.11 | 1.00 | OK |
 | couscous-poulet-merguez | Couscous au seitan et saucisses végétales (commerce) | 420 | 38.0 (83%) | 493 | 0.50 (0.50–0.50), −81 % | 3.11 | 1.00 | OK |
 | poulet-curry-coco | Poulet au curry et lait de coco, riz (animal) | 369 | 40.7 | 590 | 1.13 (1.13–1.13) | 4.21 | 1.00 | OK |
-| poulet-curry-coco | Curry de tempeh et pois chiches au lait de coco, riz (maison) | 431 | 29.2 (72%) | 700 | 0.57 (0.57–0.57), −50 % | 4.21 | 1.00 | OK |
-| poulet-curry-coco | Curry de seitan au lait de coco, riz (commerce) | 394 | 35.2 (86%) | 616 | 0.53 (0.53–0.53), −53 % | 4.21 | 1.00 | OK |
+| poulet-curry-coco | Curry de tempeh et pois chiches au lait de coco, riz (maison) | 391 | 23.9 (59%, objectif 70 % non atteint) | 638 | 0.50 (0.50–0.50), −56 % | 4.21 | 1.00 | OK |
+| poulet-curry-coco | Curry de seitan au lait de coco, riz (commerce) | 391 | 34.7 (85%) | 613 | 0.53 (0.53–0.53), −53 % | 4.21 | 1.00 | OK |
 | pot-au-feu | Pot-au-feu (animal) | 392 | 42.2 | 332 | 4.37 (4.37–4.37) | 2.86 | 1.00 | OK |
-| pot-au-feu | Pot-au-feu au tempeh (maison) | 442 | 30.1 (71%) | 394 | 0.64 (0.64–0.64), −85 % | 2.78 | 1.00 | OK |
-| pot-au-feu | Pot-au-feu au seitan (commerce) | 430 | 34.8 (83%) | 340 | 0.52 (0.52–0.52), −88 % | 2.64 | 1.00 | OK |
+| pot-au-feu | Pot-au-feu au tempeh (maison) | 415 | 25.7 (61%, objectif 70 % non atteint) | 351 | 0.57 (0.57–0.57), −87 % | 2.78 | 1.00 | OK |
+| pot-au-feu | Pot-au-feu au seitan (commerce) | 415 | 31.7 (75%) | 320 | 0.50 (0.50–0.50), −89 % | 2.64 | 1.00 | OK |
 | pates-saumon-epinards | Pâtes au saumon, crème et épinards (animal) | 355 | 30.0 | 606 | 0.95 (0.95–0.95) | 3.12 | 1.00 | OK |
 | pates-saumon-epinards | Pâtes au tofu fumé, crème de soja et épinards (maison) | 355 | 25.1 (84%) | 502 | 0.46 (0.46–0.46), −52 % | 3.12 | 1.00 | OK |
 | pates-saumon-epinards | Pâtes aux lanières végétales, crème de soja et épinards (commerce) | 330 | 28.8 (96%) | 500 | 0.41 (0.41–0.41), −57 % | 3.12 | 1.00 | OK |
 | salade-cesar | Salade César au poulet (animal) | 345 | 39.1 | 466 | 1.01 (1.01–1.01) | 3.16 | 1.00 | OK |
-| salade-cesar | Salade César au tempeh et tofu grillés (maison) | 392 | 30.9 (79%) | 514 | 0.50 (0.50–0.50), −50 % | 3.16 | 1.00 | OK |
+| salade-cesar | Salade César au tempeh et tofu grillés (maison) | 342 | 23.8 (61%, objectif 70 % non atteint) | 440 | 0.44 (0.44–0.44), −57 % | 3.16 | 1.00 | OK |
 | salade-cesar | Salade César au seitan (commerce) | 355 | 30.5 (78%) | 448 | 0.45 (0.45–0.45), −55 % | 3.16 | 1.00 | OK |
 | oeufs-brouilles-tartines | Petit-déjeuner : œufs brouillés, tartines et jus d'orange (animal) | 375 | 23.5 | 507 | 0.61 (0.61–0.61) | 2.44 | 1.00 | OK |
 | oeufs-brouilles-tartines | Petit-déjeuner : tofu brouillé, tartines et jus d'orange (maison) | 360 | 23.8 (101%) | 498 | 0.44 (0.44–0.44), −29 % | 2.37 | 1.00 | OK |
-| oeufs-brouilles-tartines | Petit-déjeuner : tartines au tartinable végétal et tranches végétales, jus d'orange (commerce) | 305 | 20.3 (86%) | 417 | 0.45 (0.45–0.45), −27 % | 2.37 | 1.00 | OK |
 | crepes-compote | Goûter : crêpes et compote (animal) | 358 | 17.3 | 568 | 0.51 (0.51–0.51) | 3.09 | 1.00 | OK |
 | crepes-compote | Goûter : crêpes à la boisson au soja et compote (maison) | 342 | 14.4 (83%) | 542 | 0.27 (0.27–0.27), −47 % | 3.91 | 1.00 | OK |
-| crepes-compote | Goûter : crêpes à la boisson au soja et dessert au soja (commerce) | 332 | 16.8 (97%) | 488 | 0.27 (0.27–0.27), −47 % | 3.91 | 1.00 | OK |
 | cordon-bleu-puree | Cordon bleu maison et purée (animal) | 425 | 52.0 | 646 | 1.58 (1.58–1.58) | 2.97 | 1.00 | OK |
 | cordon-bleu-puree | « Cordon bleu » de tempeh au tofu fumé et purée (maison) | 450 | 36.8 (71%) | 669 | 0.73 (0.73–0.73), −54 % | 2.87 | 1.00 | OK |
 | cordon-bleu-puree | « Cordon bleu » de seitan aux tranches végétales et purée (commerce) | 428 | 38.8 (75%) | 642 | 0.62 (0.62–0.62), −61 % | 2.87 | 1.00 | OK |
 | roti-porc-pommes-de-terre | Rôti de porc, pommes de terre rôties et haricots verts (animal) | 380 | 43.9 | 415 | 1.31 (1.31–1.31) | 2.86 | 1.00 | OK |
-| roti-porc-pommes-de-terre | Tempeh et tofu rôtis, pommes de terre rôties et haricots verts (maison) | 438 | 32.6 (74%) | 504 | 0.59 (0.59–0.59), −55 % | 2.78 | 1.00 | OK |
+| roti-porc-pommes-de-terre | Tempeh et tofu rôtis, pommes de terre rôties et haricots verts (maison) | 405 | 28.6 (65%, objectif 70 % non atteint) | 442 | 0.54 (0.54–0.54), −58 % | 2.78 | 1.00 | OK |
 | roti-porc-pommes-de-terre | Seitan rôti, pommes de terre rôties et haricots verts (commerce) | 405 | 36.7 (84%) | 412 | 0.53 (0.53–0.53), −59 % | 2.55 | 1.00 | OK |
 | cabillaud-pommes-vapeur | Cabillaud, pommes de terre vapeur et épinards (animal) | 422 | 39.2 | 377 | 2.61 (2.61–2.61) | 3.68 | 1.00 | OK |
-| cabillaud-pommes-vapeur | Tofu au citron, haricots blancs, pommes de terre vapeur et épinards (maison) | 470 | 29.1 (74%) | 504 | 0.50 (0.50–0.50), −81 % | 3.68 | 1.00 | OK |
-| cabillaud-pommes-vapeur | Bâtonnets panés soja et blé, pommes de terre vapeur et épinards (commerce) | 418 | 31.0 (79%) | 572 | 0.59 (0.59–0.59), −77 % | 3.68 | 1.00 | OK |
+| cabillaud-pommes-vapeur | Tofu au citron, haricots blancs, pommes de terre vapeur et épinards (maison) | 450 | 26.5 (68%, objectif 70 % non atteint) | 474 | 0.48 (0.48–0.48), −82 % | 3.68 | 1.00 | OK |
+| cabillaud-pommes-vapeur | Pavé de soja, pommes de terre vapeur et épinards (commerce) | 418 | 28.9 (74%) | 583 | 0.65 (0.65–0.65), −75 % | 3.68 | 1.00 | OK |
 
 ## Lot B — S17b Rendements de cuisson
 
@@ -269,9 +265,9 @@ Chiffres clés par portion (nouvelles paires) :
 
 - [ ] **Validation des sens par un·e diététicien·ne** (`data/score_rules.json`, catégorie Nutrition) : protéines, fibres ↑ ; sel, acides gras saturés, sucres ↓ (composantes du Nutri-Score, page Santé publique France mise à jour le 19 mars 2026) ; fer, calcium, zinc, B12, iode, vitamine D, B2 ↑ (références ANSES 2025) ; oméga-3 ALA, EPA, DHA ↑ (ANSES, « Les lipides », 2021). « Plus = mieux » ignore la limite supérieure de sécurité (LSS) : simplification à valider.
 - [ ] **Validation des sens par une personne experte en ACV** : les 16 indicateurs Agribalyse « moins = mieux » ; score unique EF et sous-parties du changement climatique (fossile, biogénique, affectation des sols) affichés, non comptés (pour ne pas compter deux fois). Les valeurs négatives (ex. utilisation des sols) sont comparées telles que publiées.
-- [ ] **Sucres** : comptés « moins = mieux » (sucres totaux, comme le Nutri-Score), conformément à DESIGN.md § 5. Cela remplace la décision de l'étape C (« sucres totaux affichés sans verdict »). Alternative : ne pas les compter (les repères visent les sucres ajoutés).
-- [ ] **Vitamine B2** : ajoutée aux indicateurs comptés (absente de la liste de DESIGN.md § 5) pour ne pas retirer du score un point où le plat animal fait souvent mieux (règle 3). Alternative : l'afficher sans la compter.
-- [ ] **Oméga-3** : trois indicateurs (ALA, EPA, DHA), car l'ANSES donne trois références. Alternative : un seul indicateur « oméga-3 » (pèserait moins dans la catégorie).
+- [x] **Sucres** (→ **validé par Matt le 2026-11-01**) : comptés « moins = mieux » (sucres totaux, comme le Nutri-Score), conformément à DESIGN.md § 5. Cela remplace la décision de l'étape C (« sucres totaux affichés sans verdict »). Alternative : ne pas les compter (les repères visent les sucres ajoutés).
+- [x] **Vitamine B2** (→ **validé par Matt le 2026-11-01**) : ajoutée aux indicateurs comptés (absente de la liste de DESIGN.md § 5) pour ne pas retirer du score un point où le plat animal fait souvent mieux (règle 3). Alternative : l'afficher sans la compter.
+- [x] **Oméga-3** (→ **décision de Matt, 2026-11-01** : deux indicateurs, ALA d'un côté et EPA + DHA de l'autre, somme ingrédient par ingrédient des valeurs Ciqual ; `fa_epa_dha_g` dans `data/score_rules.json` 1.1) : trois indicateurs (ALA, EPA, DHA), car l'ANSES donne trois références.
 - [ ] **Données partielles non comptées** : un indicateur dont les données couvrent moins de 95 % de la masse d'un plat n'est pas compté (même règle que les verdicts existants). Pour les animaux, une valeur partielle est une borne basse (> 0 contre 0 pour le végétal) qui suffirait à départager ; alternative : compter ces cas.
 - [ ] **Santé** : grammes de viande transformée (CIRC groupe 1) et de viande rouge (groupe 2A) par portion, « moins = mieux ». Les repères PNNS, fondés sur les mêmes grammes, ne sont pas comptés (double compte) ; EAT-Lancet (source provisoire) non compté.
 - [ ] **Économie** : le coût climat est proportionnel au CO₂e déjà compté en environnement (double compte voulu par DESIGN.md § 5). Alternative : ne compter que le prix.
@@ -287,8 +283,8 @@ Chiffres clés par portion (nouvelles paires) :
 
 ## Lot C — S20 Refonte des pages
 
-- [ ] **Nutrition du bœuf bourguignon : « Plat animal, provisoire, 1–0 »**. Seules les protéines sont comparables : fibres, sel, AGS, sucres, fer… ne sont connus que pour 83 à 87 % de la masse (un ingrédient sans valeur Ciqual pour ces constituants, a priori le vin rouge, 250 g sur 1 620 g) et la règle des 95 % les écarte. C'est le résultat strict de la méthode (et celui de la maquette) ; à rediscuter avec la personne diététicienne (ex. seuil de couverture, ou valeurs « traces » de Ciqual). Même effet attendu sur d'autres paires.
-- [ ] **Coût climat : 2025 seulement** dans l'onglet Économie, alors que DESIGN.md § 4 cite 2025 / 2030 / 2050. La règle S14 (une seule année de référence partout) a été gardée. Alternative : afficher 2030 et 2050 comme projections, sans les compter.
+- [x] **Nutrition du bœuf bourguignon : « Plat animal, provisoire, 1–0 »** (→ **décisions de Matt, 2026-11-01** : « < x » de Ciqual comptés comme fourchette [0 ; x], ingrédients identiques des deux côtés mis de côté pour le verdict, point seulement si les fourchettes ne se chevauchent pas ; résultat à regarder sur la prévisualisation après l'import, voir « Relecture du lot C-D »). Seules les protéines sont comparables : fibres, sel, AGS, sucres, fer… ne sont connus que pour 83 à 87 % de la masse (un ingrédient sans valeur Ciqual pour ces constituants, a priori le vin rouge, 250 g sur 1 620 g) et la règle des 95 % les écarte. C'est le résultat strict de la méthode (et celui de la maquette) ; à rediscuter avec la personne diététicienne (ex. seuil de couverture, ou valeurs « traces » de Ciqual). Même effet attendu sur d'autres paires.
+- [x] **Coût climat : 2025 seulement** (→ **validé par Matt le 2026-11-01** ; 2030 et 2050 retirés de DESIGN.md) dans l'onglet Économie, alors que DESIGN.md § 4 cite 2025 / 2030 / 2050. La règle S14 (une seule année de référence partout) a été gardée. Alternative : afficher 2030 et 2050 comme projections, sans les compter.
 - [ ] **Paire mise en avant sur l'accueil** : bœuf bourguignon (celle des maquettes), choix éditorial. Alternative : paire au hasard ou la plus récente.
 - [ ] **Liste des paires de l'accueil** : triée par CO₂e du plat animal (décroissant), barres à la même échelle, version maison.
 - [ ] **Onglets** : seul l'onglet actif est rendu dans le HTML (les autres sont vides tant qu'on ne les ouvre pas). `?onglet=` est lu dans le navigateur : la page reste statique, l'URL partagée ouvre le bon onglet après chargement (bref affichage de la vue d'ensemble).
@@ -298,7 +294,7 @@ Chiffres clés par portion (nouvelles paires) :
 
 ## Lot D — S21 Finitions techniques et légales
 
-- [ ] **Mentions légales et confidentialité : à compléter par Matt** (`app/mentions-legales/page.tsx`, `app/confidentialite/page.tsx`, marqués « [à compléter par Matt] ») : éditeur, adresse, contact, directeur de la publication, responsable du traitement et adresse pour exercer les droits, durée de conservation des signalements.
+- [ ] **Mentions légales et confidentialité** (→ **complétées le 2026-11-01** ; directeur de la publication = VeganFlemme ; adresse : régime des éditeurs non professionnels, article 1-1, II de la LCEN, en vigueur depuis le 23 mai 2024 : nom, adresse et contact de l'hébergeur affichés. **Condition à confirmer par Matt** : avoir communiqué ses éléments d'identification à Vercel (compte) ; avec les informations de Matt : éditeur VeganFlemme, contact veganflemme@gmail.com, signalements conservés 12 mois ; le responsable du traitement est l'éditeur. plus rien n'est « [à compléter par Matt] ») : à compléter par Matt (`app/mentions-legales/page.tsx`, `app/confidentialite/page.tsx`, marqués « [à compléter par Matt] ») : éditeur, adresse, contact, directeur de la publication, responsable du traitement et adresse pour exercer les droits, durée de conservation des signalements.
 - [ ] **Hébergeurs** : Vercel Inc., 440 N Barranca Avenue #4133, Covina, CA 91723 (page « Privacy Policy » de Vercel, mise à jour le 1er juin 2026) ; Supabase Pte. Ltd., contact privacy@supabase.com (page « Privacy » de Supabase, aucune adresse postale publiée), serveurs à Francfort. À relire.
 - [ ] **Confidentialité** : le formulaire de signalement n'enregistre que la page, le message et la date (`error_reports`, `created_by` reste vide sans compte). Les hébergeurs « peuvent » garder des journaux techniques : formulation prudente, à confirmer.
 - [ ] **Bandeau cookies : aucun.** Vérifié sur le build de production : aucun en-tête `Set-Cookie`, aucun cookie après navigation (accueil, comparaison, recette, aliment), aucune requête vers un autre domaine (police servie par le site).
@@ -307,3 +303,38 @@ Chiffres clés par portion (nouvelles paires) :
 - [ ] **Référencement** : `sitemap.xml` (pages fixes + 40 paires), `robots.txt` (exclut `/api/`, `/etat`, `/introuvable`), titres et descriptions, `canonical`, données structurées (`WebSite` sur l'accueil, `WebPage` + sources `Dataset` sur `/compare`), images de partage. Les 3 684 pages `/aliment` ne sont pas dans le plan du site (comparaisons simplifiées) : à décider.
 - [ ] **Base Supabase** : 97 Mo, soit 19 % des 500 Mo du plan Free (sous le seuil d'alerte de 60 %). Plus grosses tables : `food_nutrients` 35 Mo, `food_impact_ingredients` 32 Mo, `food_impacts` 13 Mo.
 - [x] **Captures** (42 JPEG) : relues par Matt et retirées du dépôt (2026-11-01) ; elles restent consultables par les liens de la PR #15 et se régénèrent avec `npm run captures`.
+
+## Relecture du lot C-D (décisions de Matt, 2026-11-01 : `CORRECTIONS_LOT_CD.md`, `RELECTURE_RECETTES.md`)
+
+**À faire par un humain avant de fusionner** (non exécuté : l'écriture dans la base Supabase de production a été refusée par les permissions de l'environnement de travail) :
+- [x] (→ **fait le 2026-11-01**, suite V1 étape 0) `supabase db push` : migration `20261103000000_review_lot_cd.sql` (vue `dish_nutrients` avec fourchettes « < x », colonne `ingredient_substitutions.ratio_basis`). **Avant** de fusionner : sans elle, `/api/recette/donnees` échoue (colonne `ratio_basis` absente).
+- [x] (→ **fait le 2026-11-01** : résumé de `pairs.py` identique ligne à ligne au tableau calculé hors ligne, 116 plats) `.venv/bin/python pipeline/pairs.py` puis `.venv/bin/python pipeline/substitutions.py` : import des recettes revues ; les versions retirées sont dépubliées (paire et plat, jamais supprimés). Comparer le résumé imprimé avec le tableau « Chiffres clés » ci-dessus (calculé hors ligne).
+- [x] (→ **passés le 2026-11-01**, avec un test SQL de plus pour les fourchettes « < x » et un pour la purge des signalements) `npm run test:db` et `npm run test:db:scoring` sur la base liée, puis regarder `/compare/boeuf-bourguignon` (onglet Nutrition) sur la prévisualisation.
+
+Couverture des nutriments :
+- [ ] **« traces »** : la documentation officielle de Ciqual 2025 (`ciqual_2025_doc_FR.pdf`, p. 10, § 3.2.3 « Traces » et § 3.2.4) définit les traces (constituant détecté sans pouvoir être quantifié, ou estimé très faible sans pouvoir être considéré nul ; valeurs < 0,00001 remplacées par « traces ») mais **ne dit rien des calculs de recettes**. Consigne appliquée : « traces » reste une donnée manquante. ciqual.anses.fr était toujours en maintenance (503) le 2026-11-01 : vérifier s'il existe une recommandation en ligne. Alternative : fourchette [0 ; 0,00001] pour les seules traces d'arrondi (impossible à distinguer des traces analytiques dans le fichier).
+- [ ] **« < x »** : intervalle [0 ; x] (« une valeur maximale », documentation Ciqual 2025, p. 21). Exemple : 250 g de vin rouge à « < 2 » g de sel pour 100 g ajoutent jusqu'à 5 g de sel à la recette (borne haute) ; comme le vin est identique des deux côtés, il ne pèse pas dans le verdict. Une valeur seulement connue en fourchette n'a pas de valeur centrale : l'écart en % n'est pas calculé pour elle.
+- [ ] **Ingrédients identiques** : mis de côté pour le verdict **par portion seulement** ; pour 100 kcal et pour 10 g de protéines, leur contribution ne s'annule plus (dénominateurs différents) : ils restent comptés. Alternative : les mettre de côté aussi sur ces bases (inexact).
+- [ ] **Fourchettes et verdicts** : la règle « pas de point si les fourchettes se chevauchent » vaut pour tous les indicateurs, y compris les facteurs animaux (fourchettes FAOSTAT min-max 2020-2024) et le prix (min-max des relevés).
+
+Affichage :
+- [ ] **Arrondis** : kg CO₂e avec 2 décimales partout, y compris le total du simulateur (« 208,00 kg ») ; une valeur non nulle plus petite que 0,005 s'écrit « < 0,01 » (ex. sous-parties du CO₂e). Euros : 2 décimales (le simulateur affichait des euros entiers). Autres unités : 3 chiffres significatifs. Le facteur par kg de la page Méthodologie passe de 4 à 3 chiffres significatifs.
+- [ ] **Animaux épargnés** (simulateur) : « au moins 0,03 animal épargné » ; arrondi vers le bas à 2 chiffres significatifs (estimation basse), pluriel à partir de 2. Le tableau par portion garde 3 chiffres significatifs.
+- [ ] **Carte Santé** : nom de l'aliment Ciqual jusqu'à la première virgule, en minuscules (« lardon fumé », « bœuf »). Alternative : un nom court relu à la main par aliment.
+- [ ] **Sources** : licence affichée seulement quand elle est connue ; l'usage commercial seulement quand il est renseigné (`commercial_use` non nul). Les sources « à vérifier » restent suivies ici et dans `public.sources`.
+- [x] **Signalements** (→ **fait le 2026-11-01** : fonction `purge_old_error_reports()` et tâche pg_cron quotidienne `purge-error-reports`, migration `20261103010000`, expliqué sur `/confidentialite`) : la durée de 12 mois est annoncée, mais aucune suppression automatique n'existait.
+
+Recettes (règles appliquées à **toutes** les paires, y compris les 10 premières, contrôlées par `pairs.py` et `npm run test:pipeline`) :
+- [x] **« Source de protéines »** (→ **acceptée par Matt le 2026-11-01**) (colonne `protein_source` de `pairs.csv`) : viande, charcuterie, poisson, fruits de mer, œufs mangés comme tels, fromage quand il est un élément principal (croque, pizza, tartiflette, burger, cordon bleu), et leurs remplaçants végétaux. **Pas** : un œuf de liaison ou de panure, un fromage râpé de garniture (parmesan, emmental gratiné), une matière grasse. Le plafond (+20 %) se compare aux sources de protéines du plat animal et aux ingrédients qu'elles remplacent (colonne `replaces`), ce qui compte la panure d'un produit pané prêt à l'emploi (nuggets, bâtonnets). Ces choix reproduisent les exemples de la relecture (César : 450 g de poulet + œufs ; cordon bleu : +17 %). Relire.
+- [x] **Huiles de cuisson** (→ **acceptées par Matt le 2026-11-01**) liées à une protéine végétale alors que le plat animal n'en a pas (steak-frites maison, carbonara maison et commerce, burger maison, couscous maison) : gardées comme partie du remplacement (colonne `replaces` = la viande). Alternative stricte : les retirer (règle « pas d'ajout »).
+- [ ] **Retirés comme ajouts hors recette** : pois chiches (gratin, pizza), haricots blancs (tartiflette), tofu fumé (risotto maison), saucisse végétale (risotto commerce), lentilles en plus du haché végétal (lasagnes et parmentier du commerce), sauce soja (poulet rôti, saumon, rôti de porc maison), paprika (paëlla maison), râpé végétal (quiche du commerce, plat d'origine sans fromage).
+- [ ] **Ingrédients végétaux remis à l'identique** (règle 5) : huile de tournesol du bourguignon, huile d'olive du saumon-riz, des tomates farcies, de la saucisse-lentilles et du rôti de porc, haricots rouges du chili, pois chiches du couscous (150 g gardés, 200 g ajoutés à la place des merguez), eau de la blanquette, farine et lait/boisson de la béchamel du croque, compote des crêpes du commerce.
+- [ ] **Versions du commerce supprimées** (pas de produit prêt à l'emploi adapté dans Ciqual/Agribalyse : aucun tofu brouillé ni substitut d'œuf) : omelette (tofu ferme, ingrédient de base : règle 4 appliquée aussi à cette paire non citée dans la relecture), tortilla, œufs brouillés. Ces trois paires n'ont plus qu'une version maison.
+- [ ] **Cabillaud du commerce** : les bâtonnets panés sont remplacés par le pavé de soja 20914 (non pané, déjà utilisé pour le saumon) ; nouvelle version `pave-soja-pommes-vapeur-commerce`.
+- [ ] **Risotto maison** : seul le beurre est remplacé (huile d'olive) ; le parmesan n'a pas de remplaçant « fait maison » parmi les aliments purs disponibles. Alternative : levure maltée, absente de Ciqual/Agribalyse avec impacts.
+- [x] **Crêpes du commerce** (→ **décision de Matt, 2026-11-01 : supprimée**, dépubliée par `pairs.py`) : après le retour à la compote, elles ne diffèrent de la version maison que par la boisson au soja aromatisée. Selon la règle 4, ce n'est pas vraiment une version « du commerce » : la supprimer ?
+- [x] **Pizza et croque maison** (→ **acceptés par Matt le 2026-11-01**) : le tofu fumé remplace aussi le fromage (250 g et 310 g pour 4) pour garder une portion d'au moins 300 g. Alternative : accepter une portion plus petite.
+- [ ] **Blanquette maison et du commerce** : crème → crème de soja (150 g), eau de cuisson gardée, jaunes d'œufs non remplacés (avant : 300 g de boisson au soja pour crème, jaunes et eau).
+- [ ] **Objectif de 70 % des protéines** non atteint pour 19 versions végétales (la suite V1, étape 1, revoit les recettes avec des protéines plus denses) (de 46 % pour la blanquette maison à un peu moins de 70 % pour les boulettes maison) : l'écart apparaît dans « Là où le plat animal fait mieux » et dans le score Nutrition.
+- [ ] **Substitutions** : le ratio est calculé dans le navigateur (`lib/compare/recipe.ts`) avec les lipides Ciqual de l'aliment réellement saisi (beurre doux, demi-sel…) et le rendement USDA du produit cru ; une seule correspondance de rendement existe aujourd'hui (steak haché 15 % cru, 73 %). Pour les autres viandes crues : même masse, écrit dans la justification.
+

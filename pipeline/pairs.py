@@ -16,8 +16,25 @@ Rules checked before any write (CLAUDE.md rules 9, 10 and 11):
   composed dish by Ciqual ("entrées et plats composés") is accepted as an ingredient only in a plant
   dish, with is_animal = false (no animal ingredient in the Agribalyse detail) and the check written
   in the rule9_check column of pairs.csv.
+Recipe rules (decisions of Matt, review of the recipes, 2026-11-01), checked offline:
+- columns of pairs.csv: protein_source = 1 for a "source of protein" ingredient (meat, fish, eggs
+  eaten as such, cheese as a main component, and their plant replacements; not a binder, a breading,
+  a grated garnish or a fat); replaces = codes of the animal-dish ingredients a plant ingredient
+  replaces (empty for an ingredient kept identical);
+- quantity cap: the protein-source mass of a plant version is at most 20 % above the reference of
+  the animal dish = its protein-source ingredients plus those the plant protein sources replace (the
+  breading of a ready-made breaded product, for instance);
+- no ingredient without an equivalent in the original: every plant-dish ingredient is identical to
+  one of the animal dish, or replaces at least one animal ingredient of it;
+- only what is animal is replaced: every plant ingredient of the animal dish stays identical (same
+  code, same grams), unless it is replaced together with an animal ingredient (ready-made pastry
+  for flour + butter);
+- a pair has a home-made version; a store-bought one (ready-to-use product) only when one exists;
+- 70 % of the protein of the animal dish is an objective, not a criterion: the gap is printed and
+  shown on the site (« Là où le plat animal fait mieux », score Nutrition).
 The criteria of each pair (serving mass, protein ratio, mass coverage) are printed after import,
-read back from the dish_nutrients / dish_impacts views.
+read back from the dish_nutrients / dish_impacts views. Plant versions no longer in the CSV are
+unpublished (dish and pair), never deleted.
 
 Idempotent: dishes are upserted by slug, the ingredients of these dishes are replaced by the CSV,
 pairs are upserted on (animal_dish_id, vegan_dish_id). No numeric value is stored except grams.
@@ -39,8 +56,10 @@ ANIMAL_CSV = HERE / "animal_categories.csv"
 VARIANTS = ("maison", "commerce")
 # Self-validation criteria of the step (not data: thresholds of the editorial rules).
 MIN_SERVING_G, MAX_SERVING_G = 300, 500
-MIN_PROTEIN_RATIO = 0.70
+MIN_PROTEIN_RATIO = 0.70  # objective, not blocking (decision of Matt, 2026-11-01)
 MIN_COVERAGE = 0.95
+MAX_PROTEIN_SOURCE_RATIO = 1.20  # plant protein-source mass at most 20 % above the animal dish
+EPSILON_G = 1e-6
 
 
 class PairError(ValueError):
@@ -80,8 +99,8 @@ def validate(dishes: list[dict[str, str]], ingredients: list[dict[str, str]], co
         groups[d["pair"]].append(d)
     for pair, ds in groups.items():
         kinds = sorted((d["kind"], d["variant"]) for d in ds)
-        if kinds != [("animal", ""), ("vegetal", "commerce"), ("vegetal", "maison")]:
-            errors.append(f"pair {pair}: expected one animal dish, one maison and one commerce alternative, got {kinds}")
+        if kinds not in ([("animal", ""), ("vegetal", "maison")], [("animal", ""), ("vegetal", "commerce"), ("vegetal", "maison")]):
+            errors.append(f"pair {pair}: expected one animal dish, one maison and at most one commerce alternative, got {kinds}")
 
     seen = set()
     has_ingredients = set()
@@ -112,6 +131,69 @@ def validate(dishes: list[dict[str, str]], ingredients: list[dict[str, str]], co
         errors.append(f"{slug}: no ingredient")
     if errors:
         raise PairError("\n".join(errors))
+
+
+def recipe_rule_errors(dishes: list[dict[str, str]], ingredients: list[dict[str, str]], composition: dict[str, str]) -> list[str]:
+    """Recipe rules of the review (quantity cap, no addition, plant ingredients kept). [] when all pass."""
+    errors: list[str] = []
+    by_dish: dict[str, list[dict[str, str]]] = defaultdict(list)
+    for r in ingredients:
+        by_dish[r["dish_slug"]].append(r)
+        if (r.get("protein_source") or "") not in ("", "1"):
+            errors.append(f"{r['dish_slug']} {r['food_code']}: protein_source must be 1 or empty")
+    for pair in dict.fromkeys(d["pair"] for d in dishes):
+        ds = [d for d in dishes if d["pair"] == pair]
+        animal = next((d for d in ds if d["kind"] == "animal"), None)
+        if animal is None:
+            continue
+        a_rows = {r["food_code"]: r for r in by_dish[animal["dish_slug"]]}
+        is_animal = lambda code: code in composition  # noqa: E731
+        for v in (d for d in ds if d["kind"] == "vegetal"):
+            slug = v["dish_slug"]
+            rows = by_dish[slug]
+            replaced: set[str] = set()
+            for r in rows:
+                codes = (r.get("replaces") or "").split()
+                replaced.update(codes)
+                same = a_rows.get(r["food_code"])
+                identical = same is not None and not is_animal(r["food_code"]) and abs(float(same["grams"]) - float(r["grams"])) < EPSILON_G
+                if not codes:
+                    if not identical:
+                        errors.append(f"{slug} {r['food_code']}: no equivalent in the animal dish (rule 2: replace, never add)")
+                    continue
+                unknown = [c for c in codes if c not in a_rows]
+                if unknown:
+                    errors.append(f"{slug} {r['food_code']}: replaces {unknown}, not in the animal dish")
+                if not any(is_animal(c) for c in codes):
+                    errors.append(f"{slug} {r['food_code']}: must replace at least one animal ingredient (rule 5)")
+            for code, ar in a_rows.items():
+                if is_animal(code) or code in replaced:
+                    continue
+                vr = next((r for r in rows if r["food_code"] == code), None)
+                if vr is None or abs(float(vr["grams"]) - float(ar["grams"])) >= EPSILON_G:
+                    errors.append(f"{slug} {code}: plant ingredient of the animal dish must stay identical (rule 5)")
+            ps_veg = sum(float(r["grams"]) for r in rows if r.get("protein_source") == "1")
+            ref_codes = {c for c, r in a_rows.items() if r.get("protein_source") == "1"}
+            for r in rows:
+                if r.get("protein_source") == "1":
+                    ref_codes.update(c for c in (r.get("replaces") or "").split() if c in a_rows)
+            ref = sum(float(a_rows[c]["grams"]) for c in ref_codes)
+            if ps_veg > MAX_PROTEIN_SOURCE_RATIO * ref + EPSILON_G:
+                errors.append(f"{slug}: protein sources {ps_veg:.0f} g for {ref:.0f} g in the animal dish (max +20 %)")
+    return errors
+
+
+def protein_objective(animal_protein: float | None, plant_protein: float | None) -> tuple[bool | None, float | None]:
+    """(objective reached, ratio): 70 % of the protein of the animal dish is an objective, not a criterion."""
+    if animal_protein is None or plant_protein is None or animal_protein <= 0:
+        return None, None
+    ratio = plant_protein / animal_protein
+    return ratio >= MIN_PROTEIN_RATIO, ratio
+
+
+def stale_pairs(db_pairs: list[dict[str, str]], csv_slugs: set[str]) -> list[tuple[str, str]]:
+    """(animal slug, plant slug) of published pairs whose plant version is no longer in the CSV."""
+    return [(p["animal"], p["vegan"]) for p in db_pairs if p["animal"] in csv_slugs and p["vegan"] not in csv_slugs]
 
 
 COMPOSED_GROUP = "entrées et plats composés"
@@ -194,10 +276,9 @@ def summary(client, dishes: list[dict[str, str]]) -> list[str]:
                 checks.append("couverture")
             ratio = ""
             if d["kind"] == "vegetal":
-                if f["prot"] is None or a["prot"] is None or f["prot"] < MIN_PROTEIN_RATIO * a["prot"]:
-                    checks.append("protéines")
-                elif a["prot"]:
-                    ratio = f" ({f['prot'] / a['prot']:.0%})"
+                reached, r = protein_objective(a["prot"], f["prot"])
+                if r is not None:
+                    ratio = f" ({r:.0%}{'' if reached else ', objectif 70 % non atteint'})"
                 gap = (a["co2"] - f["co2"]) / a["co2"] * 100 if a["co2"] and f["co2"] is not None else None
                 gap_txt = f", −{gap:.0f} %" if gap is not None else ""
             else:
@@ -220,10 +301,14 @@ def main() -> None:
     args = ap.parse_args()
 
     dishes, ingredients = read_csv(DISHES_CSV), read_csv(PAIRS_CSV)
+    composition = load_animal_composition()
     try:
-        validate(dishes, ingredients, load_animal_composition())
+        validate(dishes, ingredients, composition)
     except PairError as e:
         sys.exit(f"Invalid pair files:\n{e}")
+    rule_errors = recipe_rule_errors(dishes, ingredients, composition)
+    if rule_errors:
+        sys.exit("Recipe rules not respected:\n" + "\n".join(rule_errors))
     print(f"Pairs: {len({d['pair'] for d in dishes})} pairs, {len(dishes)} dishes, {len(ingredients)} ingredient rows")
     if args.dry_run:
         print("Dry run: nothing written.")
@@ -254,6 +339,18 @@ def main() -> None:
             pairs.append({"animal_dish_id": ids[animal["dish_slug"]], "vegan_dish_id": ids[v["dish_slug"]],
                           "variant": v["variant"], "rationale": v["rationale"], "is_published": published})
     client.table("dish_pairs").upsert(pairs, on_conflict="animal_dish_id,vegan_dish_id").execute()
+
+    # Plant versions removed from the CSV: unpublished (pair and dish), never deleted.
+    animal_ids = [ids[d["dish_slug"]] for d in dishes if d["kind"] == "animal"]
+    db_pairs = client.table("dish_pairs").select("animal_dish_id,vegan_dish_id").in_("animal_dish_id", animal_ids).eq("is_published", True).execute().data
+    vegan_ids = list({p["vegan_dish_id"] for p in db_pairs})
+    slug_of = {d["id"]: d["slug"] for d in client.table("dishes").select("id,slug").in_("id", vegan_ids + animal_ids).execute().data} if vegan_ids else {}
+    named = [{"animal": slug_of.get(p["animal_dish_id"], ""), "vegan": slug_of.get(p["vegan_dish_id"], "")} for p in db_pairs]
+    for animal_slug, vegan_slug in stale_pairs(named, set(ids)):
+        vid = next(k for k, v in slug_of.items() if v == vegan_slug)
+        client.table("dish_pairs").update({"is_published": False}).eq("animal_dish_id", ids[animal_slug]).eq("vegan_dish_id", vid).execute()
+        client.table("dishes").update({"is_published": False}).eq("id", vid).execute()
+        print(f"Unpublished: {animal_slug} → {vegan_slug} (no longer in pairs.csv)")
     print(f"Imported: {len(rows)} dishes, {len(ingredients)} ingredients, {len(pairs)} pairs (is_published = {published})")
     print("\n".join(summary(client, dishes)))
 

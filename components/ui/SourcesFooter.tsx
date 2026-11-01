@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { publicLicense } from "@/lib/format";
 import type { SourceRow } from "@/lib/compare/view";
 
 /** Sources of the page + Méthodologie, Signaler une erreur, Télécharger les données. */
@@ -16,10 +17,11 @@ export function SourcesFooter({ sources, reportHref = "#signaler", dataHref }: {
                 {s.name}
                 {s.version ? ` ${s.version}` : ""}
               </Link>{" "}
-              <span className="text-ink-3">
-                ({s.license}
-                {s.commercial_use === false ? ", usage non commercial" : ""})
-              </span>
+              {(publicLicense(s.license) || s.commercial_use === false) && (
+                <span className="text-ink-3">
+                  ({[publicLicense(s.license), s.commercial_use === false ? "usage non commercial" : null].filter(Boolean).join(", ")})
+                </span>
+              )}
             </li>
           ))}
         </ul>

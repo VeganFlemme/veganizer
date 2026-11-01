@@ -43,6 +43,7 @@ tests/               tests Vitest
 - `food_nutrients` (pour 100 g), `food_impacts` (par kg), `category_factors` (animaux, santé par catégorie), `monetization_factors` (€ par unité), `prices`.
 - `dishes` + `dish_ingredients` (grammes pour la recette entière, état réellement consommé) + `dish_pairs`.
 - Vues de calcul : `dish_impacts`, `dish_nutrients`, `dish_animal_impacts` (par portion, avec fourchettes et couverture).
+- Ciqual « < x » = intervalle [0 ; x] (borne basse 0, borne haute x, jamais x/2) ; « traces » = donnée manquante. Verdict d'un indicateur seulement si les fourchettes des deux plats ne se chevauchent pas ; par portion, les ingrédients identiques des deux côtés sont mis de côté pour le verdict (`lib/scoring/ranges.ts`).
 - Variantes Agribalyse (`20061_2`…) : une ligne `foods` chacune ; `foods.ciqual_code` pointe vers l'aliment Ciqual dont les nutriments s'appliquent (même aliment, même état — revue dans `pipeline/agribalyse_variants.csv`), sinon null. `dish_nutrients` lit via `coalesce(ciqual_code, code)` ; `dish_impacts` lit les impacts du code lui-même.
 - `food_impact_ingredients` : détail Agribalyse par ingrédient (par kg de produit fini).
 - Catégories animales : `pipeline/animal_categories.csv` (revu à la main, colonne `notes` = hypothèses à reprendre dans `/methodologie` : saumon et crevette sans origine = élevage, foie gras sans espèce = canard, « poule » = pondeuse de réforme, pangas/tilapia = élevage ; céphalopodes séparés des autres mollusques).

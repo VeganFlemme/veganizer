@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { formatValue, publicLicense } from "@/lib/format";
 import Link from "next/link";
 import type { ReactNode } from "react";
 import { PageHero, Prose } from "@/components/ui/PageHero";
@@ -39,7 +40,6 @@ function Section({ id, title, children }: { id: string; title: string; children:
   );
 }
 
-const valueFr = new Intl.NumberFormat("fr-FR", { maximumSignificantDigits: 4 });
 
 function AnimalFactors({ stats }: { stats: MethodologyStats }) {
   if (stats.animalFactors.length === 0) return <p>Facteurs : <Missing />.</p>;
@@ -60,7 +60,7 @@ function AnimalFactors({ stats }: { stats: MethodologyStats }) {
             <tr key={`${f.indicator}-${f.category}-${f.sourceId}`} className="border-b border-line-soft align-top">
               <td className="py-1 pr-2">{f.indicator}</td>
               <td className="py-1 pr-2">{f.category}</td>
-              <td className="py-1 pr-2">{valueFr.format(f.value)}</td>
+              <td className="py-1 pr-2">{formatValue(f.value)}</td>
               <td className="py-1 text-xs text-ink-2">
                 {f.unitBasis} — <Link href={`/sources#${f.sourceId}`} className="underline">{f.sourceId}</Link>
                 {f.notes ? `. ${f.notes}` : ""}
@@ -117,7 +117,8 @@ function Sources({ stats }: { stats: MethodologyStats }) {
             <li key={s.id}>
               <strong>{s.name}</strong>
               {s.publisher && <> ({s.publisher})</>}
-              {s.version && <>, version {s.version}</>} — licence : {s.license}.
+              {s.version && <>, version {s.version}</>}
+              {publicLicense(s.license) ? <> — licence : {publicLicense(s.license)}</> : null}.
             </li>
           ))}
         </ul>
@@ -269,12 +270,17 @@ function MissingData({ stats }: { stats: MethodologyStats }) {
           manquante ».
         </li>
         <li>
-          <strong>« traces »</strong> : le constituant est présent en quantité trop faible pour être
-          chiffrée ; nous affichons « traces ».
+          <strong>« &lt; x »</strong> : la teneur est inférieure à x, une « valeur maximale » selon la
+          documentation de Ciqual 2025 (p. 21, description du fichier XML). Ce n’est pas une donnée manquante : la teneur est
+          connue, entre 0 et x. Dans un plat, nous l’additionnons avec 0 pour la borne basse et avec x
+          pour la borne haute, et nous affichons la fourchette obtenue. Jamais x/2 ni une autre
+          valeur choisie par nous.
         </li>
         <li>
-          <strong>« &lt; x »</strong> : la teneur est inférieure au seuil que l’analyse peut mesurer ;
-          nous affichons « inférieur à x ».
+          <strong>« traces »</strong> : selon la documentation de Ciqual 2025 (p. 10, § 3.2.3), le
+          constituant est détecté sans pouvoir être quantifié, ou estimé très faible sans pouvoir être
+          considéré nul. La documentation ne dit pas comment le compter dans une recette : nous le
+          traitons comme une donnée manquante.
         </li>
       </ul>
       <p>
@@ -331,21 +337,44 @@ export default async function MethodologiePage() {
 
       <Section id="paires" title="Les paires de plats : maison et du commerce">
         <p>
-          Chaque plat animal est comparé à deux alternatives végétales, pour 4 portions : une version
-          <strong> faite maison</strong> (tofu, tempeh, légumineuses, légumes…) et une version avec un
-          <strong> produit du commerce</strong> prêt à l’emploi (haché végétal, galette, seitan,
-          tranches ou râpé végétal…). Les accompagnements sont les mêmes des deux côtés.
+          Chaque plat animal est comparé, pour 4 portions, à une version végétale
+          <strong> faite maison</strong> (avec des ingrédients de base : tofu, tempeh, légumineuses,
+          farine…) et, quand un produit adapté existe, à une version avec un
+          <strong> produit du commerce</strong> prêt à l’emploi (haché végétal, galette, nuggets,
+          tranches ou râpé végétal…). Une version faite avec des ingrédients de base n’est pas une
+          version « du commerce » : sans produit adapté, il n’y a pas de version du commerce.
         </p>
-        <p>Une recette n’est publiée que si elle respecte ces critères :</p>
+        <p>Les recettes végétales suivent ces règles :</p>
         <ul className="list-disc space-y-1 pl-5">
-          <li>proportions réalistes de la cuisine française courante ;</li>
-          <li>portion consommée entre 300 et 500 g ;</li>
+          <li>
+            <strong>on ne remplace que ce qui est animal</strong> : les ingrédients déjà végétaux
+            (légumes, féculents, compote, huile…) restent identiques, même aliment et même quantité ;
+          </li>
+          <li>
+            <strong>pas d’ajout hors recette</strong> : chaque ingrédient animal est remplacé par un
+            ingrédient végétal du même rôle ; on n’ajoute pas d’ingrédient sans équivalent dans le plat
+            d’origine ;
+          </li>
+          <li>
+            <strong>plafond de quantité</strong> : la masse des ingrédients « source de protéines » de
+            la version végétale (tofu, tempeh, seitan, légumineuses, produits végétaux prêts à l’emploi)
+            ne dépasse pas de plus de 20 % celle des ingrédients qu’ils remplacent dans le plat animal
+            (viande, poisson, œufs, fromage quand il est un élément principal, et la panure d’un produit
+            pané prêt à l’emploi) ;
+          </li>
+          <li>
+            <strong>70 % des protéines du plat animal : un objectif, pas un critère</strong>. S’il
+            n’est pas atteint, la paire est publiée quand même et l’écart de protéines apparaît dans
+            « Là où le plat animal fait mieux » et dans le score Nutrition ;
+          </li>
+          <li>proportions réalistes de la cuisine française courante, portion consommée entre 300 et 500 g ;</li>
           <li>même rôle dans le repas que le plat animal ;</li>
-          <li>au moins 70 % des protéines du plat animal ;</li>
           <li>données disponibles pour au moins 95 % de la masse du plat ;</li>
           <li>
             uniquement des aliments simples (pas de plat préparé comme ingrédient), pour que les
-            impacts par espèce animale restent calculables.
+            impacts par espèce animale restent calculables ; seule exception, un produit végétal du
+            commerce classé « plat composé » par Ciqual (galette, nuggets…) quand le détail Agribalyse
+            ne contient aucun ingrédient animal.
           </li>
         </ul>
         <p>
@@ -389,8 +418,13 @@ export default async function MethodologiePage() {
           La version végétale remplace chaque ingrédient animal selon une table de substitutions relue
           (fichier <code>pipeline/substitutions.csv</code>) : par exemple viande hachée → lentilles
           vertes cuites, charcuterie → tofu fumé, lait → boisson au soja enrichie en calcium. La
-          justification de chaque remplacement est affichée ; la masse reste la même sauf mention.
-          Les ingrédients sans remplacement prévu sont gardés et signalés.
+          justification de chaque remplacement est affichée ; la masse reste la même sauf dans deux
+          cas, calculés à partir des données : le beurre est remplacé par la même quantité de
+          matière grasse (grammes d’huile = grammes de beurre × lipides du beurre ÷ lipides de
+          l’huile, valeurs Ciqual), et une viande crue remplacée par du seitan, qui se mange tel
+          quel, est d’abord ramenée à son poids cuit avec le rendement de cuisson de l’USDA quand il
+          est publié (sinon la masse reste la même, ce qui est indiqué). Les ingrédients sans
+          remplacement prévu sont gardés et signalés.
         </p>
         <p>
           Aucun compte n’est nécessaire : la recette reste enregistrée dans votre navigateur. L’enregistrement
@@ -426,6 +460,15 @@ export default async function MethodologiePage() {
           parmi les ingrédients du plat. Quand une source publie une fourchette (valeur basse et
           valeur haute), nous l’affichons aussi. Agribalyse 3.2 ne publie pas de fourchette par
           aliment : pour ces indicateurs, la page l’indique et affiche la valeur centrale avec son DQR.
+          Pour les nutriments, une teneur publiée « &lt; x » par Ciqual donne une fourchette (de 0 à x
+          pour cet ingrédient) : le plat n’a alors qu’une fourchette, sans valeur centrale.
+        </p>
+        <p>
+          <strong>Arrondis.</strong> Une seule règle par unité, partout sur le site : les kg CO₂e et
+          les euros avec 2 décimales (« 0,65 », « 1,20 »), les autres valeurs avec 3 chiffres
+          significatifs. Une valeur non nulle trop petite pour 2 décimales s’écrit « &lt; 0,01 ».
+          Dans le simulateur, le nombre d’animaux épargnés, une estimation basse, est arrondi vers le
+          bas (2 chiffres significatifs).
         </p>
         <p>
           La valeur absolue au dénominateur garde un sens à l’écart quand la valeur publiée du plat

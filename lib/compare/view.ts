@@ -14,7 +14,10 @@ import {
   type FoodData,
   type MonetizationFactor,
   type MonetizationRule,
+  amountBounds,
+  type Range,
   type ScoringData,
+  verdictTotals,
 } from "@/lib/scoring";
 import {
   BASES,
@@ -28,6 +31,7 @@ import {
   EGG_SUBGROUP,
   FRESH_WORD,
   KEY_CRITERIA,
+  NUTRIENT_SUMS,
   NUTRIENTS,
   PNNS_FISH_CATEGORIES,
   PNNS_LEGUME_SUBGROUP,
@@ -73,6 +77,8 @@ export interface NutrientValueRow {
   nutrient_id: string;
   value_per_100g: number | null;
   source_id: string;
+  /** Ciqual qualifier of a cell without a number: "< 0.5" (known interval [0 ; 0.5]) or "traces" (missing). */
+  qualifier?: string | null;
 }
 export interface ImpactRow {
   food_code: string;
@@ -187,8 +193,10 @@ export interface SideValue {
   value: number | null;
   low: number | null;
   high: number | null;
-  /** true when the source publishes no range (low = high = value). */
+  /** true when a range is shown: published by the source, or a Ciqual « < x » value. */
   rangePublished: boolean;
+  /** true when only the range is known (an ingredient published as « < x »): value is null. */
+  censored: boolean;
   coverage: number;
   /** Worst Agribalyse DQR among the ingredients of this dish (null for nutrients and animal factors). */
   dqr: number | null;
@@ -206,13 +214,26 @@ export interface CriterionRow {
   vegetal: SideValue | null;
   /** (animal − plant) / |animal| × 100: positive = the plant dish has less. null if not computable. */
   reductionPercent: number | null;
-  /** Verdict, only when both sides cover at least COVERAGE_WARNING of the mass. */
+  /**
+   * Verdict, only when the data the verdict rests on covers at least COVERAGE_WARNING of the mass
+   * of both dishes. Per serving, ingredients identical on both sides are left out (their
+   * contribution cancels out); a point only when the two ranges do not overlap.
+   */
   winner: "animal" | "vegetal" | "egal" | null;
-  /** Same comparison on partial data (lowCoverage): indicative only, never shown as a verdict. */
+  /** Same comparison on partial data (verdictPartial): indicative only, never shown as a verdict. */
   indicativeWinner: "animal" | "vegetal" | "egal" | null;
   sourceIds: string[];
   worstDqr: number | null;
+  /** Displayed totals cover less than COVERAGE_WARNING of the mass of a dish (warning shown). */
   lowCoverage: boolean;
+  /** Lowest coverage of the data the verdict rests on (identical ingredients left out per serving). */
+  verdictCoverage: number | null;
+  /** The verdict rests on too little data: not counted in the score. */
+  verdictPartial: boolean;
+  /** Ranges the verdict rests on (scores.ts). */
+  verdictRanges: { animal: Range | null; vegetal: Range | null };
+  /** Shown first in the Nutrition tab (indicators of the score and of DESIGN.md). */
+  featured: boolean;
 }
 
 export interface IngredientView {
@@ -292,6 +313,9 @@ export interface IarcView {
   /** Ingredients of each dish in this IARC category (recipe labels). */
   animalFoods: string[];
   vegetalFoods: string[];
+  /** Same ingredients with their food name (Ciqual, short form) and grams per serving. */
+  animalItems: { name: string; grams: number }[];
+  vegetalItems: { name: string; grams: number }[];
 }
 
 export interface PnnsView {
@@ -357,16 +381,25 @@ export interface PairPageModel {
 // ---------------------------------------------------------------------------
 const num = (x: number | string | null | undefined): number | null => (x == null ? null : Number(x));
 
+/** Upper bound of a Ciqual « < x » qualifier (stored as "< 0.5"); null for "traces" or anything else. */
+export function lessThan(qualifier: string | null | undefined): number | null {
+  const m = /^<\s*(\d+(?:\.\d+)?)$/.exec((qualifier ?? "").trim());
+  return m ? Number(m[1]) : null;
+}
+
 export function scoringData(raw: RawPairData): ScoringData {
   const foods: Record<string, FoodData> = {};
   const byCode = new Map(raw.foods.map((f) => [f.code, f]));
   for (const f of raw.foods) {
     const nutrientCode = f.ciqual_code ?? f.code;
     const nutrients: FoodData["nutrients"] = {};
+    const nutrientMax: NonNullable<FoodData["nutrientMax"]> = {};
     let nutrientSourceId: string | undefined;
     for (const n of raw.nutrientValues) {
       if (n.food_code !== nutrientCode) continue;
       nutrients[n.nutrient_id] = num(n.value_per_100g);
+      const max = n.value_per_100g == null ? lessThan(n.qualifier) : null;
+      if (max != null) nutrientMax[n.nutrient_id] = max;
       nutrientSourceId = n.source_id;
     }
     const impacts: FoodData["impacts"] = {};
@@ -382,6 +415,7 @@ export function scoringData(raw: RawPairData): ScoringData {
     }
     foods[f.code] = {
       nutrients,
+      ...(Object.keys(nutrientMax).length ? { nutrientMax } : {}),
       nutrientSourceId,
       impacts,
       isAnimal: byCode.get(f.code)?.is_animal ?? false,
@@ -430,18 +464,18 @@ function dishView(dish: DishRow, raw: RawPairData): DishView {
   };
 }
 
-function side(a: Amount | undefined, basis: Basis): SideValue | null {
+function side(a: Amount | undefined, basis: Basis, t: DishTotals): SideValue | null {
   if (!a) return null;
   const value = a[basis];
-  // Ranges are only computed per serving; on other bases the central value is shown.
-  const scale = basis === "perServing" || a.perServing == null || value == null || a.perServing === 0 ? 1 : value / a.perServing;
-  const low = basis === "perServing" ? a.lowPerServing : a.lowPerServing == null || value == null ? null : a.lowPerServing * scale;
-  const high = basis === "perServing" ? a.highPerServing : a.highPerServing == null || value == null ? null : a.highPerServing * scale;
+  const r = amountBounds(a, basis, t);
+  const low = r?.low ?? null;
+  const high = r?.high ?? null;
   return {
     value,
     low,
     high,
-    rangePublished: low != null && high != null && value != null && (low !== value || high !== value),
+    rangePublished: low != null && high != null && (value == null || low !== value || high !== value),
+    censored: !!a.censored,
     coverage: a.massCoverage,
     dqr: a.worstDqr,
   };
@@ -457,29 +491,55 @@ function directions(raw: RawPairData): Directions {
   return d;
 }
 
+/**
+ * Short name of a food for a sentence: the Ciqual name up to the first comma, lower case
+ * (« Lardon fumé, cuit » → « lardon fumé », « Boeuf, à bourguignon… » → « bœuf »).
+ */
+export function shortFoodName(name: string): string {
+  const head = name.split(",")[0].trim();
+  const fr = head.replace(/\bBoeuf\b/g, "Bœuf").replace(/\boeuf/g, "œuf").replace(/\bOeuf/g, "Œuf");
+  return fr.charAt(0).toLowerCase() + fr.slice(1);
+}
+
 export function reductionPercent(animal: number | null, vegetal: number | null): number | null {
   if (animal == null || vegetal == null || animal === 0) return null;
   return ((animal - vegetal) / Math.abs(animal)) * 100;
 }
 
-export function rowsFor(animal: DishTotals, vegetal: DishTotals, raw: RawPairData, basis: Basis): CriterionRow[] {
+export interface VerdictInput {
+  animal: DishTotals;
+  vegetal: DishTotals;
+}
+
+/**
+ * Rows of every criterion at one basis. `verdict` (per serving): totals of the two dishes without
+ * their identical ingredients, on which the verdicts rest (lib/scoring/ranges.ts).
+ */
+export function rowsFor(animal: DishTotals, vegetal: DishTotals, raw: RawPairData, basis: Basis, verdict?: VerdictInput): CriterionRow[] {
   const dirs = directions(raw);
-  const cmp = compareDishes(animal, vegetal, { directions: dirs, conseils: raw.conseils, basis });
-  const meta = new Map([...raw.nutrients, ...raw.indicators].map((m) => [m.id, m]));
+  const meta = new Map([...raw.nutrients, ...raw.indicators, ...derivedMeta()].map((m) => [m.id, m]));
+  const units = Object.fromEntries([...meta].map(([id, m]) => [id, m.unit]));
+  const judged = basis === "perServing" ? verdict : undefined;
+  const cmp = compareDishes(animal, vegetal, { directions: dirs, conseils: raw.conseils, basis, units, verdict: judged });
   const rows: CriterionRow[] = [];
 
   const labels = new Map(NUTRIENTS.map((n) => [n.id, n.label]));
+  const featured = new Set(NUTRIENTS.map((n) => n.id));
   const push = (id: string, group: CriterionRow["group"], direction: CriterionRow["direction"]) => {
     const a = animal[group][id];
     const v = vegetal[group][id];
     const m = meta.get(id);
-    const as = side(a, basis);
-    const vs = side(v, basis);
+    const as = side(a, basis, animal);
+    const vs = side(v, basis, vegetal);
     const c = cmp.criteria[id];
     const coverages = [a?.massCoverage, v?.massCoverage].filter((x): x is number => x != null);
     const dqrs = [a?.worstDqr, v?.worstDqr].filter((x): x is number => x != null);
     const lowCoverage = coverages.length < 2 || Math.min(...coverages) < COVERAGE_WARNING;
-    const verdict = direction === "none" ? null : (c?.winner ?? null);
+    const verdictCoverage = c?.verdictCoverage ?? (coverages.length < 2 ? null : Math.min(...coverages));
+    const verdictPartial = verdictCoverage == null || verdictCoverage < COVERAGE_WARNING;
+    const outcome = direction === "none" ? null : (c?.winner ?? null);
+    const ja = judged?.animal ?? animal;
+    const jv = judged?.vegetal ?? vegetal;
     rows.push({
       id,
       name: labels.get(id) ?? m?.name_fr ?? id,
@@ -490,18 +550,22 @@ export function rowsFor(animal: DishTotals, vegetal: DishTotals, raw: RawPairDat
       animal: as,
       vegetal: vs,
       reductionPercent: reductionPercent(as?.value ?? null, vs?.value ?? null),
-      winner: lowCoverage ? null : verdict,
-      indicativeWinner: lowCoverage ? verdict : null,
+      winner: verdictPartial ? null : outcome,
+      indicativeWinner: verdictPartial ? outcome : null,
       sourceIds: [...new Set([...(a?.sourceIds ?? []), ...(v?.sourceIds ?? [])])].sort(),
       worstDqr: dqrs.length ? Math.max(...dqrs) : null,
       lowCoverage,
+      verdictCoverage,
+      verdictPartial,
+      verdictRanges: { animal: amountBounds(ja[group][id], basis, ja), vegetal: amountBounds(jv[group][id], basis, jv) },
+      featured: group === "nutrients" && featured.has(id),
     });
   };
 
   // Every Ciqual constituent is shown (featured ones first); only those of the score get a verdict.
-  const featured = new Set(NUTRIENTS.map((n) => n.id));
+  const derived = new Set(Object.keys(NUTRIENT_SUMS));
   const others = raw.nutrients
-    .filter((n) => !featured.has(n.id) && (animal.nutrients[n.id] || vegetal.nutrients[n.id]))
+    .filter((n) => !featured.has(n.id) && !derived.has(n.id) && (animal.nutrients[n.id] || vegetal.nutrients[n.id]))
     .sort((x, y) => x.name_fr.localeCompare(y.name_fr, "fr"));
   for (const n of NUTRIENTS) push(n.id, "nutrients", n.direction);
   for (const n of others) push(n.id, "nutrients", directionOf(n.id));
@@ -516,6 +580,14 @@ export function rowsFor(animal: DishTotals, vegetal: DishTotals, raw: RawPairDat
   return rows;
 }
 
+/** Options of dishTotals for every page: derived nutrients (EPA + DHA). */
+export const TOTALS_OPTIONS = { nutrientSums: Object.fromEntries(Object.entries(NUTRIENT_SUMS).map(([id, d]) => [id, d.parts])) };
+
+/** Meta of the derived nutrients (sums of Ciqual constituents, e.g. EPA + DHA). */
+function derivedMeta(): MetaRow[] {
+  return Object.entries(NUTRIENT_SUMS).map(([id, d]) => ({ id, name_fr: d.label, unit: d.unit }));
+}
+
 // Indicators the simulator uses: CO2e and the animal pillar.
 function simTotals(t: DishTotals): DishTotals {
   const pick = (r: Record<string, Amount>, ids?: string[]) =>
@@ -526,14 +598,12 @@ function simTotals(t: DishTotals): DishTotals {
 /** Builds the page model; variants without data are simply absent. */
 export function buildPairPage(raw: RawPairData): PairPageModel {
   const data = scoringData(raw);
-  const totalsOf = (d: DishRow) =>
-    dishTotals(
-      {
-        servings: d.servings,
-        ingredients: raw.ingredients.filter((i) => i.dish_id === d.id).map((i) => ({ foodCode: i.food_code, grams: Number(i.grams) })),
-      },
-      data,
-    );
+  const totalsOptions = TOTALS_OPTIONS;
+  const dishOf = (d: DishRow) => ({
+    servings: d.servings,
+    ingredients: raw.ingredients.filter((i) => i.dish_id === d.id).map((i) => ({ foodCode: i.food_code, grams: Number(i.grams) })),
+  });
+  const totalsOf = (d: DishRow) => dishTotals(dishOf(d), data, totalsOptions);
   const animalTotals = totalsOf(raw.animal);
   const variants: PairPageModel["variants"] = {};
   const usedSources = new Set<string>();
@@ -543,7 +613,8 @@ export function buildPairPage(raw: RawPairData): PairPageModel {
     const dish = raw.vegetal.find((d) => d.id === p.vegan_dish_id);
     if (!dish) continue;
     const vegTotals = totalsOf(dish);
-    const rows = Object.fromEntries(BASES.map((b) => [b.id, rowsFor(animalTotals, vegTotals, raw, b.id)])) as Record<Basis, CriterionRow[]>;
+    const verdict = verdictTotals(dishOf(raw.animal), dishOf(dish), data, totalsOptions);
+    const rows = Object.fromEntries(BASES.map((b) => [b.id, rowsFor(animalTotals, vegTotals, raw, b.id, verdict)])) as Record<Basis, CriterionRow[]>;
     for (const r of rows.perServing) r.sourceIds.forEach((s) => usedSources.add(s));
 
     // Where the animal dish does better (rule 3): verdicts, plus partial-data cases flagged as such,
@@ -626,8 +697,18 @@ export function buildPairPage(raw: RawPairData): PairPageModel {
         .reduce((sum, i) => sum + Number(i.grams), 0) / d.servings;
     const iarc = raw.iarc.map((entry) => {
       usedSources.add(entry.source.sourceId);
-      const labels = (d: DishRow) => dishView(d, raw).ingredients.filter((i) => foodsByCode.get(i.code)?.iarc_meat === entry.id).map((i) => i.label);
-      return { entry, animalGrams: iarcGrams(raw.animal, entry.id), vegetalGrams: iarcGrams(dish, entry.id), animalFoods: labels(raw.animal), vegetalFoods: labels(dish) };
+      const inCategory = (d: DishRow) => dishView(d, raw).ingredients.filter((i) => foodsByCode.get(i.code)?.iarc_meat === entry.id);
+      const labels = (d: DishRow) => inCategory(d).map((i) => i.label);
+      const items = (d: DishRow) => inCategory(d).map((i) => ({ name: shortFoodName(i.officialName ?? i.label), grams: i.grams / d.servings }));
+      return {
+        entry,
+        animalGrams: iarcGrams(raw.animal, entry.id),
+        vegetalGrams: iarcGrams(dish, entry.id),
+        animalFoods: labels(raw.animal),
+        vegetalFoods: labels(dish),
+        animalItems: items(raw.animal),
+        vegetalItems: items(dish),
+      };
     });
 
     const pnnsMatch: Record<string, (f: FoodRow) => boolean> = {
@@ -691,6 +772,8 @@ export function buildPairPage(raw: RawPairData): PairPageModel {
         r.winner = null;
         r.indicativeWinner = null;
         r.lowCoverage = true;
+        r.verdictPartial = true;
+        r.verdictRanges = { animal: null, vegetal: r.verdictRanges.vegetal };
       }
     }
 

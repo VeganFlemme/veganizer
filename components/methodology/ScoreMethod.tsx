@@ -23,11 +23,17 @@ export function ScoreMethod() {
       </p>
       <ul className="list-disc space-y-1 pl-5">
         <li>{m.point}</li>
+        <li>{m.ranges}</li>
+        <li>{m.shared}</li>
         <li>{m.missing}</li>
         <li>{m.winner}</li>
         <li>{m.provisional}</li>
         <li>{m.verdict}</li>
       </ul>
+      <p>
+        Les oméga-3 comptent pour deux indicateurs : l’acide alpha-linolénique (ALA) d’un côté, EPA et DHA ensemble de l’autre (somme des valeurs
+        Ciqual, ingrédient par ingrédient), comme les références de l’ANSES qui traitent l’ALA séparément de l’EPA et du DHA.
+      </p>
       <p className="text-sm">
         Version {scoreRules.version} du {scoreRules.date}. {scoreRules.status}
       </p>

@@ -6,7 +6,7 @@ import { useQueryParam } from "@/components/compare/useQueryParam";
 import { Dot } from "@/components/ui/Dot";
 import type { PairCard, SearchHit } from "@/lib/compare/data";
 import { COVERAGE_WARNING } from "@/lib/compare/config";
-import { formatValue, signedGap } from "@/lib/format";
+import { formatForUnit, signedGap } from "@/lib/format";
 
 const fold = (s: string) =>
   s
@@ -128,14 +128,14 @@ export function HomeExplorer({ pairs, featured }: { pairs: PairCard[]; featured:
                       <span className="num text-[16px] font-extrabold">{signedGap(m?.co2Reduction ?? null)}</span>
                     </span>
                     <span className="num grid grid-cols-[44px_minmax(0,1fr)_minmax(0,1fr)_44px] items-center gap-[2px] text-[13px] text-ink-2">
-                      <span className="pr-[6px] text-right">{formatValue(p.co2)}</span>
+                      <span className="pr-[6px] text-right">{formatForUnit(p.co2, "kg CO2e")}</span>
                       <span className="flex justify-end" aria-hidden="true">
                         <span className="h-2 rounded-l-[4px] bg-animal" style={{ width: w(p.co2) }} />
                       </span>
                       <span className="flex" aria-hidden="true">
                         <span className="h-2 rounded-r-[4px] bg-plant" style={{ width: w(m?.co2 ?? null) }} />
                       </span>
-                      <span className="pl-[6px]">{formatValue(m?.co2 ?? null)}</span>
+                      <span className="pl-[6px]">{formatForUnit(m?.co2 ?? null, "kg CO2e")}</span>
                     </span>
                     <span className="text-[13px] text-ink-2">
                       Maison : {m?.name}

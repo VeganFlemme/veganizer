@@ -56,6 +56,7 @@ Une seule famille : **Schibsted Grotesk** (Google Fonts, poids 400 à 900), char
 - Chiffres proportionnels pour les gros nombres ; `font-variant-numeric: tabular-nums` seulement dans les colonnes alignées (tableaux, valeurs des barres).
 - Pas de libellés en majuscules, pas de police à chasse fixe.
 - Nombres au format français : virgule décimale, espace insécable avant `%` et les unités.
+- **Une seule règle d'arrondi par unité, partout** (décision de Matt, 2026-11-01) : kg CO₂e et euros avec 2 décimales (« 0,65 », « 1,20 », « 1,00 » ; « < 0,01 » pour une valeur non nulle plus petite) ; toutes les autres unités (nutriments compris) avec 3 chiffres significatifs. Fonctions `formatForUnit` (`lib/format.ts`) et `roundForUnit` (`lib/scoring/ranges.ts`), la même règle sert aux égalités du score. Animaux épargnés du simulateur : « au moins 0,03 animal épargné » (2 chiffres significatifs, arrondi vers le bas, estimation basse).
 
 ### Formes et espacements
 
@@ -81,7 +82,7 @@ Une seule famille : **Schibsted Grotesk** (Google Fonts, poids 400 à 900), char
 | `DataTable` | Trois colonnes : indicateur, plat animal, végétal. En-tête avec pastilles. Note sous la ligne si couverture < 95 % ou avantage animal. |
 | `UnitSwitch` | Par portion / pour 100 kcal / pour 10 g de protéines (règle 4). |
 | `AnimalBetterBox` | Fond `win-animal-bg` : chaque point où le plat animal fait mieux + la solution sourcée (`data/conseils.json`). |
-| `Simulator` | Fond `ink` : fréquence (1×/mois, 1×/sem., 2×/sem.) × durée (1, 5, 10 ans) → kg CO₂e, coût climat, animaux épargnés. |
+| `Simulator` | Fond `ink` : fréquence (1×/mois, 1×/sem., 2×/sem.) × durée (1, 5, 10 ans) → kg CO₂e, coût climat (valeur de l'année de référence 2025), « au moins N animal épargné ». |
 | `MissingValue` | « donnée manquante », italique, `ink-3`. |
 | `MedicalNote` | Fond `track` : « Informations générales, pas un conseil médical… » (règle 6). |
 | `SourcesFooter` | Sources de la page + liens Méthodologie, Signaler une erreur, Télécharger les données. |
@@ -93,11 +94,11 @@ Une seule famille : **Schibsted Grotesk** (Google Fonts, poids 400 à 900), char
 2. `TabBar` collante.
 3. **Vue d'ensemble** : `VerdictPanel` (téléphone), 5 `CategoryCard` dans l'ordre des onglets, `Simulator`.
 4. **Onglet détaillé** : bandeau vainqueur (`WinnerBadge` + `ScorePill` + phrase de base) puis toutes les données de la catégorie :
-   - Nutrition : `UnitSwitch` + `DataTable` des nutriments (poids, énergie, protéines, lipides, AGS, glucides, sucres, fibres, sel, fer, calcium, zinc, B12, iode, vitamine D, oméga-3…) + `AnimalBetterBox`.
-   - Santé : classement CIRC par ingrédient (« le classement indique la solidité des preuves, pas l'ampleur du risque ») + repères PNNS, HENI, EAT-Lancet (« à venir » tant que non sourcés) + `MedicalNote`.
+   - Nutrition : `UnitSwitch` + `DataTable` des nutriments du score et principaux (énergie, protéines, lipides, AGS, glucides, sucres, fibres, sel, fer, calcium, zinc, B12, iode, vitamine D, B2, oméga-3 ALA, oméga-3 EPA + DHA), puis « Tous les constituants Ciqual (N) » dans une section repliable (`<details>`, fermée par défaut, rien n'est supprimé) + `AnimalBetterBox`. Une teneur « < x » de Ciqual s'affiche en fourchette.
+   - Santé : classement CIRC par ingrédient, avec le nom de l'aliment et les grammes par portion (« 20 g de lardon fumé (viande transformée, groupe 1) et 125 g de bœuf (viande rouge, groupe 2A) par portion », aussi sur la carte de la vue d'ensemble) (« le classement indique la solidité des preuves, pas l'ampleur du risque ») + repères PNNS, HENI, EAT-Lancet (« à venir » tant que non sourcés) + `MedicalNote`.
    - Environnement : chiffre héros CO₂e + `FaceToFaceBar`, CO₂e par unité (3 lignes), tableau des 16 indicateurs Agribalyse, DQR, couverture, valeurs négatives telles que publiées.
    - Protection animale : chiffre héros + tableau (animaux tués, jours de vie, heures de douleur par intensité, poissons tués).
-   - Économie : coût climat 2025 / 2030 / 2050 en face-à-face, prix en magasin (par portion, pour 10 g de protéines).
+   - Économie : coût climat de l'année de référence unique (2025, valeur de l'action pour le climat) en face-à-face, prix en magasin (par portion, pour 10 g de protéines).
 5. Ordinateur : contenu à gauche (`flex: 999 1 560px`), colonne à droite (bandeau vainqueur, `AnimalBetterBox`, `MedicalNote`) qui passe dessous sur petit écran.
 6. `SourcesFooter`.
 
@@ -112,7 +113,8 @@ Mêmes jetons et composants. `/aliment/[code]` porte le badge « Comparaison sim
 **Calcul dans `lib/scoring/` (fonctions pures, testées avant le code), jamais en dur dans les composants.**
 
 - Pour chaque catégorie, une liste d'indicateurs et un sens (`lower_is_better` ou `higher_is_better`), dans un fichier versionné et sourcé : `data/score_rules.json`.
-- Un indicateur compte un point pour le plat qui fait **strictement mieux** à l'unité affichée (par portion par défaut). Égalité après arrondi d'affichage : aucun point.
+- Un indicateur compte un point pour le plat qui fait mieux à l'unité affichée (par portion par défaut), **seulement si les fourchettes des deux plats ne se chevauchent pas** (bornes arrondies comme à l'affichage). Fourchettes qui se chevauchent ou valeurs égales après arrondi : « égalité », aucun point. Une teneur « < x » de Ciqual compte de 0 à x (jamais x/2).
+- Par portion, les **ingrédients strictement identiques des deux côtés** (même code, mêmes grammes par portion) ne comptent pas dans la couverture du verdict : leur contribution s'annule. Les totaux affichés gardent leur couverture réelle et l'avertissement < 95 %.
 - Valeur manquante d'un côté ou de l'autre : l'indicateur **n'est pas compté**, et la page affiche « x indicateurs comparés sur y ».
 - Vainqueur de la catégorie = plus de points ; égalité = « Égalité » ; aucun indicateur comparable = « Données insuffisantes ».
 - **« provisoire »** quand moins de la moitié des indicateurs de la catégorie sont comparables.
@@ -122,7 +124,7 @@ Indicateurs de départ (à faire valider par un·e diététicien·ne et une pers
 
 | Catégorie | Indicateurs et sens | Justification à citer |
 |---|---|---|
-| Nutrition | protéines ↑, fibres ↑, sel ↓, acides gras saturés ↓, sucres ↓ ; fer, calcium, zinc, vitamine B12, iode, vitamine D, oméga-3 ↑. Énergie : affichée, **non comptée**. | Composantes du Nutri-Score (Santé publique France) pour les cinq premiers ; références nutritionnelles de l'ANSES pour les micronutriments. Vérifier et citer les pages. |
+| Nutrition | protéines ↑, fibres ↑, sel ↓, acides gras saturés ↓, sucres ↓ ; fer, calcium, zinc, vitamine B12, iode, vitamine D, vitamine B2 ↑ ; oméga-3 : ALA ↑ et EPA + DHA ↑ (deux indicateurs, comme les références ANSES). Énergie : affichée, **non comptée**. | Composantes du Nutri-Score (Santé publique France) pour les cinq premiers ; références nutritionnelles de l'ANSES pour les micronutriments. Vérifier et citer les pages. |
 | Santé | ingrédients classés groupe 1 par le CIRC ↓, groupe 2A ↓ ; plus tard repères PNNS et HENI. | CIRC vol. 114. |
 | Environnement | les 16 indicateurs Agribalyse, chacun ↓ (le score unique EF est affiché, **non compté**, pour ne pas compter deux fois). | Agribalyse 3.2. |
 | Protection animale | animaux tués ↓, jours de vie en élevage ↓, heures de douleur (4 intensités) ↓, poissons tués ↓. | FAOSTAT, Agreste, Welfare Footprint, Fishcount. |

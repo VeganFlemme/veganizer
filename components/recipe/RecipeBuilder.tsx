@@ -5,6 +5,7 @@ import { PairView } from "@/components/compare/PairView";
 import type { IngredientHit } from "@/lib/compare/data";
 import {
   applySubstitutions,
+  substitutionContext,
   buildRecipePage,
   type RecipeData,
   type RecipeFood,
@@ -100,7 +101,7 @@ export function RecipeBuilder() {
     if (!data) return null;
     const ingredients: RecipeIngredient[] = draft.ingredients.map((i) => ({ code: i.code, grams: i.grams }));
     const foods = Object.fromEntries(data.recipeFoods.map((f) => [f.code, f]));
-    const sub = applySubstitutions(ingredients, foods, data.substitutions);
+    const sub = applySubstitutions(ingredients, foods, data.substitutions, substitutionContext(data));
     const model = buildRecipePage({ name: draft.name, servings: draft.servings, ingredients }, sub.ingredients, data);
     return { sub, model, foods };
   }, [data, draft]);

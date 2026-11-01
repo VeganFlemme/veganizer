@@ -311,3 +311,99 @@ describe("scores on the page model", () => {
     expect(m.rows.perServing.find((r) => r.id === "vit_b12_ug")?.direction).toBe("up");
   });
 });
+
+describe("corrections after the review of PR #15", () => {
+  // Wine identical on both sides, without fiber value; « < 2 » g of salt.
+  const shared = raw({
+    ingredients: [
+      { dish_id: "A", food_code: "meat", grams: 400, note: "viande cuite" },
+      { dish_id: "A", food_code: "wine", grams: 200, note: "vin" },
+      { dish_id: "M", food_code: "beans", grams: 400, note: null },
+      { dish_id: "M", food_code: "wine", grams: 200, note: "vin" },
+      { dish_id: "C", food_code: "beans", grams: 400, note: null },
+      { dish_id: "C", food_code: "wine", grams: 100, note: "vin" },
+    ],
+    foods: [
+      { code: "meat", name_fr: "Boeuf, à bourguignon ou pot-au-feu, cuit", is_animal: true, animal_category: "bovin", ciqual_code: null, iarc_meat: "rouge" },
+      { code: "beans", name_fr: "Haricot", is_animal: false, animal_category: null, ciqual_code: null },
+      { code: "wine", name_fr: "Vin rouge", is_animal: false, animal_category: null, ciqual_code: null },
+    ],
+    nutrientValues: [
+      { food_code: "meat", nutrient_id: "protein_g", value_per_100g: 30, source_id: "ciqual-2025" },
+      { food_code: "meat", nutrient_id: "energy_eu_kcal", value_per_100g: 200, source_id: "ciqual-2025" },
+      { food_code: "meat", nutrient_id: "fiber_g", value_per_100g: 0, source_id: "ciqual-2025" },
+      { food_code: "meat", nutrient_id: "salt_g", value_per_100g: 0.2, source_id: "ciqual-2025" },
+      { food_code: "meat", nutrient_id: "fa_c20_5_n3_epa_g", value_per_100g: 0.01, source_id: "ciqual-2025" },
+      { food_code: "meat", nutrient_id: "fa_c22_6_n3_dha_g", value_per_100g: null, qualifier: "< 0.01", source_id: "ciqual-2025" },
+      { food_code: "beans", nutrient_id: "protein_g", value_per_100g: 10, source_id: "ciqual-2025" },
+      { food_code: "beans", nutrient_id: "energy_eu_kcal", value_per_100g: 100, source_id: "ciqual-2025" },
+      { food_code: "beans", nutrient_id: "fiber_g", value_per_100g: 6, source_id: "ciqual-2025" },
+      { food_code: "beans", nutrient_id: "salt_g", value_per_100g: 0.01, source_id: "ciqual-2025" },
+      { food_code: "beans", nutrient_id: "fa_c20_5_n3_epa_g", value_per_100g: 0, source_id: "ciqual-2025" },
+      { food_code: "beans", nutrient_id: "fa_c22_6_n3_dha_g", value_per_100g: 0, source_id: "ciqual-2025" },
+      { food_code: "wine", nutrient_id: "protein_g", value_per_100g: 0, source_id: "ciqual-2025" },
+      { food_code: "wine", nutrient_id: "energy_eu_kcal", value_per_100g: 80, source_id: "ciqual-2025" },
+      { food_code: "wine", nutrient_id: "fiber_g", value_per_100g: null, source_id: "ciqual-2025" },
+      { food_code: "wine", nutrient_id: "salt_g", value_per_100g: null, qualifier: "< 2", source_id: "ciqual-2025" },
+      { food_code: "wine", nutrient_id: "sugars_g", value_per_100g: null, qualifier: "traces", source_id: "ciqual-2025" },
+    ],
+    nutrients: [
+      { id: "protein_g", name_fr: "Protéines", unit: "g" },
+      { id: "energy_eu_kcal", name_fr: "Énergie", unit: "kcal" },
+      { id: "fiber_g", name_fr: "Fibres", unit: "g" },
+      { id: "salt_g", name_fr: "Sel", unit: "g" },
+      { id: "sugars_g", name_fr: "Sucres", unit: "g" },
+      { id: "fa_c20_5_n3_epa_g", name_fr: "AG 20:5 EPA", unit: "g" },
+      { id: "fa_c22_6_n3_dha_g", name_fr: "AG 22:6 DHA", unit: "g" },
+    ],
+  });
+  const page = buildPairPage(shared);
+  const m = page.variants.maison!;
+  const c = page.variants.commerce!;
+  const r = (v: typeof m, id: string) => v.rows.perServing.find((x) => x.id === id)!;
+
+  it("reads « < x » as a known range and « traces » as missing data", () => {
+    const salt = r(m, "salt_g");
+    expect(salt.animal?.value).toBeNull();
+    expect(salt.animal?.censored).toBe(true);
+    expect(salt.animal?.low).toBeCloseTo(0.4); // 400 g × 0.2 / 100 / 2
+    expect(salt.animal?.high).toBeCloseTo(2.4); // + 200 g × 2 / 100 / 2
+    expect(salt.animal?.coverage).toBe(1);
+    expect(r(m, "sugars_g").animal).toBeNull();
+  });
+
+  it("judges on the ingredients that differ: identical ones do not lower the coverage of the verdict", () => {
+    const fiber = r(m, "fiber_g");
+    expect(fiber.animal?.coverage).toBeCloseTo(4 / 6);
+    expect(fiber.lowCoverage).toBe(true); // the displayed total keeps its real coverage
+    expect(fiber.verdictPartial).toBe(false);
+    expect(fiber.winner).toBe("vegetal");
+    // the shared « < 2 » salt of the wine cancels out: beans 0.02 g vs meat 0.4 g
+    expect(r(m, "salt_g").winner).toBe("vegetal");
+  });
+
+  it("does not treat a different quantity as identical", () => {
+    expect(r(c, "fiber_g").verdictPartial).toBe(true);
+    expect(r(c, "fiber_g").winner).toBeNull();
+  });
+
+  it("counts EPA + DHA as one indicator, summed ingredient by ingredient", () => {
+    const o = r(m, "fa_epa_dha_g");
+    expect(o.featured).toBe(true);
+    expect(o.direction).toBe("up");
+    expect(o.animal?.low).toBeCloseTo(0.02); // 400 g × 0.01 / 100 / 2
+    expect(o.animal?.high).toBeCloseTo(0.04);
+    expect(r(m, "fa_c20_5_n3_epa_g").direction).toBe("none");
+    expect(r(m, "fa_c20_5_n3_epa_g").featured).toBe(false);
+    const n = m.scores.verdict.categories[0].indicators.map((i) => i.id);
+    expect(n).toContain("fa_epa_dha_g");
+    expect(n).not.toContain("fa_c20_5_n3_epa_g");
+    expect(n).not.toContain("fa_c22_6_n3_dha_g");
+  });
+
+  it("gives the Santé card real grams and food names", () => {
+    const red = m.iarc.find((x) => x.entry.id === "rouge")!;
+    expect(red.animalItems).toEqual([{ name: "bœuf", grams: 200 }]);
+    expect(m.scores.verdict.categories.find((x) => x.id === "sante")!.summary).toContain("200 g de bœuf (viande rouge, groupe 2A) par portion");
+  });
+});

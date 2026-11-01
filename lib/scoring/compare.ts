@@ -1,3 +1,4 @@
+import { amountBounds, judgeRanges } from "./ranges";
 import type { Amount, DishTotals } from "./types";
 
 export type Basis = "perServing" | "per100kcal" | "per10gProtein";
@@ -40,11 +41,17 @@ export interface CriterionComparison {
    * Positive = plant dish does better. null if a side is missing or animal = 0.
    */
   gapPercent: number | null;
+  /**
+   * From the [low, high] ranges at the basis, rounded as displayed: a point only when they do not
+   * overlap, otherwise "egal". null when a side has neither a value nor a range.
+   */
   winner: "animal" | "vegetal" | "egal" | null;
   /** true when the [low, high] ranges overlap (difference within uncertainty). Per serving only. */
   rangesOverlap: boolean | null;
-  /** Lowest mass coverage of the two sides (warn if < 0.95). */
+  /** Lowest mass coverage of the two sides, as displayed (warn if < 0.95). */
   minCoverage: number | null;
+  /** Lowest coverage of the totals the verdict rests on (`verdict` option), else minCoverage. */
+  verdictCoverage: number | null;
 }
 
 export interface AnimalAdvantage {
@@ -66,6 +73,15 @@ export interface CompareOptions {
   directions: Directions;
   conseils: Conseil[];
   basis?: Basis;
+  /** Unit of each indicator, for the display rounding of the verdicts (default: 3 significant digits). */
+  units?: Record<string, string>;
+  /**
+   * Totals the verdicts rest on, e.g. the two dishes without their identical ingredients
+   * (verdictTotals). Displayed values stay those of `animal` and `vegetal`. Per serving only:
+   * per 100 kcal or per 10 g of protein the identical ingredients no longer cancel out, so this
+   * option is ignored on those bases.
+   */
+  verdict?: { animal: DishTotals; vegetal: DishTotals };
 }
 
 const GROUPS: Group[] = ["nutrients", "impacts", "animalImpacts"];
@@ -96,14 +112,20 @@ export function compareDishes(animal: DishTotals, vegetal: DishTotals, options: 
       const v = vegetal[group][id];
       const av = a?.[basis] ?? null;
       const vv = v?.[basis] ?? null;
+      const judged = basis === "perServing" ? options.verdict : undefined;
+      const ja = judged ? judged.animal : animal;
+      const jv = judged ? judged.vegetal : vegetal;
+      const ra = amountBounds(ja[group][id], basis, ja);
+      const rv = amountBounds(jv[group][id], basis, jv);
 
       let gapPercent: number | null = null;
-      let winner: CriterionComparison["winner"] = null;
-      if (av != null && vv != null) {
+      if (av != null && vv != null && av !== 0) {
         const diff = dir.higherIsBetter ? vv - av : av - vv;
-        winner = diff > 0 ? "vegetal" : diff < 0 ? "animal" : "egal";
-        if (av !== 0) gapPercent = (diff / Math.abs(av)) * 100;
+        gapPercent = (diff / Math.abs(av)) * 100;
       }
+      const winner: CriterionComparison["winner"] = ra && rv ? judgeRanges(ra, rv, dir.higherIsBetter, options.units?.[id]) : null;
+      const ca = ja[group][id]?.massCoverage;
+      const cv = jv[group][id]?.massCoverage;
 
       criteria[id] = {
         group,
@@ -114,6 +136,7 @@ export function compareDishes(animal: DishTotals, vegetal: DishTotals, options: 
         winner,
         rangesOverlap: overlap(a, v),
         minCoverage: a && v ? Math.min(a.massCoverage, v.massCoverage) : null,
+        verdictCoverage: ca != null && cv != null ? Math.min(ca, cv) : null,
       };
 
       if (winner === "animal") {

@@ -52,3 +52,6 @@ pipeline/sources_watch_report.md
 # Playwright
 /test-results/
 /playwright-report/
+
+# Screenshots: attached to PR comments, never committed (decision of Matt, 2026-11-01)
+docs/captures/

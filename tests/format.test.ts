@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { formatEur, formatValue, gapSentence, MISSING, signedGap, withUnit } from "@/lib/format";
+import { animalsSpared, formatEur, formatForUnit, formatValue, gapSentence, MISSING, publicLicense, signedGap, withUnit } from "@/lib/format";
 
 // Intl uses narrow no-break spaces in fr-FR; normalise them for readable assertions.
 const n = (s: string) => s.replace(/[  ]/g, " ");
@@ -36,5 +36,48 @@ describe("signedGap and withUnit", () => {
   it("joins value and unit with a no-break space, never for missing data", () => {
     expect(withUnit(5.034, "kg")).toBe("5,03\u00a0kg");
     expect(withUnit(null, "kg")).toBe("donnée manquante");
+  });
+});
+
+describe("one rounding rule per unit (review of PR #15)", () => {
+  it("kg CO2e: always 2 decimals", () => {
+    expect(formatForUnit(0.647, "kg CO2e")).toBe("0,65");
+    expect(formatForUnit(1.2, "kg CO2e")).toBe("1,20");
+    expect(formatForUnit(1, "kg CO2e")).toBe("1,00");
+    expect(formatForUnit(5.034, "kg CO2e")).toBe("5,03");
+  });
+  it("kg CO2e: a non-zero value below the precision is written as a bound, never 0,00", () => {
+    expect(formatForUnit(0.0021, "kg CO2e")).toBe("< 0,01");
+    expect(formatForUnit(-0.0021, "kg CO2e")).toBe("> −0,01");
+    expect(formatForUnit(0, "kg CO2e")).toBe("0,00");
+  });
+  it("nutrients and other units: 3 significant digits", () => {
+    expect(formatForUnit(48.64, "g")).toBe("48,6");
+    expect(formatForUnit(483.2, "kcal")).toBe("483");
+    expect(formatForUnit(0.0123, "mg")).toBe("0,0123");
+  });
+  it("missing stays missing", () => {
+    expect(formatForUnit(null, "kg CO2e")).toBe(MISSING);
+  });
+});
+
+describe("animalsSpared", () => {
+  it("writes a low estimate, rounded down to 2 significant digits, never more than computed", () => {
+    expect(animalsSpared(0.0308)).toBe("au moins 0,03 animal épargné");
+    expect(animalsSpared(1.64)).toBe("au moins 1,6 animal épargné");
+    expect(animalsSpared(16.4)).toBe("au moins 16 animaux épargnés");
+    expect(animalsSpared(0.399)).toBe("au moins 0,39 animal épargné");
+  });
+  it("is missing data without a figure", () => {
+    expect(animalsSpared(null)).toBe(MISSING);
+  });
+});
+
+describe("publicLicense", () => {
+  it("shows a known licence and hides the internal follow-up notes", () => {
+    expect(publicLicense("Licence Ouverte 2.0")).toBe("Licence Ouverte 2.0");
+    expect(publicLicense("À vérifier (document public, conditions de réutilisation non lues)")).toBeNull();
+    expect(publicLicense("à vérifier")).toBeNull();
+    expect(publicLicense("")).toBeNull();
   });
 });

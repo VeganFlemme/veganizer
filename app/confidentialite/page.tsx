@@ -7,7 +7,10 @@ export const metadata: Metadata = {
   alternates: { canonical: "/confidentialite" },
 };
 
-const TODO = "[à compléter par Matt]";
+// Publisher, contact and retention given by Matt (2026-11-01).
+const CONTROLLER = "VeganFlemme, éditeur du site";
+const CONTACT = "veganflemme@gmail.com";
+const REPORT_RETENTION = "12 mois";
 
 export default function PrivacyPage() {
   return (
@@ -18,7 +21,8 @@ export default function PrivacyPage() {
       <Prose>
         <ProseSection id="responsable" title="Responsable du traitement">
           <p className="m-0">
-            {TODO} (identité et contact). Pour exercer tes droits (accès, rectification, effacement, opposition), écris à : {TODO}. Tu peux aussi saisir la CNIL
+            {CONTROLLER} (contact : <a href={`mailto:${CONTACT}`}>{CONTACT}</a>). Pour exercer tes droits (accès, rectification, effacement, opposition), écris à :{" "}
+            <a href={`mailto:${CONTACT}`}>{CONTACT}</a>. Tu peux aussi saisir la CNIL
             (
             <a href="https://www.cnil.fr" rel="noopener noreferrer">
               cnil.fr
@@ -30,7 +34,8 @@ export default function PrivacyPage() {
           <p className="m-0">
             Le formulaire « Signaler une erreur » enregistre trois choses : la page concernée, ton message et la date d’envoi. Aucun nom, aucune adresse e-mail ni
             adresse IP n’est enregistré par Veganizer ; le formulaire demande de ne pas écrire de donnée personnelle dans le message. Ces messages servent
-            uniquement à corriger le site et ne sont lisibles que par l’équipe. Durée de conservation : {TODO}.
+            uniquement à corriger le site et ne sont lisibles que par l’équipe. Durée de conservation : {REPORT_RETENTION}. La suppression est
+            automatique : chaque nuit, une tâche planifiée de la base de données (extension pg_cron de Supabase) efface les signalements de plus de 12 mois.
           </p>
           <p className="m-0">Base légale : intérêt légitime (fiabilité des informations publiées).</p>
         </ProseSection>
