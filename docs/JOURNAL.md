@@ -48,6 +48,7 @@ Suivi étape par étape : heure, ce qui est fait, lien de la PR, état (en cours
 - Point 9 ajouté par Matt (17 h 40) appliqué, tests d'abord : « provisoire » seulement si les données manquantes pourraient inverser le vainqueur ; Protection animale gagnée sans « provisoire » quand la version végétale n'a aucun ingrédient animal identifié.
 - Sous-agent designer : deux passes sur les captures à 1 440 et 1 920 px, corrections appliquées, points restants dans `docs/A_VERIFIER.md`. Téléphone : différences à 375 px voulues (corrections valables partout).
 - Contrôles : 279 tests Vitest, lint, typecheck, `test:pipeline`, `test:db` (5 PASS), `test:db:scoring` (3), 109 tests e2e sur le build de production local (6 largeurs), accueil, `/compare` et `/recette` en 200 (build local).
+- 2026-11-01 18:02 — fin de l'étape 3 quater : PR https://github.com/VeganFlemme/veganizer/pull/20, CI verte, conditions remplies, fusionnée (squash). État : fusionnée.
 
 ## Bloqué par les permissions
 
