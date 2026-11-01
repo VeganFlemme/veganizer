@@ -39,6 +39,7 @@ Suivi étape par étape : heure, ce qui est fait, lien de la PR, état (en cours
 - 2026-11-01 17:20 — début, branche `roadmap/s24`. État : en cours.
 - Liste blanche `data/complements.json` (ANSES), solveur par programmation linéaire (tests d'abord), vue « Avec compléments » (onglets, scores, simulateur et prix recalculés, liste des ajouts, verdict « Même complétée… »), symétrie pour le plat animal, section `/methodologie`.
 - Matt a ajouté les étapes 3 ter et 3 quater et changé l'ordre (3 quater juste après cette étape) : relu avant de continuer.
+- 2026-11-01 16:58 — fin de l'étape 3 : PR https://github.com/VeganFlemme/veganizer/pull/19, CI verte, conditions remplies, fusionnée (squash). État : fusionnée.
 
 ## Bloqué par les permissions
 
