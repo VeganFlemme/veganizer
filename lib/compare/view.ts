@@ -15,8 +15,9 @@ import {
   type MonetizationFactor,
   type MonetizationRule,
   amountBounds,
-  equalProteinFactor,
+  boostMainProtein,
   solveComplements,
+  withoutSharedIngredients,
   type ComplementFood,
   type Range,
   type ScoringData,
@@ -209,7 +210,19 @@ export interface ComplementSpec {
 // ---------------------------------------------------------------------------
 // View model
 // ---------------------------------------------------------------------------
-export type Variant = "maison" | "commerce";
+/** A plant version of the page: "maison", "commerce", or a food code on /aliment. */
+export type Variant = string;
+
+/** One choice of plant version, in display order. */
+export interface Choice {
+  id: Variant;
+  label: string;
+  /** Why this alternative (rule of the catalogue, rationale of the pair). */
+  reason?: string;
+}
+
+const CHOICE_LABEL: Record<string, string> = { maison: "Fait maison", commerce: "Du commerce" };
+const CHOICE_ORDER: Record<string, number> = { maison: 0, commerce: 1 };
 
 export interface SideValue {
   value: number | null;
@@ -393,29 +406,28 @@ export interface VariantView {
   scores: PairScores;
 }
 
-/** What was added to one dish in the view with complements. */
-export interface ComplementSide {
-  additions: { code: string; label: string; gramsPerServing: number; nutrients: string[]; justification: string; kind: "courant" | "enrichi" }[];
-  /** Gaps no whitelisted food could close: advice only (data/conseils.json), nothing added. */
-  open: string[];
+/** One addition of the completed version (data/complements.json). */
+export interface ComplementAddition {
+  code: string;
+  label: string;
+  gramsPerServing: number;
+  nutrients: string[];
+  justification: string;
+  kind: "courant" | "enrichi";
 }
 
+/**
+ * « Version complétée » (decisions of Matt, 2026-11-01, 17 h 05 and 17 h 12): the animal dish
+ * unchanged; the plant version with its main protein raised to the protein of the animal dish,
+ * then its other gaps closed with data/complements.json. Nutrition: gaps closed by construction.
+ */
 export interface CompletedVariantView {
   view: VariantView;
-  /** Additions to the plant version (gaps where the animal dish does better). */
-  plant: ComplementSide;
-  /** Additions to the animal dish (gaps where the plant version does better), for symmetry. */
-  animal: ComplementSide;
-}
-
-/** The plant version scaled to the protein of the animal dish (« À protéines égales »). */
-export interface ScaledVariantView {
-  view: VariantView;
-  /** Animal protein / plant protein per serving, from the data. */
-  factor: number;
-  gramsPerServing: number;
-  /** Grams per serving of the realistic portion. */
-  baseGramsPerServing: number;
+  /** Main protein increased (null when the plant version already had as much protein). */
+  boost: { code: string; label: string; extraGrams: number } | null;
+  additions: ComplementAddition[];
+  /** Gaps no whitelisted food closes (B12, EPA + DHA, vitamin D…): advice only, no dose. */
+  open: string[];
 }
 
 export interface PairPageModel {
@@ -423,9 +435,9 @@ export interface PairPageModel {
   animal: DishView;
   /** Realistic portions (default view). */
   variants: Partial<Record<Variant, VariantView>>;
-  /** Same variants at equal protein; absent when a protein total is unknown. */
-  equalProtein: Partial<Record<Variant, ScaledVariantView>>;
-  /** Same variants with complements closing the nutrient gaps of both dishes. */
+  /** Plant versions offered, in display order (« Fait maison », « Du commerce », or alternatives). */
+  choices: Choice[];
+  /** « Version complétée » of each variant; the base version (variants) stays the reference. */
   completed: Partial<Record<Variant, CompletedVariantView>>;
   sources: Record<string, SourceRow>;
   monetizationFactors: MonetizationFactor[];
@@ -661,23 +673,10 @@ function simTotals(t: DishTotals): DishTotals {
 export interface BuildOptions {
   /** Indicators not counted in the scores of this view. */
   excludeFromScore?: string[];
+  /** Categories whose gaps are closed by construction (completed version): no score. */
+  constructed?: string[];
   /** false: only the realistic portions (used to build the derived views). */
   withViews?: boolean;
-}
-
-// Protein is equal by construction in the equal-protein view: not counted.
-const EQUAL_PROTEIN_EXCLUDED = ["protein_g"];
-
-/** Raw data with one plant dish scaled (ingredients and the dish price, which is linear in grams). */
-function scaledRaw(raw: RawPairData, dishId: string, factor: number): RawPairData {
-  const k = (x: number | null) => (x == null ? null : x * factor);
-  return {
-    ...raw,
-    ingredients: raw.ingredients.map((i) => (i.dish_id === dishId ? { ...i, grams: Number(i.grams) * factor } : i)),
-    dishPrices: raw.dishPrices.map((p) =>
-      p.dish_id === dishId ? { ...p, per_serving: Number(p.per_serving) * factor, low_per_serving: k(num(p.low_per_serving)), high_per_serving: k(num(p.high_per_serving)) } : p,
-    ),
-  };
 }
 
 // Nutrients a dish can gain by adding food: counted, « plus = mieux » (data/score_rules.json).
@@ -685,66 +684,65 @@ const COMPLETABLE = new Set(scoreRules.categories.find((c) => c.id === "nutritio
 // Fortified foods are used only when everyday foods are not enough.
 const KIND_WEIGHT = { courant: 1, enrichi: 10 } as const;
 
-function completedVariant(raw: RawPairData, dish: DishRow, pair: PairRow, v: VariantView, data: ScoringData): { view: CompletedVariantView; sources: Record<string, SourceRow> } | null {
+function completedVariant(raw: RawPairData, dish: DishRow, pair: PairRow, data: ScoringData): { view: CompletedVariantView; sources: Record<string, SourceRow> } | null {
+  const dishOf = (d: DishRow) => ({
+    servings: d.servings,
+    ingredients: raw.ingredients.filter((i) => i.dish_id === d.id).map((i) => ({ foodCode: i.food_code, grams: Number(i.grams) })),
+  });
+  const animalDish = dishOf(raw.animal);
+  const plantDish = dishOf(dish);
+  const shared = withoutSharedIngredients(animalDish, plantDish).shared;
+  const animalProtein = dishTotals(animalDish, data, TOTALS_OPTIONS).proteinPerServing;
+  // 1. Main protein raised to the protein of the animal dish.
+  const b = animalProtein == null ? null : boostMainProtein(plantDish, data, animalProtein, shared);
+  const boosted = raw.ingredients.map((i) => (b && i.dish_id === dish.id && i.food_code === b.code ? { ...i, grams: Number(i.grams) + b.extraGrams } : i));
+  const prices = (ingredients: IngredientRow[]) =>
+    [raw.animal, dish]
+      .map((d) => dishPriceFromFoods(d.id, d.servings, ingredients.filter((i) => i.dish_id === d.id).map((i) => ({ code: i.food_code, grams: Number(i.grams) })), raw.foodPrices))
+      .filter((x): x is DishPriceRow => x != null);
+  const step1 = buildPairPage({ ...raw, pairs: [pair], ingredients: boosted, dishPrices: prices(boosted) }, { withViews: false });
+  const v1 = step1.variants[pair.variant as Variant];
+  if (!v1) return null;
+  // 2. Other plant gaps closed with the whitelist (the animal dish is never completed).
   const specs = (raw.complements ?? []).filter((c) => data.foods[c.code]);
-  if (specs.length === 0) return null;
   const foods: ComplementFood[] = specs.map((c) => ({
     code: c.code,
     maxGrams: c.maxGramsPerServing,
     weight: KIND_WEIGHT[c.kind],
     per100g: Object.fromEntries(Object.entries(data.foods[c.code]!.nutrients).filter(([, x]) => x != null)) as Record<string, number>,
   }));
-  const rows = v.rows.perServing.filter((r) => r.group === "nutrients" && COMPLETABLE.has(r.id));
-  const hi = (s: SideValue | null) => s?.high ?? s?.value ?? null;
-  const lo = (s: SideValue | null) => s?.low ?? s?.value ?? null;
-  // Gap to close: the other dish's high bound minus this dish's low bound (a closed gap stays closed).
-  const gaps = (winner: "animal" | "vegetal", self: "animal" | "vegetal") => {
-    const g: Record<string, number> = {};
-    const base: Record<string, number> = {};
-    for (const r of rows) {
-      const mine = r[self];
-      const other = r[self === "animal" ? "vegetal" : "animal"];
-      if (hi(mine) != null) base[r.id] = hi(mine)!;
-      if (r.winner !== winner) continue;
-      const a = hi(other);
-      const b = lo(mine);
-      if (a != null && b != null && a > b) g[r.id] = a - b;
-    }
-    return { g, base };
-  };
-  const side = (winner: "animal" | "vegetal", self: "animal" | "vegetal"): ComplementSide => {
-    const { g, base } = gaps(winner, self);
-    const r = solveComplements(g, foods, { limits: raw.complementLimits, base });
-    return {
-      additions: r.additions.map((a) => {
-        const s = specs.find((x) => x.code === a.code)!;
-        return { code: a.code, label: s.label, gramsPerServing: a.grams, nutrients: a.nutrients, justification: s.justification, kind: s.kind };
-      }),
-      open: r.open,
-    };
-  };
-  const plant = side("animal", "vegetal");
-  const animal = side("vegetal", "animal");
-  const extra = (d: DishRow, s: ComplementSide) =>
-    s.additions.map((a) => ({ dish_id: d.id, food_code: a.code, grams: a.gramsPerServing * d.servings, note: `complément : ${a.label}` }));
-  const merged = (list: IngredientRow[]) => {
-    const m = new Map<string, IngredientRow>();
-    for (const i of list) {
-      const k = `${i.dish_id}|${i.food_code}`;
-      const prev = m.get(k);
-      m.set(k, prev ? { ...prev, grams: Number(prev.grams) + Number(i.grams) } : { ...i });
-    }
-    return [...m.values()];
-  };
-  const ingredients = merged([...raw.ingredients, ...extra(raw.animal, animal), ...extra(dish, plant)]);
-  // Prices of the completed dishes from the foods (same rule as dish_prices_best).
-  const price = (d: DishRow) =>
-    dishPriceFromFoods(d.id, d.servings, ingredients.filter((i) => i.dish_id === d.id).map((i) => ({ code: i.food_code, grams: Number(i.grams) })), raw.foodPrices);
-  const dishPrices = [price(raw.animal), price(dish)].filter((x): x is DishPriceRow => x != null);
-  const page = buildPairPage({ ...raw, pairs: [pair], ingredients, dishPrices }, { withViews: false });
+  const hi = (x: SideValue | null) => x?.high ?? x?.value ?? null;
+  const lo = (x: SideValue | null) => x?.low ?? x?.value ?? null;
+  const gaps: Record<string, number> = {};
+  const base: Record<string, number> = {};
+  for (const r of v1.rows.perServing) {
+    if (r.group !== "nutrients" || !COMPLETABLE.has(r.id)) continue;
+    if (hi(r.vegetal) != null) base[r.id] = hi(r.vegetal)!;
+    if (r.winner !== "animal" && r.indicativeWinner !== "animal") continue;
+    const a = hi(r.animal);
+    const p = lo(r.vegetal);
+    if (a != null && p != null && a > p) gaps[r.id] = a - p;
+  }
+  const solved = foods.length ? solveComplements(gaps, foods, { limits: raw.complementLimits, base }) : { additions: [], closed: [], open: Object.keys(gaps) };
+  const additions: ComplementAddition[] = solved.additions.map((a) => {
+    const s = specs.find((x) => x.code === a.code)!;
+    return { code: a.code, label: s.label, gramsPerServing: a.grams, nutrients: a.nutrients, justification: s.justification, kind: s.kind };
+  });
+  const merged = new Map<string, IngredientRow>();
+  for (const i of [...boosted, ...additions.map((a) => ({ dish_id: dish.id, food_code: a.code, grams: a.gramsPerServing * dish.servings, note: a.label }))]) {
+    const k = `${i.dish_id}|${i.food_code}`;
+    const prev = merged.get(k);
+    merged.set(k, prev ? { ...prev, grams: Number(prev.grams) + Number(i.grams) } : { ...i });
+  }
+  const ingredients = [...merged.values()];
+  const page = buildPairPage({ ...raw, pairs: [pair], ingredients, dishPrices: prices(ingredients) }, { withViews: false, constructed: ["nutrition"] });
   const view = page.variants[pair.variant as Variant];
   if (!view) return null;
-  return { view: { view, plant, animal }, sources: page.sources };
+  return {
+    // Recipe label, never the raw official name (rule 10).
+    view: { view, boost: b ? { code: b.code, label: dishView(dish, raw).ingredients.find((i) => i.code === b.code)?.label ?? b.code, extraGrams: b.extraGrams } : null, additions, open: solved.open },
+    sources: page.sources,
+  };
 }
 
 /** Builds the page model; variants without data are simply absent. */
@@ -761,7 +759,7 @@ export function buildPairPage(raw: RawPairData, options: BuildOptions = {}): Pai
   const usedSources = new Set<string>();
 
   for (const p of raw.pairs) {
-    if (p.variant !== "maison" && p.variant !== "commerce") continue;
+    if (!p.variant) continue;
     const dish = raw.vegetal.find((d) => d.id === p.vegan_dish_id);
     if (!dish) continue;
     const vegTotals = totalsOf(dish);
@@ -931,7 +929,12 @@ export function buildPairPage(raw: RawPairData, options: BuildOptions = {}): Pai
       }
     }
 
-    const scores = scorePair({ rows, iarc, price, climateCost }, options.excludeFromScore);
+    // Animal welfare (decision of Matt, 17 h 40): every ingredient of the plant dish is a known food
+    // with no identified animal ingredient, and the animal dish has at least one.
+    const plantIngredients = raw.ingredients.filter((i) => i.dish_id === dish.id);
+    const vegetalAnimalFree =
+      animalFoods.length > 0 && plantIngredients.length > 0 && plantIngredients.every((i) => foodsByCode.get(i.food_code)?.is_animal === false);
+    const scores = scorePair({ rows, iarc, price, climateCost, vegetalAnimalFree }, options.excludeFromScore, options.constructed);
     // Health and economy are not rows: their advantages come from the scores (IARC grams, price, climate cost).
     for (const c of scores.verdict.categories) {
       if (c.id !== "sante" && c.id !== "economie") continue;
@@ -964,43 +967,35 @@ export function buildPairPage(raw: RawPairData, options: BuildOptions = {}): Pai
     };
   }
 
-  // « À protéines égales »: each plant version scaled by animal protein / plant protein.
-  const equalProtein: PairPageModel["equalProtein"] = {};
+  // « Version complétée »: main protein raised, other gaps closed (data/complements.json).
+  const completed: PairPageModel["completed"] = {};
   if (options.withViews !== false) {
     for (const p of raw.pairs) {
-      if (p.variant !== "maison" && p.variant !== "commerce") continue;
-      const dish = raw.vegetal.find((d) => d.id === p.vegan_dish_id);
-      if (!dish || !variants[p.variant]) continue;
-      const factor = equalProteinFactor(animalTotals, totalsOf(dish));
-      if (factor == null) continue;
-      const page = buildPairPage(scaledRaw({ ...raw, pairs: [p] }, dish.id, factor), { excludeFromScore: EQUAL_PROTEIN_EXCLUDED, withViews: false });
-      const view = page.variants[p.variant];
-      if (!view) continue;
-      Object.keys(page.sources).forEach((s) => usedSources.add(s));
-      equalProtein[p.variant] = { view, factor, gramsPerServing: view.dish.gramsPerServing, baseGramsPerServing: variants[p.variant]!.dish.gramsPerServing };
-    }
-  }
-
-  // « Avec compléments »: gaps of each dish closed with the whitelist (data/complements.json).
-  const completed: PairPageModel["completed"] = {};
-  if (options.withViews !== false && raw.complements?.length) {
-    for (const p of raw.pairs) {
-      if (p.variant !== "maison" && p.variant !== "commerce") continue;
+      if (!p.variant) continue;
       const dish = raw.vegetal.find((d) => d.id === p.vegan_dish_id);
       const v = variants[p.variant];
       if (!dish || !v) continue;
-      const c = completedVariant(raw, dish, p, v, data);
+      const c = completedVariant(raw, dish, p, data);
       if (!c) continue;
       Object.keys(c.sources).forEach((s) => usedSources.add(s));
       completed[p.variant] = c.view;
     }
   }
 
+  const choices: Choice[] = raw.pairs
+    .filter((p): p is PairRow & { variant: string } => !!p.variant && !!variants[p.variant])
+    .map((p, i) => ({ p, i }))
+    .sort((a, b) => (CHOICE_ORDER[a.p.variant] ?? 2) - (CHOICE_ORDER[b.p.variant] ?? 2) || a.i - b.i)
+    .map(({ p }) => {
+      const label = CHOICE_LABEL[p.variant] ?? variants[p.variant]!.dish.name;
+      return CHOICE_LABEL[p.variant] ? { id: p.variant, label } : { id: p.variant, label, reason: p.rationale ?? undefined };
+    });
+
   return {
     slug: raw.animal.slug,
     animal: dishView(raw.animal, raw),
     variants,
-    equalProtein,
+    choices,
     completed,
     sources: Object.fromEntries(raw.sources.filter((s) => usedSources.has(s.id)).map((s) => [s.id, s])),
     monetizationFactors: raw.monetizationFactors,

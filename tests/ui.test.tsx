@@ -16,7 +16,7 @@ import { Simulator } from "@/components/ui/Simulator";
 import { SourcesFooter } from "@/components/ui/SourcesFooter";
 import { TabBar } from "@/components/ui/TabBar";
 import { UnitSwitch } from "@/components/ui/UnitSwitch";
-import { VariantSwitch } from "@/components/ui/VariantSwitch";
+import { ChipGroup } from "@/components/ui/ChipGroup";
 import { VerdictPanel } from "@/components/ui/VerdictPanel";
 import { WinnerBadge } from "@/components/ui/WinnerBadge";
 import type { CategoryScoreView, VerdictView } from "@/lib/compare/scores";
@@ -49,13 +49,22 @@ describe("components/ui", () => {
 
   it("DishTitle: animal dish in h1, plant alternative below", () => {
     const h = html(<DishTitle animal="Bœuf bourguignon" vegetal="Bourguignon de tempeh" />);
-    expect(h).toMatch(/<h1[^>]*>.*Bœuf bourguignon<\/h1>/);
+    expect(h).toMatch(/<h1[^>]*>.*Bœuf bourguignon<\/span><\/h1>/);
     expect(h).toContain("bg-plant-on-dark");
   });
 
-  it("VariantSwitch: aria-pressed buttons, hidden with a single variant", () => {
-    expect(html(<VariantSwitch value="maison" available={["maison", "commerce"]} onChange={noop} />)).toContain('aria-pressed="true"');
-    expect(html(<VariantSwitch value="maison" available={["maison"]} onChange={noop} />)).toBe("");
+  it("DishTitle: a long name is smaller on large screens, balanced, dot on the first line", () => {
+    const h = html(<DishTitle animal="Poulet, cuisse, viande et peau rôtie/cuite au four" vegetal="Seitan, préemballé" />);
+    expect(h).toContain("md:text-[34px]");
+    expect(h).toContain("[text-wrap:balance]");
+    expect(h).toContain("items-start");
+  });
+
+  it("ChipGroup: aria-pressed buttons as wide as their text", () => {
+    const h = html(<ChipGroup tone="dark" label="Alternative" options={[{ id: "a", label: "Fait maison" }, { id: "b", label: "Du commerce" }]} value="a" onChange={noop} />);
+    expect(h).toContain('aria-pressed="true"');
+    expect(h).toContain("whitespace-nowrap");
+    expect(h).not.toContain("flex-1");
   });
 
   it("TabBar: tablist, tabs with aria-selected and roving tabindex", () => {

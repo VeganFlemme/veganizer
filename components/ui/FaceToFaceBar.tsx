@@ -18,7 +18,20 @@ const HEIGHT = { sm: "h-2", md: "h-[10px]", lg: "h-[18px]" } as const;
  * Two bars from a central axis (2 px gap), animal on the left, plant on the right, values at the
  * outer ends. Each row has its own scale unless sameScale. No bar for a missing or negative value.
  */
-export function FaceToFaceBar({ rows, sameScale = false, thickness = "md", valueWidth = "52px" }: { rows: FaceToFaceRow[]; sameScale?: boolean; thickness?: keyof typeof HEIGHT; valueWidth?: string }) {
+export function FaceToFaceBar({
+  rows,
+  sameScale = false,
+  thickness = "md",
+  valueWidth = "52px",
+  dense = false,
+}: {
+  rows: FaceToFaceRow[];
+  sameScale?: boolean;
+  thickness?: keyof typeof HEIGHT;
+  valueWidth?: string;
+  /** Tighter rows (overview cards on large screens). */
+  dense?: boolean;
+}) {
   const pos = (x: number | null) => (x != null && x > 0 ? x : 0);
   const globalMax = Math.max(0, ...rows.flatMap((r) => [pos(r.animal), pos(r.vegetal)]));
   return (
@@ -27,9 +40,9 @@ export function FaceToFaceBar({ rows, sameScale = false, thickness = "md", value
         const max = sameScale ? globalMax : Math.max(pos(r.animal), pos(r.vegetal));
         const w = (x: number | null) => (max > 0 ? `${(pos(x) / max) * 100}%` : "0%");
         return (
-          <div key={r.id} className="flex flex-col gap-[6px] border-t border-line-soft py-[10px] first:border-t-0 first:pt-0">
+          <div key={r.id} className={`flex flex-col border-t border-line-soft first:border-t-0 first:pt-0 ${dense ? "gap-[2px] py-[5px]" : "gap-[6px] py-[10px]"}`}>
             {(r.label || r.aside) && (
-              <span className="flex justify-between gap-2 text-[14px]">
+              <span className={`flex justify-between gap-2 ${dense ? "text-[13px]" : "text-[14px]"}`}>
                 <span className="font-semibold">{r.label}</span>
                 {r.aside && <span className="num text-ink-2">{r.aside}</span>}
               </span>

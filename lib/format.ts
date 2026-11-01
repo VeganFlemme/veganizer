@@ -13,10 +13,18 @@ export const MISSING = "donnée manquante";
 /** No-break space before % and units (French typography). */
 export const NBSP = "\u00a0";
 
+const SUPERSCRIPT: Record<string, string> = { "-": "⁻", "0": "⁰", "1": "¹", "2": "²", "3": "³", "4": "⁴", "5": "⁵", "6": "⁶", "7": "⁷", "8": "⁸", "9": "⁹" };
+
+/** « 7,2 × 10⁻⁸ » instead of « 7,2E-8 » (readable scientific notation, review of 2026-11-01). */
+function scientific(x: number): string {
+  const [m, e] = sci.format(x).split("E");
+  return `${m}${NBSP}×${NBSP}10${[...(e ?? "")].map((c) => SUPERSCRIPT[c] ?? c).join("")}`;
+}
+
 /** Three significant digits; scientific notation for very small non-zero values. */
 export function formatValue(x: number | null | undefined): string {
   if (x == null || !Number.isFinite(x)) return MISSING;
-  if (x !== 0 && Math.abs(x) < 0.00001) return sci.format(x);
+  if (x !== 0 && Math.abs(x) < 0.00001) return scientific(x);
   return sig3.format(x);
 }
 
@@ -112,7 +120,7 @@ const thousandFr = new Intl.NumberFormat("fr-FR");
 /** A value per serving with the rule of its unit; small animal counts « pour 1 000 portions ». */
 export function formatPerServing(x: number | null | undefined, unit: string): string {
   if (x != null && Number.isFinite(x) && COUNT_UNITS.has(unit) && x !== 0 && Math.abs(x) < 1) {
-    return `${formatValue(x * THOUSAND)} pour ${thousandFr.format(THOUSAND)}${NBSP}portions`;
+    return `${formatValue(x * THOUSAND)} pour ${thousandFr.format(THOUSAND)} portions`;
   }
   return formatForUnit(x, unit);
 }

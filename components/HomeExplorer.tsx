@@ -64,12 +64,13 @@ export function HomeExplorer({ pairs, featured }: { pairs: PairCard[]; featured:
   return (
     <>
       <section className="on-dark bg-ink text-white">
-        <div className="mx-auto flex max-w-[1200px] flex-col gap-[22px] px-5 pb-[84px] pt-2 md:px-8 md:pb-[100px] md:pt-8">
+        <div className={`mx-auto grid max-w-[1440px] items-center gap-x-12 px-5 pb-[84px] pt-2 md:px-8 md:pb-[100px] md:pt-8 min-[1440px]:px-12 ${featured ? "lg:grid-cols-[minmax(0,1fr)_minmax(0,500px)] lg:pb-14" : ""}`}>
+        <div className="flex min-w-0 flex-col gap-[22px]">
           <h1 className="m-0 max-w-[820px] text-[36px] font-extrabold leading-[1.02] tracking-[-0.04em] md:text-[56px]">Ton plat face à sa version végétale, données à l’appui.</h1>
           <p className="m-0 max-w-[720px] text-[16px] leading-normal text-on-dark-2 md:text-[18px]">
             Nutrition, santé, environnement, protection animale, économie : un score et un vainqueur par catégorie, chaque chiffre sourcé.
           </p>
-          <form role="search" onSubmit={(e) => e.preventDefault()} className="flex max-w-[640px] flex-col gap-2">
+          <form role="search" onSubmit={(e) => e.preventDefault()} className="flex max-w-[640px] flex-col gap-2 lg:max-w-[880px]">
             <label htmlFor={inputId} className="text-[14px] font-semibold text-on-dark-1">
               Quel plat veux-tu comparer ?
             </label>
@@ -91,14 +92,17 @@ export function HomeExplorer({ pairs, featured }: { pairs: PairCard[]; featured:
             </div>
           </form>
         </div>
+        {/* Desktop: the example card fills the right half of the hero (designer review, S24d). */}
+        {featured && <div className="hidden lg:block">{featured}</div>}
+        </div>
       </section>
 
-      <div className="mx-auto -mt-[60px] w-full max-w-[1200px] px-5 md:px-8">{featured}</div>
+      {featured && <div className="mx-auto -mt-[60px] w-full max-w-[1440px] px-5 md:px-8 lg:hidden">{featured}</div>}
 
-      <section id="resultats" aria-labelledby={`${inputId}-p`} className="mx-auto flex w-full max-w-[1200px] scroll-mt-4 flex-col px-5 pb-2 pt-[30px] md:px-8">
+      <section id="resultats" aria-labelledby={`${inputId}-p`} className="mx-auto flex w-full max-w-[1440px] min-[1440px]:px-12 scroll-mt-4 flex-col px-5 pb-2 pt-[30px] md:px-8">
         <div className="mb-1 flex items-baseline justify-between gap-3">
           <h2 id={`${inputId}-p`} className="m-0 text-[22px] font-extrabold tracking-[-0.02em]">
-            {searching ? `Paires vérifiées : ${shown.length}` : `${pairs.length} paires vérifiées`}
+            {searching ? `Plats comparés : ${shown.length}` : `${pairs.length} plats comparés`}
           </h2>
           <span className="text-[13px] text-ink-2">kg CO₂e par portion</span>
         </div>
@@ -114,9 +118,9 @@ export function HomeExplorer({ pairs, featured }: { pairs: PairCard[]; featured:
           {shown.length} paire{shown.length > 1 ? "s" : ""} trouvée{shown.length > 1 ? "s" : ""}
         </p>
         {shown.length === 0 ? (
-          <p className="border-t border-line py-3 text-ink-2">Aucune paire vérifiée ne correspond. Voir les résultats du catalogue ci-dessous.</p>
+          <p className="border-t border-line py-3 text-ink-2">Aucun plat comparé ne correspond. Voir les résultats du catalogue ci-dessous.</p>
         ) : (
-          <ul className="m-0 grid list-none gap-x-10 p-0 md:grid-cols-2">
+          <ul className="m-0 grid list-none gap-x-10 p-0 md:grid-cols-2 xl:grid-cols-3 min-[1920px]:grid-cols-4">
             {shown.map((p) => {
               const m = p.variants.find((v) => v.variant === "maison") ?? p.variants[0];
               const w = (x: number | null) => (max > 0 && x != null && x > 0 ? `${(x / max) * 100}%` : "0%");
@@ -124,7 +128,7 @@ export function HomeExplorer({ pairs, featured }: { pairs: PairCard[]; featured:
                 <li key={p.slug}>
                   <Link href={`/compare/${p.slug}`} className="flex flex-col gap-[7px] border-t border-line py-3 text-ink no-underline hover:bg-surface/60 hover:text-ink">
                     <span className="flex items-baseline justify-between gap-2">
-                      <span className="text-[16px] font-bold">{p.name}</span>
+                      <span title={p.name} className="min-w-0 text-[16px] font-bold md:truncate">{p.name}</span>
                       <span className="num text-[16px] font-extrabold">{signedGap(m?.co2Reduction ?? null)}</span>
                     </span>
                     <span className="num grid grid-cols-[44px_minmax(0,1fr)_minmax(0,1fr)_44px] items-center gap-[2px] text-[13px] text-ink-2">
@@ -137,7 +141,7 @@ export function HomeExplorer({ pairs, featured }: { pairs: PairCard[]; featured:
                       </span>
                       <span className="pl-[6px]">{formatForUnit(m?.co2 ?? null, "kg CO2e")}</span>
                     </span>
-                    <span className="text-[13px] text-ink-2">
+                    <span title={m?.name} className="text-[13px] text-ink-2 md:truncate">
                       Maison : {m?.name}
                       {m?.coverage != null && m.coverage < COVERAGE_WARNING && " (données partielles)"}
                     </span>
@@ -151,7 +155,7 @@ export function HomeExplorer({ pairs, featured }: { pairs: PairCard[]; featured:
       </section>
 
       {searching && (
-        <section aria-live="polite" aria-label="Résultats du catalogue" className="mx-auto flex w-full max-w-[1200px] flex-col gap-4 px-5 pt-5 md:px-8">
+        <section aria-live="polite" aria-label="Résultats du catalogue" className="mx-auto flex w-full max-w-[1440px] min-[1440px]:px-12 flex-col gap-4 px-5 pt-5 md:px-8">
           {status === "loading" && <p className="m-0 text-[14px] text-ink-2">Recherche dans le catalogue…</p>}
           {status === "error" && <p className="m-0 text-[14px] text-animal-note">La recherche dans le catalogue est indisponible pour le moment.</p>}
           <HitList title="Comparaisons simplifiées" hits={simplified} />

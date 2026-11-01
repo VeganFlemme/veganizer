@@ -1,27 +1,29 @@
 "use client";
 
 import Link from "next/link";
-import { useState, type ReactNode } from "react";
+import { Fragment, useState, type ReactNode } from "react";
 import sante from "@/data/sante.json";
 import { AnimalBetterBox, AnimalBetterSummary } from "@/components/ui/AnimalBetterBox";
-import { Segmented } from "@/components/ui/Segmented";
+import { ChipGroup } from "@/components/ui/ChipGroup";
 import { CategoryBanner } from "@/components/ui/CategoryBanner";
 import { CategoryCard } from "@/components/ui/CategoryCard";
 import { DataTable, type DataTableRow } from "@/components/ui/DataTable";
+import { CategoryNav } from "@/components/ui/CategoryNav";
 import { DishTitle } from "@/components/ui/DishTitle";
 import { Dot } from "@/components/ui/Dot";
-import { FaceToFaceBar } from "@/components/ui/FaceToFaceBar";
+import { FaceToFaceBar, type FaceToFaceRow } from "@/components/ui/FaceToFaceBar";
 import { MedicalNote } from "@/components/ui/MedicalNote";
 import { MissingValue } from "@/components/ui/MissingValue";
+import { MiniBars } from "@/components/ui/MiniBars";
 import { Simulator } from "@/components/ui/Simulator";
 import { panelId, TabBar, tabId, type TabDef } from "@/components/ui/TabBar";
 import { UNIT_OPTIONS, UnitSwitch } from "@/components/ui/UnitSwitch";
-import { VariantSwitch, type VariantId } from "@/components/ui/VariantSwitch";
 import { VerdictPanel } from "@/components/ui/VerdictPanel";
 import { animalBetterTitle, CLIMATE_MAIN, COVERAGE_WARNING } from "@/lib/compare/config";
-import { additionLine, co2Summary, completedSentence, isViewId, scaleSentence, VIEWS, type ViewId } from "@/lib/compare/views";
+import { alignRecipes } from "@/lib/compare/align";
+import { NUTRIENT_REASON } from "@/lib/compare/views";
+import { additionLine, boostLine, co2Summary, completedSentence, ingredientsText, isVersionId, outsideLine, VERSIONS, type VersionId } from "@/lib/compare/views";
 import complementsFile from "@/data/complements.json";
-import scoreRulesFile from "@/data/score_rules.json";
 import type { CategoryId, CategoryScoreView } from "@/lib/compare/scores";
 import type { CompletedVariantView, CriterionRow, DishView, IngredientPrice, PairPageModel, PriceSide, SideValue, VariantView } from "@/lib/compare/view";
 import type { Basis } from "@/lib/scoring";
@@ -56,25 +58,50 @@ export function animalsSentence(perServing: number | null): string | null {
 const CO2_UNIT = "kg CO2e";
 const kg = (x: number) => `${formatForUnit(x, CO2_UNIT)}${NBSP}kg`;
 
-function Cell({ v, unit, range = true, servings = false }: { v: SideValue | null; unit: string; range?: boolean; servings?: boolean }) {
+function Cell({ v, unit, range = true, servings = false, compact = false }: { v: SideValue | null; unit: string; range?: boolean; servings?: boolean; compact?: boolean }) {
   const fmt = (x: number | null) => (servings ? formatPerServing(x, unit) : formatForUnit(x, unit));
+  // « 0,593 pour 1 000 portions »: the number never wraps, the wording may.
+  const show = (x: number | null) => {
+    const t = fmt(x);
+    const k = t.indexOf(" pour ");
+    return k < 0 ? (
+      <span className="whitespace-nowrap">{t}</span>
+    ) : (
+      <>
+        <span className="whitespace-nowrap">{t.slice(0, k)}</span> <span className="block text-[12px] text-ink-2">{t.slice(k + 1)}</span>
+      </>
+    );
+  };
   if (!v) return <MissingValue />;
   // Only a range is known when an ingredient is published « < x » by Ciqual (never x/2, never 0).
+  // Bounds equal once rounded: one value, no « fourchette » (review of 2026-11-01).
+  const same = v.low != null && v.high != null && fmt(v.low) === fmt(v.high);
   if (v.value == null) {
     if (v.low == null || v.high == null) return <MissingValue />;
+    if (same) return <span className="whitespace-nowrap">{fmt(v.low)}</span>;
+    // Compact tables (three bases side by side): « 14,9–15,5 » on one line.
+    if (compact)
+      return (
+        <span title="fourchette">
+          <span className="whitespace-nowrap">{fmt(v.low)}–</span>
+          <wbr />
+          <span className="whitespace-nowrap">{fmt(v.high)}</span>
+        </span>
+      );
     return (
       <>
-        {fmt(v.low)} à {fmt(v.high)}
+        <span className="whitespace-nowrap">{fmt(v.low)}</span> <span className="whitespace-nowrap">à {fmt(v.high)}</span>
         <span className="block text-[12px] text-ink-3">fourchette</span>
       </>
     );
   }
   return (
     <>
-      {fmt(v.value)}
-      {range && v.rangePublished && (
+      {show(v.value)}
+      {range && !compact && v.rangePublished && !same && fmt(v.low) + fmt(v.high) !== fmt(v.value) + fmt(v.value) && (
         <span className="block text-[12px] text-ink-3">
-          {fmt(v.low)} à {fmt(v.high)}
+          {/* Numbers only: the « pour 1 000 portions » wording is already on the value line. */}
+          <span className="whitespace-nowrap">{fmt(v.low).split(" pour ")[0]} à</span> <span className="whitespace-nowrap">{fmt(v.high).split(" pour ")[0]}</span>
         </span>
       )}
     </>
@@ -99,6 +126,31 @@ function rowNote(r: CriterionRow): ReactNode {
 }
 
 /** Table rows; `servings`: values are per serving (small animal counts « pour 1 000 portions »). */
+const SOURCE_LABEL: Record<string, string> = {
+  "ciqual-2025": "Ciqual 2025",
+  "agribalyse-3.2": "Agribalyse 3.2",
+  "faostat-qcl": "FAOSTAT",
+  "agreste-saa": "Agreste",
+  "welfare-footprint": "Welfare Footprint",
+  "fao-tcf": "FAO",
+  "mood-2023-farmed": "Mood et al. 2023",
+  "mood-2024-wild": "Mood et al. 2024",
+  "agri-bien-etre-porcs": "Min. de l’Agriculture",
+  "agri-bien-etre-poules": "Min. de l’Agriculture",
+  "label-rouge-la-07-85": "Label rouge LA 07/85",
+  "label-rouge-la-13-97": "Label rouge LA 13/97",
+};
+const sourceLabel = (id: string) => SOURCE_LABEL[id] ?? id;
+
+/** Reliability column: mass covered by the data on each side, worst Agribalyse DQR when published. */
+function reliability(r: CriterionRow): string {
+  const cov = (s: SideValue | null) => (s ? pct(s.coverage) : "—");
+  const full = (r.animal?.coverage ?? 0) >= 1 && (r.vegetal?.coverage ?? 0) >= 1;
+  const parts = full ? [] : [`${cov(r.animal)} · ${cov(r.vegetal)}`];
+  if (r.worstDqr != null) parts.push(`DQR ${formatValue(r.worstDqr)}`);
+  return parts.join(" · ") || "données complètes";
+}
+
 export function tableRows(rows: CriterionRow[], servings = false): DataTableRow[] {
   return rows.map((r) => ({
     id: r.id,
@@ -112,6 +164,10 @@ export function tableRows(rows: CriterionRow[], servings = false): DataTableRow[
     vegetal: <Cell v={r.vegetal} unit={r.unit} servings={servings} />,
     note: rowNote(r),
     strong: r.direction !== "none",
+    gap: r.reductionPercent == null ? <MissingValue label="—" /> : signedGap(r.reductionPercent),
+    bar: <MiniBars animal={r.animal?.value ?? r.animal?.high ?? null} vegetal={r.vegetal?.value ?? r.vegetal?.high ?? null} />,
+    reliability: reliability(r),
+    source: [...new Set(r.sourceIds.map(sourceLabel))].join(", ") || "—",
   }));
 }
 
@@ -144,7 +200,7 @@ function Recipe({ dish, title, series }: { dish: DishView; title: string; series
         <Dot series={series} /> {title}
       </h3>
       <p className="m-0 text-[13px] text-ink-2">
-        Pour {dish.servings} portions, environ {formatInt(dish.gramsPerServing)}
+        Pour {dish.servings} portion{dish.servings > 1 ? "s" : ""}, environ {formatInt(dish.gramsPerServing)}
         {NBSP}g par portion
       </p>
       <ul className="m-0 flex list-none flex-col p-0 text-[14px]">
@@ -161,6 +217,58 @@ function Recipe({ dish, title, series }: { dish: DishView; title: string; series
         ))}
       </ul>
     </div>
+  );
+}
+
+/** Desktop: both recipes in one table, the same food on the same line, replacements highlighted. */
+function AlignedRecipes({ animal, vegetal }: { animal: DishView; vegetal: DishView }) {
+  const lines = alignRecipes(animal.ingredients, vegetal.ingredients, animal.servings, vegetal.servings);
+  const cell = (i: DishView["ingredients"][number] | null, suffix: ReactNode = null) =>
+    i ? (
+      <span className="grid grid-cols-[64px_minmax(0,1fr)] items-baseline">
+        <span className="num pr-3 text-right whitespace-nowrap">
+          {formatInt(i.grams)}
+          {NBSP}g
+        </span>
+        <span>
+          <span title={`code Ciqual / Agribalyse ${i.code}`}>{i.label}</span>
+          {suffix}
+        </span>
+      </span>
+    ) : (
+      <span className="text-ink-3">—</span>
+    );
+  const head = (d: DishView, series: "animal" | "plant") => (
+    <th scope="col" className="w-1/2 pb-2 text-left align-bottom">
+      <span className="flex items-center gap-2 text-[15px] font-extrabold">
+        <Dot series={series} /> {d.name}
+      </span>
+      <span className="block text-[13px] font-normal text-ink-2">
+        Pour {d.servings} portion{d.servings > 1 ? "s" : ""}, environ {formatInt(d.gramsPerServing)}
+        {NBSP}g par portion
+      </span>
+    </th>
+  );
+  return (
+    <table className="hidden w-full border-collapse text-[14px] lg:table">
+      <caption className="sr-only">Recettes alignées ligne par ligne</caption>
+      <thead>
+        <tr>
+          {head(animal, "animal")}
+          {head(vegetal, "plant")}
+        </tr>
+      </thead>
+      <tbody>
+        {lines.map((l, k) => (
+          <tr key={k} className={`border-t border-line-soft ${l.same ? "" : "bg-win-animal/40"}`}>
+            <td className="py-[6px] pr-3">{cell(l.animal)}</td>
+            <td className="py-[6px] pr-3">
+              {cell(l.vegetal, !l.same && l.animal && l.vegetal ? <span className="ml-2 text-[12px] font-semibold text-animal-note">remplacé</span> : null)}
+            </td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
   );
 }
 
@@ -193,7 +301,7 @@ function IngredientPrices({ title, items, series }: { title: string; items: Ingr
 }
 
 // ---------------------------------------------------------------------------
-function Overview({ model, v, open, base }: { model: PairPageModel; v: VariantView; open: (t: TabIdT) => void; base: string }) {
+function Overview({ model, v, open, base, completed }: { model: PairPageModel; v: VariantView; open: (t: TabIdT) => void; base: string; completed?: CompletedVariantView }) {
   const cats = Object.fromEntries(v.scores.verdict.categories.map((c) => [c.id, c])) as Record<CategoryId, CategoryScoreView>;
   const rows = v.rows.perServing;
   const protein = find(rows, "protein_g");
@@ -213,6 +321,19 @@ function Overview({ model, v, open, base }: { model: PairPageModel; v: VariantVi
       <span className="num text-right">{value}</span>
     </span>
   );
+  // Desktop (from 1 024 px): 3 or 4 main indicators of the category as face-to-face bars.
+  const bar = (id: string, label: string): FaceToFaceRow | null => {
+    const r = find(rows, id);
+    if (!r) return null;
+    const val = (x: SideValue | null) => x?.value ?? x?.high ?? null;
+    return { id, label, aside: r.reductionPercent == null ? undefined : signedGap(r.reductionPercent), animal: val(r.animal), vegetal: val(r.vegetal), format: (x: number) => `${formatPerServing(x, r.unit)}${r.unit && !["animaux", "poissons"].includes(r.unit) ? `${NBSP}${r.unit.replace("CO2e", "CO₂e")}` : ""}` };
+  };
+  const bars = (list: (FaceToFaceRow | null)[]) => (
+    <span className="hidden lg:block">
+      <FaceToFaceBar dense thickness="sm" rows={list.filter((x): x is FaceToFaceRow => x != null)} valueWidth="64px" />
+    </span>
+  );
+  const phone = (children: ReactNode) => <span className="lg:hidden">{children}</span>;
   const pair = (a: number | null | undefined, b: number | null | undefined, unit: string, f: (x: number) => string = (x) => formatForUnit(x, unit)) => (
     <>
       {a == null ? MISSING : f(a)} · {b == null ? MISSING : f(b)}
@@ -223,21 +344,41 @@ function Overview({ model, v, open, base }: { model: PairPageModel; v: VariantVi
   return (
     <div className="flex flex-col gap-3">
       <VerdictPanel verdict={v.scores.verdict} className="md:hidden" />
-      <p className="m-0 mt-[6px] text-[15px] leading-normal text-ink-2">Touche une catégorie pour voir toutes ses données.</p>
-      <div className="grid gap-3 md:grid-cols-[repeat(auto-fit,minmax(340px,1fr))] md:gap-[18px]">
+      <p className="m-0 mt-[6px] text-[15px] leading-normal text-ink-2 xl:hidden">Touche une catégorie pour voir toutes ses données.</p>
+      <div className="grid gap-3 md:grid-cols-[repeat(auto-fit,minmax(340px,1fr))] md:gap-[18px] xl:grid-cols-3 xl:gap-4">
         {card(
           "nutrition",
           "Nutrition",
-          <span className="flex flex-col gap-[6px]">
-            {line("Protéines", pair(protein?.animal?.value, protein?.vegetal?.value, "g"))}
-            <FaceToFaceBar rows={[{ id: "p", label: "", animal: protein?.animal?.value ?? null, vegetal: protein?.vegetal?.value ?? null, format: () => "" }]} valueWidth="0px" />
-            {line("Énergie", pair(energy?.animal?.value, energy?.vegetal?.value, "kcal", formatInt))}
-          </span>,
+          <>
+            {phone(
+              <span className="flex flex-col gap-[6px]">
+                {line("Protéines", pair(protein?.animal?.value, protein?.vegetal?.value, "g"))}
+                <FaceToFaceBar rows={[{ id: "p", label: "", animal: protein?.animal?.value ?? null, vegetal: protein?.vegetal?.value ?? null, format: () => "" }]} valueWidth="0px" />
+                {line("Énergie", pair(energy?.animal?.value, energy?.vegetal?.value, "kcal", formatInt))}
+              </span>,
+            )}
+            {bars([bar("protein_g", "Protéines"), bar("fiber_g", "Fibres"), bar("fe_mg", "Fer"), bar("ca_mg", "Calcium")])}
+          </>,
         )}
-        {card("sante", "Santé", null)}
+        {card(
+          "sante",
+          "Santé",
+          bars(
+            v.iarc.map((x) => ({
+              id: x.entry.id,
+              label: `${x.entry.libelle} (groupe ${x.entry.groupe})`,
+              animal: x.animalGrams,
+              vegetal: x.vegetalGrams,
+              format: (g: number) => `${formatInt(g)}${NBSP}g`,
+            })),
+          ),
+        )}
         {card(
           "environnement",
           "Environnement",
+          <>
+          {bars([bar(CLIMATE_MAIN, "Gaz à effet de serre"), bar("land_use_pt", "Utilisation des sols"), bar("water_scarcity_m3", "Eau"), bar("eutro_marine_kgn", "Eutrophisation marine")])}
+          {phone(
           <span className="flex flex-col gap-[6px]">
             <span className="flex items-baseline gap-2">
               <span className="text-[40px] font-extrabold leading-none tracking-[-0.04em]">{signedGap(co2?.reductionPercent ?? null)}</span>
@@ -245,24 +386,35 @@ function Overview({ model, v, open, base }: { model: PairPageModel; v: VariantVi
             </span>
             <FaceToFaceBar rows={[{ id: "co2", label: "", animal: co2?.animal?.value ?? null, vegetal: co2?.vegetal?.value ?? null, format: kg }]} />
           </span>,
+          )}
+          </>,
         )}
         {card(
           "animaux",
           "Protection animale",
           <span className="flex flex-col gap-1">
-            <span className="text-[22px] font-extrabold leading-tight tracking-[-0.02em]">
+            <span className="text-[22px] font-extrabold leading-tight tracking-[-0.02em] [text-wrap:balance] lg:text-[16px] lg:font-bold lg:tracking-normal">
               {animalsSentence(animals?.animal?.value ?? null) ?? <MissingValue label="Animaux tués : donnée manquante" />}
             </span>
+            {bars([bar(ANIMALS, "Animaux tués"), bar("life_days_farmed", "Jours de vie en élevage"), bar("pain_hours_hurtful", "Heures de douleur pénible"), bar("fish_killed", "Poissons tués")])}
             <span className="text-[13px] text-ink-3">Version végétale : {animals?.vegetal?.value === 0 ? "aucun ingrédient animal identifié" : MISSING}. D’après FAOSTAT et Agreste.</span>
           </span>,
         )}
         {card(
           "economie",
           "Économie",
-          <span className="flex flex-col gap-[6px]">
-            {line(`Coût climat pour la société (${cost?.year ?? ""})`, pair(cost?.animalEur, cost?.vegetalEur, "", formatEur))}
-            {line("Prix en magasin", priceOk ? pair(v.price.animal?.value, v.price.vegetal?.value, "", formatEur) : <MissingValue />)}
-          </span>,
+          <>
+            {phone(
+              <span className="flex flex-col gap-[6px]">
+                {line(`Coût climat pour la société (${cost?.year ?? ""})`, pair(cost?.animalEur, cost?.vegetalEur, "", formatEur))}
+                {line("Prix en magasin", priceOk ? pair(v.price.animal?.value, v.price.vegetal?.value, "", formatEur) : <MissingValue />)}
+              </span>,
+            )}
+            {bars([
+              { id: "cost", label: `Coût climat (valeur ${cost?.year ?? ""})`, animal: cost?.animalEur ?? null, vegetal: cost?.vegetalEur ?? null, format: (x: number) => formatEur(x) },
+              { id: "price", label: "Prix en magasin", animal: priceOk ? (v.price.animal?.value ?? null) : null, vegetal: priceOk ? (v.price.vegetal?.value ?? null) : null, format: (x: number) => formatEur(x) },
+            ])}
+          </>,
         )}
         <Simulator
           sim={v.sim}
@@ -273,21 +425,117 @@ function Overview({ model, v, open, base }: { model: PairPageModel; v: VariantVi
           animalsCounted={animals?.animal != null}
         />
       </div>
-      <AnimalBetterSummary items={v.animalBetter} />
+      <AnimalBetterSummary items={v.animalBetter} collapsible />
       <Panel title="Les recettes comparées" className="mt-3">
         {v.rationale && (
           <p className="m-0 text-[14px] leading-normal text-ink-2">
             <strong className="text-ink">Pourquoi c’est comparable :</strong> {v.rationale}
           </p>
         )}
-        <div className="grid gap-5 md:grid-cols-2">
-          <Recipe dish={model.animal} title={model.animal.name} series="animal" />
-          <Recipe dish={v.dish} title={v.dish.name} series="plant" />
-        </div>
+        {completed ? (
+          <CompletedRecipe c={completed} animal={model.animal} />
+        ) : (
+          <>
+            <div className="grid gap-5 md:grid-cols-2 lg:hidden">
+              <Recipe dish={model.animal} title={model.animal.name} series="animal" />
+              <Recipe dish={v.dish} title={v.dish.name} series="plant" />
+            </div>
+            <AlignedRecipes animal={model.animal} vegetal={v.dish} />
+          </>
+        )}
       </Panel>
     </div>
   );
 }
+
+/**
+ * Desktop (from 1 280 px): the three bases side by side, one table (review of 2026-11-01).
+ * Each basis has its own animal / plant columns; the score follows the serving.
+ */
+function ThreeBasisTable({ v, ids, caption }: { v: VariantView; ids: string[]; caption: string }) {
+  const by = (b: Basis) => new Map(v.rows[b].map((r) => [r.id, r]));
+  const maps = BASIS_ORDER.map((b) => by(b));
+  return (
+    <table className="w-full table-fixed border-collapse text-[13px] [&_.missing]:text-[12px]">
+      <caption className="sr-only">{caption}</caption>
+      <colgroup>
+        <col className="w-[22%]" />
+        {BASIS_ORDER.map((b) => (
+          <Fragment key={b}>
+            <col />
+            <col />
+          </Fragment>
+        ))}
+        <col className="hidden w-[140px] min-[1440px]:table-column" />
+      </colgroup>
+      <thead>
+        <tr className="text-[12px] font-bold text-ink-2">
+          <th scope="col" className="pb-1 text-left font-bold" rowSpan={2}>
+            Nutriment
+          </th>
+          {BASIS_ORDER.map((b) => (
+            <th key={b} scope="colgroup" colSpan={2} className="border-l border-line-soft pb-1 pl-3 text-center font-bold">
+              {UNIT_OPTIONS.find((u) => u.id === b)!.long}
+            </th>
+          ))}
+          <th scope="col" className="hidden pb-1 pl-3 text-left font-bold min-[1440px]:table-cell" rowSpan={2}>
+            Fiabilité
+          </th>
+        </tr>
+        <tr className="border-b border-line text-[12px] font-bold text-ink-2">
+          {BASIS_ORDER.map((b) => (
+            <Fragment key={b}>
+              <th scope="col" className="border-l border-line-soft py-1 pl-3 text-right font-bold">
+                <span className="inline-flex items-center gap-[5px]">
+                  <Dot series="animal" /> Animal
+                </span>
+              </th>
+              <th scope="col" className="py-1 pl-2 text-right font-bold">
+                <span className="inline-flex items-center gap-[5px]">
+                  <Dot series="plant" /> Végétal
+                </span>
+              </th>
+            </Fragment>
+          ))}
+        </tr>
+      </thead>
+      <tbody>
+        {ids.map((id) => {
+          const r0 = maps[0].get(id);
+          if (!r0) return null;
+          return (
+            <tr key={id} className="border-b border-line-soft align-top">
+              <th scope="row" className="py-[6px] pr-2 text-left font-normal">
+                <span className={r0.direction !== "none" ? "font-semibold" : ""} title={r0.sourceName !== r0.name ? r0.sourceName : undefined}>
+                  {r0.name}
+                  {unitOf(r0)}
+                </span>
+                {r0.winner && r0.winner !== "egal" && (
+                  <span className="ml-2 inline-flex items-center gap-1 text-[12px] font-semibold text-ink-2">
+                    <Dot series={r0.winner === "animal" ? "animal" : "plant"} /> {r0.winner === "animal" ? "animal" : "végétal"}
+                  </span>
+                )}
+                {rowNote(r0) && <span className="mt-[2px] block text-[12px] leading-snug text-animal-note">{rowNote(r0)}</span>}
+              </th>
+              {maps.map((m, i) => {
+                const r = m.get(id);
+                return (
+                  <Fragment key={BASIS_ORDER[i]}>
+                    <td className="num border-l border-line-soft py-[6px] pl-3 text-right">{r ? <Cell v={r.animal} unit={r.unit} compact /> : <MissingValue />}</td>
+                    <td className="num py-[6px] pl-2 text-right">{r ? <Cell v={r.vegetal} unit={r.unit} compact /> : <MissingValue />}</td>
+                  </Fragment>
+                );
+              })}
+              <td className="hidden py-[6px] pl-3 text-[12px] leading-snug text-ink-2 min-[1440px]:table-cell">{reliability(r0)}</td>
+            </tr>
+          );
+        })}
+      </tbody>
+    </table>
+  );
+}
+
+const BASIS_ORDER: Basis[] = ["perServing", "per100kcal", "per10gProtein"];
 
 function NutritionTab({ v, basis, setBasis, servingLabel }: { v: VariantView; basis: Basis; setBasis: (b: Basis) => void; servingLabel: string }) {
   const all = v.rows[basis].filter((r) => r.group === "nutrients");
@@ -296,28 +544,36 @@ function NutritionTab({ v, basis, setBasis, servingLabel }: { v: VariantView; ba
   const ciqual = all.filter((r) => !r.id.startsWith("fa_epa_dha"));
   const unit = UNIT_OPTIONS.find((u) => u.id === basis)!;
   const unitLabel = basis === "perServing" ? servingLabel : unit.long;
+  const footer = (
+    <>
+      Ciqual 2025 (ANSES). En gras : indicateurs comptés dans le score. Une valeur publiée « &lt; x » par Ciqual est comptée comme une fourchette de 0 à x ;
+      une valeur absente ou « traces » n’est jamais remplacée par 0. Un point n’est donné que si les fourchettes des deux plats ne se chevauchent pas.
+    </>
+  );
+  const ids = (rows: CriterionRow[]) => rows.map((r) => r.id);
   return (
     <Panel>
       <div className="flex flex-wrap items-center justify-between gap-3">
         <h2 className="m-0 text-[16px] font-extrabold md:text-[19px]">Composition nutritionnelle</h2>
-        <div className="w-full md:w-auto">
+        <div className="w-full md:w-auto xl:hidden">
           <UnitSwitch value={basis} onChange={setBasis} servingLabel={servingLabel === "Par portion" ? "Portion" : "100 g"} />
         </div>
       </div>
-      <DataTable
-        caption={`Composition nutritionnelle, nutriments principaux, ${unitLabel.toLowerCase()}`}
-        unitLabel={unitLabel}
-        rows={tableRows(featured)}
-        footer={
-          <>
-            Ciqual 2025 (ANSES). En gras : indicateurs comptés dans le score. Une valeur publiée « &lt; x » par Ciqual est comptée comme une fourchette de 0 à x ;
-            une valeur absente ou « traces » n’est jamais remplacée par 0. Un point n’est donné que si les fourchettes des deux plats ne se chevauchent pas.
-          </>
-        }
-      />
+      <div className="xl:hidden">
+        <DataTable caption={`Composition nutritionnelle, nutriments principaux, ${unitLabel.toLowerCase()}`} unitLabel={unitLabel} rows={tableRows(featured)} footer={footer} />
+      </div>
+      <div className="hidden xl:block">
+        <ThreeBasisTable v={v} ids={ids(v.rows.perServing.filter((r) => r.group === "nutrients" && r.featured))} caption="Composition nutritionnelle, nutriments principaux, trois bases" />
+        <div className="pt-3 text-[13px] leading-normal text-ink-3">{footer}</div>
+      </div>
       <details className="flex flex-col gap-2">
         <summary className="cursor-pointer py-2 text-[15px] font-bold text-action underline">Tous les constituants Ciqual ({ciqual.length})</summary>
-        <DataTable caption={`Tous les constituants Ciqual, ${unitLabel.toLowerCase()}`} unitLabel={unitLabel} rows={tableRows(ciqual)} />
+        <div className="xl:hidden">
+          <DataTable caption={`Tous les constituants Ciqual, ${unitLabel.toLowerCase()}`} unitLabel={unitLabel} rows={tableRows(ciqual)} />
+        </div>
+        <div className="hidden xl:block">
+          <ThreeBasisTable v={v} ids={ids(v.rows.perServing.filter((r) => r.group === "nutrients" && !r.id.startsWith("fa_epa_dha")))} caption="Tous les constituants Ciqual, trois bases" />
+        </div>
       </details>
     </Panel>
   );
@@ -328,7 +584,7 @@ function SanteTab({ v }: { v: VariantView }) {
     const cell = (g: number, p: number | null) => (
       <>
         {formatInt(g)}
-        {NBSP}g{p != null && <span className="block text-[12px] text-ink-3">{formatPercent(p)} du repère {per}</span>}
+        {NBSP}g{p != null && <span className="block text-[12px] text-ink-3 [hyphens:manual]">{formatPercent(p)} du repère {per}</span>}
       </>
     );
     return { id: x.entry.id, name: <>{x.entry.libelle} <span className="block text-[12px] text-ink-3">Repère : {x.entry.repere}</span></>, animal: cell(x.animalGrams, x.animalPercent), vegetal: cell(x.vegetalGrams, x.vegetalPercent) };
@@ -382,10 +638,10 @@ function SanteTab({ v }: { v: VariantView }) {
         </p>
       </Panel>
       <Panel title="Repères de consommation pour les adultes (PNNS)">
-        <DataTable caption="Repères PNNS" unitLabel="Par portion" rows={v.pnns.map((x) => guide(x, "hebdomadaire"))} footer={v.pnns[0] && <>Santé publique France, recommandations pour les adultes, {[...new Set(v.pnns.map((x) => x.entry.source.pages))].join(" ; ")}. Affiché, non compté dans le score (mêmes grammes que le CIRC).</>} />
+        <DataTable caption="Repères PNNS" unitLabel="Par portion" rows={v.pnns.map((x) => guide(x, "par semaine"))} footer={v.pnns[0] && <>Santé publique France, recommandations pour les adultes, {[...new Set(v.pnns.map((x) => x.entry.source.pages))].join(" ; ")}. Affiché, non compté dans le score (mêmes grammes que le CIRC).</>} />
       </Panel>
       <Panel title="Régime de référence EAT-Lancet 2025 (source provisoire)">
-        <DataTable caption="Repères EAT-Lancet" unitLabel="Par portion" rows={v.eatLancet.map((x) => guide(x, "quotidien"))} footer={<>{sante.eatLancetLecture} {v.eatLancet[0] && <>EAT Forum, Summary Report 2025, {v.eatLancet[0].entry.source.pages}.</>} Non compté.</>} />
+        <DataTable caption="Repères EAT-Lancet" unitLabel="Par portion" rows={v.eatLancet.map((x) => guide(x, "par jour"))} footer={<>{sante.eatLancetLecture} {v.eatLancet[0] && <>EAT Forum, Summary Report 2025, {v.eatLancet[0].entry.source.pages}.</>} Non compté.</>} />
       </Panel>
       <Panel>
         <span className="flex justify-between gap-3 text-[14px] md:text-[15px]">
@@ -423,6 +679,8 @@ function EnvironmentTab({ v }: { v: VariantView }) {
       </div>
       <Panel title={`Les ${rows.length} indicateurs Agribalyse`}>
         <DataTable
+          rich
+         
           caption="Indicateurs environnementaux Agribalyse, par portion"
           unitLabel="Par portion"
           rows={tableRows(rows)}
@@ -448,7 +706,16 @@ function AnimalsTab({ v }: { v: VariantView }) {
     <>
       <Panel>
         <span className="text-[15px] font-bold text-ink-2">Animaux tués pour ce plat</span>
-        <span className="text-[34px] font-extrabold leading-[1.05] tracking-[-0.04em] md:text-[56px]">{sentence ?? <MissingValue />}</span>
+        <span className="text-[34px] font-extrabold leading-[1.05] tracking-[-0.04em] [text-wrap:balance] md:text-[44px]">
+          {sentence ? (
+            <>
+              {sentence.replace(" (estimation basse)", "")}{" "}
+              <span className="text-[18px] font-bold tracking-normal text-ink-2 md:text-[20px]">(estimation basse)</span>
+            </>
+          ) : (
+            <MissingValue />
+          )}
+        </span>
         <span className="text-[15px] text-ink-2 md:text-[16px]">
           Version végétale : {animals?.vegetal?.value === 0 ? "aucun ingrédient animal identifié" : MISSING}.
         </span>
@@ -459,7 +726,7 @@ function AnimalsTab({ v }: { v: VariantView }) {
       </Panel>
       <Panel>
         {rows.length > 0 ? (
-          <DataTable caption="Protection animale, par portion" unitLabel="Par portion" rows={tableRows(rows, true)} />
+          <DataTable rich caption="Protection animale, par portion" unitLabel="Par portion" rows={tableRows(rows, true)} />
         ) : (
           <p className="m-0 text-[14px]">
             <MissingValue label="Aucun facteur animal sourcé pour les ingrédients de ce plat (donnée manquante, jamais 0)." />
@@ -537,53 +804,129 @@ function EconomyTab({ v, animalName }: { v: VariantView; animalName: string }) {
   );
 }
 
-const NUTRIENT_LABELS: Record<string, string> = Object.fromEntries(
-  scoreRulesFile.categories.flatMap((c) => c.indicators.map((i) => [i.id, i.label] as const)),
-);
 
-function ComplementList({ title, side, series }: { title: string; side: CompletedVariantView["plant"]; series: "animal" | "plant" }) {
+/**
+ * Version complétée: the additions, as an example (never a recommendation, rule 6), with the
+ * energy of both dishes in view.
+ */
+function CompletedPanel({ c, animal }: { c: CompletedVariantView; animal: DishView }) {
+  const energy = c.view.rows.perServing.find((r) => r.id === "energy_eu_kcal");
+  const kcal = (x: SideValue | null) => (x?.value == null ? MISSING : `${formatInt(x.value)}${NBSP}kcal`);
   return (
-    <div className="flex flex-col gap-1">
-      <h3 className="m-0 flex items-center gap-2 text-[15px] font-extrabold">
-        <Dot series={series} /> {title}
-      </h3>
-      {side.additions.length === 0 ? (
-        <p className="m-0 text-[14px] text-ink-2">Aucun ajout.</p>
-      ) : (
-        <ul className="m-0 flex list-none flex-col gap-1 p-0 text-[14px]">
-          {side.additions.map((a) => (
-            <li key={a.code}>
-              {additionLine(a, NUTRIENT_LABELS)}
-              {a.kind === "enrichi" && " — aliment enrichi"}. <span className="text-[13px] text-ink-3">{a.justification}</span>
-            </li>
-          ))}
-        </ul>
-      )}
-      {side.open.length > 0 && (
-        <p className="m-0 text-[13px] text-ink-3">
-          Non comblé par un aliment de la liste : {side.open.map((n) => (NUTRIENT_LABELS[n] ?? n).toLowerCase()).join(", ")} (voir le conseil dans l’encadré, sans dose).
-        </p>
-      )}
-    </div>
+    <Panel title="Version complétée : exemple d’ajouts possibles" className="mt-3">
+      <p className="m-0 text-[14px] leading-normal text-ink-2">
+        Le plat animal ne change pas. La version végétale reçoit autant de protéines que lui (protéine principale augmentée), puis ses autres manques sont comblés
+        avec des aliments d’une liste relue, quand c’est possible. C’est un exemple, pas un conseil : {complementsFile.dailyNeeds.text}
+      </p>
+      <p className="m-0 flex flex-wrap gap-x-6 gap-y-1 text-[15px] font-bold">
+        <span className="inline-flex items-center gap-2">
+          <Dot series="animal" /> {animal.name} : {kcal(energy?.animal ?? null)} par portion
+        </span>
+        <span className="inline-flex items-center gap-2">
+          <Dot series="plant" /> Version complétée : {kcal(energy?.vegetal ?? null)} par portion
+        </span>
+      </p>
+      <ul className="m-0 flex list-disc flex-col gap-1 pl-5 text-[14px]">
+        {c.boost && (
+          <li>
+            {c.boost.label} : {boostLine(c.boost.extraGrams, animal.servings)}.
+          </li>
+        )}
+        {c.additions.map((a) => (
+          <li key={a.code}>
+            {additionLine(a)}
+            {a.kind === "enrichi" && " (aliment enrichi)"}. <span className="text-[13px] text-ink-3">{a.justification}</span>
+          </li>
+        ))}
+        {!c.boost && c.additions.length === 0 && <li>Aucun ajout : la version végétale n’a pas d’écart que la liste permet de combler.</li>}
+      </ul>
+      {outsideLine(c.open) && <p className="m-0 text-[14px] font-semibold text-animal-note">{outsideLine(c.open)}</p>}
+      <p className="m-0 text-[13px] text-ink-3">
+        Valeurs Ciqual et Agribalyse des aliments ajoutés ; limites de sécurité de l’ANSES (<Link href="/methodologie#version-complete">méthode</Link>).
+      </p>
+    </Panel>
   );
 }
 
-/** « Avec compléments »: what was added to each dish, and why (data/complements.json). */
-function ComplementsPanel({ c }: { c: CompletedVariantView }) {
+/** Completed version: the whole plant recipe, ready to cook, next to the animal dish line by line. */
+function CompletedRecipe({ c, animal }: { c: CompletedVariantView; animal: DishView }) {
+  const dish = c.view.dish;
+  const added = new Map(c.additions.map((a) => [a.code, a]));
+  const lines = alignRecipes(animal.ingredients, dish.ingredients, animal.servings, dish.servings);
+  const why = (code: string) =>
+    c.boost?.code === code ? "quantité augmentée pour autant de protéines" : added.has(code) ? `ajouté pour ${added.get(code)!.nutrients.map((n) => NUTRIENT_REASON[n] ?? n).join(", ")}` : null;
+  const [copied, setCopied] = useState(false);
+  const copy = async () => {
+    try {
+      await navigator.clipboard.writeText(ingredientsText(dish.name, dish.servings, dish.ingredients.map((i) => ({ label: i.label, grams: i.grams }))));
+      setCopied(true);
+    } catch {
+      setCopied(false);
+    }
+  };
+  const ing = (i: DishView["ingredients"][number] | null, servings: number, mark: string | null) =>
+    i ? (
+      // Grid: a long name wraps under itself, not under the grams (designer review, 2nd pass).
+      <span className="grid grid-cols-[64px_64px_minmax(0,1fr)] items-baseline">
+        <span className="num pr-2 text-right whitespace-nowrap">
+          {formatInt(i.grams)}
+          {NBSP}g
+        </span>
+        <span className="num pr-3 text-right text-[12px] whitespace-nowrap text-ink-2">
+          {formatInt(i.grams / servings)}
+          {NBSP}g/port.
+        </span>
+        <span>
+          {i.label}
+          {mark && <span className="ml-2 text-[12px] font-semibold text-action">{mark}</span>}
+        </span>
+      </span>
+    ) : (
+      <span className="text-ink-3">—</span>
+    );
   return (
-    <Panel title="Avec compléments : ce qui a été ajouté" className="mt-3">
-      <p className="m-0 text-[14px] leading-normal text-ink-2">
-        Les plus petites quantités d’aliments courants (puis enrichis) d’une liste relue qui comblent, par portion, les nutriments où l’autre plat fait mieux,
-        sans dépasser les limites de sécurité de l’ANSES. {complementsFile.dailyNeeds.text}
-      </p>
-      <div className="grid gap-4 md:grid-cols-2">
-        <ComplementList title="Version végétale" side={c.plant} series="plant" />
-        <ComplementList title="Plat animal" side={c.animal} series="animal" />
+    <div className="flex flex-col gap-3">
+      <table className="w-full border-collapse text-[14px]">
+        <caption className="sr-only">Recette végétale complétée, à côté du plat animal</caption>
+        <thead>
+          <tr>
+            {[
+              [animal, "animal"],
+              [dish, "plant"],
+            ].map(([d, series]) => (
+              <th key={series as string} scope="col" className="w-1/2 pb-2 text-left align-bottom">
+                <span className="flex items-center gap-2 text-[15px] font-extrabold">
+                  <Dot series={series as "animal" | "plant"} /> {(d as DishView).name}
+                  {series === "plant" && " (complétée)"}
+                </span>
+                <span className="block text-[13px] font-normal text-ink-2">
+                  Pour {(d as DishView).servings} portion{(d as DishView).servings > 1 ? "s" : ""}, environ {formatInt((d as DishView).gramsPerServing)}
+                  {NBSP}g par portion
+                </span>
+              </th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {lines.map((l, k) => (
+            <tr key={k} className={`border-t border-line-soft align-top ${l.same ? "" : "bg-win-plant/50"}`}>
+              <td className="py-[6px] pr-3">{ing(l.animal, animal.servings, null)}</td>
+              <td className="py-[6px] pr-3">{ing(l.vegetal, dish.servings, l.vegetal ? why(l.vegetal.code) : null)}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+      {outsideLine(c.open) && <p className="m-0 text-[14px] text-animal-note">{outsideLine(c.open)}</p>}
+      <div className="flex flex-wrap items-center gap-3">
+        <button type="button" onClick={copy} className="min-h-11 cursor-pointer rounded-btn border border-action bg-surface px-4 text-[14px] font-bold text-action">
+          Copier la liste des ingrédients
+        </button>
+        <span role="status" className="text-[13px] text-ink-2">
+          {copied ? "Liste copiée." : ""}
+        </span>
+        <span className="text-[13px] text-ink-3">Pas d’étapes de préparation : nous n’avons pas de source pour les écrire.</span>
       </div>
-      <p className="m-0 text-[13px] text-ink-3">
-        Sources : valeurs Ciqual et Agribalyse des aliments ajoutés ; conseils et limites de l’ANSES (<Link href="/methodologie#complements">méthode</Link>).
-      </p>
-    </Panel>
+    </div>
   );
 }
 
@@ -604,15 +947,16 @@ export function PairView({
   viewInUrl?: boolean;
   base?: string;
 }) {
-  const available = (["maison", "commerce"] as VariantId[]).filter((x) => model.variants[x]);
-  const [variant, setVariant] = useState<VariantId>(available[0] ?? "maison");
+  const choices = model.choices;
+  const [variant, setVariant] = useState<string>(choices[0]?.id ?? "maison");
+  const choice = choices.find((c) => c.id === variant);
   const [basis, setBasis] = useState<Basis>("perServing");
   const [urlTab, setUrlTab] = useQueryParam("onglet", useUrl);
   const [localTab, setLocalTab] = useState<TabIdT>("apercu");
   const [urlView, setUrlView] = useQueryParam("vue", viewInUrl);
-  const [localView, setLocalView] = useState<ViewId>("portion");
-  const view: ViewId = viewInUrl ? (isViewId(urlView) ? urlView : "portion") : localView;
-  const setView = (x: ViewId) => (viewInUrl ? setUrlView(x === "portion" ? null : x) : setLocalView(x));
+  const [localView, setLocalView] = useState<VersionId>("base");
+  const version: VersionId = viewInUrl ? (isVersionId(urlView) ? urlView : "base") : localView;
+  const setVersion = (x: VersionId) => (viewInUrl ? setUrlView(x === "base" ? null : x) : setLocalView(x));
   const tab: TabIdT = useUrl ? (isTab(urlTab) ? urlTab : "apercu") : localTab;
   const setTab = (t: TabIdT) => (useUrl ? setUrlTab(t === "apercu" ? null : t) : setLocalTab(t));
   const open = (t: TabIdT) => {
@@ -621,15 +965,13 @@ export function PairView({
     document.getElementById(tabId(base, t))?.focus({ preventScroll: true });
   };
   const realistic = model.variants[variant];
-  const scaled = model.equalProtein[variant];
   const completed = model.completed[variant];
-  // Derived views: the whole page (tabs, scores, simulator) uses the scaled or completed dishes.
-  const v = view === "proteines" && scaled ? scaled.view : view === "complements" && completed ? completed.view : realistic;
-  const views = VIEWS.filter((x) => x.id === "portion" || (x.id === "proteines" && scaled) || (x.id === "complements" && completed));
+  // « Version complétée »: the whole page (tabs, scores, simulator) uses the completed plant version.
+  const isComplete = version === "complete" && !!completed;
+  const v = isComplete ? completed!.view : realistic;
   if (!v || !realistic) return <p className="px-5">Alternative indisponible.</p>;
   const co2Of = (x: VariantView | undefined) => x?.rows.perServing.find((r) => r.id === CLIMATE_MAIN)?.reductionPercent ?? null;
-  const co2Line = co2Summary(co2Of(realistic), co2Of(scaled?.view));
-  const animalProtein = realistic.rows.perServing.find((r) => r.id === "protein_g")?.animal?.value ?? null;
+  const co2Line = co2Summary(co2Of(realistic), co2Of(completed?.view));
   const score = v.scores.verdict.categories.find((c) => c.id === tab);
   const banner = score && (tab === "nutrition" ? v.scores.nutritionByBasis[basis] : score);
   const bannerUnit = tab === "nutrition" ? UNIT_OPTIONS.find((u) => u.id === basis)?.long.toLowerCase() : "par portion";
@@ -637,13 +979,10 @@ export function PairView({
   return (
     <>
       <section className="on-dark bg-ink text-white">
-        <div className="mx-auto grid max-w-[1200px] items-end gap-10 px-5 pb-[22px] pt-1 md:grid-cols-[repeat(auto-fit,minmax(460px,1fr))] md:px-8 md:pb-10 md:pt-7">
-          <div className="flex flex-col gap-4">
-            <span className="inline-flex items-center gap-[6px] self-start text-[13px] font-semibold text-on-dark-3 md:text-[14px]">
-              <svg width="15" height="15" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="#3FC1A3" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M5 12.5l4.5 4.5L19 7.5" />
-              </svg>
-              {badge}
+        <div className={`mx-auto grid max-w-[1440px] items-end gap-10 px-5 pb-[22px] md:grid-cols-[repeat(auto-fit,minmax(460px,1fr))] md:px-8 md:pb-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,560px)] lg:items-start lg:gap-8 lg:pb-4 ${headingAs === "h2" ? "pt-6 md:pt-8" : "pt-1 md:pt-7 lg:pt-2"} min-[1440px]:px-12`}>
+          <div className="flex flex-col gap-4 lg:gap-3">
+            <span className="inline-flex items-start gap-[6px] self-start text-[13px] font-semibold text-on-dark-3 md:text-[14px]">
+              <span>{badge}</span>
             </span>
             <DishTitle animal={model.animal.name} vegetal={v.dish.name} as={headingAs} />
             {v.keyCoverage != null && v.keyCoverage < COVERAGE_WARNING && (
@@ -651,26 +990,43 @@ export function PairView({
                 Attention : l’énergie, les protéines ou les émissions ne sont connues que pour {pct(v.keyCoverage)} de la masse d’un des plats. À lire avec prudence.
               </p>
             )}
-            <div className="flex flex-col gap-2 md:self-start">
-              <VariantSwitch value={variant} available={available} onChange={setVariant} />
-              {views.length > 1 && <Segmented tone="dark" label="Base de comparaison" options={views} value={view} onChange={setView} />}
-              {view === "proteines" && scaled && <p className="m-0 text-[14px] leading-normal text-on-dark-1">{scaleSentence(scaled, animalProtein)} Protéines non comptées dans le score (égales par construction).</p>}
+            {/* Toolbar: alternative and view on one line on large screens. */}
+            <div className="flex flex-col gap-2 md:self-start lg:flex-row lg:flex-wrap lg:items-center lg:gap-x-5 lg:self-stretch">
+              {choices.length > 1 && <ChipGroup tone="dark" wrap caption="Alternative" label="Alternative végétale" options={choices.map((c) => ({ id: c.id, label: c.label }))} value={variant} onChange={setVariant} />}
+              {completed && <ChipGroup tone="dark" caption="Version" label="Version comparée" options={VERSIONS} value={isComplete ? "complete" : "base"} onChange={setVersion} />}
+            </div>
+            <div className="flex flex-col gap-1">
+              {choice?.reason && (
+                <p className="m-0 text-[14px] leading-normal text-on-dark-2">
+                  <strong className="text-on-dark-1">Pourquoi cette alternative :</strong> {choice.reason}
+                </p>
+              )}
               {co2Line && <p className="m-0 text-[14px] font-semibold text-on-dark-1">{co2Line}</p>}
-              {view === "complements" && completed && <p className="m-0 text-[14px] font-semibold text-on-dark-1">{completedSentence(co2Of(completed.view))}</p>}
+              {isComplete && <p className="m-0 text-[14px] font-semibold text-on-dark-1">{completedSentence(co2Of(completed!.view))}</p>}
             </div>
           </div>
           <VerdictPanel verdict={v.scores.verdict} className="hidden md:flex" />
         </div>
       </section>
-      <TabBar tabs={TABS} active={tab} onChange={setTab} base={base} label="Catégories de la comparaison" />
-      <div className="mx-auto w-full max-w-[1200px] px-5 pb-8 pt-5 md:px-8 md:pt-7">
+      <div className="xl:hidden">
+        <TabBar tabs={TABS} active={tab} onChange={setTab} base={base} label="Catégories de la comparaison" />
+      </div>
+      <div className="mx-auto w-full max-w-[1440px] px-5 pb-8 pt-5 md:px-8 md:pt-7 xl:grid xl:grid-cols-[200px_minmax(0,1fr)] xl:gap-6 xl:pt-3 min-[1440px]:px-12">
+        <CategoryNav
+          items={TABS}
+          active={tab}
+          onChange={setTab}
+          scores={Object.fromEntries(v.scores.verdict.categories.map((c) => [c.id, c]))}
+          className="sticky top-4 hidden self-start xl:block"
+        />
+        <div className="min-w-0">
         <Legend />
-        {view === "complements" && completed && <ComplementsPanel c={completed} />}
+        {isComplete && <CompletedPanel c={completed!} animal={model.animal} />}
         {TABS.map((t) => (
           <div key={t.id} role="tabpanel" id={panelId(base, t.id)} aria-labelledby={tabId(base, t.id)} hidden={t.id !== tab} tabIndex={-1} className="pt-3">
             {t.id === tab &&
               (t.id === "apercu" ? (
-                <Overview model={model} v={v} open={open} base={base} />
+                <Overview model={model} v={v} open={open} base={base} completed={isComplete ? completed : undefined} />
               ) : (
                 <div className="flex flex-col gap-[14px]">
                   {banner && (
@@ -679,27 +1035,34 @@ export function PairView({
                     </div>
                   )}
                   <div className="flex flex-wrap items-start gap-6">
-                    <div className="flex min-w-0 flex-[999_1_560px] flex-col gap-[14px] md:gap-[18px]">
+                    <div className={`flex min-w-0 flex-[999_1_560px] flex-col gap-[14px] md:gap-[18px] xl:flex-[999_1_600px] ${t.id === "nutrition" ? "xl:basis-full" : ""}`}>
                       {t.id === "nutrition" && <NutritionTab v={v} basis={basis} setBasis={setBasis} servingLabel="Par portion" />}
                       {t.id === "sante" && <SanteTab v={v} />}
                       {t.id === "environnement" && <EnvironmentTab v={v} />}
                       {t.id === "animaux" && <AnimalsTab v={v} />}
                       {t.id === "economie" && <EconomyTab v={v} animalName={model.animal.name} />}
                     </div>
-                    <aside aria-label="À retenir" className="flex min-w-0 flex-[1_1_300px] flex-col gap-[18px]">
+                    {/* Nutrition: three bases side by side need the full width; the side boxes go below (designer review, 2nd pass). */}
+                    <aside
+                      aria-label="À retenir"
+                      className={`flex min-w-0 flex-[1_1_300px] flex-col gap-[18px] ${t.id === "nutrition" ? "xl:grid xl:grid-cols-[minmax(0,340px)_minmax(0,1fr)] xl:items-start" : "xl:sticky xl:top-4 xl:max-w-[280px] xl:self-start"}`}
+                    >
                       {banner && (
                         <div className="hidden md:block">
                           <CategoryBanner score={banner} unitLabel={bannerUnit} />
                         </div>
                       )}
-                      <AnimalBetterBox items={v.animalBetter.filter((x) => x.category === t.id)} title={animalBetterTitle(t.id)} />
-                      <MedicalNote />
+                      <AnimalBetterBox items={v.animalBetter.filter((x) => x.category === t.id)} title={animalBetterTitle(t.id)} collapsible />
                     </aside>
                   </div>
                 </div>
               ))}
           </div>
         ))}
+        <div className="mt-6">
+          <MedicalNote />
+        </div>
+        </div>
       </div>
     </>
   );

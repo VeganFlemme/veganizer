@@ -26,7 +26,7 @@ function raw(): RawPairData {
     ],
     nutrientValues: [
       n("meat", "protein_g", 30), n("meat", "energy_eu_kcal", 200), n("meat", "ca_mg", 20), n("meat", "fiber_g", 0), n("meat", "vit_b12_ug", 2),
-      n("beans", "protein_g", 30), n("beans", "energy_eu_kcal", 100), n("beans", "ca_mg", 10), n("beans", "fiber_g", 5), n("beans", "vit_b12_ug", 0),
+      n("beans", "protein_g", 20), n("beans", "energy_eu_kcal", 100), n("beans", "ca_mg", 10), n("beans", "fiber_g", 5), n("beans", "vit_b12_ug", 0),
       n("seeds", "ca_mg", 900), n("seeds", "fiber_g", 10), n("seeds", "vit_b12_ug", 0), n("seeds", "protein_g", 0), n("seeds", "energy_eu_kcal", 0),
       n("drink", "ca_mg", 100), n("drink", "fiber_g", 0), n("drink", "vit_b12_ug", 0), n("drink", "protein_g", 0), n("drink", "energy_eu_kcal", 0),
     ],
@@ -55,41 +55,43 @@ function raw(): RawPairData {
   };
 }
 
-describe("buildPairPage: view with complements", () => {
+describe("buildPairPage: completed version (decisions of Matt, 17 h 05 and 17 h 12)", () => {
   const page = buildPairPage(raw());
   const c = page.completed.maison!;
   const row = (id: string) => c.view.rows.perServing.find((r) => r.id === id)!;
 
-  it("closes the plant gaps with the smallest additions, everyday foods first", () => {
-    // calcium per serving: animal 40 mg, plant 20 mg -> gap 20 mg -> 2.3 g of seeds (900 mg/100 g)
-    const add = c.plant.additions;
-    expect(add.map((a) => a.code)).toEqual(["seeds"]);
-    expect(add[0].gramsPerServing).toBeCloseTo(2.3);
-    expect(add[0].label).toBe("graines");
-    expect(add[0].nutrients).toEqual(["ca_mg"]);
+  it("raises the main protein of the plant version to the protein of the animal dish", () => {
+    // protein per serving: animal 60 g, plant 40 g -> +20 g per serving -> +200 g of beans (20 g/100 g)
+    expect(c.boost?.code).toBe("beans");
+    expect(c.boost?.extraGrams).toBeCloseTo(200);
+    expect(row("protein_g").vegetal!.value!).toBeCloseTo(60);
+  });
+
+  it("then closes the other plant gaps with the whitelist, everyday foods first", () => {
+    // calcium per serving: animal 40 mg, plant 600 g × 10 / 100 / 2 = 30 mg -> 10 mg -> 1.2 g of seeds
+    expect(c.additions.map((a) => [a.code, a.gramsPerServing, a.nutrients])).toEqual([["seeds", 1.2, ["ca_mg"]]]);
     expect(row("ca_mg").vegetal!.value!).toBeGreaterThanOrEqual(row("ca_mg").animal!.value!);
   });
 
-  it("leaves gaps no whitelisted food closes open, without adding anything for them", () => {
-    expect(c.plant.open).toEqual(["vit_b12_ug"]);
-    expect(c.view.animalBetter.map((a) => a.criterion)).toContain("vit_b12_ug");
+  it("leaves what no food closes to the advice (no dose), and never completes the animal dish", () => {
+    expect(c.open).toEqual(["vit_b12_ug"]);
+    expect(c.view.dish.ingredients.map((i) => i.code).sort()).toEqual(["beans", "seeds"]);
+    expect(page.animal.ingredients.map((i) => i.code)).toEqual(["meat"]);
   });
 
-  it("does the same for the animal dish where the plant version does better (symmetry)", () => {
-    // fibre per serving: animal 0, plant 10 g -> gap 10 g, seeds max 10 g -> 1 g of fibre: not closable
-    expect(c.animal.open).toEqual(["fiber_g"]);
-    expect(c.animal.additions).toEqual([]);
+  it("shows nutrition as « écarts comblés par construction », the other categories compared normally", () => {
+    const n = c.view.scores.verdict.categories.find((x) => x.id === "nutrition")!;
+    expect(n.constructed).toBe(true);
+    expect(c.view.scores.verdict.total).toBe(4);
+    expect(c.view.scores.verdict.sentence).toContain("écarts comblés par construction");
+    // climate: (600 g of beans × 1 kg/kg + 2.4 g of seeds for the recipe × 2 kg/kg) / 1000 / 2 servings
+    expect(row("ghg_100y_kgco2e").vegetal!.value!).toBeCloseTo((0.6 + 0.0048) / 2, 4);
   });
 
-  it("recomputes the other pillars with the additions", () => {
-    // plant CO2e: 0.2 kg + 2.3 g × 2 kg/kg / 1000 per serving
-    expect(row("ghg_100y_kgco2e").vegetal!.value!).toBeCloseTo(0.2 + 0.0023 * 2, 4);
+  it("keeps the base version unchanged and has no completed version without a whitelist", () => {
     expect(page.variants.maison!.rows.perServing.find((r) => r.id === "ghg_100y_kgco2e")!.vegetal!.value!).toBeCloseTo(0.2);
-  });
-
-  it("has no completed view without a whitelist", () => {
     const r = raw();
     r.complements = [];
-    expect(buildPairPage(r).completed.maison).toBeUndefined();
+    expect(buildPairPage(r).completed.maison!.additions).toEqual([]);
   });
 });

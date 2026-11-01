@@ -31,6 +31,8 @@ for (const width of [375, 1280]) {
 }
 
 test("tabs: keyboard arrows move between tabs and update the URL", async ({ page }) => {
+  // The horizontal tab bar is for phones and tablets; from 1 280 px the categories are a left column.
+  await page.setViewportSize({ width: 1024, height: 900 });
   await page.goto("/compare/boeuf-bourguignon", { waitUntil: "networkidle" });
   await page.getByRole("tab", { name: "Vue d’ensemble" }).focus();
   await page.keyboard.press("ArrowRight");

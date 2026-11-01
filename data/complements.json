@@ -3,7 +3,7 @@
   "date": "2026-11-01",
   "status": "Liste blanche relue (suite V1, S24). Quantités maximales par portion : choix éditoriaux réalistes (une cuillère à soupe de graines, un verre de boisson), à valider par un·e diététicien·ne (docs/A_VERIFIER.md).",
   "dailyNeeds": {
-    "text": "Les références nutritionnelles de l'ANSES sont des apports par jour (mg/j, µg/j) et la limite supérieure de sécurité est « l'apport journalier chronique maximal » : elles portent sur l'alimentation de la journée, pas sur un plat. Compléter un plat isolé est une illustration, pas une recommandation.",
+    "text": "Les références nutritionnelles de l'ANSES sont des apports par jour (mg/j, µg/j) et la limite supérieure de sécurité est « l'apport journalier chronique maximal » ; pour les protéines, l'ANSES indique que varier les sources sur la journée suffit. Nous en concluons qu'un plat isolé n'a pas à couvrir à lui seul ces références : compléter un plat est une illustration, pas une recommandation.",
     "source": {
       "publisher": "ANSES",
       "title": "Les références nutritionnelles en vitamines et minéraux",

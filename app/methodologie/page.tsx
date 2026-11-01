@@ -46,7 +46,13 @@ function AnimalFactors({ stats }: { stats: MethodologyStats }) {
   if (stats.animalFactors.length === 0) return <p>Facteurs : <Missing />.</p>;
   return (
     <div className="overflow-x-auto">
-      <table className="w-full text-left text-sm">
+      <table className="w-full text-left text-sm lg:table-fixed">
+        <colgroup>
+          <col className="w-[24%]" />
+          <col className="w-[18%]" />
+          <col className="w-[13%]" />
+          <col />
+        </colgroup>
         <caption className="mb-1 text-left font-medium">Facteurs utilisés (lus dans la base)</caption>
         <thead>
           <tr className="border-b border-line">
@@ -61,8 +67,8 @@ function AnimalFactors({ stats }: { stats: MethodologyStats }) {
             <tr key={`${f.indicator}-${f.category}-${f.sourceId}`} className="border-b border-line-soft align-top">
               <td className="py-1 pr-2">{f.indicator}</td>
               <td className="py-1 pr-2">{f.category}</td>
-              <td className="py-1 pr-2">{formatValue(f.value)}</td>
-              <td className="py-1 text-xs text-ink-2">
+              <td className="num py-1 pr-2 whitespace-nowrap">{formatValue(f.value)}</td>
+              <td className="py-1 text-xs text-ink-2 [overflow-wrap:anywhere]">
                 {f.unitBasis} — <Link href={`/sources#${f.sourceId}`} className="underline">{f.sourceId}</Link>
                 {f.notes ? `. ${f.notes}` : ""}
               </td>
@@ -85,9 +91,8 @@ function Formula({ children }: { children: ReactNode }) {
 const SECTIONS = [
   ["principe", "Le principe : comparer à fonction égale"],
   ["paires", "Les paires de plats : maison et du commerce"],
-  ["proteines-egales", "Portion réaliste ou « à protéines égales »"],
-  ["complements", "« Avec compléments » : combler les écarts"],
-  ["comparaison-simplifiee", "Paires vérifiées et comparaisons simplifiées"],
+  ["version-complete", "Version de base et version complétée"],
+  ["comparaison-simplifiee", "Plats et aliments : une comparaison automatique"],
   ["ta-recette", "« Analyse ta recette »"],
   ["formule", "La formule de calcul"],
   ["vainqueur", "Comment on désigne un vainqueur"],
@@ -331,17 +336,20 @@ export default async function MethodologiePage() {
           animale, économie. Chaque chiffre vient d’une source publique citée. Quand une donnée manque, nous l’écrivons.
         </p>
       </PageHero>
-      <Prose>
-      <nav aria-label="Sommaire" className="rounded-panel bg-surface p-5 md:p-6">
-          <h2 className="m-0 mb-2 text-[17px] font-extrabold">Sommaire</h2>
-          <ol className="m-0 list-decimal space-y-1 pl-5 text-[15px]">
-            {SECTIONS.map(([id, title]) => (
-              <li key={id}>
-                <a href={`#${id}`}>{title}</a>
-              </li>
-            ))}
-          </ol>
-      </nav>
+      <Prose
+        toc={
+          <nav aria-label="Sommaire" className="rounded-panel bg-surface p-5 md:p-6 lg:p-4">
+            <h2 className="m-0 mb-2 text-[17px] font-extrabold">Sommaire</h2>
+            <ol className="m-0 list-decimal space-y-1 pl-5 text-[15px] lg:text-[14px]">
+              {SECTIONS.map(([id, title]) => (
+                <li key={id}>
+                  <a href={`#${id}`}>{title}</a>
+                </li>
+              ))}
+            </ol>
+          </nav>
+        }
+      >
 
       <Section id="principe" title="Le principe : comparer à fonction égale">
         <p>
@@ -406,40 +414,23 @@ export default async function MethodologiePage() {
         </p>
       </Section>
 
-      <Section id="proteines-egales" title="Portion réaliste ou « à protéines égales »">
+      <Section id="version-complete" title="Version de base et version complétée">
         <p>
-          <strong>Par défaut, nous comparons des portions réalistes</strong> : ce qu’une personne mange vraiment dans ce plat, avec les mêmes accompagnements des deux
-          côtés. C’est la comparaison la plus fidèle à la vie réelle. Elle a une limite : une version végétale apporte souvent un peu moins de protéines.
+          <strong>La référence reste le plat tel qu’on le mange.</strong> La « version de base » compare des portions réalistes, avec les mêmes accompagnements des
+          deux côtés : c’est la vue par défaut, et ses scores sont les scores de référence. Deux raisons. Selon l’ANSES, la référence nutritionnelle en protéines
+          des adultes en bonne santé est de 0,83 g par kg de poids et par jour, et en France « les apports énergétiques et protéiques atteignent les références
+          nutritionnelles » ; l’apport moyen des adultes, mesuré par l’étude INCA 1, était de 1,4 g par kg et par jour (AFSSA, 2007). Les références
+          nutritionnelles de l’ANSES sont des apports par jour (mg/j, µg/j), et pour les protéines l’ANSES indique que varier les sources sur la journée
+          suffit. Nous en concluons qu’un plat isolé n’a pas à couvrir à lui seul ces références ; ce n’est pas une phrase de l’ANSES.
         </p>
         <p>
-          La vue <strong>« À protéines égales »</strong> répond à l’objection « il faudrait en manger plus » : la version végétale entière est multipliée par un
-          facteur, protéines du plat animal ÷ protéines de la version végétale (valeurs Ciqual de la recette), puis tous les onglets, les scores et le simulateur sont
-          recalculés. Le facteur et le poids obtenu sont affichés. Les protéines y sont égales par construction : elles ne sont pas comptées dans le score. Ce n’est
-          pas la vue par défaut, car personne ne mange une portion agrandie juste pour égaler les protéines d’un plat. Selon l’ANSES, les apports en protéines
-          atteignent déjà les références nutritionnelles en France (référence de 0,83 g par kg de poids et par jour pour les adultes en bonne santé) ; les fibres, au
-          contraire, sont trop faibles (20 g par jour en moyenne chez les adultes, pour une référence de 30 g).
-        </p>
-        <p>
-          <strong>Choix des protéines végétales</strong> : dans chaque version maison, la protéine végétale la plus proche du rôle de la viande, pour approcher les
-          protéines du plat animal à portion réaliste sans dépasser le plafond de +20 % en masse. Plats à base de haché et pièces de viande : protéines de soja
-          texturées réhydratées (comptées comme « fait maison ») ; œufs, fromage et poisson : tofu. Lentilles et pois chiches ne sont gardés que lorsqu’ils
-          remplacent réellement un ingrédient du plat d’origine, jamais pour gonfler les protéines. Un produit n’est retenu que s’il a des nutriments Ciqual et des
-          impacts Agribalyse.
-        </p>
-        <p className="text-sm text-ink-3">
-          Sources : ANSES, «{NBSP}Protéines : rôle, sources et apports recommandés{NBSP}», page mise à jour le 22/12/2025 (
-          <a href="https://www.anses.fr/fr/content/les-prot%C3%A9ines" className="underline" rel="noopener noreferrer">anses.fr</a>) ; ANSES, «{NBSP}Actualisation des repères du PNNS : élaboration des références nutritionnelles{NBSP}», décembre 2016, p. 22 du PDF (fibres, 30 g/j) (
-          <a href="https://www.anses.fr/fr/system/files/NUT2012SA0103Ra-1.pdf" className="underline" rel="noopener noreferrer">PDF</a>) ; ANSES, dossier de presse INCA 3, 12 juillet 2017, p. 11 du PDF (fibres, 20 g/j chez les adultes de 18 à 79 ans) (
-          <a href="https://www.anses.fr/fr/system/files/PRES2017DPA04.pdf" className="underline" rel="noopener noreferrer">PDF</a>).
-        </p>
-      </Section>
-
-      <Section id="complements" title="« Avec compléments » : combler les écarts">
-        <p>
-          La vue <strong>« Avec compléments »</strong> montre que chaque écart où le plat animal fait mieux peut souvent être comblé, et ce que cela change pour
-          le climat, le prix et les autres piliers. Pour chaque nutriment compté dans le score (« plus = mieux ») où l’autre plat fait mieux, nous cherchons les plus
-          petites quantités d’aliments d’une liste blanche relue qui comblent l’écart par portion, tous les écarts ensemble (un ajout peut en combler plusieurs) :
-          les aliments courants d’abord, les aliments enrichis seulement s’il le faut. Les quantités sont arrondies au dixième de gramme supérieur.
+          <strong>La version complétée</strong> répond à l’objection « il manque des protéines, du calcium… ». Le plat animal ne change pas. La version végétale
+          reçoit autant de protéines que lui : seule sa protéine principale (celle qui apporte le plus de protéines parmi les ingrédients qui diffèrent du plat
+          animal) est augmentée. Puis ses autres manques sont comblés par les plus petites quantités d’aliments d’une liste blanche relue (aliments courants
+          d’abord, aliments enrichis seulement s’il le faut), sans jamais dépasser une limite de sécurité de l’ANSES (calcium, fer, zinc, iode, vitamine D, par
+          jour, appliquées au total de la portion). Tous les onglets, le climat, les animaux et le prix sont recalculés et comparés normalement ; la nutrition
+          affiche « écarts comblés par construction » au lieu d’un score, pour rester équitable. La vitamine B12, l’EPA + DHA et la vitamine D, qu’aucun aliment
+          de la liste ne comble, sont indiquées « à couvrir hors de ce plat » : complément ou aliment enrichi, sans dose, avec un professionnel de santé.
         </p>
         <ul className="list-disc space-y-1 pl-5">
           {complementsFile.foods.map((f) => (
@@ -450,27 +441,35 @@ export default async function MethodologiePage() {
           ))}
         </ul>
         <p>
-          Chaque aliment ajouté a ses valeurs Ciqual et ses impacts Agribalyse, comptés comme ceux de la recette. Le total d’une portion ne dépasse jamais une limite
-          supérieure de sécurité de l’ANSES (calcium, fer, zinc, iode, vitamine D, par jour). Les écarts qu’aucun aliment de la liste ne comble (souvent vitamine B12,
-          EPA + DHA, vitamine D) ne sont pas complétés : l’encadré « Là où le plat animal fait mieux » donne le conseil de l’ANSES (complément ou aliment enrichi),
-          sans dose. La même méthode est appliquée au plat animal sur les nutriments où la version végétale fait mieux (fibres…), pour une comparaison équitable.
+          <strong>Pourquoi le plat animal n’est plus complété.</strong> Une version précédente complétait aussi le plat animal là où la version végétale faisait
+          mieux (fibres…). Nous l’avons retiré : la question posée est « que faudrait-il ajouter à la version végétale pour égaler le plat animal ? ». Compléter
+          les deux plats reviendrait à comparer deux plats que personne ne mange ; les avantages de la version végétale restent visibles dans la version de base.
+          Ce sélecteur remplace les vues « Portion réaliste », « À protéines égales » et « Avec compléments ».
         </p>
         <p>
-          <strong>Limite :</strong> {complementsFile.dailyNeeds.text}{" "}
-          <a href={complementsFile.dailyNeeds.source.url} className="underline" rel="noopener noreferrer">
-            ANSES, {complementsFile.dailyNeeds.source.title}
-          </a>
-          , page mise à jour le {complementsFile.dailyNeeds.source.date}. Les quantités maximales par portion sont des choix éditoriaux (une cuillère de graines,
-          un verre de boisson), à faire valider par un·e diététicien·ne. Ajouter du sel iodé augmente le sel du plat, qui reste compté.
+          <strong>Choix des protéines végétales des recettes</strong> : dans chaque version maison, la protéine végétale la plus proche du rôle de la viande, pour
+          approcher les protéines du plat animal à portion réaliste sans dépasser le plafond de +20 % en masse. Plats à base de haché et pièces de viande :
+          protéines de soja texturées réhydratées (comptées comme « fait maison ») ; œufs, fromage et poisson : tofu. Lentilles et pois chiches ne sont gardés que
+          lorsqu’ils remplacent réellement un ingrédient du plat d’origine. Les fibres, elles, sont trop faibles en France : 20 g par jour en moyenne chez les
+          adultes, pour une référence de 30 g.
+        </p>
+        <p className="text-sm text-ink-3">
+          Sources : ANSES, «{NBSP}Protéines : rôle, sources et apports recommandés{NBSP}», page mise à jour le 22/12/2025 (
+          <a href="https://www.anses.fr/fr/content/les-prot%C3%A9ines" className="underline" rel="noopener noreferrer">anses.fr</a>) ; AFSSA, «{NBSP}Apport en protéines : consommation, qualité, besoins et recommandations{NBSP}», 2007, p. 111 du PDF, note 13 (INCA 1) (
+          <a href="https://www.anses.fr/fr/system/files/NUT-Ra-Proteines.pdf" className="underline" rel="noopener noreferrer">PDF</a>) ; ANSES, «{NBSP}Les références nutritionnelles en vitamines et minéraux{NBSP}», page du 21/02/2025 (
+          <a href={complementsFile.dailyNeeds.source.url} className="underline" rel="noopener noreferrer">anses.fr</a>) ; ANSES, «{NBSP}Actualisation des repères du PNNS{NBSP}», 2016, p. 22 du PDF (fibres) (
+          <a href="https://www.anses.fr/fr/system/files/NUT2012SA0103Ra-1.pdf" className="underline" rel="noopener noreferrer">PDF</a>) ; ANSES, dossier de presse INCA 3, 2017, p. 11 du PDF (
+          <a href="https://www.anses.fr/fr/system/files/PRES2017DPA04.pdf" className="underline" rel="noopener noreferrer">PDF</a>).
         </p>
       </Section>
 
-      <Section id="comparaison-simplifiee" title="Paires vérifiées et comparaisons simplifiées">
+      <Section id="comparaison-simplifiee" title="Plats et aliments : une comparaison automatique">
         <p>
-          Chaque résultat affiche son niveau de fiabilité. Une <strong>paire vérifiée</strong> est une
-          recette détaillée ingrédient par ingrédient et relue, comparée sur les cinq piliers. Une{" "}
-          <strong>comparaison simplifiée</strong> compare un aliment ou un plat du catalogue Ciqual /
-          Agribalyse, pour 100 g, à une à trois alternatives végétales du même catalogue.
+          Veganizer interroge les bases officielles (Ciqual, Agribalyse) : toutes les comparaisons sont automatiques, aucune n’a été relue par un
+          professionnel. Les <strong>plats</strong> sont décrits par des recettes types écrites par une IA, puis contrôlées par des règles et des tests
+          automatiques (masses, portions, ingrédients simples, règles de remplacement, données disponibles) ; elles sont marquées « recette type rédigée par
+          Veganizer ». Les <strong>aliments</strong> du catalogue sont comparés pour 100 g à une à trois alternatives végétales du même catalogue, avec le
+          même affichage que les plats.
         </p>
         <p>
           Ces alternatives sont choisies par des règles écrites et relues (fichier
@@ -492,7 +491,7 @@ export default async function MethodologiePage() {
         <p>
           Sur la page Recette, vous choisissez des aliments simples du catalogue (jamais un plat
           préparé, pour que les impacts par espèce animale restent calculables), avec leur poids tel
-          que mangé. Le calcul utilise le même moteur que les paires vérifiées, dans votre navigateur.
+          que mangé. Le calcul utilise le même moteur que les autres comparaisons, dans votre navigateur.
         </p>
         <p>
           La version végétale remplace chaque ingrédient animal selon une table de substitutions relue

@@ -30,11 +30,23 @@ export default async function SourcesPage() {
           Toutes les sources ne sont pas encore utilisées dans les comparaisons : voir la <Link href="/methodologie">méthodologie</Link>.
         </p>
       </PageHero>
-      <div className="mx-auto w-full max-w-[1200px] px-5 py-6 md:px-8 md:py-8">
+      <div className="mx-auto w-full max-w-[1440px] px-5 py-6 md:px-8 md:py-8 lg:grid lg:grid-cols-[260px_minmax(0,1fr)] lg:items-start lg:gap-10 min-[1440px]:px-12">
+      {sources.length > 0 && (
+        <nav aria-label="Liste des sources" className="hidden rounded-panel bg-surface p-4 lg:sticky lg:top-4 lg:block lg:max-h-[calc(100vh-2rem)] lg:overflow-y-auto">
+          <h2 className="m-0 mb-2 text-[17px] font-extrabold">Sommaire</h2>
+          <ul className="m-0 flex list-none flex-col gap-1 p-0 text-[14px]">
+            {sources.map((s) => (
+              <li key={s.id}>
+                <a href={`#${s.id}`}>{s.name}</a>
+              </li>
+            ))}
+          </ul>
+        </nav>
+      )}
       {sources.length === 0 ? (
         <p className="m-0 italic text-ink-3">Liste des sources : donnée manquante.</p>
       ) : (
-        <ul className="m-0 grid list-none gap-4 p-0 md:grid-cols-2">
+        <ul className="m-0 grid list-none gap-4 p-0 md:grid-cols-2 min-[1920px]:grid-cols-3">
           {sources.map((s) => (
             <li key={s.id} id={s.id} className="scroll-mt-20 rounded-panel bg-surface p-5">
               <h2 className="m-0 text-[17px] font-extrabold">

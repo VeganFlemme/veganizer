@@ -5,7 +5,8 @@
 import { categoryOf } from "./config";
 import { dishTotals, type Basis, type Conseil } from "@/lib/scoring";
 import { BASES, VEGAN_WORD } from "./config";
-import { rowsFor, scoringData, TOTALS_OPTIONS, type AdvantageView, type CriterionRow, type RawPairData, type SourceRow } from "./view";
+import { dishPriceFromFoods } from "./prices";
+import { buildPairPage, rowsFor, scoringData, TOTALS_OPTIONS, type AdvantageView, type CriterionRow, type DishPriceRow, type PairPageModel, type RawPairData, type SourceRow } from "./view";
 
 export interface AlternativeRow {
   plant_code: string;
@@ -113,4 +114,41 @@ export function buildFoodPage(raw: FoodRawData): FoodPageModel | null {
     ownRows,
     sources: Object.fromEntries(raw.sources.filter((s) => usedSources.has(s.id)).map((s) => [s.id, s])),
   };
+}
+
+/** What a food page needs besides the foods: same inputs as a dish page (prices, climate cost, health). */
+export type FoodPairExtras = Pick<RawPairData, "monetizationFactors" | "monetizationRules" | "climateCostYears" | "foodPrices" | "iarc" | "pnns" | "eatLancet"> &
+  Partial<Pick<RawPairData, "complements" | "complementLimits">>;
+
+const FOOD_DISH_ID = "__food";
+
+/**
+ * /aliment/[code] with the same model as a dish page (decision of Matt, 17 h 21): each food is a
+ * dish of one ingredient, 100 g per serving (no typical portion is used: INCA 3 licence not
+ * specified), each alternative is a choice. null for an unknown code; no choice when there is no
+ * plant alternative.
+ */
+export function buildFoodPairPage(raw: FoodRawData & FoodPairExtras): PairPageModel | null {
+  const food = raw.foods.find((f) => f.code === raw.code);
+  if (!food) return null;
+  const alts = [...raw.alternatives]
+    .sort((x, y) => x.rank - y.rank)
+    .map((a) => ({ a, f: raw.foods.find((f) => f.code === a.plant_code) }))
+    .filter((x): x is { a: AlternativeRow; f: NonNullable<typeof x.f> } => !!x.f && !x.f.is_animal);
+  const dish = (id: string, name: string, kind: string) => ({ id, slug: id, name_fr: displayName(name), kind, servings: 1, description: null });
+  const ingredients = [
+    { dish_id: FOOD_DISH_ID, food_code: food.code, grams: GRAMS, note: null },
+    ...alts.map(({ f }) => ({ dish_id: f.code, food_code: f.code, grams: GRAMS, note: null })),
+  ];
+  const dishPrices = ingredients
+    .map((i) => dishPriceFromFoods(i.dish_id, 1, [{ code: i.food_code, grams: GRAMS }], raw.foodPrices))
+    .filter((x): x is DishPriceRow => x != null);
+  return buildPairPage({
+    ...raw,
+    animal: { ...dish(FOOD_DISH_ID, food.name_fr, "animal"), slug: food.code },
+    vegetal: alts.map(({ f }) => dish(f.code, f.name_fr, "vegetal")),
+    pairs: alts.map(({ a, f }) => ({ vegan_dish_id: f.code, variant: f.code, rationale: a.rule })),
+    ingredients,
+    dishPrices,
+  });
 }

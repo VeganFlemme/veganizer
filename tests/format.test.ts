@@ -94,3 +94,9 @@ describe("per 1 000 servings (suite V1, S23)", () => {
     expect(formatPerServing(null, "animaux")).toBe(MISSING);
   });
 });
+
+describe("scientific notation (review of 2026-11-01)", () => {
+  it("writes very small values as « 7,2 × 10⁻⁸ », not « 7,2E-8 »", () => {
+    expect(n(formatValue(7.2e-8))).toBe("7,2 × 10⁻⁸");
+  });
+});

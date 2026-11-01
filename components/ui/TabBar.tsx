@@ -23,7 +23,7 @@ export function TabBar<T extends string>({ tabs, active, onChange, base, label }
   }
   return (
     <div className="sticky top-0 z-20 border-b border-line bg-surface">
-      <div role="tablist" aria-label={label} onKeyDown={onKeyDown} className="mx-auto flex max-w-[1200px] gap-[6px] overflow-x-auto px-5 py-3 md:gap-2 md:px-8">
+      <div role="tablist" aria-label={label} onKeyDown={onKeyDown} className="mx-auto flex max-w-[1440px] min-[1440px]:px-12 gap-[6px] overflow-x-auto px-5 py-3 md:gap-2 md:px-8">
         {tabs.map((t) => {
           const on = t.id === active;
           return (

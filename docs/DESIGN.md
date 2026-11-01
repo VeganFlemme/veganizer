@@ -1,7 +1,7 @@
 # Veganizer — charte de design (V1)
 
 Direction validée par Matt le 2026-11-01 : « Toutes les données, avec scores et vainqueurs » (version 5 des maquettes).
-Maquettes de référence : `docs/design/maquettes/` (`fin-home`, `fin-compare` pour le téléphone, `fin-desktop` pour l'ordinateur). Ces fichiers servent à lire la structure, les styles et les textes ; ils ne s'ouvrent pas tels quels dans un navigateur. Les valeurs « [valeur] » des maquettes sont des emplacements : le site affiche les vraies données de la base.
+Maquettes de référence : `docs/design/maquettes/` (`fin-home`, `fin-compare` pour le téléphone ; `fin-desktop` est remplacée par le § 4 bis « Ordinateur », suite V1, S24d). Ces fichiers servent à lire la structure, les styles et les textes ; ils ne s'ouvrent pas tels quels dans un navigateur. Les valeurs « [valeur] » des maquettes sont des emplacements : le site affiche les vraies données de la base.
 
 ## 1. Principes
 
@@ -53,7 +53,7 @@ Une seule famille : **Schibsted Grotesk** (Google Fonts, poids 400 à 900), char
 | Texte courant | 15–16 px, 400–600, interligne 1,5 |
 | Légende, source | 12–13 px, `ink-3` |
 
-- Chiffres proportionnels pour les gros nombres ; `font-variant-numeric: tabular-nums` seulement dans les colonnes alignées (tableaux, valeurs des barres).
+- Chiffres proportionnels partout, y compris dans les tableaux (les chiffres tabulaires élargissaient la virgule, relecture du 2026-11-01) ; colonnes alignées à droite. Une valeur et son unité ne se coupent jamais (`white-space: nowrap` sur chaque valeur).
 - Pas de libellés en majuscules, pas de police à chasse fixe.
 - Nombres au format français : virgule décimale, espace insécable avant `%` et les unités.
 - **Une seule règle d'arrondi par unité, partout** (décision de Matt, 2026-11-01) : kg CO₂e et euros avec 2 décimales (« 0,65 », « 1,20 », « 1,00 » ; « < 0,01 » pour une valeur non nulle plus petite) ; toutes les autres unités (nutriments compris) avec 3 chiffres significatifs. Fonctions `formatForUnit` (`lib/format.ts`) et `roundForUnit` (`lib/scoring/ranges.ts`), la même règle sert aux égalités du score. Animaux épargnés du simulateur : « au moins 0,03 animal épargné » (2 chiffres significatifs, arrondi vers le bas, estimation basse).
@@ -61,7 +61,7 @@ Une seule famille : **Schibsted Grotesk** (Google Fonts, poids 400 à 900), char
 ### Formes et espacements
 
 - Rayons : 22 px (panneau verdict), 20 px (panneaux), 18 px (cartes), 14 px (sélecteurs), 12 px (boutons, badges), 999 px (pastilles, onglets), **4 px aux extrémités extérieures des barres**, bord droit au centre.
-- Marges : 20 px sur téléphone, 32 px sur ordinateur ; conteneur max 1 200 px.
+- Marges : 20 px sur téléphone, 32 px de 768 à 1 439 px, 48 px dès 1 440 px ; conteneur max 1 440 px (S24d).
 - Ombres : carte `0 1px 0 rgba(15,39,36,0.06)` ; panneau flottant `0 1px 0 rgba(15,39,36,0.06), 0 18px 36px -20px rgba(15,39,36,0.45)`. Rien d'autre.
 - Zones tactiles ≥ 44 px.
 
@@ -72,7 +72,7 @@ Une seule famille : **Schibsted Grotesk** (Google Fonts, poids 400 à 900), char
 | `Logo` | Cercle coupé verticalement, moitié gauche `animal`, moitié droite `plant`, 2 px d'écart ; mot « veganizer » en minuscules, 800, `-0.03em`. SVG : `<path d="M13 1.04A13 13 0 0 0 13 26.96z"/>` et `<path d="M15 1.04A13 13 0 0 1 15 26.96z"/>` (viewBox 28). |
 | `SiteHeader` | Bandeau `ink` : logo, recherche, partage (téléphone : boutons icône 44 px avec `aria-label`). |
 | `DishTitle` | Pastille `animal` + nom du plat ; pastille `plant-on-dark` + nom de l'alternative. |
-| `VariantSwitch` | « Fait maison » / « Du commerce », boutons avec `aria-pressed` ; recalcule toute la page. |
+| `ChipGroup` | Boutons-étiquettes à la largeur de leur texte (`aria-pressed`) : alternative (« Fait maison » / « Du commerce » ou alternatives d'un aliment), version (« Version de base » / « Version complétée », `?vue=complete`), unité. Remplace les boutons segmentés étirés. |
 | `TabBar` | `role="tablist"`, onglets `role="tab"` + `aria-selected`, collante en haut, défilement horizontal sur téléphone. Ordre : Vue d'ensemble, Nutrition, Santé, Environnement, Protection animale, Économie. URL : `?onglet=nutrition` (partageable, rendu statique conservé). |
 | `VerdictPanel` | « X sur 5 » + phrase + barre de 5 segments (couleur du vainqueur, gris `line` pour égalité ou données insuffisantes) + légende + phrase de méthode. |
 | `CategoryCard` | Bouton entier vers l'onglet ; titre, `WinnerBadge`, `ScorePill`, une donnée clé en face-à-face, phrase de base. |
@@ -81,7 +81,8 @@ Une seule famille : **Schibsted Grotesk** (Google Fonts, poids 400 à 900), char
 | `FaceToFaceBar` | Deux barres qui partent d'un axe central (écart 2 px), animal à gauche, végétal à droite, épaisseur 8 à 18 px (≤ 24), valeurs aux extrémités extérieures en `ink`. Chaque ligne a sa propre échelle, sauf mention « même échelle pour toutes les lignes ». Valeur manquante : pas de barre, « donnée manquante ». |
 | `DataTable` | Trois colonnes : indicateur, plat animal, végétal. En-tête avec pastilles. Note sous la ligne si couverture < 95 % ou avantage animal. |
 | `UnitSwitch` | Par portion / pour 100 kcal / pour 10 g de protéines (règle 4). |
-| `ViewSwitch` (`Segmented` sur le bandeau) | « Portion réaliste » (défaut) / « À protéines égales » (`?vue=proteines`) : toute la page est recalculée ; facteur, poids obtenu et résultat CO₂e des deux vues affichés sous le sélecteur. |
+| `CategoryNav` | Dès 1 280 px : les catégories en colonne de gauche, fixe au défilement, avec score et vainqueur de chacune (même état et même `?onglet=` que la `TabBar`). |
+| `MiniBars` | Barres face-à-face dans une cellule de tableau (colonnes riches dès 1 440 px). |
 | `AnimalBetterBox` | Fond `win-animal-bg` : dans chaque onglet, seulement les points **de cette catégorie** où le plat animal fait mieux (« Là où le plat animal fait mieux en nutrition »…) + la solution sourcée (`data/conseils.json`) ; absent s'il n'y en a aucun. `AnimalBetterSummary` : récapitulatif groupé par catégorie sur la vue d'ensemble. |
 | `Simulator` | Fond `ink` : fréquence (1×/mois, 1×/sem., 2×/sem.) × durée (1, 5, 10 ans) → kg CO₂e, coût climat (valeur de l'année de référence 2025), « au moins N animal épargné ». |
 | `MissingValue` | « donnée manquante », italique, `ink-3`. |
@@ -91,7 +92,7 @@ Une seule famille : **Schibsted Grotesk** (Google Fonts, poids 400 à 900), char
 ## 4. Pages
 
 ### `/compare/[slug]`
-1. `SiteHeader`, `DishTitle`, `VariantSwitch` dans le bandeau `ink`. Sur ordinateur, le `VerdictPanel` est dans le bandeau, à droite.
+1. `SiteHeader`, `DishTitle`, barre d'outils (`ChipGroup` alternative + version) dans le bandeau `ink`. Sur ordinateur, le `VerdictPanel` est dans le bandeau, à droite.
 2. `TabBar` collante.
 3. **Vue d'ensemble** : `VerdictPanel` (téléphone), 5 `CategoryCard` dans l'ordre des onglets, `Simulator`.
 4. **Onglet détaillé** : bandeau vainqueur (`WinnerBadge` + `ScorePill` + phrase de base) puis toutes les données de la catégorie :
@@ -118,7 +119,7 @@ Mêmes jetons et composants. `/aliment/[code]` porte le badge « Comparaison sim
 - Par portion, les **ingrédients strictement identiques des deux côtés** (même code, mêmes grammes par portion) ne comptent pas dans la couverture du verdict : leur contribution s'annule. Les totaux affichés gardent leur couverture réelle et l'avertissement < 95 %.
 - Valeur manquante d'un côté ou de l'autre : l'indicateur **n'est pas compté**, et la page affiche « x indicateurs comparés sur y ».
 - Vainqueur de la catégorie = plus de points ; égalité = « Égalité » ; aucun indicateur comparable = « Données insuffisantes ».
-- **« provisoire »** quand moins de la moitié des indicateurs de la catégorie sont comparables.
+- **« provisoire »** seulement quand les indicateurs non comptés pourraient inverser le vainqueur (décision de Matt, 1er novembre 2026, 17 h 40). Protection animale : gagnée par la version végétale sans « provisoire » quand elle ne contient aucun ingrédient animal identifié et que le plat animal en contient au moins un (`ScoreCategoryRule.vegetalCannotBeWorse`).
 - Verdict global = nombre de catégories gagnées par chaque plat (« 4 sur 5 »). Pas de note pondérée en V1.
 
 Indicateurs de départ (à faire valider par un·e diététicien·ne et une personne experte en ACV, session des retours d'experts) :
@@ -142,3 +143,14 @@ Option écartée pour la V1 (à rediscuter) : une note sur 10 par catégorie, fo
 
 ## Formulations imposées (décisions de Matt, 2026-11-01)
 - Nombre d'animaux par portion : « Au moins 1 animal tué pour N portions (estimation basse) », partout (cartes, tableaux, partages). Ne jamais écrire « ≈ 1 pour N portions ».
+
+## 4 bis. Ordinateur (suite V1, S24d, 2026-11-01)
+
+Sur ordinateur, une mise en page de tableau de bord ; **le téléphone ne change pas**, sauf les corrections valables partout.
+- **En-tête** : titre (taille adaptée à la longueur, `text-wrap: balance`, pastille sur la première ligne), barre d'outils (alternative, version), verdict compact à droite (dès 1 024 px).
+- **Navigation** : dès 1 280 px, `CategoryNav` à gauche (200 px), fixe ; la `TabBar` reste en dessous de 1 280 px.
+- **Vue d'ensemble** : dès 1 024 px, chaque carte montre 3 ou 4 indicateurs en barres face-à-face ; grille de 3 colonnes dès 1 280 px, simulateur dans la grille ; à 1 440 × 900, les 5 scores visibles sans défiler (test e2e).
+- **Onglets** : colonne de droite fixe (vainqueur, « Là où le plat animal fait mieux » avec conseils repliés sur leur première phrase) ; tableaux riches dès 1 440 px (écart, barre, couverture et DQR, source) ; Nutrition : les trois bases côte à côte dès 1 280 px.
+- **Recettes** : côte à côte, alignées ligne par ligne, remplacements mis en évidence ; version complétée : recette végétale entière (grammes pour la recette et par portion, raison de chaque ajout), bouton « Copier la liste des ingrédients ».
+- **Mention médicale** en bas du contenu. **Pages texte** (`/methodologie`, `/sources`) : sommaire fixe à gauche, lignes d'environ 70 caractères. **Accueil** : catalogue en 3 colonnes (4 dès 1 920 px), recherche large. **`/recette`** : saisie à gauche, remplacements à droite, comparaison complète en dessous.
+- **`/aliment/[code]`** : même `PairView` que les plats (un ingrédient, 100 g), alternatives en `ChipGroup`.

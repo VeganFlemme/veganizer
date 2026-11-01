@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ErrorReport } from "@/components/ErrorReport";
-import { FoodCompare } from "@/components/compare/FoodCompare";
+import { FoodAlone } from "@/components/compare/FoodAlone";
+import { PairView } from "@/components/compare/PairView";
 import { SourcesFooter } from "@/components/ui/SourcesFooter";
 import { getFoodPage } from "@/lib/compare/data";
 
@@ -13,33 +15,44 @@ export async function generateStaticParams() {
 
 export async function generateMetadata({ params }: PageProps<"/aliment/[code]">): Promise<Metadata> {
   const { code } = await params;
-  const model = await getFoodPage(code);
-  if (!model) return {};
+  const page = await getFoodPage(code);
+  if (!page) return {};
   return {
-    title: `${model.name} : comparaison simplifiée`,
-    description: `${model.name} comparé à des alternatives végétales du catalogue Ciqual / Agribalyse : nutrition, environnement, animaux, pour 100 g.`,
+    title: `${page.food.name} : comparaison automatique`,
+    description: `${page.food.name} comparé à des alternatives végétales du catalogue Ciqual / Agribalyse, pour 100 g : nutrition, santé, environnement, animaux, économie.`,
     alternates: { canonical: `/aliment/${code}` },
   };
 }
 
+/** Same mention on every comparison (decision of Matt, 17 h 25). */
+const badge = (
+  <>
+    Comparaison automatique d’après Ciqual et Agribalyse, pour 100 g ·{" "}
+    <Link href="/methodologie" className="text-on-dark-1 underline hover:text-white">
+      Méthode
+    </Link>
+  </>
+);
+
 export default async function FoodPage({ params }: PageProps<"/aliment/[code]">) {
   const { code } = await params;
-  const model = await getFoodPage(code);
-  if (!model) notFound();
+  const page = await getFoodPage(code);
+  if (!page) notFound();
+  const { pair, food } = page;
 
   return (
     <main className="flex flex-1 flex-col">
-      <FoodCompare model={model} />
-      <div id="signaler" className="mx-auto w-full max-w-[1200px] scroll-mt-20 px-5 pb-6 md:px-8">
+      {pair.choices.length > 0 ? <PairView model={pair} badge={badge} /> : <FoodAlone model={food} badge={badge} />}
+      <div id="signaler" className={`mx-auto w-full max-w-[1440px] scroll-mt-20 px-5 pb-6 md:px-8 min-[1440px]:px-12 ${pair.choices.length > 0 ? "xl:pl-[256px] min-[1440px]:pl-[272px]" : ""}`}>
         <ErrorReport
-          page={`/aliment/${model.code}`}
-          title="Proposer une paire vérifiée"
+          page={`/aliment/${food.code}`}
+          title="Proposer une alternative ou signaler une erreur"
           intro="Tu connais une alternative végétale qui joue le même rôle ? Propose-la, ou signale une erreur : chaque message est relu."
-          buttonLabel="Proposer une paire vérifiée"
-          defaultMessage={`Je propose une paire vérifiée pour « ${model.name} » (code ${model.code}) : `}
+          buttonLabel="Envoyer"
+          defaultMessage={`Je propose une alternative pour « ${food.name} » (code ${food.code}) : `}
         />
       </div>
-      <SourcesFooter sources={Object.values(model.sources)} />
+      <SourcesFooter sources={Object.values(pair.choices.length > 0 ? pair.sources : food.sources)} indent={pair.choices.length > 0} />
     </main>
   );
 }

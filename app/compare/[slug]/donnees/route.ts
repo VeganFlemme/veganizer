@@ -12,7 +12,7 @@ export async function GET(_req: Request, ctx: RouteContext<"/compare/[slug]/donn
     sources: Object.values(model.sources),
     animal: model.animal,
     variants: Object.fromEntries(
-      Object.entries(model.variants).map(([k, v]) => [
+      Object.entries(model.variants).flatMap(([k, v]) => (v ? [[k, v] as const] : [])).map(([k, v]) => [
         k,
         {
           dish: v.dish,

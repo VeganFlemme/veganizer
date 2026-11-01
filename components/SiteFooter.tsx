@@ -13,7 +13,7 @@ const LINKS = [
 export function SiteFooter() {
   return (
     <footer className="mt-auto border-t border-line">
-      <div className="mx-auto flex w-full max-w-[1200px] flex-col gap-[10px] px-5 pb-8 pt-[22px] text-[13px] leading-normal text-ink-2 md:px-8 md:text-[14px]">
+      <div className="mx-auto flex w-full max-w-[1440px] min-[1440px]:px-12 flex-col gap-[10px] px-5 pb-8 pt-[22px] text-[13px] leading-normal text-ink-2 md:px-8 md:text-[14px]">
         <p className="m-0">
           <strong className="text-ink">Pas de conseil médical.</strong> {MEDICAL_DISCLAIMER}
         </p>

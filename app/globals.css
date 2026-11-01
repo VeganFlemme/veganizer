@@ -76,9 +76,10 @@
   }
 }
 
-/* Tables and value columns: aligned digits only there (DESIGN.md § 2). */
+/* Values: proportional digits (tabular digits widened the comma in Schibsted Grotesk, review of
+   2026-11-01); right-aligned columns keep them readable. Each value is a no-wrap span. */
 @utility num {
-  font-variant-numeric: tabular-nums;
+  font-variant-numeric: proportional-nums;
 }
 
 /* One motion only (the verdict), removed when the user asks for less motion. */

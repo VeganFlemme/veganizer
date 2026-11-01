@@ -13,13 +13,17 @@ export interface ScoreIndicatorRule {
 export interface ScoreCategoryRule {
   id: string;
   indicators: ScoreIndicatorRule[];
+  /**
+   * The plant dish cannot do worse on any indicator of this category: e.g. animal welfare when
+   * the plant dish has no identified animal ingredient and the animal dish has at least one
+   * (one side is 0, the other cannot be negative). Decision of Matt, 2026-11-01 17 h 40.
+   */
+  vegetalCannotBeWorse?: boolean;
 }
 
 export interface ScoreOptions {
   /** Display precision: values equal after this rounding are a tie. */
   significantDigits: number;
-  /** "provisoire" when compared / total is below this share. */
-  provisionalBelowShare: number;
 }
 
 export interface IndicatorValues {
@@ -55,8 +59,11 @@ export interface CategoryScore {
   compared: number;
   total: number;
   winner: CategoryWinner;
+  /** "provisoire": the indicators not counted could change the winner. */
   provisional: boolean;
   indicators: IndicatorScore[];
+  /** The category is won by construction of the data (see ScoreCategoryRule.vegetalCannotBeWorse). */
+  vegetalCannotBeWorse?: boolean;
 }
 
 export interface Verdict {
@@ -106,18 +113,25 @@ export function scoreCategory(
   const vegetalPoints = indicators.filter((i) => i.outcome === "vegetal").length;
   const compared = indicators.filter((i) => i.outcome === "animal" || i.outcome === "vegetal" || i.outcome === "egal").length;
   const total = indicators.length;
-  const winner: CategoryWinner =
-    compared === 0 ? "insuffisant" : vegetalPoints > animalPoints ? "vegetal" : animalPoints > vegetalPoints ? "animal" : "egal";
-  return {
-    id: rule.id,
-    animalPoints,
-    vegetalPoints,
-    compared,
-    total,
-    winner,
-    provisional: total === 0 || compared / total < options.provisionalBelowShare,
-    indicators,
-  };
+  const winnerOf = (v: number, a: number, n: number): CategoryWinner => (n === 0 ? "insuffisant" : v > a ? "vegetal" : a > v ? "animal" : "egal");
+  const base = { id: rule.id, animalPoints, vegetalPoints, compared, total, indicators };
+  // Each indicator not counted could go to either dish: the winner is final only if no
+  // such outcome changes it (decision of Matt, 17 h 40). Missing values stay missing.
+  if (rule.vegetalCannotBeWorse && animalPoints === 0) {
+    return { ...base, winner: "vegetal", provisional: false, vegetalCannotBeWorse: true };
+  }
+  const winner = winnerOf(vegetalPoints, animalPoints, compared);
+  const open = total - compared;
+  let provisional = false;
+  for (let v = 0; v <= open && !provisional; v++) {
+    for (let a = 0; v + a <= open; a++) {
+      if (winnerOf(vegetalPoints + v, animalPoints + a, compared + v + a) !== winner) {
+        provisional = true;
+        break;
+      }
+    }
+  }
+  return { ...base, winner, provisional: total === 0 || provisional };
 }
 
 /** Global verdict: categories won by each dish ("4 sur 5"). No weighted grade in V1. */

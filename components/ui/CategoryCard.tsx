@@ -21,7 +21,7 @@ export function CategoryCard({
       type="button"
       onClick={onOpen}
       aria-controls={controls}
-      className="flex w-full cursor-pointer flex-col gap-3 rounded-card bg-surface p-[18px] text-left text-ink shadow-card hover:ring-1 hover:ring-line md:rounded-panel md:p-[22px]"
+      className="flex w-full cursor-pointer flex-col gap-3 rounded-card bg-surface p-[18px] text-left text-ink shadow-card hover:ring-1 hover:ring-line md:rounded-panel md:p-[22px] lg:gap-2 lg:p-4"
     >
       <span className="flex items-center justify-between gap-2">
         <span className="text-[17px] font-extrabold tracking-[-0.01em] md:text-[19px]">{title}</span>
@@ -29,7 +29,7 @@ export function CategoryCard({
       </span>
       <WinnerRow score={score} />
       {children}
-      <span className="text-[13px] leading-normal text-ink-2">{score.summary}</span>
+      <span className="text-[13px] leading-normal text-ink-2 lg:text-[12px] lg:leading-snug">{score.summary}</span>
     </button>
   );
 }

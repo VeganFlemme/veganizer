@@ -36,7 +36,8 @@ async function Featured({ slug }: { slug: string }) {
           <span key={c.id} className="flex min-w-0 flex-col gap-[5px]">
             <span aria-hidden="true" className={`h-2 rounded-[4px] ${SEGMENT[c.winner]}`} />
             <span className="text-[11px] leading-tight text-ink-2">
-              {c.short} <span className="num">{c.animalPoints}–{c.vegetalPoints}</span>
+              <span className="block truncate">{c.short}</span>
+              <span className="num">{c.animalPoints}–{c.vegetalPoints}</span>
             </span>
           </span>
         ))}
@@ -64,7 +65,7 @@ export default async function Home() {
         }}
       />
       <HomeExplorer pairs={pairs} featured={featured ? <Featured slug={featured} /> : null} />
-      <section className="mx-auto w-full max-w-[1200px] px-5 pt-[22px] md:px-8">
+      <section className="mx-auto w-full max-w-[1440px] min-[1440px]:px-12 px-5 pt-[22px] md:px-8">
         <div className="flex flex-col gap-[10px] rounded-panel bg-surface p-5 md:max-w-[640px]">
           <h2 className="m-0 text-[19px] font-extrabold">Ton plat n’est pas dans la liste ?</h2>
           <p className="m-0 text-[15px] leading-normal text-ink-2">Saisis tes ingrédients et leurs grammes : le site calcule les cinq catégories et propose une version végétale.</p>
