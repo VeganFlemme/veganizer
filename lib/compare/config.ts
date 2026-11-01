@@ -1,49 +1,67 @@
 // Editorial choices of the comparison page: which criteria are shown and in which
 // direction they are judged. No data value here (numbers come from Supabase).
 
+import scoreRules from "@/data/score_rules.json";
 import type { Basis } from "@/lib/scoring";
 
 export const CIQUAL_SOURCE = "ciqual-2025";
 export const CLIMATE_MAIN = "ghg_100y_kgco2e";
 
 /**
- * Nutrients shown in the Nutrition card, in display order.
- * direction: "up" = more is better for this meal, "down" = less is better
- * (general guidance of ANSES / PNNS: fibre up, saturated fat and salt down),
- * "none" = shown without a winner (energy: depends on the person's needs).
- * label: short display name (the Ciqual name is kept in the tooltip).
+ * Nutrients shown first in the Nutrition tab, in display order (docs/DESIGN.md § 4); every other
+ * Ciqual constituent follows, in the order of the nutrients table. label: short display name
+ * (the Ciqual name is kept in the tooltip). The direction comes from data/score_rules.json:
+ * a nutrient that is not counted there is shown without a winner ("none", e.g. energy).
  */
-export const NUTRIENTS: { id: string; direction: "up" | "down" | "none"; label?: string }[] = [
-  { id: "energy_eu_kcal", direction: "none", label: "Énergie" },
-  { id: "protein_g", direction: "up", label: "Protéines" },
-  { id: "fiber_g", direction: "up", label: "Fibres" },
-  { id: "fa_sat_g", direction: "down", label: "Acides gras saturés" },
-  { id: "salt_g", direction: "down", label: "Sel" },
-  // Total sugars (natural + added): public-health targets concern added sugars, so no verdict.
-  { id: "sugars_g", direction: "none", label: "Sucres (totaux)" },
-  { id: "fe_mg", direction: "up", label: "Fer" },
-  { id: "ca_mg", direction: "up", label: "Calcium" },
-  { id: "zn_mg", direction: "up", label: "Zinc" },
-  { id: "i_ug", direction: "up", label: "Iode" },
-  { id: "vit_b12_ug", direction: "up", label: "Vitamine B12" },
-  { id: "vit_d_ug", direction: "up", label: "Vitamine D" },
-  { id: "vit_b2_mg", direction: "up", label: "Vitamine B2" },
-  { id: "fa_c18_3_n3_ala_g", direction: "up", label: "Oméga-3 ALA" },
-  { id: "fa_c20_5_n3_epa_g", direction: "up", label: "Oméga-3 EPA" },
-  { id: "fa_c22_6_n3_dha_g", direction: "up", label: "Oméga-3 DHA" },
+const FEATURED: { id: string; label: string }[] = [
+  { id: "energy_eu_kcal", label: "Énergie" },
+  { id: "protein_g", label: "Protéines" },
+  { id: "fat_g", label: "Lipides" },
+  { id: "fa_sat_g", label: "dont acides gras saturés" },
+  { id: "carbohydrate_g", label: "Glucides" },
+  { id: "sugars_g", label: "dont sucres" },
+  { id: "fiber_g", label: "Fibres" },
+  { id: "salt_g", label: "Sel" },
+  { id: "fe_mg", label: "Fer" },
+  { id: "ca_mg", label: "Calcium" },
+  { id: "zn_mg", label: "Zinc" },
+  { id: "vit_b12_ug", label: "Vitamine B12" },
+  { id: "i_ug", label: "Iode" },
+  { id: "vit_d_ug", label: "Vitamine D" },
+  { id: "vit_b2_mg", label: "Vitamine B2" },
+  { id: "fa_c18_3_n3_ala_g", label: "Oméga-3 ALA" },
+  { id: "fa_c20_5_n3_epa_g", label: "Oméga-3 EPA" },
+  { id: "fa_c22_6_n3_dha_g", label: "Oméga-3 DHA" },
 ];
+
+const counted = new Map(
+  scoreRules.categories.flatMap((c) => c.indicators.map((i) => [i.id, i.direction === "higher_is_better" ? "up" : "down"] as const)),
+);
+
+/** Direction used for a verdict: from data/score_rules.json; "none" = shown, not judged. */
+export function directionOf(id: string): "up" | "down" | "none" {
+  return counted.get(id) ?? "none";
+}
+
+export const NUTRIENTS: { id: string; direction: "up" | "down" | "none"; label?: string }[] = FEATURED.map((n) => ({
+  ...n,
+  direction: directionOf(n.id),
+}));
 
 /** Criteria whose coverage drives the page-level warning (energy, protein, climate). */
 export const KEY_CRITERIA = ["energy_eu_kcal", "protein_g", "ghg_100y_kgco2e"];
 
-/** Agribalyse indicators shown in the Climate card (direction read from indicators.higher_is_better). */
-export const CLIMATE_INDICATORS = [
-  CLIMATE_MAIN,
-  "land_use_pt",
-  "water_scarcity_m3",
-  "eutro_fw_kgp",
-  "particulates",
+/**
+ * Agribalyse indicators shown in the Environment tab, in display order: the 16 indicators counted
+ * by the score (data/score_rules.json), then the single EF score and the parts of climate change
+ * (shown, not counted).
+ */
+export const CLIMATE_INDICATORS: string[] = [
+  ...(scoreRules.categories.find((c) => c.id === "environnement")?.indicators.map((i) => i.id) ?? []),
   "ef_single_score",
+  "ghg_fossil_kgco2e",
+  "ghg_biogenic_kgco2e",
+  "ghg_luc_kgco2e",
 ];
 
 export const BASES: { id: Basis; label: string }[] = [

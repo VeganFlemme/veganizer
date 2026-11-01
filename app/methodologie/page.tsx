@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import type { ReactNode } from "react";
+import { ScoreMethod } from "@/components/methodology/ScoreMethod";
 import { getMethodologyStats, type MethodologyStats } from "@/lib/methodology/data";
 
 export const metadata: Metadata = {
@@ -84,6 +85,7 @@ const SECTIONS = [
   ["comparaison-simplifiee", "Paires vérifiées et comparaisons simplifiées"],
   ["ta-recette", "« Analyse ta recette »"],
   ["formule", "La formule de calcul"],
+  ["vainqueur", "Comment on désigne un vainqueur"],
   ["cout-climat", "Le coût climat"],
   ["animaux", "Animaux : une estimation basse"],
   ["sante-circ", "Santé : le classement du CIRC"],
@@ -430,6 +432,10 @@ export default async function MethodologiePage() {
           animal est négative. Quand la valeur du plat animal vaut 0 ou manque, l’écart n’est pas
           calculé.
         </p>
+      </Section>
+
+      <Section id="vainqueur" title="Comment on désigne un vainqueur">
+        <ScoreMethod />
       </Section>
 
       <Section id="cout-climat" title="Le coût climat">
