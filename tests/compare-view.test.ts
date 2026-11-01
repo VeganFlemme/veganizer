@@ -61,7 +61,12 @@ function raw(over: Partial<RawPairData> = {}): RawPairData {
       { id: "viande", libelle: "Viande hors volaille", repere: "…", limiteGrammesSemaine: 500, source: { sourceId: "spf-pnns-2019", publisher: "SpF", title: "t", url: "https://example.org", accessedOn: "2026-11-01" } },
       { id: "legumes-secs", libelle: "Légumes secs", repere: "…", foisParSemaine: 2, source: { sourceId: "spf-pnns-2019", publisher: "SpF", title: "t", url: "https://example.org", accessedOn: "2026-11-01" } },
     ],
-    dishPrices: [{ dish_id: "A", source_id: "open-prices", per_serving: 2, low_per_serving: 1, high_per_serving: 3, mass_coverage: 0.5 }],
+    dishPrices: [
+      { dish_id: "A", source_ids: ["open-prices"], per_serving: 2, low_per_serving: 1, high_per_serving: 3, mass_coverage: 1, first_observed_on: "2025-11-15", last_observed_on: "2026-10-15" },
+    ],
+    foodPrices: [
+      { food_code: "meat", source_id: "rnm", median_eur_per_kg: 5, observations: 12, first_observed_on: "2025-11-15", last_observed_on: "2026-10-15", place: "France, GMS" },
+    ],
     iarc: [
       {
         id: "rouge",
@@ -187,9 +192,16 @@ describe("buildPairPage", () => {
     expect(p.variants.maison!.iarc[0].vegetalGrams).toBe(0);
   });
 
-  it("keeps the price coverage so partial prices are never shown as a total", () => {
-    expect(maison.price.animal?.coverage).toBe(0.5);
+  it("keeps the price coverage and normalises the dish price per 100 kcal and per 10 g of protein", () => {
+    expect(maison.price.animal?.coverage).toBe(1);
+    expect(maison.price.animal?.per100kcal).toBeCloseTo(0.5); // 2 € for 400 kcal
+    expect(maison.price.animal?.per10gProtein).toBeCloseTo(2 / 60 * 10);
     expect(maison.price.vegetal).toBeNull();
+  });
+
+  it("lists the price per kg of each ingredient, missing prices stay null", () => {
+    expect(maison.price.animalIngredients[0]).toMatchObject({ code: "meat", eurPerKg: 5, sourceId: "rnm", place: "France, GMS" });
+    expect(maison.price.vegetalIngredients[0].eurPerKg).toBeNull();
   });
 
   it("only exposes the sources actually used", () => {

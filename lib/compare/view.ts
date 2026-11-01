@@ -90,11 +90,23 @@ export interface CategoryFactorRow {
 }
 export interface DishPriceRow {
   dish_id: string;
-  source_id: string;
+  source_ids: string[];
   per_serving: number;
   low_per_serving: number | null;
   high_per_serving: number | null;
   mass_coverage: number;
+  first_observed_on: string | null;
+  last_observed_on: string | null;
+}
+/** food_prices_best row: one source per food. */
+export interface FoodPriceRow {
+  food_code: string;
+  source_id: string;
+  median_eur_per_kg: number;
+  observations: number;
+  first_observed_on: string | null;
+  last_observed_on: string | null;
+  place: string | null;
 }
 export interface IarcEntry {
   id: string;
@@ -148,6 +160,7 @@ export interface RawPairData {
   /** Years of the climate cost shown. */
   climateCostYears: number[];
   dishPrices: DishPriceRow[];
+  foodPrices: FoodPriceRow[];
   iarc: IarcEntry[];
   pnns: PnnsEntry[];
 }
@@ -222,10 +235,36 @@ export interface ClimateCostView {
   sourceId: string | null;
 }
 
+export interface PriceSide {
+  value: number;
+  low: number | null;
+  high: number | null;
+  coverage: number;
+  /** null when energy / protein are not known for the whole dish. */
+  per100kcal: number | null;
+  per10gProtein: number | null;
+  firstObservedOn: string | null;
+  lastObservedOn: string | null;
+}
+
+export interface IngredientPrice {
+  code: string;
+  label: string;
+  /** null = no published price (donnée manquante, never 0). */
+  eurPerKg: number | null;
+  sourceId: string | null;
+  place: string | null;
+  observations: number | null;
+  firstObservedOn: string | null;
+  lastObservedOn: string | null;
+}
+
 export interface PriceView {
-  animal: { value: number; low: number | null; high: number | null; coverage: number } | null;
-  vegetal: { value: number; low: number | null; high: number | null; coverage: number } | null;
+  animal: PriceSide | null;
+  vegetal: PriceSide | null;
   sourceIds: string[];
+  animalIngredients: IngredientPrice[];
+  vegetalIngredients: IngredientPrice[];
 }
 
 export interface IarcView {
@@ -509,17 +548,42 @@ export function buildPairPage(raw: RawPairData): PairPageModel {
       };
     });
 
-    const priceOf = (d: DishRow) => {
+    const priceOf = (d: DishRow, t: DishTotals): PriceSide | null => {
       const r = raw.dishPrices.find((x) => x.dish_id === d.id);
-      if (r) usedSources.add(r.source_id);
-      return r
-        ? { value: Number(r.per_serving), low: num(r.low_per_serving), high: num(r.high_per_serving), coverage: Number(r.mass_coverage) }
-        : null;
+      if (!r) return null;
+      r.source_ids.forEach((s) => usedSources.add(s));
+      const value = Number(r.per_serving);
+      return {
+        value,
+        low: num(r.low_per_serving),
+        high: num(r.high_per_serving),
+        coverage: Number(r.mass_coverage),
+        per100kcal: t.kcalPerServing ? (value / t.kcalPerServing) * 100 : null,
+        per10gProtein: t.proteinPerServing ? (value / t.proteinPerServing) * 10 : null,
+        firstObservedOn: r.first_observed_on,
+        lastObservedOn: r.last_observed_on,
+      };
     };
+    const ingredientPrices = (d: DishRow): IngredientPrice[] =>
+      dishView(d, raw).ingredients.map((i) => {
+        const fp = raw.foodPrices.find((p) => p.food_code === i.code);
+        return {
+          code: i.code,
+          label: i.label,
+          eurPerKg: fp ? Number(fp.median_eur_per_kg) : null,
+          sourceId: fp?.source_id ?? null,
+          place: fp?.place ?? null,
+          observations: fp ? Number(fp.observations) : null,
+          firstObservedOn: fp?.first_observed_on ?? null,
+          lastObservedOn: fp?.last_observed_on ?? null,
+        };
+      });
     const price: PriceView = {
-      animal: priceOf(raw.animal),
-      vegetal: priceOf(dish),
-      sourceIds: [...new Set(raw.dishPrices.filter((x) => x.dish_id === raw.animal.id || x.dish_id === dish.id).map((x) => x.source_id))],
+      animal: priceOf(raw.animal, animalTotals),
+      vegetal: priceOf(dish, vegTotals),
+      sourceIds: [...new Set(raw.dishPrices.filter((x) => x.dish_id === raw.animal.id || x.dish_id === dish.id).flatMap((x) => x.source_ids))],
+      animalIngredients: ingredientPrices(raw.animal),
+      vegetalIngredients: ingredientPrices(dish),
     };
 
     const foodsByCode = new Map(raw.foods.map((f) => [f.code, f]));

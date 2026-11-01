@@ -24,9 +24,12 @@ Valeurs **non saisies** faute d'avoir pu citer la page exacte de la source offic
 | HENI par catégorie | Stylianou, Fulgoni, Jolliet, Nature Food 2021 | Page lue : pas de licence ouverte (« Reprints and permissions »), « Data are available from the corresponding author upon reasonable request » ; données pour 167 aliments américains. Non importé ; `sources.heni-2021.commercial_use = false`. Il faudrait une autorisation écrite des auteurs. |
 
 ## Coût
-| Élément | Source visée | Blocage |
+| Élément | Source visée | État au 2026-11-01 |
 |---|---|---|
-| Prix de la viande, du poisson, du tofu, des légumineuses… | Open Prices | L'export ne contient de prix au kg que pour des produits bruts (surtout fruits et légumes) ; les prix par code-barres n'ont pas la quantité du produit. Piste : joindre les quantités Open Food Facts (ODbL) ou utiliser le RNM (FranceAgriMer). |
+| Prix au détail (RNM) | FranceAgriMer, stade détail GMS | **Fait (S13)** pour carotte, oignon jaune, steak haché 15 % cru. Le RNM détail ne publie que 7 viandes (souvent avec os ou label rouge/bio), des fruits et légumes ; pas de poisson, d'œufs, de fromage, de légumineuses ni de céréales au stade détail. |
+| Prix des ingrédients cuits (viandes, légumineuses, pâtes, riz, pommes de terre) | Rendements de cuisson sourcés (ex. USDA « Table of Cooking Yields for Meat and Poultry », ANSES/Ciqual si disponible) | Non fait : un prix cru ne peut pas être appliqué à un poids cuit sans rendement de cuisson sourcé (ce n'est pas une conversion d'unité). Bloque l'affichage du prix total de tous les plats (couverture max 53 %). |
+| Produits vendus au litre (huiles, lait, boissons végétales, vin, sauce soja) | Open Prices + Open Food Facts | Quantités en ml : conversion en grammes impossible sans masse volumique sourcée. |
+| Cheddar, emmental râpé, fécule de maïs, farine de pois chiche | Open Prices (catégories OFF) | 0 à 2 relevés exploitables sur 12 mois : moins de 5, donc non publiés. |
 
 ## Nutrition
 | Élément | Source visée | Blocage |

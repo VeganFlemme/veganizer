@@ -110,3 +110,11 @@ Tous les critères sont respectés.
 - [ ] **Licence du PDF PNNS** : non indiquée dans le document ; `commercial_use = null`.
 - [ ] **EAT-Lancet 2025** : The Lancet inaccessible (403). Faut-il accepter le *Summary Report 2025* d'EAT Forum comme source (document de la Commission, mais pas l'article du Lancet) ?
 - [ ] **HENI** : non intégré (pas de licence ouverte). Le badge du simulateur dit désormais « HENI · usage non commercial » et la valeur reste « donnée manquante ». Demander une autorisation aux auteurs ?
+
+## Lot A — S13 Prix réels
+
+- [ ] **Médianes importées** (12 derniers mois) : carotte 1,95 €/kg, oignon 2,28 €/kg, steak haché 15 % cru 17,53 €/kg (RNM, moyennes mensuelles) ; tofu nature 10,36 €/kg (47 relevés), tofu fumé 17,25 (25), tempeh 22,58 (10), seitan 23,61 (9), beurre doux 11,94 (286), flocons d'avoine 3,98 (61), ketchup 4,80 (235) (Open Prices). Vérifier quelques relevés à la main.
+- [ ] **Correspondances catégories** : « en:plain-tofu » ↔ 20904 tofu nature, « en:unsalted-butters » ↔ 16400 beurre 80 % doux (inclut-il des beurres allégés ?), « en:ketchup » ↔ 11008. Alternative : liste de codes-barres relue.
+- [ ] **Prix total des plats** : jamais affiché (couverture de 0 à 53 %). Le blocage principal est l'absence de rendement de cuisson sourcé pour les ingrédients cuits. Décider d'une source (ex. USDA, domaine public) ou d'utiliser des codes crus dans les recettes.
+- [ ] **Ordre des sources** RNM > Open Prices : à valider. Alternative : médiane commune.
+- [ ] **ODbL** : la table `prices` contient maintenant des prix Open Prices dérivés (prix au kg calculés) ; elle doit être partagée sous ODbL si elle est rediffusée.

@@ -5,7 +5,7 @@ import { Fragment, useState, type ReactNode } from "react";
 import sante from "@/data/sante.json";
 import { Simulator } from "./Simulator";
 import { BASES, CLIMATE_MAIN, COVERAGE_WARNING } from "@/lib/compare/config";
-import type { CriterionRow, DishView, PairPageModel, SideValue, SourceRow, Variant, VariantView } from "@/lib/compare/view";
+import type { CriterionRow, DishView, IngredientPrice, PairPageModel, SideValue, SourceRow, Variant, VariantView } from "@/lib/compare/view";
 import type { Basis } from "@/lib/scoring";
 import { formatEur, formatInt, formatPercent, formatValue, gapSentence, MISSING } from "@/lib/format";
 
@@ -102,7 +102,8 @@ const SOURCE_LABELS: Record<string, string> = {
   "ciqual-2025": "Ciqual 2025",
   "agribalyse-3.2": "Agribalyse 3.2",
   "faostat-qcl": "FAOSTAT",
-  "open-prices": "Open Prices",
+  "open-prices": "Open Prices (ODbL)",
+  rnm: "RNM FranceAgriMer",
   "vac-2025": "Valeur carbone 2025",
   "iarc-114": "CIRC vol. 114",
   "welfare-footprint": "Welfare Footprint",
@@ -203,6 +204,78 @@ function Recipe({ dish, title }: { dish: DishView; title: string }) {
           </li>
         ))}
       </ul>
+    </div>
+  );
+}
+
+const dateFr = new Intl.DateTimeFormat("fr-FR", { month: "long", year: "numeric" });
+const period = (from: string | null, to: string | null) =>
+  from && to ? `relevés de ${dateFr.format(new Date(from))} à ${dateFr.format(new Date(to))}` : "période inconnue";
+
+function IngredientPrices({ title, items, sources }: { title: string; items: IngredientPrice[]; sources: Record<string, SourceRow> }) {
+  return (
+    <div>
+      <h4 className="font-medium">{title}</h4>
+      <ul className="list-disc pl-5">
+        {items.map((i) => (
+          <li key={i.code}>
+            {i.label} :{" "}
+            {i.eurPerKg == null ? (
+              <span className="text-amber-800">{MISSING}</span>
+            ) : (
+              <>
+                {formatEur(i.eurPerKg)}/kg ({i.place ?? (i.sourceId ? sourceLabel(i.sourceId) : "")}, {formatInt(i.observations)} {i.sourceId === "rnm" ? "moyennes mensuelles" : "relevés"},{" "}
+                {period(i.firstObservedOn, i.lastObservedOn)})
+              </>
+            )}
+          </li>
+        ))}
+      </ul>
+      <SourceBadges ids={[...new Set(items.flatMap((i) => (i.sourceId ? [i.sourceId] : [])))]} sources={sources} />
+    </div>
+  );
+}
+
+function PriceBlock({ v, animalName, sources }: { v: VariantView; animalName: string; sources: Record<string, SourceRow> }) {
+  const { animal, vegetal } = v.price;
+  const complete = animal && vegetal && animal.coverage >= COVERAGE_WARNING && vegetal.coverage >= COVERAGE_WARNING;
+  const cell = (x: typeof animal) =>
+    x && (
+      <>
+        <span className="font-semibold">{formatEur(x.value)}</span> par portion
+        <span className="block text-xs text-zinc-700">
+          {formatEur(x.per100kcal)} pour 100 kcal · {formatEur(x.per10gProtein)} pour 10 g de protéines · {period(x.firstObservedOn, x.lastObservedOn)}
+        </span>
+      </>
+    );
+  return (
+    <div className="flex flex-col gap-2">
+      <h3 className="font-medium">Prix des ingrédients</h3>
+      {complete ? (
+        <dl className="grid grid-cols-2 gap-2 text-sm">
+          <div>
+            <dt className="text-xs text-zinc-700">{animalName}</dt>
+            <dd>{cell(animal)}</dd>
+          </div>
+          <div>
+            <dt className="text-xs text-zinc-700">Version végétale</dt>
+            <dd>{cell(vegetal)}</dd>
+          </div>
+        </dl>
+      ) : (
+        <Soon>
+          Les prix observés en France ne couvrent pour l’instant que {formatPercent((animal?.coverage ?? 0) * 100)} de la masse du plat animal et{" "}
+          {formatPercent((vegetal?.coverage ?? 0) * 100)} de la version végétale : pas de prix total tant que ce n’est pas au moins 95 %. Les
+          ingrédients cuits (viandes, légumineuses, pâtes, riz) n’ont pas encore de prix : il faudrait un rendement de cuisson sourcé.
+        </Soon>
+      )}
+      <details className="text-xs text-zinc-800">
+        <summary className="cursor-pointer underline">Prix au kg utilisés, ingrédient par ingrédient</summary>
+        <div className="mt-1 flex flex-col gap-2">
+          <IngredientPrices title="Version végétale" items={v.price.vegetalIngredients} sources={sources} />
+          <IngredientPrices title={animalName} items={v.price.animalIngredients} sources={sources} />
+        </div>
+      </details>
     </div>
   );
 }
@@ -387,28 +460,7 @@ function VariantPanel({ model, v, basis }: { model: PairPageModel; v: VariantVie
             </p>
             <SourceBadges ids={[...new Set(v.climateCost.flatMap((c) => (c.sourceId ? [c.sourceId] : [])))]} sources={model.sources} />
           </div>
-          <div className="flex flex-col gap-1">
-            <h3 className="font-medium">Prix des ingrédients</h3>
-            {v.price.animal && v.price.vegetal && v.price.animal.coverage >= COVERAGE_WARNING && v.price.vegetal.coverage >= COVERAGE_WARNING ? (
-              <dl className="grid grid-cols-2 gap-2 text-sm">
-                <div>
-                  <dt className="text-xs text-zinc-700">{a}</dt>
-                  <dd className="font-semibold">{formatEur(v.price.animal.value)}</dd>
-                </div>
-                <div>
-                  <dt className="text-xs text-zinc-700">Version végétale</dt>
-                  <dd className="font-semibold">{formatEur(v.price.vegetal.value)}</dd>
-                </div>
-              </dl>
-            ) : (
-              <Soon>
-                Les prix observés en France (Open Prices, médiane sur 12 mois, au moins 5 relevés) ne couvrent pour l’instant que{" "}
-                {formatPercent((v.price.animal?.coverage ?? 0) * 100)} de la masse du plat animal et{" "}
-                {formatPercent((v.price.vegetal?.coverage ?? 0) * 100)} de la version végétale : pas de total tant que ce n’est pas au moins 95 %.
-              </Soon>
-            )}
-            <SourceBadges ids={v.price.sourceIds} sources={model.sources} />
-          </div>
+          <PriceBlock v={v} animalName={a} sources={model.sources} />
         </Card>
       </div>
 

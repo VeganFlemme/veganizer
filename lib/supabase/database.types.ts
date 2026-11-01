@@ -145,6 +145,13 @@ export type Database = {
             foreignKeyName: "dish_ingredients_dish_id_fkey"
             columns: ["dish_id"]
             isOneToOne: false
+            referencedRelation: "dish_prices_best"
+            referencedColumns: ["dish_id"]
+          },
+          {
+            foreignKeyName: "dish_ingredients_dish_id_fkey"
+            columns: ["dish_id"]
+            isOneToOne: false
             referencedRelation: "dishes"
             referencedColumns: ["id"]
           },
@@ -215,6 +222,13 @@ export type Database = {
             foreignKeyName: "dish_pairs_animal_dish_id_fkey"
             columns: ["animal_dish_id"]
             isOneToOne: false
+            referencedRelation: "dish_prices_best"
+            referencedColumns: ["dish_id"]
+          },
+          {
+            foreignKeyName: "dish_pairs_animal_dish_id_fkey"
+            columns: ["animal_dish_id"]
+            isOneToOne: false
             referencedRelation: "dishes"
             referencedColumns: ["id"]
           },
@@ -244,6 +258,13 @@ export type Database = {
             columns: ["vegan_dish_id"]
             isOneToOne: false
             referencedRelation: "dish_prices"
+            referencedColumns: ["dish_id"]
+          },
+          {
+            foreignKeyName: "dish_pairs_vegan_dish_id_fkey"
+            columns: ["vegan_dish_id"]
+            isOneToOne: false
+            referencedRelation: "dish_prices_best"
             referencedColumns: ["dish_id"]
           },
           {
@@ -705,6 +726,32 @@ export type Database = {
         }
         Relationships: []
       }
+      price_source_priority: {
+        Row: {
+          place: string
+          priority: number
+          source_id: string
+        }
+        Insert: {
+          place: string
+          priority: number
+          source_id: string
+        }
+        Update: {
+          place?: string
+          priority?: number
+          source_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "price_source_priority_source_id_fkey"
+            columns: ["source_id"]
+            isOneToOne: true
+            referencedRelation: "sources"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       prices: {
         Row: {
           external_id: string | null
@@ -916,6 +963,20 @@ export type Database = {
           },
         ]
       }
+      dish_prices_best: {
+        Row: {
+          dish_id: string | null
+          first_observed_on: string | null
+          high_per_serving: number | null
+          last_observed_on: string | null
+          low_per_serving: number | null
+          mass_coverage: number | null
+          per_serving: number | null
+          slug: string | null
+          source_ids: string[] | null
+        }
+        Relationships: []
+      }
       food_prices: {
         Row: {
           first_observed_on: string | null
@@ -925,6 +986,35 @@ export type Database = {
           median_eur_per_kg: number | null
           min_eur_per_kg: number | null
           observations: number | null
+          source_id: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "prices_food_code_fkey"
+            columns: ["food_code"]
+            isOneToOne: false
+            referencedRelation: "foods"
+            referencedColumns: ["code"]
+          },
+          {
+            foreignKeyName: "prices_source_id_fkey"
+            columns: ["source_id"]
+            isOneToOne: false
+            referencedRelation: "sources"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      food_prices_best: {
+        Row: {
+          first_observed_on: string | null
+          food_code: string | null
+          last_observed_on: string | null
+          max_eur_per_kg: number | null
+          median_eur_per_kg: number | null
+          min_eur_per_kg: number | null
+          observations: number | null
+          place: string | null
           source_id: string | null
         }
         Relationships: [

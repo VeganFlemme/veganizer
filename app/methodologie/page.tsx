@@ -461,10 +461,21 @@ export default async function MethodologiePage() {
 
       <Section id="prix" title="Prix : quand nous les affichons">
         <p>
-          Les prix viennent des relevés citoyens Open Prices (licence ODbL) : prix au kilo en France,
-          hors promotions, médiane sur 12 mois, avec au moins 5 relevés par aliment. Le prix d’un plat
-          n’est affiché que si ces prix couvrent au moins 95 % de sa masse ; sinon nous indiquons la
-          part couverte.
+          Pour chaque ingrédient, nous retenons une seule source de prix, par ordre de priorité :
+          d’abord le Réseau des nouvelles des marchés (RNM, FranceAgriMer : prix au détail en grandes
+          et moyennes surfaces, moyennes mensuelles en euros TTC le kilo), puis les relevés citoyens
+          Open Prices (licence ODbL). Pour un produit vendu sous code-barres, le prix au kilo est
+          calculé avec la quantité indiquée sur la fiche Open Food Facts, uniquement si elle est en
+          grammes : un produit vendu au litre demanderait sa masse volumique, ce qui n’est pas une
+          simple conversion d’unité.
+        </p>
+        <p>
+          Nous gardons les prix des 12 derniers mois, hors promotions, et publions la médiane à partir
+          de 5 relevés (ou 5 moyennes mensuelles). Un prix de produit cru n’est jamais appliqué à un
+          ingrédient pesé cuit. Le prix d’un plat, par portion, pour 100 kcal et pour 10 g de
+          protéines, n’est affiché que si ces prix couvrent au moins 95 % de sa masse ; sinon nous
+          indiquons la part couverte et le prix au kilo de chaque ingrédient, avec la source, le lieu
+          et la période des relevés.
         </p>
       </Section>
 
