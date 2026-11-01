@@ -276,3 +276,11 @@ Chiffres clés par portion (nouvelles paires) :
 - [ ] **Santé** : grammes de viande transformée (CIRC groupe 1) et de viande rouge (groupe 2A) par portion, « moins = mieux ». Les repères PNNS, fondés sur les mêmes grammes, ne sont pas comptés (double compte) ; EAT-Lancet (source provisoire) non compté.
 - [ ] **Économie** : le coût climat est proportionnel au CO₂e déjà compté en environnement (double compte voulu par DESIGN.md § 5). Alternative : ne compter que le prix.
 - [ ] **Bases** : le verdict global et les cartes sont calculés par portion ; seul l'onglet Nutrition suit l'unité choisie (portion, 100 kcal, 10 g de protéines).
+
+## Lot C — S19 Système de design
+
+- [ ] **Contrastes** : 27 couples texte/fond ≥ 4,5:1 et 9 couples marque/fond (séries, anneau de focus) ≥ 3:1, vérifiés par `tests/contrast.test.ts` (formule WCAG 2). Les fonds translucides du bandeau (`rgba(255,255,255,0.08)` sur `ink`) sont calculés par mélange.
+- [ ] **Anneau de focus sur le bandeau sombre** : `#0B6E5D` sur `#0F2724` serait trop peu visible ; le bandeau utilise `plant-on-dark` (`#3FC1A3`). Alternative : anneau blanc.
+- [ ] **Tutoiement** : les nouveaux textes suivent les maquettes (« Ton plat… », « Et si je change ? », « Analyser ma recette »). Les anciennes pages au vouvoiement sont passées au tutoiement là où elles sont refaites. Alternative : vouvoiement partout.
+- [ ] **Favicon** : `app/icon.svg` (logo) remplace le `favicon.ico` par défaut de Next.js ; vieux navigateurs sans SVG : pas d'icône. Alternative : ajouter un `favicon.ico` généré depuis le logo.
+- [ ] **Images de partage** : rendu de `/opengraph-image` et `/compare/<plat>/opengraph-image` (titres longs, accents) à regarder.

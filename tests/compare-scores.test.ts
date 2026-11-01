@@ -1,6 +1,6 @@
 // Scores on the page model: values gathered from the rows, sentences of the basis.
 import { describe, expect, it } from "vitest";
-import { categorySentence, scorePair, type ScoreInput } from "@/lib/compare/scores";
+import { categorySentence, categorySummary, scorePair, type ScoreInput } from "@/lib/compare/scores";
 import type { CriterionRow, SideValue } from "@/lib/compare/view";
 import { scoreCategory } from "@/lib/scoring";
 
@@ -99,5 +99,21 @@ describe("categorySentence", () => {
   it("explains when nothing is comparable", () => {
     const c = scoreCategory({ id: "x", indicators: [{ id: "a", direction: "lower_is_better" }] }, {}, { significantDigits: 3, provisionalBelowShare: 0.5 });
     expect(categorySentence(c, { a: "Prix" })).toMatch(/^Aucun indicateur comparable : prix/);
+  });
+});
+
+describe("categorySummary", () => {
+  const opts = { significantDigits: 3, provisionalBelowShare: 0.5 };
+  const rule = { id: "x", indicators: ["a", "b", "c", "d"].map((id) => ({ id, direction: "lower_is_better" as const })) };
+  it("names the compared indicators when there are few", () => {
+    const c = scoreCategory(rule, { a: { animal: 2, vegetal: 1 } }, opts);
+    expect(categorySummary(c, { a: "Gaz à effet de serre" })).toBe(
+      "Gaz à effet de serre. Les 3 autres indicateurs : données manquantes ou partielles, non comptés.",
+    );
+  });
+  it("gives counts when many are compared", () => {
+    const v = { animal: 2, vegetal: 1 };
+    const c = scoreCategory(rule, { a: v, b: v, c: v, d: { animal: 1, vegetal: 2 } }, opts);
+    expect(categorySummary(c, {})).toBe("4 indicateurs comparés : végétal mieux sur 3, plat animal sur 1.");
   });
 });

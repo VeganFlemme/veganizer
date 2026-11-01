@@ -1,11 +1,92 @@
 @import "tailwindcss";
 
-@theme inline {
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+/* Design tokens: docs/DESIGN.md § 2. Every text/background pair is checked in tests/contrast.test.ts. */
+@theme {
+  --color-ground: #eef2ef;
+  --color-surface: #ffffff;
+  --color-ink: #0f2724;
+  --color-ink-2: #3e5550;
+  --color-ink-3: #55696a;
+  --color-line: #d5deda;
+  --color-line-soft: #e3eae6;
+  --color-track: #dde7e2;
+  --color-animal: #d9662b;
+  --color-plant: #0e8a74;
+  --color-plant-on-dark: #3fc1a3;
+  --color-action: #0b6e5d;
+  --color-action-hover: #08513f;
+  --color-win-plant: #e1f0ea;
+  --color-win-animal: #fbede4;
+  --color-animal-note: #8a4a1e;
+  --color-on-dark-1: #dcebe5;
+  --color-on-dark-2: #c8dcd5;
+  --color-on-dark-3: #b9d9cf;
+
+  --font-sans: var(--font-schibsted), system-ui, sans-serif;
+
+  --radius-verdict: 22px;
+  --radius-panel: 20px;
+  --radius-card: 18px;
+  --radius-select: 14px;
+  --radius-btn: 12px;
+
+  --shadow-card: 0 1px 0 rgba(15, 39, 36, 0.06);
+  --shadow-float: 0 1px 0 rgba(15, 39, 36, 0.06), 0 18px 36px -20px rgba(15, 39, 36, 0.45);
+
+  --animate-verdict: verdict-in 400ms ease-out both;
+  @keyframes verdict-in {
+    from {
+      opacity: 0;
+      transform: translateY(6px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
 }
 
-/* Light theme only for now: every text/background pair is checked for WCAG AA contrast. */
-body {
-  font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
+  body {
+    background: var(--color-ground);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+  }
+  a {
+    color: var(--color-action);
+  }
+  a:hover {
+    color: var(--color-action-hover);
+  }
+  /* Focus always visible (DESIGN.md § 6); lighter ring on the dark band. */
+  :focus-visible {
+    outline: 2px solid var(--color-action);
+    outline-offset: 2px;
+  }
+  .on-dark :focus-visible {
+    outline-color: var(--color-plant-on-dark);
+  }
+  [hidden] {
+    display: none !important;
+  }
+}
+
+/* Tables and value columns: aligned digits only there (DESIGN.md § 2). */
+@utility num {
+  font-variant-numeric: tabular-nums;
+}
+
+/* One motion only (the verdict), removed when the user asks for less motion. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }

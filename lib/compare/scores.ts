@@ -34,6 +34,8 @@ export interface CategoryScoreView extends CategoryScore {
   short: string;
   /** What the score rests on, in one or two sentences (docs/DESIGN.md, principle 3). */
   sentence: string;
+  /** Short form for the summary cards. */
+  summary: string;
 }
 
 export interface VerdictView {
@@ -81,6 +83,19 @@ export function categorySentence(score: CategoryScore, labels: Record<string, st
   return parts.join(" ");
 }
 
+/** Short basis of a score for the cards: the compared indicators when few, counts otherwise. */
+export function categorySummary(score: CategoryScore, labels: Record<string, string>): string {
+  if (score.compared === 0) return "Aucun indicateur comparable pour l’instant : données manquantes, jamais comptées comme 0.";
+  const compared = score.indicators.filter((i) => ["animal", "vegetal", "egal"].includes(i.outcome)).map((i) => labels[i.id] ?? i.id);
+  const rest = score.total - score.compared;
+  const head =
+    score.compared <= 3
+      ? `${list(compared)}.`
+      : `${score.compared} indicateurs comparés : végétal mieux sur ${score.vegetalPoints}, plat animal sur ${score.animalPoints}.`;
+  const tail = rest === 0 ? "" : ` ${rest === 1 ? "1 autre indicateur" : `Les ${rest} autres indicateurs`} : données manquantes ou partielles, non ${rest === 1 ? "compté" : "comptés"}.`;
+  return head + tail;
+}
+
 export function verdictSentence(categories: CategoryScoreView[]): string {
   const v = categories.filter((c) => c.winner === "vegetal").length;
   const parts = [`${v === 1 ? "catégorie gagnée" : "catégories gagnées"} par la version végétale.`];
@@ -126,7 +141,7 @@ function scoreOf(category: RuleCategory, input: ScoreInput, basis: Basis): Categ
   };
   const score = scoreCategory(rule, values(category, input, basis), SCORE_OPTIONS);
   const labels = Object.fromEntries(category.indicators.map((i) => [i.id, i.label]));
-  return { ...score, id: category.id as CategoryId, label: category.label, short: category.short, sentence: categorySentence(score, labels) };
+  return { ...score, id: category.id as CategoryId, label: category.label, short: category.short, sentence: categorySentence(score, labels), summary: categorySummary(score, labels) };
 }
 
 export function scorePair(input: ScoreInput): PairScores {
