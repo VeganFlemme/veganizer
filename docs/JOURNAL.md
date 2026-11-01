@@ -20,6 +20,7 @@ Suivi étape par étape : heure, ce qui est fait, lien de la PR, état (en cours
 - Point 4 ajouté par Matt (16 h 07) : encadré « Là où le plat animal fait mieux » par catégorie, absent quand vide, récapitulatif groupé sur la vue d'ensemble, une boîte par section sur `/aliment`.
 - `/methodologie` : section « Portion réaliste ou à protéines égales », sources ANSES vérifiées avec page.
 - Tests : `npm test` 241, lint, typecheck, `test:pipeline`, `test:db` (5 tests SQL), `test:db:scoring` ; build local et 200 sur `/`, `/compare/boeuf-bourguignon` (deux vues), `/recette`, `/aliment/6255`, `/methodologie`.
+- 2026-11-01 16:18 — fin de l'étape 1 : PR https://github.com/VeganFlemme/veganizer/pull/17, CI verte, conditions remplies, fusionnée (squash). État : fusionnée.
 
 ## Bloqué par les permissions
 
