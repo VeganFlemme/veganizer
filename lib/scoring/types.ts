@@ -48,6 +48,8 @@ export interface CategoryFactor {
    * factor of the same category (missing data when that factor is absent).
    */
   per?: "kg" | "animal";
+  /** When set, the factor applies to these food codes only (other foods of the category: missing data). */
+  foodCodes?: string[] | null;
 }
 
 export interface ScoringData {

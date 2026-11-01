@@ -1,6 +1,6 @@
 {
-  "version": "0.2",
-  "status": "validé le 2026-11-01 (7 conseils) ; zinc et B2 ajoutés à la demande",
+  "version": "0.3",
+  "status": "validé le 2026-11-01 (7 conseils) ; zinc et B2 ajoutés à la demande ; vitamine B2 reprise mot pour mot de l'avis le 2026-11-01 (à revalider)",
   "avertissement": "Informations générales, pas un conseil médical. Parlez-en à un professionnel de santé (médecin, diététicien·ne) avant de prendre un complément.",
   "conseils": [
     {
@@ -196,15 +196,15 @@
       "criteria": [
         "vit_b2_mg"
       ],
-      "titre": "Vitamine B2 : légumes et levure alimentaire",
-      "texte": "L'ANSES observe un statut en vitamine B2 plus faible chez les végétariens, et un apport plus faible chez ceux qui limitent les produits laitiers. Les légumes en sont de forts contributeurs, comme le groupe germe de blé, levure alimentaire en paillettes et extrait de levure (repère ANSES : environ 15 g/j pour les végétaliens).",
+      "titre": "Vitamine B2 : légumes et groupe « levures et autres »",
+      "texte": "L'ANSES relève un statut en vitamine B2 plus faible « chez les végétariens comparés aux individus qui consomment de la chair animale ». « Parmi les lacto-ovovégétariens, ceux qui limitent leur consommation de lait et de produits laitiers frais, ont un apport plus faible en vitamine B2 » : les légumes en sont de forts contributeurs (20 % des apports). Pour les végétaliens, le « groupe levures et autres » (environ 15 g/j en moyenne) est un fort contributeur aux apports en vitamine B2.",
       "sources": [
         {
           "sourceId": "anses-2019-sa-0118",
           "publisher": "ANSES",
           "title": "Avis relatif à l'établissement de repères alimentaires destinés aux personnes suivant un régime d'exclusion de tout ou partie des aliments d'origine animale",
           "reference": "Saisine n° 2019-SA-0118",
-          "pages": "p. 23, 24 et 30",
+          "pages": "p. 23 (lacto-ovovégétariens), p. 24 (régime végétalien) et p. 30 (statut)",
           "date": "2025-02-03",
           "url": "https://www.anses.fr/fr/system/files/NUT2019-SA-0118.pdf",
           "accessedOn": "2026-11-01"

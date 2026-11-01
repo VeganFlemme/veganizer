@@ -4,7 +4,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
-from faostat import compute_dairy, compute_factors  # noqa: E402
+from faostat import compute_dairy, compute_factors, dairy_scope  # noqa: E402
 
 MAP = [{"animal_category": "porc", "item_code_cpc": "21113.01", "item": "Meat of pig", "notes": ""}]
 
@@ -42,6 +42,19 @@ class ComputeFactors(unittest.TestCase):
     def test_unknown_unit_stops(self):
         with self.assertRaises(ValueError):
             compute_factors([row("Production", 2024, 1, "kg"), row("Producing Animals/Slaughtered", 2024, 1, "An")], MAP)
+
+
+class DairyScope(unittest.TestCase):
+    def test_liquid_milk_and_yogurts_only(self):
+        foods = [
+            {"code": "1", "name_fr": "Lait demi-écrémé, UHT", "animal_category": "vache laitière", "food_subgroup": "laits"},
+            {"code": "2", "name_fr": "Lait en poudre, entier", "animal_category": "vache laitière", "food_subgroup": "laits"},
+            {"code": "3", "name_fr": "Yaourt nature", "animal_category": "vache laitière", "food_subgroup": "produits laitiers frais"},
+            {"code": "4", "name_fr": "Emmental", "animal_category": "vache laitière", "food_subgroup": "fromages"},
+            {"code": "5", "name_fr": "Beurre doux", "animal_category": "vache laitière", "food_subgroup": "beurres"},
+            {"code": "6", "name_fr": "Lait de chèvre", "animal_category": "chèvre laitière", "food_subgroup": "laits"},
+        ]
+        self.assertEqual(dairy_scope(foods), ["1", "3"])
 
 
 class ComputeDairy(unittest.TestCase):

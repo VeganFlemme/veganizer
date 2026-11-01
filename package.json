@@ -10,7 +10,7 @@
     "typecheck": "next typegen && tsc --noEmit",
     "test": "vitest run",
     "test:watch": "vitest",
-    "test:db": "supabase db query --linked -f supabase/tests/variant_nutrients.sql",
+    "test:db": "supabase db query --linked -f supabase/tests/variant_nutrients.sql && supabase db query --linked -f supabase/tests/best_prices.sql",
     "test:db:scoring": "vitest run --config vitest.db.config.mts",
     "test:pipeline": ".venv/bin/python -m unittest discover -s pipeline/tests"
   },

@@ -115,6 +115,26 @@ def compute_factors(rows: list[dict[str, str]], mapping: list[dict[str, str]], y
     return out
 
 
+import re as _re
+
+# Foods to which "days of lactation per kg of milk" applies: liquid milks and yogurts only.
+# Cheese, butter, cream, powders, desserts: no official milk-equivalent coefficient used -> missing.
+_MILK_EXCLUDED = _re.compile(r"poudre|concentr", _re.IGNORECASE)
+_YOGURT = _re.compile(r"^(Yaourt|Lait fermenté)", _re.IGNORECASE)
+
+
+def dairy_scope(foods: list[dict]) -> list[str]:
+    """Pure: codes of cow-milk foods that are liquid milk or yogurt."""
+    out = []
+    for f in foods:
+        if f.get("animal_category") != "vache laitière":
+            continue
+        name = f.get("name_fr") or ""
+        if (f.get("food_subgroup") == "laits" and not _MILK_EXCLUDED.search(name)) or _YOGURT.match(name):
+            out.append(f["code"])
+    return sorted(out)
+
+
 def compute_dairy(rows: list[dict[str, str]], items: list[dict[str, str]] = DAIRY) -> list[dict]:
     """Pure: life_days_farmed per kg of milk = 365 / official yield (kg per milk animal per year)."""
     out = []
@@ -136,8 +156,8 @@ def compute_dairy(rows: list[dict[str, str]], items: list[dict[str, str]] = DAIR
             "low": None, "high": None, "per": "kg", "unit_basis": "par kg de lait cru (FAOSTAT, France)",
             "source_id": SOURCE_ID, "_year": latest,
             "notes": (f"FAOSTAT QCL, France, {m['item']}, rendement {kg:g} kg par vache et par an ({latest}) : 365 / rendement. "
-                      "Seule la lactation est comptée (élevage des génisses et veaux exclus). Appliqué aux produits laitiers au "
-                      "poids du produit : estimation basse (un fromage demande plusieurs kg de lait)."),
+                      "Seule la lactation est comptée (élevage des génisses et veaux exclus). Appliqué au lait liquide et aux "
+                      "yaourts seulement ; fromages, beurres, crèmes : donnée manquante (pas de coefficient officiel d'équivalent lait)."),
         })
     return out
 
@@ -166,6 +186,12 @@ def main() -> None:
         print("Dry run: nothing written.")
         return
     client = get_client()
+    from common import fetch_all
+
+    scope = dairy_scope(fetch_all(client, "foods", "code,name_fr,animal_category,food_subgroup", is_animal=True))
+    print(f"  life_days_farmed (lait) applies to {len(scope)} foods, e.g. {scope[:5]}")
+    for f in factors:
+        f["food_codes"] = scope if f["indicator_id"] == "life_days_farmed" and f["category"] == "vache laitière" else None
     years = sorted({f["_year"] for f in factors})
     version = f"QCL{', mise à jour ' + update if update else ''}, données France {years[0]}" + (f"-{years[-1]}" if len(years) > 1 else "")
     require_source(client, SOURCE_ID, version)

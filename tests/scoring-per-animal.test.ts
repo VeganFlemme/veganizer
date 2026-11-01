@@ -58,3 +58,20 @@ describe("per-animal category factors", () => {
     expect(t.animalImpacts).not.toHaveProperty("pain_hours_total");
   });
 });
+
+describe("factors restricted to some foods of a category", () => {
+  const scoped: ScoringData = {
+    foods: {
+      MILK: food({ isAnimal: true, animalCategory: "vache laitière" }),
+      CHEESE: food({ isAnimal: true, animalCategory: "vache laitière" }),
+    },
+    categoryFactors: {
+      "vache laitière": { life_days_farmed: { value: 0.05, low: null, high: null, sourceId: "milk-src", per: "kg", foodCodes: ["MILK"] } },
+    },
+  };
+  it("applies the factor to the listed foods only; other foods of the category are missing data", () => {
+    const t = dishTotals({ servings: 1, ingredients: [{ foodCode: "MILK", grams: 1000 }, { foodCode: "CHEESE", grams: 1000 }] }, scoped);
+    expect(t.animalImpacts.life_days_farmed.perServing).toBeCloseTo(0.05);
+    expect(t.animalImpacts.life_days_farmed.massCoverage).toBeCloseTo(0.5);
+  });
+});

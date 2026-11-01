@@ -101,3 +101,32 @@ Tous les critères sont respectés.
 - [ ] **Lait** : 365 / 7 871 kg = 0,0464 jour de vie par kg (FAOSTAT 2024), appliqué aussi au beurre et aux fromages au poids du produit (sous-estimation forte pour un fromage).
 - [ ] **Licences** : `commercial_use` à vérifier pour `dir-1999-74-ce`, `label-rouge-la-07-85`, `label-rouge-la-13-97`, `agri-bien-etre-porcs`, `agreste-saa`. Welfare Footprint : CC BY 4.0 « unless otherwise stated » (pied de page de welfarefootprint.org), citation affichée.
 - [ ] **Fishcount** : toujours HTTP 401 depuis l'environnement de travail ; accessible depuis GitHub (issue #11).
+
+## Lot A — S12 Santé
+
+- [ ] **Repères PNNS** (`data/sante.json`, texte recopié du PDF de Santé publique France, pages imprimées 32, 33, 35 et 49) : relire les citations. Bœuf bourguignon : 125 g de viande = 25 % du repère hebdomadaire de 500 g ; 20 g de lardons = 13 % des 150 g de charcuterie.
+- [ ] **Classement pour les repères** (`lib/compare/config.ts`) : viande = bovin, veau, porc, agneau, cheval, hors charcuterie (le PNNS inclut les abats et, p. 49, chèvre, sanglier, biche : le gibier n'est pas compté) ; poisson = catégories poissons (fruits de mer non comptés, alors que le tableau p. 49 dit « Poisson et fruits de mer ») ; légumes secs = sous-groupe Ciqual « légumineuses » hors aliments « frais/fraîche » (la farine de pois chiche et le quinoa, cité p. 49, ne sont pas comptés). Alternative : une liste d'aliments relue à la main.
+- [ ] **Poisson et légumes secs** : affichés en grammes par portion, sans pourcentage (le repère est une fréquence, pas une quantité). Alternative : « compte pour 1 des 2 fois par semaine », mais le PNNS ne définit pas de portion minimale.
+- [ ] **Licence du PDF PNNS** : non indiquée dans le document ; `commercial_use = null`.
+- [ ] **EAT-Lancet 2025** : The Lancet inaccessible (403). Faut-il accepter le *Summary Report 2025* d'EAT Forum comme source (document de la Commission, mais pas l'article du Lancet) ?
+- [ ] **HENI** : non intégré (pas de licence ouverte). Le badge du simulateur dit désormais « HENI · usage non commercial » et la valeur reste « donnée manquante ». Demander une autorisation aux auteurs ?
+
+## Lot A — S13 Prix réels
+
+- [ ] **Médianes importées** (12 derniers mois) : carotte 1,95 €/kg, oignon 2,28 €/kg, steak haché 15 % cru 17,53 €/kg (RNM, moyennes mensuelles) ; tofu nature 10,36 €/kg (47 relevés), tofu fumé 17,25 (25), tempeh 22,58 (10), seitan 23,61 (9), beurre doux 11,94 (286), flocons d'avoine 3,98 (61), ketchup 4,80 (235) (Open Prices). Vérifier quelques relevés à la main.
+- [ ] **Correspondances catégories** : « en:plain-tofu » ↔ 20904 tofu nature, « en:unsalted-butters » ↔ 16400 beurre 80 % doux (inclut-il des beurres allégés ?), « en:ketchup » ↔ 11008. Alternative : liste de codes-barres relue.
+- [ ] **Prix total des plats** : jamais affiché (couverture de 0 à 53 %). Le blocage principal est l'absence de rendement de cuisson sourcé pour les ingrédients cuits. Décider d'une source (ex. USDA, domaine public) ou d'utiliser des codes crus dans les recettes.
+- [ ] **Ordre des sources** RNM > Open Prices : à valider. Alternative : médiane commune.
+- [ ] **ODbL** : la table `prices` contient maintenant des prix Open Prices dérivés (prix au kg calculés) ; elle doit être partagée sous ODbL si elle est rediffusée.
+
+## Lot A — S14 Corrections et cohérence
+
+- [ ] **404** : `/compare/xxx` renvoie maintenant 404 (HTML de `/introuvable`, `noindex`). La page `/introuvable` elle-même répond 200 si on la visite directement. Alternative : `global-not-found` (expérimental).
+- [ ] **Valeur carbone** : année de référence unique 2025 (0,256 €/kg) partout, y compris pour 10 ans dans le simulateur. Alternative : valeur de chaque année (plus élevée dans le temps). Ancien point « l'année affichée est 2026 » (étape C) : caduc.
+- [ ] **Conseil B2** (`data/conseils.json`, version 0.3) : à revalider. Texte : « statut en vitamine B2 plus faible chez les végétariens comparés aux individus qui consomment de la chair animale » (p. 30) ; « Parmi les lacto-ovovégétariens, ceux qui limitent leur consommation de lait et de produits laitiers frais, ont un apport plus faible en vitamine B2 » (p. 23) ; groupe « levures et autres » ≈ 15 g/j pour les végétaliens (p. 24).
+- [ ] **Reclassements** : 24048 (sablé « autre que pur beurre ») et 23399 (pâte brisée, aliment moyen) passés en `mixte` sur présomption ; alternative : les laisser `is_animal = false` avec une note. Les 8 autres sont prouvés par le détail Agribalyse.
+- [ ] **Quiche du commerce** : désormais à la pâte filo (316 g par portion, 22,0 g de protéines, −60 % de CO₂e). Recette réaliste ?
+- [ ] **Formulations** : « soit 1 animal pour N portions au plus (le nombre d'animaux est une estimation basse) » et, dans le simulateur, « Abattages évités, en moyenne (au moins) — moyenne statistique, pas un animal précis épargné ». Alternative : « contribue à l'abattage d'environ 1 animal toutes les N portions ».
+- [ ] **Lait** : le facteur jours de vie ne s'applique plus qu'à 64 aliments (lait liquide hors poudre et lait concentré, yaourts et laits fermentés). Poulet rôti : 3,567 jours par portion (le beurre ne compte plus) ; lasagnes : 75 g de lait × 0,04637 = 0,0035 jour.
+- [ ] **Douleur du poulet** (gênante, pénible, invalidante) : toujours « donnée manquante » ; le livre n'a pas pu être consulté (voir `TODO_SOURCES.md`).
+- [ ] **CALNUT** : ciqual.anses.fr toujours en maintenance (503).

@@ -16,7 +16,19 @@ import {
   type MonetizationRule,
   type ScoringData,
 } from "@/lib/scoring";
-import { BASES, CLIMATE_INDICATORS, CLIMATE_MAIN, COVERAGE_WARNING, KEY_CRITERIA, NUTRIENTS, VEGAN_WORD } from "./config";
+import {
+  BASES,
+  CLIMATE_INDICATORS,
+  CLIMATE_MAIN,
+  COVERAGE_WARNING,
+  FRESH_WORD,
+  KEY_CRITERIA,
+  NUTRIENTS,
+  PNNS_FISH_CATEGORIES,
+  PNNS_LEGUME_SUBGROUP,
+  PNNS_MEAT_CATEGORIES,
+  VEGAN_WORD,
+} from "./config";
 
 // ---------------------------------------------------------------------------
 // Raw rows (subset of the Supabase rows)
@@ -48,6 +60,7 @@ export interface FoodRow {
   ciqual_code: string | null;
   /** IARC vol. 114 category of the food (foods.iarc_meat). */
   iarc_meat?: string | null;
+  food_subgroup?: string | null;
 }
 export interface NutrientValueRow {
   food_code: string;
@@ -74,14 +87,27 @@ export interface CategoryFactorRow {
   unit_basis?: string;
   notes?: string | null;
   per?: string;
+  food_codes?: string[] | null;
 }
 export interface DishPriceRow {
   dish_id: string;
-  source_id: string;
+  source_ids: string[];
   per_serving: number;
   low_per_serving: number | null;
   high_per_serving: number | null;
   mass_coverage: number;
+  first_observed_on: string | null;
+  last_observed_on: string | null;
+}
+/** food_prices_best row: one source per food. */
+export interface FoodPriceRow {
+  food_code: string;
+  source_id: string;
+  median_eur_per_kg: number;
+  observations: number;
+  first_observed_on: string | null;
+  last_observed_on: string | null;
+  place: string | null;
 }
 export interface IarcEntry {
   id: string;
@@ -108,6 +134,15 @@ export interface SourceRow {
   url: string | null;
 }
 
+export interface PnnsEntry {
+  id: string;
+  libelle: string;
+  repere: string;
+  limiteGrammesSemaine?: number;
+  foisParSemaine?: number;
+  source: IarcEntry["source"];
+}
+
 export interface RawPairData {
   animal: DishRow;
   vegetal: DishRow[];
@@ -126,7 +161,9 @@ export interface RawPairData {
   /** Years of the climate cost shown. */
   climateCostYears: number[];
   dishPrices: DishPriceRow[];
+  foodPrices: FoodPriceRow[];
   iarc: IarcEntry[];
+  pnns: PnnsEntry[];
 }
 
 // ---------------------------------------------------------------------------
@@ -199,10 +236,36 @@ export interface ClimateCostView {
   sourceId: string | null;
 }
 
+export interface PriceSide {
+  value: number;
+  low: number | null;
+  high: number | null;
+  coverage: number;
+  /** null when energy / protein are not known for the whole dish. */
+  per100kcal: number | null;
+  per10gProtein: number | null;
+  firstObservedOn: string | null;
+  lastObservedOn: string | null;
+}
+
+export interface IngredientPrice {
+  code: string;
+  label: string;
+  /** null = no published price (donnée manquante, never 0). */
+  eurPerKg: number | null;
+  sourceId: string | null;
+  place: string | null;
+  observations: number | null;
+  firstObservedOn: string | null;
+  lastObservedOn: string | null;
+}
+
 export interface PriceView {
-  animal: { value: number; low: number | null; high: number | null; coverage: number } | null;
-  vegetal: { value: number; low: number | null; high: number | null; coverage: number } | null;
+  animal: PriceSide | null;
+  vegetal: PriceSide | null;
   sourceIds: string[];
+  animalIngredients: IngredientPrice[];
+  vegetalIngredients: IngredientPrice[];
 }
 
 export interface IarcView {
@@ -210,6 +273,15 @@ export interface IarcView {
   /** Grams per serving of foods in this IARC category; plant dish: real 0 when no animal ingredient. */
   animalGrams: number;
   vegetalGrams: number;
+}
+
+export interface PnnsView {
+  entry: PnnsEntry;
+  animalGrams: number;
+  vegetalGrams: number;
+  /** grams per serving / weekly limit × 100, only for guidelines given in grams per week. */
+  animalPercent: number | null;
+  vegetalPercent: number | null;
 }
 
 export interface AnimalFactorNote {
@@ -247,6 +319,7 @@ export interface VariantView {
   animalWithoutFactor: string[];
   price: PriceView;
   iarc: IarcView[];
+  pnns: PnnsView[];
   sim: SimInput;
 }
 
@@ -302,6 +375,7 @@ function scoringData(raw: RawPairData): ScoringData {
       high: num(c.high),
       sourceId: c.source_id,
       per: c.per === "animal" ? "animal" : "kg",
+      foodCodes: c.food_codes ?? null,
     };
   }
   return { foods, categoryFactors };
@@ -476,17 +550,42 @@ export function buildPairPage(raw: RawPairData): PairPageModel {
       };
     });
 
-    const priceOf = (d: DishRow) => {
+    const priceOf = (d: DishRow, t: DishTotals): PriceSide | null => {
       const r = raw.dishPrices.find((x) => x.dish_id === d.id);
-      if (r) usedSources.add(r.source_id);
-      return r
-        ? { value: Number(r.per_serving), low: num(r.low_per_serving), high: num(r.high_per_serving), coverage: Number(r.mass_coverage) }
-        : null;
+      if (!r) return null;
+      r.source_ids.forEach((s) => usedSources.add(s));
+      const value = Number(r.per_serving);
+      return {
+        value,
+        low: num(r.low_per_serving),
+        high: num(r.high_per_serving),
+        coverage: Number(r.mass_coverage),
+        per100kcal: t.kcalPerServing ? (value / t.kcalPerServing) * 100 : null,
+        per10gProtein: t.proteinPerServing ? (value / t.proteinPerServing) * 10 : null,
+        firstObservedOn: r.first_observed_on,
+        lastObservedOn: r.last_observed_on,
+      };
     };
+    const ingredientPrices = (d: DishRow): IngredientPrice[] =>
+      dishView(d, raw).ingredients.map((i) => {
+        const fp = raw.foodPrices.find((p) => p.food_code === i.code);
+        return {
+          code: i.code,
+          label: i.label,
+          eurPerKg: fp ? Number(fp.median_eur_per_kg) : null,
+          sourceId: fp?.source_id ?? null,
+          place: fp?.place ?? null,
+          observations: fp ? Number(fp.observations) : null,
+          firstObservedOn: fp?.first_observed_on ?? null,
+          lastObservedOn: fp?.last_observed_on ?? null,
+        };
+      });
     const price: PriceView = {
-      animal: priceOf(raw.animal),
-      vegetal: priceOf(dish),
-      sourceIds: [...new Set(raw.dishPrices.filter((x) => x.dish_id === raw.animal.id || x.dish_id === dish.id).map((x) => x.source_id))],
+      animal: priceOf(raw.animal, animalTotals),
+      vegetal: priceOf(dish, vegTotals),
+      sourceIds: [...new Set(raw.dishPrices.filter((x) => x.dish_id === raw.animal.id || x.dish_id === dish.id).flatMap((x) => x.source_ids))],
+      animalIngredients: ingredientPrices(raw.animal),
+      vegetalIngredients: ingredientPrices(dish),
     };
 
     const foodsByCode = new Map(raw.foods.map((f) => [f.code, f]));
@@ -497,6 +596,26 @@ export function buildPairPage(raw: RawPairData): PairPageModel {
     const iarc = raw.iarc.map((entry) => {
       usedSources.add(entry.source.sourceId);
       return { entry, animalGrams: iarcGrams(raw.animal, entry.id), vegetalGrams: iarcGrams(dish, entry.id) };
+    });
+
+    const pnnsMatch: Record<string, (f: FoodRow) => boolean> = {
+      viande: (f) => f.is_animal && PNNS_MEAT_CATEGORIES.includes(f.animal_category ?? "") && f.iarc_meat !== "transformée",
+      charcuterie: (f) => f.iarc_meat === "transformée",
+      poisson: (f) => f.is_animal && PNNS_FISH_CATEGORIES.includes(f.animal_category ?? ""),
+      "legumes-secs": (f) => f.food_subgroup === PNNS_LEGUME_SUBGROUP && !FRESH_WORD.test(f.name_fr),
+    };
+    const pnnsGrams = (d: DishRow, match: (f: FoodRow) => boolean) =>
+      raw.ingredients
+        .filter((i) => i.dish_id === d.id && foodsByCode.has(i.food_code) && match(foodsByCode.get(i.food_code)!))
+        .reduce((sum, i) => sum + Number(i.grams), 0) / d.servings;
+    const pnns: PnnsView[] = raw.pnns.flatMap((entry) => {
+      const match = pnnsMatch[entry.id];
+      if (!match) return [];
+      usedSources.add(entry.source.sourceId);
+      const ag = pnnsGrams(raw.animal, match);
+      const vg = pnnsGrams(dish, match);
+      const pct = (g: number) => (entry.limiteGrammesSemaine ? (g / entry.limiteGrammesSemaine) * 100 : null);
+      return [{ entry, animalGrams: ag, vegetalGrams: vg, animalPercent: pct(ag), vegetalPercent: pct(vg) }];
     });
 
     const animalFoods = raw.ingredients
@@ -516,17 +635,18 @@ export function buildPairPage(raw: RawPairData): PairPageModel {
     }
     // Per indicator: when none of the animal ingredients of the animal dish has a usable factor
     // (per kg, or per animal with animals_killed_land), the animal dish has no figure: never 0.
-    const usable = (category: string | null, id: string) => {
-      const fs = raw.categoryFactors.filter((c) => c.category === category);
+    const applies = (c: CategoryFactorRow, code: string) => !c.food_codes || c.food_codes.includes(code);
+    const usable = (food: FoodRow, id: string) => {
+      const fs = raw.categoryFactors.filter((c) => c.category === food.animal_category);
       const f = fs.find((c) => c.indicator_id === id);
-      if (!f) return false;
+      if (!f || !applies(f, food.code)) return false;
       if (f.per !== "animal") return true;
-      return fs.some((c) => c.indicator_id === "animals_killed_land" && c.per !== "animal");
+      return fs.some((c) => c.indicator_id === "animals_killed_land" && c.per !== "animal" && applies(c, food.code));
     };
     for (const b of BASES) {
       for (const r of rows[b.id]) {
         if (r.group !== "animalImpacts" || animalFoods.length === 0) continue;
-        if (animalFoods.some((f) => usable(f.animal_category, r.id))) continue;
+        if (animalFoods.some((f) => usable(f, r.id))) continue;
         r.animal = null;
         r.reductionPercent = null;
         r.winner = null;
@@ -549,6 +669,7 @@ export function buildPairPage(raw: RawPairData): PairPageModel {
       animalWithoutFactor,
       price,
       iarc,
+      pnns,
       sim: { animal: simTotals(animalTotals), vegetal: simTotals(vegTotals) },
     };
   }

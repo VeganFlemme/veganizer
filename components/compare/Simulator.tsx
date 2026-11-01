@@ -1,15 +1,13 @@
 "use client";
 
-import { useId, useState, useSyncExternalStore } from "react";
-import { CLIMATE_MAIN, COVERAGE_WARNING } from "@/lib/compare/config";
+import { useId, useState } from "react";
+import { CLIMATE_MAIN, CLIMATE_REFERENCE_YEAR, COVERAGE_WARNING } from "@/lib/compare/config";
 import type { MonetizationFactor, MonetizationRule } from "@/lib/scoring";
-import { climateCostByYear, simulate, totalClimateCost } from "@/lib/scoring";
+import { avoidedClimateCost, simulate } from "@/lib/scoring";
 import type { VariantView } from "@/lib/compare/view";
 import { formatEur, formatInt, formatValue, MISSING } from "@/lib/format";
 
 const HORIZONS = [1, 10];
-const noSubscribe = () => () => {};
-const currentYear = () => new Date().getFullYear();
 const ANIMALS = "animals_killed_land";
 
 function Missing({ why }: { why: string }) {
@@ -34,9 +32,6 @@ export function Simulator({
   const [perWeek, setPerWeek] = useState(1);
   const [shared, setShared] = useState<string | null>(null);
   const id = useId();
-  // The simulator starts with the current year (read in the browser only: the page is static);
-  // the carbon value of each year is applied. Null during prerendering.
-  const startYear = useSyncExternalStore(noSubscribe, currentYear, () => null);
 
   const animalRow = v.rows.perServing.find((r) => r.id === ANIMALS);
   const animalsMissing = !animalRow || animalRow.animal == null;
@@ -46,9 +41,8 @@ export function Simulator({
 
   const results = HORIZONS.map((years) => {
     const s = simulate(perWeek, years, v.sim.animal, v.sim.vegetal);
-    const perYear = simulate(perWeek, 1, v.sim.animal, v.sim.vegetal).impacts[CLIMATE_MAIN]?.avoided ?? null;
-    const costs = startYear == null ? [] : climateCostByYear(perYear, startYear, years, factors, { indicatorId: CLIMATE_MAIN, rules });
-    return { years, s, costs, total: startYear == null ? null : totalClimateCost(costs) };
+    const cost = avoidedClimateCost(s, CLIMATE_REFERENCE_YEAR, factors, { indicatorId: CLIMATE_MAIN, rules });
+    return { years, s, cost };
   });
 
   const ten = results[results.length - 1];
@@ -94,7 +88,7 @@ export function Simulator({
       </div>
 
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2" aria-live="polite">
-        {results.map(({ years, s, costs, total }) => {
+        {results.map(({ years, s, cost }) => {
           const co2 = s.impacts[CLIMATE_MAIN];
           const animals = s.animalImpacts[ANIMALS];
           return (
@@ -120,43 +114,32 @@ export function Simulator({
                   </dd>
                 </div>
                 <div>
-                  <dt className="text-zinc-700">Coût climat évité (valeur carbone de chaque année)</dt>
+                  <dt className="text-zinc-700">Coût climat évité (valeur carbone {CLIMATE_REFERENCE_YEAR})</dt>
                   <dd>
-                    {startYear == null ? (
-                      <span className="text-zinc-700">calcul…</span>
-                    ) : total == null ? (
-                      <Missing why="valeur carbone non publiée pour une des années" />
+                    {cost == null ? (
+                      <Missing why="émissions ou valeur carbone manquantes" />
                     ) : (
-                      <strong>
-                        {formatEur(total)}{" "}
-                        <span className="font-normal text-zinc-700">
-                          ({startYear}–{startYear + years - 1})
+                      <>
+                        <strong>{formatEur(cost.eur)}</strong>
+                        <span className="block text-xs text-zinc-700">
+                          {formatEur(cost.eurPerKg)} par kg CO₂e, valeur de référence {cost.year}
                         </span>
-                      </strong>
-                    )}
-                    {years > 1 && total != null && (
-                      <details className="text-xs text-zinc-700">
-                        <summary className="cursor-pointer underline">Année par année</summary>
-                        <ul className="mt-1">
-                          {costs.map((c) => (
-                            <li key={c.year}>
-                              {c.year} : {formatEur(c.eur)} ({formatEur(c.eurPerKg)}/kg{c.derived ? ", règle de croissance de la source" : ""})
-                            </li>
-                          ))}
-                        </ul>
-                      </details>
+                      </>
                     )}
                   </dd>
                 </div>
                 <div>
-                  <dt className="text-zinc-700">Animaux épargnés (estimation basse)</dt>
+                  <dt className="text-zinc-700">Abattages évités, en moyenne (au moins)</dt>
                   <dd>
                     {animalsMissing || animals?.avoided == null ? (
                       <Missing why="pas encore de facteur pour les ingrédients animaux de ce plat" />
                     ) : (
                       <>
                         <strong>{formatValue(animals.avoided)}</strong>
-                        {animalsPartial && <span className="text-amber-800"> au moins (certains ingrédients sans donnée)</span>}
+                        {animalsPartial && <span className="text-amber-800"> (certains ingrédients sans donnée)</span>}
+                        <span className="block text-xs text-zinc-700">
+                          Moyenne statistique : un nombre d’animaux par kg, pas un animal précis épargné.
+                        </span>
                       </>
                     )}
                   </dd>
@@ -174,10 +157,10 @@ export function Simulator({
                 <div>
                   <dt className="text-zinc-700">
                     Minutes de vie en bonne santé{" "}
-                    <span className="rounded border border-zinc-400 px-1 text-xs">HENI · usage non commercial à vérifier</span>
+                    <span className="rounded border border-zinc-400 px-1 text-xs">HENI · usage non commercial</span>
                   </dt>
                   <dd>
-                    <Missing why="indice HENI pas encore intégré" />
+                    <Missing why="données HENI sans licence ouverte, non intégrées" />
                   </dd>
                 </div>
               </dl>

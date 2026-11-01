@@ -12,10 +12,20 @@ describe("data/sante.json", () => {
     }
   });
 
+  it("copies the PNNS guidelines with their exact pages", () => {
+    expect(file.pnns.map((x) => x.id)).toEqual(["viande", "charcuterie", "poisson", "legumes-secs"]);
+    for (const x of file.pnns) {
+      expect(x.source.sourceId).toBe("spf-pnns-2019");
+      expect(x.source.pages).toMatch(/p\. \d+/);
+      expect(x.repere.length).toBeGreaterThan(10);
+      expect((x as { limiteGrammesSemaine?: number }).limiteGrammesSemaine ?? (x as { foisParSemaine?: number }).foisParSemaine).toBeGreaterThan(0);
+    }
+  });
+
   it("every source id exists in the seed or a migration", () => {
     const dir = "supabase/migrations";
     const sql = [readFileSync("supabase/seed.sql", "utf8"), ...readdirSync(dir).map((f) => readFileSync(`${dir}/${f}`, "utf8"))].join("\n");
-    for (const x of file.iarc) expect(sql).toContain(`('${x.source.sourceId}',`);
+    for (const x of [...file.iarc, ...file.pnns]) expect(sql).toContain(`('${x.source.sourceId}',`);
   });
 
   it("carries the medical disclaimer", () => {
