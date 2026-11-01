@@ -38,7 +38,7 @@ def main() -> None:
     for t in ["sources", "foods", "nutrients", "food_nutrients", "indicators", "food_impacts", "food_impact_ingredients"]:
         lines.append(f"| {t} | {count(client, t)} |")
 
-    foods = pd.DataFrame(fetch_all(client, "foods", "code,name_fr,source_id,ciqual_code,is_animal,animal_category"))
+    foods = pd.DataFrame(fetch_all(client, "foods", "code,name_fr,source_id,ciqual_code,is_animal,animal_category")).sort_values("code")
     impacted = {r["food_code"] for r in fetch_all(client, "food_impacts", "food_code", indicator_id="ghg_100y_kgco2e")}
     ciqual = foods[foods.source_id == "ciqual-2025"]
 

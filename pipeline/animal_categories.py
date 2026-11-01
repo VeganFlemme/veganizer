@@ -32,7 +32,7 @@ CATEGORIES = [
     "bovin", "veau", "porc", "agneau", "poulet de chair", "dinde", "canard", "poule pondeuse",
     "vache laitière", "brebis laitière", "chèvre laitière",
     "saumon d'élevage", "truite d'élevage", "poisson d'élevage (autre)", "poisson sauvage", "poisson origine inconnue",
-    "crevette d'élevage", "crevette sauvage", "mollusques", "abeille",
+    "crevette d'élevage", "crevette sauvage", "mollusques", "céphalopodes", "abeille",
     # added: groups too large to be "isolated cases"
     "crustacés (hors crevettes)", "lapin", "cheval", "gibier", "oie", "volaille (espèce non précisée)",
     "plusieurs espèces",
@@ -292,7 +292,7 @@ def specialize(cat: str, folded: str) -> tuple[str, str]:
     if _has(r"crevettes?", folded):
         return "crevette sauvage", ""
     if _has(r"calmars?|encornets?|seiches?|poulpes?", folded):
-        return "mollusques", "céphalopode"
+        return "céphalopodes", ""
     if _has(r"moules?|huitres?|saint[- ]jacques|petoncles?|pecten|bulots?|bigorneaux?|palourdes?|praires?|clams?|"
             r"\bcoques?\b|couteaux?|ormeaux?|oursins?|escargots?", folded):
         return "mollusques", "oursin : échinoderme, rangé ici" if _has(r"oursin", folded) else ""
