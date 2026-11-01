@@ -10,6 +10,7 @@ import type { Basis } from "@/lib/scoring";
 import { formatEur, formatInt, formatPercent, formatValue, gapSentence, MISSING } from "@/lib/format";
 
 const IARC_READING = sante.lecture;
+const EAT_READING = sante.eatLancetLecture;
 // Citation required by the CC BY 4.0 licence of the pain estimates.
 const WELFARE_CITATION = "Welfare Footprint Institute — Schuck-Paim & Alonso, CC BY 4.0";
 
@@ -75,7 +76,7 @@ function Value({ v, unit, perAnimal }: { v: SideValue | null; unit: string; perA
       <span className="font-semibold">{formatValue(v.value)}</span> {unit}
       {perAnimal && v.value > 0 && (
         <span className="block text-xs text-zinc-700">
-          soit 1 animal pour {formatInt(1 / v.value)} portions au plus (le nombre d’animaux est une estimation basse)
+          Au moins 1 animal tué pour {formatInt(1 / v.value)} portions (estimation basse)
         </span>
       )}
       {v.rangePublished && (
@@ -108,6 +109,8 @@ const SOURCE_LABELS: Record<string, string> = {
   rnm: "RNM FranceAgriMer",
   "vac-2025": "Valeur carbone 2025",
   "iarc-114": "CIRC vol. 114",
+  "eat-lancet-summary-2025": "EAT-Lancet (résumé 2025)",
+  "spf-pnns-2019": "Santé publique France (PNNS)",
   "welfare-footprint": "Welfare Footprint",
   "agreste-saa": "Agreste SAA",
   "label-rouge-la-07-85": "Label rouge LA 07/85",
@@ -388,6 +391,24 @@ function VariantPanel({ model, v, basis }: { model: PairPageModel; v: VariantVie
             {v.pnns[0] && (
               <a href={v.pnns[0].entry.source.url} className="self-start rounded border border-zinc-300 bg-zinc-50 px-1.5 py-0.5 text-xs text-zinc-800 underline" rel="noopener noreferrer">
                 Santé publique France, recommandations pour les adultes, {[...new Set(v.pnns.map((x) => x.entry.source.pages))].join(" ; ")}
+              </a>
+            )}
+          </div>
+          <div className="flex flex-col gap-2">
+            <h3 className="font-medium">Régime de référence EAT-Lancet 2025 (source provisoire)</h3>
+            <ul className="flex flex-col gap-1 text-sm">
+              {v.eatLancet.map((x) => (
+                <li key={x.entry.id}>
+                  <strong>{x.entry.libelle}</strong> (repère : {x.entry.repere}) — {a} : {formatInt(x.animalGrams)} g par portion
+                  {x.animalPercent != null && <> ({formatPercent(x.animalPercent)} du repère quotidien)</>} · version végétale :{" "}
+                  {formatInt(x.vegetalGrams)} g
+                </li>
+              ))}
+            </ul>
+            <p className="text-xs text-zinc-700">{EAT_READING}</p>
+            {v.eatLancet[0] && (
+              <a href={v.eatLancet[0].entry.source.url} className="self-start rounded border border-zinc-300 bg-zinc-50 px-1.5 py-0.5 text-xs text-zinc-800 underline" rel="noopener noreferrer">
+                EAT Forum, Summary Report 2025, {v.eatLancet[0].entry.source.pages}
               </a>
             )}
           </div>

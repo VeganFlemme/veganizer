@@ -92,5 +92,64 @@
         "accessedOn": "2026-11-01"
       }
     }
-  ]
+  ],
+  "eatLancet": [
+    {
+      "id": "eat-viande-rouge",
+      "libelle": "Bœuf, porc ou agneau",
+      "repere": "15 g par jour (de 0 à 30 g)",
+      "grammesJour": 15,
+      "source": {
+        "sourceId": "eat-lancet-summary-2025",
+        "publisher": "EAT Forum",
+        "title": "EAT-Lancet Summary Report 2025",
+        "pages": "p. 11 (figure 01)",
+        "url": "https://eatforum.org/wp-content/uploads/2026/04/EL_Summary-Report_2025_v1.pdf",
+        "accessedOn": "2026-11-01"
+      }
+    },
+    {
+      "id": "eat-volaille",
+      "libelle": "Volaille",
+      "repere": "30 g par jour (de 0 à 60 g)",
+      "grammesJour": 30,
+      "source": {
+        "sourceId": "eat-lancet-summary-2025",
+        "publisher": "EAT Forum",
+        "title": "EAT-Lancet Summary Report 2025",
+        "pages": "p. 11 (figure 01)",
+        "url": "https://eatforum.org/wp-content/uploads/2026/04/EL_Summary-Report_2025_v1.pdf",
+        "accessedOn": "2026-11-01"
+      }
+    },
+    {
+      "id": "eat-poisson",
+      "libelle": "Poisson et fruits de mer",
+      "repere": "30 g par jour (de 0 à 100 g)",
+      "grammesJour": 30,
+      "source": {
+        "sourceId": "eat-lancet-summary-2025",
+        "publisher": "EAT Forum",
+        "title": "EAT-Lancet Summary Report 2025",
+        "pages": "p. 11 (figure 01)",
+        "url": "https://eatforum.org/wp-content/uploads/2026/04/EL_Summary-Report_2025_v1.pdf",
+        "accessedOn": "2026-11-01"
+      }
+    },
+    {
+      "id": "eat-oeufs",
+      "libelle": "Œufs",
+      "repere": "15 g par jour (de 0 à 25 g)",
+      "grammesJour": 15,
+      "source": {
+        "sourceId": "eat-lancet-summary-2025",
+        "publisher": "EAT Forum",
+        "title": "EAT-Lancet Summary Report 2025",
+        "pages": "p. 11 (figure 01)",
+        "url": "https://eatforum.org/wp-content/uploads/2026/04/EL_Summary-Report_2025_v1.pdf",
+        "accessedOn": "2026-11-01"
+      }
+    }
+  ],
+  "eatLancetLecture": "Régime de référence pour un adulte moyen, environ 2 400 kcal par jour ; source provisoire (résumé d'EAT Forum), à recouper avec l'article du Lancet."
 }

@@ -81,3 +81,21 @@ export const PNNS_MEAT_CATEGORIES = ["bovin", "veau", "porc", "agneau", "cheval"
 export const PNNS_FISH_CATEGORIES = ["saumon d'élevage", "truite d'élevage", "poisson d'élevage (autre)", "poisson sauvage", "poisson origine inconnue"];
 export const PNNS_LEGUME_SUBGROUP = "légumineuses";
 export const FRESH_WORD = /\bfra(i|î)s\b|\bfra(i|î)che\b/i;
+
+/**
+ * EAT-Lancet 2025 (Summary Report, p. 11, figure 01, grams per day). Editorial mapping to review:
+ * red meat = beef, veal, pork, lamb (processed meat of these species included); poultry = poultry
+ * meat (eggs excluded); fish = fish, crustaceans, molluscs; eggs = Ciqual subgroup "oeufs".
+ * Dairy and legumes not compared (unit of the target not stated: milk equivalent? dry weight?).
+ */
+export const EAT_RED_MEAT_CATEGORIES = ["bovin", "veau", "porc", "agneau"];
+export const EAT_POULTRY_CATEGORIES = ["poulet de chair", "dinde", "canard", "oie", "volaille (espèce non précisée)"];
+export const EAT_SEAFOOD_CATEGORIES = [
+  ...PNNS_FISH_CATEGORIES,
+  "crevette d'élevage",
+  "crevette sauvage",
+  "crustacés (hors crevettes)",
+  "mollusques",
+  "céphalopodes",
+];
+export const EGG_SUBGROUP = "oeufs";

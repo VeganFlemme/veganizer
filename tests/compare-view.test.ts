@@ -57,6 +57,9 @@ function raw(over: Partial<RawPairData> = {}): RawPairData {
     monetizationRules: [],
     conseils: [{ id: "b12", criteria: ["vit_b12_ug"], titre: "B12", texte: "complément", sources: [] }],
     climateCostYears: [2025, 2050],
+    eatLancet: [
+      { id: "eat-viande-rouge", libelle: "Bœuf, porc ou agneau", repere: "15 g par jour", grammesJour: 15, source: { sourceId: "eat-lancet-summary-2025", publisher: "EAT", title: "t", url: "https://example.org", accessedOn: "2026-11-01" } },
+    ],
     pnns: [
       { id: "viande", libelle: "Viande hors volaille", repere: "…", limiteGrammesSemaine: 500, source: { sourceId: "spf-pnns-2019", publisher: "SpF", title: "t", url: "https://example.org", accessedOn: "2026-11-01" } },
       { id: "legumes-secs", libelle: "Légumes secs", repere: "…", foisParSemaine: 2, source: { sourceId: "spf-pnns-2019", publisher: "SpF", title: "t", url: "https://example.org", accessedOn: "2026-11-01" } },
@@ -285,5 +288,14 @@ describe("PNNS guidelines", () => {
     expect(viande.vegetalPercent).toBe(0);
     expect(legumes.vegetalGrams).toBe(150); // 300 g / 2 servings; the fresh broad bean is not counted
     expect(legumes.animalPercent).toBeNull();
+  });
+});
+
+describe("EAT-Lancet reference diet", () => {
+  it("expresses red meat per serving as a share of the daily target", () => {
+    const [red] = buildPairPage(raw()).variants.maison!.eatLancet;
+    expect(red.animalGrams).toBe(200);
+    expect(red.animalPercent).toBeCloseTo((200 / 15) * 100);
+    expect(red.vegetalPercent).toBe(0);
   });
 });

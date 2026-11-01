@@ -21,6 +21,10 @@ import {
   CLIMATE_INDICATORS,
   CLIMATE_MAIN,
   COVERAGE_WARNING,
+  EAT_POULTRY_CATEGORIES,
+  EAT_RED_MEAT_CATEGORIES,
+  EAT_SEAFOOD_CATEGORIES,
+  EGG_SUBGROUP,
   FRESH_WORD,
   KEY_CRITERIA,
   NUTRIENTS,
@@ -140,6 +144,8 @@ export interface PnnsEntry {
   repere: string;
   limiteGrammesSemaine?: number;
   foisParSemaine?: number;
+  /** EAT-Lancet: reference intake in grams per day. */
+  grammesJour?: number;
   source: IarcEntry["source"];
 }
 
@@ -164,6 +170,7 @@ export interface RawPairData {
   foodPrices: FoodPriceRow[];
   iarc: IarcEntry[];
   pnns: PnnsEntry[];
+  eatLancet: PnnsEntry[];
 }
 
 // ---------------------------------------------------------------------------
@@ -279,7 +286,7 @@ export interface PnnsView {
   entry: PnnsEntry;
   animalGrams: number;
   vegetalGrams: number;
-  /** grams per serving / weekly limit × 100, only for guidelines given in grams per week. */
+  /** grams per serving / weekly limit (PNNS) or daily target (EAT-Lancet) × 100; null for frequencies. */
   animalPercent: number | null;
   vegetalPercent: number | null;
 }
@@ -320,6 +327,7 @@ export interface VariantView {
   price: PriceView;
   iarc: IarcView[];
   pnns: PnnsView[];
+  eatLancet: PnnsView[];
   sim: SimInput;
 }
 
@@ -603,20 +611,27 @@ export function buildPairPage(raw: RawPairData): PairPageModel {
       charcuterie: (f) => f.iarc_meat === "transformée",
       poisson: (f) => f.is_animal && PNNS_FISH_CATEGORIES.includes(f.animal_category ?? ""),
       "legumes-secs": (f) => f.food_subgroup === PNNS_LEGUME_SUBGROUP && !FRESH_WORD.test(f.name_fr),
+      "eat-viande-rouge": (f) => f.is_animal && EAT_RED_MEAT_CATEGORIES.includes(f.animal_category ?? ""),
+      "eat-volaille": (f) => f.is_animal && EAT_POULTRY_CATEGORIES.includes(f.animal_category ?? "") && f.food_subgroup !== EGG_SUBGROUP,
+      "eat-poisson": (f) => f.is_animal && EAT_SEAFOOD_CATEGORIES.includes(f.animal_category ?? ""),
+      "eat-oeufs": (f) => f.is_animal && f.food_subgroup === EGG_SUBGROUP,
     };
     const pnnsGrams = (d: DishRow, match: (f: FoodRow) => boolean) =>
       raw.ingredients
         .filter((i) => i.dish_id === d.id && foodsByCode.has(i.food_code) && match(foodsByCode.get(i.food_code)!))
         .reduce((sum, i) => sum + Number(i.grams), 0) / d.servings;
-    const pnns: PnnsView[] = raw.pnns.flatMap((entry) => {
+    const guideline = (entries: PnnsEntry[]): PnnsView[] => entries.flatMap((entry) => {
       const match = pnnsMatch[entry.id];
       if (!match) return [];
       usedSources.add(entry.source.sourceId);
       const ag = pnnsGrams(raw.animal, match);
       const vg = pnnsGrams(dish, match);
-      const pct = (g: number) => (entry.limiteGrammesSemaine ? (g / entry.limiteGrammesSemaine) * 100 : null);
+      const limit = entry.limiteGrammesSemaine ?? entry.grammesJour;
+      const pct = (g: number) => (limit ? (g / limit) * 100 : null);
       return [{ entry, animalGrams: ag, vegetalGrams: vg, animalPercent: pct(ag), vegetalPercent: pct(vg) }];
     });
+    const pnns = guideline(raw.pnns);
+    const eatLancet = guideline(raw.eatLancet);
 
     const animalFoods = raw.ingredients
       .filter((i) => i.dish_id === raw.animal.id)
@@ -670,6 +685,7 @@ export function buildPairPage(raw: RawPairData): PairPageModel {
       price,
       iarc,
       pnns,
+      eatLancet,
       sim: { animal: simTotals(animalTotals), vegetal: simTotals(vegTotals) },
     };
   }

@@ -155,6 +155,7 @@ export async function getPairPage(slug: string): Promise<PairPageModel | null> {
     ),
     iarc: santeFile.iarc as IarcEntry[],
     pnns: santeFile.pnns as PnnsEntry[],
+    eatLancet: santeFile.eatLancet as PnnsEntry[],
   };
   return buildPairPage(raw);
 }
